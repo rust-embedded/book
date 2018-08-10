@@ -26,4 +26,4 @@ Caskroom/tap` first and try again.
 
 That's all! Go to the [next section].
 
-[next section]: intro/install/verify.html
+[next section]: /intro/install/verify.html
