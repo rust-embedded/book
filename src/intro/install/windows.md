@@ -59,4 +59,4 @@ instructions and make sure you install the right (32-bit or 64-bit) version of t
 
 That's all! Go to the [next section].
 
-[next section]: ../verify.html
+[next section]: intro/install/verify.html
