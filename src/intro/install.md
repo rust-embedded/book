@@ -89,6 +89,6 @@ $ cargo install itm --vers 0.2.1
 
 Now follow the instructions specific to the OS you are using:
 
-- [Linux](intro/install/linux.html)
-- [Windows](intro/install/windows.html)
-- [macOS](intro/install/macos.html)
+- [Linux](/intro/install/linux.html)
+- [Windows](/intro/install/windows.html)
+- [macOS](/intro/install/macos.html)

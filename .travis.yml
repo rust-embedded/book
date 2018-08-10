@@ -1,0 +1,20 @@
+language: rust
+
+install:
+  - bash ci/install.sh
+
+script:
+  - bash ci/script.sh
+
+after_success:
+  - bash ci/after-success.sh
+
+branches:
+  only:
+    - master
+    - staging
+    - trying
+
+notifications:
+  email:
+    on_success: never
