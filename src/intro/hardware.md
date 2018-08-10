@@ -12,7 +12,7 @@ Let's get familiar with the hardware we'll be working with.
 ## STM32F3DISCOVERY (the "F3")
 
 <p align="center">
-<img title="F3" src="assets/f3.jpg">
+<img title="F3" src="/assets/f3.jpg">
 </p>
 
 We'll refer to this board as "F3" throughout this book.
@@ -49,4 +49,3 @@ What does this board contain?
 
 - There's a second USB port, labeled "USB USER" that is connected to the main microcontroller, the
   STM32F303VCT6, and can be used in applications.
-
