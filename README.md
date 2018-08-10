@@ -2,23 +2,15 @@
 
 > Documentation on how to use the Rust Programming Language to develop firmware for bare metal (microcontroller) devices
 
-See [this issue] for more details. This is a very early work in progress.
+This project is developed and maintained by the [Resources team][team].
 
-[this issue]: https://github.com/rust-lang-nursery/embedded-wg/issues/56
+See [the issue tracker] for more details. This is a very early work in progress.
+
+[the issue tracker]: https://github.com/rust-embedded/book/issues
 
 ## Online Copies of this Book
 
-At the moment, there are no official locations where this book is hosted. Instead, see below for instructions to render and use the book locally.
-
-## Using
-
-```
-cargo install mdbook
-cd books/embedded-rust-book
-mdbook serve
-
-# open a web browser, go to http://localhost:3000
-```
+This book is being temporarily hosted in https://rust-embedded.github.io/book/
 
 ## License
 
@@ -43,3 +35,12 @@ Copies of the licenses used by this project may also be found here:
 ### Contribution
 
 Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in the work by you, as defined in the Apache-2.0 license, shall be licensed as above, without any additional terms or conditions.
+
+## Code of Conduct
+
+Contribution to this crate is organized under the terms of the [Rust Code of
+Conduct][CoC], the maintainer of this crate, the [Resources team][team], promises
+to intervene to uphold that code of conduct.
+
+[CoC]: CODE_OF_CONDUCT.md
+[team]: https://github.com/rust-embedded/wg#the-cortex-m-team
