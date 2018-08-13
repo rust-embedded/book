@@ -11,7 +11,7 @@ Welcome to "The Embedded Rust Book", an introductory book about using the Rust P
 This book assumes the following:
 
 * You are comfortable using the Rust Programming Language, and have written, run, and debugged Rust applications on a desktop environment
-* You are comfortable developing and debugging embedded systems in another language such as C, C++, or ADA, and are familiar with concepts such as:
+* You are comfortable developing and debugging embedded systems in another language such as C, C++, or Ada, and are familiar with concepts such as:
     * Cross Compilation
     * Linker Scripts
     * Memory Mapped Peripherals
