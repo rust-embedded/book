@@ -19,12 +19,19 @@ more information and coordination
     - [Hardware](./intro/hardware.md)
     - [`no_std`](./intro/no-std.md)
 - [Blinking your first LED](./blinky/blinky.md)
+- [Peripherals](./peripherals/peripherals.md)
+    - [Arbitrary Memory](./peripherals/arbitrary.md)
+    - [A first attempt in Rust](./peripherals/a-first-attempt.md)
+    - [The Borrow Checker](./peripherals/borrowck.md)
+    - [Singletons](./peripherals/singletons.md)
+    - [Peripherals in Rust](./peripherals/rusty.md)
 - [Static Guarantees](./static-guarantees/static-guarantees.md)
-    <!-- TODO: Define Sections -->
+    - [Strong Types](./static-guarantees/strong-types.md)
+    - [Design Contracts](./static-guarantees/design-contracts.md)
+    - [Zero Cost Abstractions](./static-guarantees/zero-cost-abstractions.md)
 - [Portability](./portability/portability.md)
-    <!-- TODO: Define Sections -->
-- [Singletons](./singletons/singletons.md)
-    <!-- TODO: Define Sections -->
+    - [The Trait System](./portability/traits.md)
+    <!-- TODO: Define more sections -->
 - [Concurrency](./concurrency/concurrency.md)
     <!-- TODO: Define Sections -->
 - [Collections](./collections/collections.md)
