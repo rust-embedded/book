@@ -6,7 +6,7 @@
 
 > drivers that work for more than one chip
 
-![](./assets/embedded-hal.svg)
+![](./../assets/embedded-hal.svg)
 
 * Device Crates (one per chip)
 * HAL implementation crates (one per chip)

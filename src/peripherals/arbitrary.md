@@ -7,7 +7,7 @@ Because 32 bit microcontrollers have this real and linear memory space, from `0x
 * Hardware developers decided to repurpose that space
 * So this ends up looking like this:
 
-![](./assets/nrf52-memory-map.png)
+![](./../assets/nrf52-memory-map.png)
 
 > TODO: cite the nrf52 datasheet for this image
 
@@ -19,7 +19,7 @@ So for example, if you want to send 32 bits of data over a serial port, you writ
 
 Configuration of these peripherals works the same. Instead of calling a function to configure some peripheral, they just have a chunk of memory which serves as the hardware API. Write `0x8000_0000` to this address, and the serial port will send data at 1 Megabit per second. Write `0x0800_0000` to this address, and the serial port will send data at 512 Kilobits per second. Write `0x0000_0000` to another address, and the serial port gets disabled. You get the idea. These configuration registers look a little bit like this:
 
-![](./assets/nrf52-spi-frequency-register.png)
+![](./../assets/nrf52-spi-frequency-register.png)
 
 * Important part: Values, at location
 * Same for Assembly, C, or Rust
