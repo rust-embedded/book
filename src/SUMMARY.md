@@ -27,7 +27,7 @@ more information and coordination
     <!-- TODO: Define Sections -->
 - [Concurrency](./concurrency/concurrency.md)
     <!-- TODO: Define Sections -->
-- [Dynamic Data Structures](./dynamic/dynamic.md)
+- [Collections](./collections/collections.md)
     <!-- TODO: Define Sections -->
 - [Tips for embedded C developers](./c-tips/c-tips.md)
     <!-- TODO: Define Sections -->
