@@ -20,7 +20,6 @@ more information and coordination
     - [`no_std`](./intro/no-std.md)
 - [Blinking your first LED](./blinky/blinky.md)
 - [Peripherals](./peripherals/peripherals.md)
-    - [Arbitrary Memory](./peripherals/arbitrary.md)
     - [A first attempt in Rust](./peripherals/a-first-attempt.md)
     - [The Borrow Checker](./peripherals/borrowck.md)
     - [Singletons](./peripherals/singletons.md)
