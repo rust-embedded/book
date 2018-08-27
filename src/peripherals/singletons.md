@@ -1,11 +1,10 @@
 # Singletons
 
 > In software engineering, the singleton pattern is a software design pattern that restricts the instantiation of a class to one object.
+>
+> *Wikipedia: [Singleton Pattern]*
 
-https://en.wikipedia.org/wiki/Singleton_pattern
-
-* Old concept
-* But how in Rust?
+[Singleton Pattern]: https://en.wikipedia.org/wiki/Singleton_pattern
 
 
 ## But why can't we just use global variable(s)?
