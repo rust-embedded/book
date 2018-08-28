@@ -7,7 +7,7 @@ Unfortunately, hardware is basically nothing but mutable global state, which can
 How can we reliably interact with these peripherals?
 
 1. Always use `volatile` methods to read or write to peripheral memory, as it can change at any time
-2. In software, ee should be able to share any number of read-only accesses to these peripherals
+2. In software, we should be able to share any number of read-only accesses to these peripherals
 3. If some software should have read-write access to a peripheral, it should hold the only reference to that peripheral
 
 ## The Borrow Checker

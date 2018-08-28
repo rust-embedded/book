@@ -65,7 +65,7 @@ fn do_something() {
 }
 ```
 
-But the problem with this is that our `SerialPort` struct could be created anywhere. By creating multiple instances if `SerialPort`, we would create aliased mutable pointers, which are typically avoided in Rust.
+But the problem with this is that our `SerialPort` struct could be created anywhere. By creating multiple instances of `SerialPort`, we would create aliased mutable pointers, which are typically avoided in Rust.
 
 Consider the following example:
 
