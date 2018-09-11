@@ -21,14 +21,11 @@ fn main() {
 }
 ```
 
-But this has some problems:
-
-* Mutable Global Variable
-* Unsafe to touch it, always
-* Visible everywhere
-* No help from the borrow checker
+But this has a few problems. It is a mutable global variable, and in Rust, these are always unsafe to interact with. These variables are also visible across your whole program, which means the borrow checker is unable to help you track references and ownership of these variables.
 
 ## How do we do this in Rust?
+
+Instead of just making our peripheral a global variable, we might instead decide to make a global variable, in this case called `PERIPHERALS`, which contains an `Option<T>` for each of our peripherals.
 
 ```rust
 struct Peripherals {
@@ -45,7 +42,7 @@ static mut PERIPHERALS: Peripherals = Peripherals {
 };
 ```
 
-> take what you need, but only once
+This structure allows us to obtain a single instance of our peripheral. If we try to call `take_serial()` more than once, our code will panic!
 
 ```rust
 fn main() {
@@ -55,9 +52,13 @@ fn main() {
 }
 ```
 
-> small runtime overhead, big impact
+Although interacting with this structure is `unsafe`, once we have the `SerialPort` it contained, we no longer need to use `unsafe`, or the `PERIPHERALS` structure at all.
+
+This has a small runtime overhead because we must wrap the `SerialPort` structure in an option, and we'll need to call `take_serial()` once, however this small up-front cost allows us to leverage the borrow checker throughout the rest of our program.
 
 ## Existing library support
+
+Although we created our own `Peripherals` structure above, it is not necessary to do this for your code. the `cortex_m` crate contains a macro called `singleton!()` that will perform this action for you.
 
 ```rust
 #[macro_use(singleton)]
@@ -71,6 +72,8 @@ fn main() {
 ```
 
 [cortex_m docs](https://docs.rs/cortex-m/0.5.2/cortex_m/macro.singleton.html)
+
+Additionally, if you use `cortex-m-rtfm`, the entire process of defining and obtaining these peripherals are abstracted for you, and you are instead handed a `Peripherals` structure that contains a non-`Option<T>` version of all of the items you define.
 
 ```rust
 // cortex-m-rtfm v0.3.x
@@ -90,7 +93,7 @@ fn init(p: init::Peripherals) -> init::LateResources {
 
 ## But why?
 
-> how do singletons make a difference?
+But how do these Singletons make a noticible difference in how our Rust code works?
 
 ```rust
 impl SerialPort {
@@ -106,14 +109,28 @@ impl SerialPort {
 }
 ```
 
+There are two important factors in play here:
+
+* Because we are using a singleton, there is only one way or place to obtain a `SerialPort` structure
+* To call the `read_speed()` method, we must have ownership or a reference to a `SerialPort` structure
+
+These two factors put together means that it is only possible to access the hardware if we have appropriately satisfied the borrow checker, meaning that at no point do we have multiple mutible references to the same hardware!
+
 ```rust
 fn main() {
+    // missing reference to `self`! Won't work.
+    // SerialPort::read_speed();
+
     let serial_1 = unsafe { PERIPHERALS.take_serial() };
 
     // you can only read what you have access to
     let _ = serial_1.read_speed();
 }
 ```
+
+## Treat your hardware like data
+
+Additionally, because some references are mutable, and some are immutable, it becomes possible to see whether a function or method could potentially modify the state of the hardware. For example,
 
 This is allowed to change hardware settings:
 
@@ -134,8 +151,4 @@ fn read_button(gpio: &GpioPin) -> bool {
 }
 ```
 
-> enforce whether code should or should not make changes to hardware
->
-> at **compile time**<sup>\*</sup>
-
-<sup>\*</sup>: only works across one application, but for bare metal systems, we usually only have one anyway
+This allows us to enforce whether code should or should not make changes to hardware at **compile time**, rather than at runtime. As a note, this generally only works across one application, but for bare metal systems, our software will be compiled in to a single application, so this is not usually a restriction.

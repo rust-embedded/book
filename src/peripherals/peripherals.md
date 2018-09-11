@@ -2,7 +2,7 @@
 
 ## What are Peripherals?
 
-Most Microcontrollers have more than just a CPU, RAM, or Flash Memory - they contain sections of silicon  which are used for interacting with systems outside of the microcontroller. These components are collectively known as Peripherals, and are often used to manage communication with sensors, Bluetooth radios, screens, or touch pads.
+Most Microcontrollers have more than just a CPU, RAM, or Flash Memory - they contain sections of silicon which are used for interacting with systems outside of the microcontroller. These components are collectively known as Peripherals, and are often used to manage communication with sensors, Bluetooth radios, screens, or touch pads.
 
 These peripherals are useful because they allow a developer to offload processing to them, avoiding having to handle everything in software. Similar to how a desktop developer would offload graphics processing to a video card, embedded developers can offload some tasks to peripherals allowing the CPU to spend it's time doing something else important, or doing nothing in order to save power.
 
@@ -20,7 +20,7 @@ Rather than ignore that remaining space, Microcontroller designers instead mappe
 
 ![](./../assets/nrf52-memory-map.png)
 
-> TODO: cite the nrf52 datasheet for this image
+[Nordic nRF52832 Datasheet (pdf)]
 
 ## Memory Mapped Peripherals
 
@@ -30,4 +30,8 @@ Configuration of these peripherals works similarly. Instead of calling a functio
 
 ![](./../assets/nrf52-spi-frequency-register.png)
 
+[Nordic nRF52832 Datasheet (pdf)]
+
 This interface is how interactions with the hardware are made, no matter what language is used, whether that language is Assembly, C, or even Rust.
+
+[Nordic nRF52832 Datasheet (pdf)]: http://infocenter.nordicsemi.com/pdf/nRF52832_PS_v1.1.pdf
