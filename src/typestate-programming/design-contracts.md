@@ -1,5 +1,7 @@
 # Design Contracts
 
+In
+
 ```rust
 struct GpioPin; struct InputGpio; struct OutputGpio;
 
