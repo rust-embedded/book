@@ -764,7 +764,7 @@ Alternatively, you can turn `<gdb> -x openocd.gdb` into a custom runner to make
 in `.cargo/config` but it's commented out.
 
 ``` console
-$ head -n8 .cargo/config
+$ head -n10 .cargo/config
 ```
 
 ``` toml
@@ -773,9 +773,11 @@ $ head -n8 .cargo/config
 # runner = "qemu-system-arm -cpu cortex-m3 -machine lm3s6965evb -nographic -semihosting-config enable=on,target=native -kernel"
 
 [target.'cfg(all(target_arch = "arm", target_os = "none"))']
-# uncomment this to make `cargo run` start a GDB session
-# NOTE: you may need to change `arm-none-eabi-gdb`
-runner = "arm-none-eabi-gdb -x openocd.gdb" # <-
+# uncomment ONE of these three option to make `cargo run` start a GDB session
+# which option to pick depends on your system
+runner = "arm-none-eabi-gdb -x openocd.gdb"
+# runner = "gdb-multiarch -x openocd.gdb"
+# runner = "gdb -x openocd.gdb"
 ```
 
 ``` console
