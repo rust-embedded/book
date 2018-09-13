@@ -424,12 +424,12 @@ Next we launch GDB in another terminal and tell it to load the debug symbols of
 the example:
 
 ``` console
-$ $GDB -q target/thumbv7m-none-eabi/debug/examples/hello
+$ <gdb> -q target/thumbv7m-none-eabi/debug/examples/hello
 ```
 
-**NOTE**: $GDB represents a GDB program capable of debugging ARM binaries. This
-could be `gdb`, `arm-none-eabi-gdb` or `gdb-multiarch` depending on your
-installation.
+**NOTE**: <gdb> represents a GDB program capable of debugging ARM binaries. This
+could be `gdb`, `arm-none-eabi-gdb` or `gdb-multiarch` depending on your system
+-- you may have to try all three.
 
 Then within the GDB shell we connect to QEMU, which is waiting for a connection
 on TCP port 3333.
@@ -506,7 +506,8 @@ as these will be used to configure the project:
 
 - Does the ARM core include an FPU? Cortex-M4**F** and Cortex-M7**F** cores do.
 
-- How much Flash memory and RAM does the target device has? e.g. 40 KB of RAM
+- How much Flash memory and RAM does the target device has? e.g. 256 KiB of
+  Flash and 32 KiB of RAM.
 
 - Where are Flash memory and RAM mapped in the address space? e.g. RAM is
   commonly located at address `0x2000_0000`.
@@ -519,9 +520,9 @@ This board contains an STM32F303VCT6 microcontroller. This microcontroller has:
 
 - A Cortex-M4F core that includes a single precision FPU
 
-- 256 KB of Flash located at address 0x0800_0000.
+- 256 KiB of Flash located at address 0x0800_0000.
 
-- 40 KB of RAM located at address 0x2000_0000. (There's another RAM region but
+- 40 KiB of RAM located at address 0x2000_0000. (There's another RAM region but
   for simplicity we'll ignore it).
 
 ### Configuring
@@ -621,7 +622,7 @@ Info : stm32f3x.cpu: hardware has 6 breakpoints, 4 watchpoints
 On another terminal run GDB, also from the root of the template.
 
 ``` console
-$ $GDB -q target/thumbv7em-none-eabihf/debug/examples/hello
+$ <gdb> -q target/thumbv7em-none-eabihf/debug/examples/hello
 ```
 
 Next connect GDB to OpenOCD, which is waiting for a TCP connection on port 3333.
@@ -755,10 +756,10 @@ load
 stepi
 ```
 
-Now running `$GDB -x openocd.gdb $program` will immediately connect GDB to
+Now running `<gdb> -x openocd.gdb $program` will immediately connect GDB to
 OpenOCD, enable semihosting, load the program and start the process.
 
-Alternatively, you can turn `$GDB -x openocd.gdb` into a custom runner to make
+Alternatively, you can turn `<gdb> -x openocd.gdb` into a custom runner to make
 `cargo run` build a program *and* start a GDB session. This runner is included
 in `.cargo/config` but it's commented out.
 
