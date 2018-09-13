@@ -1,27 +1,17 @@
-> **⚠️: This section contains exports from [Japaric's Discovery] book.**
->
-> Contents should be reviewed for consistency in the context
-> of this book before "publishing"
-
-[Japaric's Discovery]: https://japaric.github.io/discovery/
-
-> **⚠️: This section has not been checked as of 2018-07-29**
->
-> Contents should be checked to still be working with current `nightly`
-> or `stable` Rust
+> **⚠️: This section has not been checked as of 2018-09-13**
 
 # Windows
 
-## `arm-none-eabi-*`
+## `arm-none-eabi-gdb`
 
 ARM provides `.exe` installers for Windows. Grab one from [here][gcc], and follow the instructions.
 Just before the installation process finishes tick/select the "Add path to environment variable"
 option. Then verify that the tools are in your `%PATH%`:
 
 ``` console
-$ arm-none-eabi-gcc -v
+$ arm-none-eabi-gdb -v
+GNU gdb (GNU Tools for Arm Embedded Processors 7-2018-q2-update) 8.1.0.20180315-git
 (..)
-gcc version 5.4.1 20160919 (release) (..)
 ```
 
 [gcc]: https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads
@@ -44,19 +34,16 @@ Open On-Chip Debugger 0.10.0
 (..)
 ```
 
-## PuTTY
-
-Download the latest `putty.exe` from [this site] and place it somewhere in your `%PATH%`.
-
-[this site]: http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html
-
 ## ST-LINK USB driver
 
 You'll also need to install [this USB driver] or OpenOCD won't work. Follow the installer
-instructions and make sure you install the right (32-bit or 64-bit) version of the driver.
+instructions and make sure you install the right version (32-bit or 64-bit) of the driver.
 
 [this USB driver]: http://www.st.com/en/embedded-software/stsw-link009.html
 
 That's all! Go to the [next section].
 
 [next section]: /intro/install/verify.html
+
+> **HELP WANTED** How do we install qemu-system-arm on Windows? If you know
+> please send us a [pull request].

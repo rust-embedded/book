@@ -1,28 +1,25 @@
-> **⚠️: This section contains exports from [Japaric's Discovery] book.**
->
-> Contents should be reviewed for consistency in the context
-> of this book before "publishing"
+> **⚠️: This section has not been checked as of 2018-09-13**
 
-[Japaric's Discovery]: https://japaric.github.io/discovery/
-
-> **⚠️: This section has not been checked as of 2018-07-29**
->
-> Contents should be checked to still be working with current `nightly`
-> or `stable` Rust
-
-# MacOS
+# macOS
 
 All the tools can be install using [Homebrew]:
 
 [Homebrew]: http://brew.sh/
 
 ``` console
+$ # GDB
 $ brew cask install gcc-arm-embedded
-$ brew install minicom openocd
+
+$ brew install openocd
 ```
 
-If the `brew cask` command doesn't work (`Error: Unknown command: cask`), then run `brew tap
-Caskroom/tap` first and try again.
+If the `brew cask` command doesn't work (e.g. `error: unknown command: cask`),
+then first run `brew tap Caskroom/tap` and try again.
+
+> **HELP WANTED** How do we install qemu-system-arm on macOS? If you know please
+> send us a [pull request].
+
+[pull request]: https://github.com/rust-embedded/book
 
 That's all! Go to the [next section].
 
