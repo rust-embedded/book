@@ -18,7 +18,12 @@ more information and coordination
     - [Tooling](./intro/tooling.md)
     - [Hardware](./intro/hardware.md)
     - [`no_std`](./intro/no-std.md)
-- [Blinking your first LED](./blinky/blinky.md)
+- [Getting started](./start.md)
+  - [QEMU](./start/qemu.md)
+  - [Hardware](./start/hardware.md)
+  - [Panics](./start/panics.md)
+  - [Exceptions](./start/exceptions.md)
+  - [IO](./start/io.md)
 - [Static Guarantees](./static-guarantees/static-guarantees.md)
     <!-- TODO: Define Sections -->
 - [Portability](./portability/portability.md)
