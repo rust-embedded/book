@@ -79,7 +79,7 @@ $ yaourt -S openocd
 
 These rules let you use OpenOCD with the Discovery board without root privilege.
 
-Create these two files in `/etc/udev/rules.d` with the contents shown below.
+Create this file in `/etc/udev/rules.d` with the contents shown below.
 
 ``` console
 $ cat /etc/udev/rules.d/99-st-link.rules
