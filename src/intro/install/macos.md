@@ -11,15 +11,12 @@ $ # GDB
 $ brew cask install gcc-arm-embedded
 
 $ brew install openocd
+
+$ brew install qemu
 ```
 
 If the `brew cask` command doesn't work (e.g. `error: unknown command: cask`),
 then first run `brew tap Caskroom/tap` and try again.
-
-> **HELP WANTED** How do we install qemu-system-arm on macOS? If you know please
-> send us a [pull request].
-
-[pull request]: https://github.com/rust-embedded/book
 
 That's all! Go to the [next section].
 
