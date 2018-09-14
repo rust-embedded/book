@@ -1,8 +1,6 @@
 # Tooling
 
-> ❌: **This section should cover:**
->
-> * Basically explaining all the tools we installed in the previous chapter, what they are used for, etc.
+This section contains details about the tools we'll be using.
 
 ## `cargo-generate`
 
@@ -30,7 +28,7 @@ they both share the same LLVM backend.
 ## `qemu-system-arm`
 
 QEMU is an emulator. In this case we use the variant that can fully emulate ARM
-systems. We use QEMU to run embedded programs on the hosts. Thanks to this you
+systems. We use QEMU to run embedded programs on the host. Thanks to this you
 can follow some parts of this book even if you don't have any hardware with you!
 
 ## OpenOCD
