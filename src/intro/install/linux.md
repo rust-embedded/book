@@ -77,7 +77,7 @@ $ yaourt -S openocd
 
 ## udev rules
 
-These rules let you use OpenOCD with the Discovery board without root privilege.
+This rule lets you use OpenOCD with the Discovery board without root privilege.
 
 Create this file in `/etc/udev/rules.d` with the contents shown below.
 
@@ -93,7 +93,7 @@ ATTRS{idVendor}=="0483", ATTRS{idProduct}=="3748", MODE:="0666"
 ATTRS{idVendor}=="0483", ATTRS{idProduct}=="374b", MODE:="0666"
 ```
 
-Then reload the udev rules with:
+Then reload all the udev rules with:
 
 ``` console
 $ sudo udevadm control --reload-rules
