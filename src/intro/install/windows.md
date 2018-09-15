@@ -34,6 +34,12 @@ Open On-Chip Debugger 0.10.0
 (..)
 ```
 
+## QEMU
+
+Grab QEMU from [the official website].
+
+[the official website]: https://www.qemu.org/download/#windows
+
 ## ST-LINK USB driver
 
 You'll also need to install [this USB driver] or OpenOCD won't work. Follow the installer
@@ -44,6 +50,3 @@ instructions and make sure you install the right version (32-bit or 64-bit) of t
 That's all! Go to the [next section].
 
 [next section]: /intro/install/verify.html
-
-> **HELP WANTED** How do we install qemu-system-arm on Windows? If you know
-> please send us a [pull request].
