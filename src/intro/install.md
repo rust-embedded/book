@@ -61,7 +61,8 @@ $ rustup default beta
 ```
 
 **NOTE** Make sure you have a beta equal to or newer than `1.30-beta`. `rustc
--V` should return a date newer than the one shown below:
+-V` should return a date newer than the one shown below. If `1.30-beta` is not
+out yet then use the nightly channel for the time being.
 
 ``` console
 $ rustc -V
