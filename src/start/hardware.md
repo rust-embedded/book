@@ -34,7 +34,10 @@ This board contains an STM32F303VCT6 microcontroller. This microcontroller has:
 
 ## Configuring
 
-We'll start from scratch with a fresh template instance:
+We'll start from scratch with a fresh template instance. Refer to [previous
+section] for a refresher on how to do this without `cargo-generate`.
+
+[previous section]: qemu.html
 
 ``` console
 $ cargo generate --git https://github.com/rust-embedded/cortex-m-quickstart

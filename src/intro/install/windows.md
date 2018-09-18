@@ -36,9 +36,9 @@ Open On-Chip Debugger 0.10.0
 
 ## QEMU
 
-Grab QEMU from [the official website].
+Grab QEMU from [the official website][qemu].
 
-[the official website]: https://www.qemu.org/download/#windows
+[qemu]: https://www.qemu.org/download/#windows
 
 ## ST-LINK USB driver
 

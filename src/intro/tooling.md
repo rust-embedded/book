@@ -2,15 +2,18 @@
 
 This section contains details about the tools we'll be using.
 
-## `cargo-generate`
+## `cargo-generate` OR `git`
 
-`cargo-generate` is Cargo subcommand for creating new Cargo projects from
-templates. Bare metal programs are non-standard (`no_std`) Rust programs plus
-they require some fiddling with the linking process to get the memory layout of
-the program right. All this requires unusual files (like linker scripts) and
-unusual settings  (like linker flags). We package all that for you in a template
+Bare metal programs are non-standard (`no_std`) Rust programs that require some
+fiddling with the linking process to get the memory layout of the program
+right. All this requires unusual files (like linker scripts) and unusual
+settings  (like linker flags). We have packaged all that for you in a template
 so that you only need to fill in the blanks like the project name and the
 characteristics of your target hardware.
+
+Our template is compatible with `cargo-generate`, a Cargo subcommand for
+creating new Cargo projects from templates, but you can also download the
+template using `git`, `curl`, `wget` or your web browser
 
 ## `cargo-binutils`
 

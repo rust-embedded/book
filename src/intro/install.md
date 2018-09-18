@@ -41,12 +41,14 @@ We'll use all the tools listed below. Where a minimum version is not specified, 
 
 - Rust 1.30, 1.30-beta, nightly-2018-09-13, or a newer toolchain PLUS ARM
   Cortex-M compilation support.
-- [`cargo-generate`](https://github.com/ashleygwilliams/cargo-generate) ~0.1.1
 - [`cargo-binutils`](https://github.com/rust-embedded/cargo-binutils) ~0.1.4
 - [`qemu-system-arm`](https://www.qemu.org/). Tested versions: 3.0.0
 - OpenOCD >=0.8. Tested versions: v0.9.0 and v0.10.0
 - GDB with ARM support. Version 7.12 or newer highly recommended. Tested
   versions: 7.10, 7.11, 7.12 and 8.1
+- [OPTIONAL] `git` OR
+  [`cargo-generate`](https://github.com/ashleygwilliams/cargo-generate). If you
+  have neither installed then don't worry about installing either.
 
 Next, follow OS-agnostic installation instructions for a few of the tools:
 
@@ -76,11 +78,6 @@ architecture install the following compilation targets.
 ``` console
 $ rustup target add thumbv6m-none-eabi thumbv7m-none-eabi thumbv7em-none-eabi thumbv7em-none-eabihf
 ```
-
-### `cargo-generate`
-
-Follow [these installation
-instructions](https://github.com/ashleygwilliams/cargo-generate/tree/v0.1.1#installation).
 
 ### `cargo-binutils`
 

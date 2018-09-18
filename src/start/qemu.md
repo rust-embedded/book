@@ -12,7 +12,9 @@ the tooling and the development process.
 We'll use the [`cortex-m-quickstart`] project template so go generate a new
 project from it.
 
-[`cortex-m-quickstart`]: https://github.com/rust-embedded/cortex-m-quickstart#cortex-m-quickstart
+[`cortex-m-quickstart`]: https://github.com/rust-embedded/cortex-m-quickstart
+
+- Using `cargo-generate`
 
 ``` console
 $ cargo generate --git https://github.com/rust-embedded/cortex-m-quickstart
@@ -22,6 +24,60 @@ $ cargo generate --git https://github.com/rust-embedded/cortex-m-quickstart
 
 $ cd app
 ```
+
+- Using `git`
+
+Clone the repository
+
+``` console
+$ git clone https://github.com/rust-embedded/cortex-m-quickstart app
+
+$ cd app
+```
+
+And then fill in the placeholders in the `Cargo.toml` file
+
+``` console
+$ cat Cargo.toml
+```
+
+``` toml
+[package]
+authors = ["{{authors}}"] # "{{authors}}" -> "John Smith"
+edition = "2018"
+name = "{{project-name}}" # "{{project-name}}" -> "awesome-app"
+version = "0.1.0"
+
+# ..
+
+[[bin]]
+name = "{{project-name}}" # "{{project-name}}" -> "awesome-app"
+test = false
+bench = false
+```
+
+- Using neither
+
+Grab the latest snapshot of the `cortex-m-quickstart` template and extract it.
+
+Using the command line:
+
+``` console
+$ # NOTE there's also a tarball available: archive/master.tar.gz
+$ curl -LO https://github.com/rust-embedded/cortex-m-quickstart/archive/master.zip
+
+$ unzip master.zip
+
+$ mv cortex-m-quickstart-master app
+
+$ cd app
+```
+
+OR you can browse to [`cortex-m-quickstart`], click the green "Clone or
+download" button and then click "Download ZIP".
+
+Then fill in the placeholders in the `Cargo.toml` file as done in the second
+part of the "Using `git`" version.
 
 **IMPORTANT** We'll use the name "app" for the project name in this tutorial.
 Whenever you see the word "app" you should replace it with the name you selected
