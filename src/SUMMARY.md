@@ -34,3 +34,5 @@ more information and coordination
 - [Interoperability](./interoperability/interoperability.md)
     - [A little C with your Rust](./interoperability/c-with-rust.md)
     - [A little Rust with your C](./interoperability/rust-with-c.md)
+- [Unsorted topics](./unsorted.md)
+  - [Frequently Asked Questions](./unsorted/faq.md)
