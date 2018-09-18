@@ -20,11 +20,17 @@ architectures (see `rustup target list`):
   - `armv7r-none-eabi`, little endian Cortex-R4 and Cortex-R5
   - `armv7r-none-eabihf`, little endian Cortex-R4F and Cortex-R5F
 - ARM Linux
-  - ARMv5TE, ARMv6, ARMv7 and ARMv8 in GNU and MUSL flavors and in soft float
-    and hard float variants
+  - ARMv5TE (e.g. ARM926EJ-S),
+  - ARMv6 (e.g. ARM11 as found in the Raspberry Pi 1 / Zero),
+  - ARMv7-A (e.g. Cortex-A8 as found in the Beaglebones),
+  - and ARMv8 (e.g. Cortex-A53 as found in the ODROID-C2) ...
+  - ... in GNU and MUSL flavors and in soft float and hard float variants;
+  - notably, support for ARMv4T (e.g. ARM7) and older versions is missing.
 - RISCV (1.30-beta)
-  - `riscv32imac-unknown-none-elf`, RV32I base instruction set with M, A and C extensions
-  - `riscv32imc-unknown-none-elf`, RV32I base instruction set with M, and C extensions
+  - `riscv32imac-unknown-none-elf`, RV32I base instruction set with M, A and C
+  extensions
+  - `riscv32imc-unknown-none-elf`, RV32I base instruction set with M, and C
+    extensions
 
 `rustc` also supports code generation for the MSP430 architecture (see `rustc
 --print target-list`).
