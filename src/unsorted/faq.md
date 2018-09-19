@@ -1,6 +1,8 @@
 # Frequently Asked Questions
 
-- [Does Rust support my device][#does-rust-support-my-device]
+- [Does Rust support my device?](#does-rust-support-my-device)
+- [(When) will Rust support AVR?](#when-will-rust-support-the-avr-architecture)
+- [(When) will Rust support Xtensa?](#when-will-rust-support-the-xtensa-architecture)
 
 ## Does Rust support my device?
 
@@ -171,3 +173,37 @@ STM32), for the target device (e.g. STM32F103) and the target development board
 Group][wg-crates].
 
 [wg-crates]: https://github.com/rust-embedded/wg#organization
+
+## (When) will Rust support the AVR architecture?
+
+As of 2018-09-19 the official Rust compiler, `rustc`, relies on LLVM for
+generating machine code. It's a requirement that LLVM supports an architecture
+for `rustc` to support it.
+
+LLVM does support the AVR architecture but the AVR backend has bugs that prevent
+it from being enabled in `rustc`. In particular, the AVR backend should be able
+to compile the `core` crate without hitting any LLVM assertion before it's
+enabled in `rustc`. A likely outdated list of LLVM bugs that need to be fixed
+can be found in [the issue tracker of the the rust-avr fork of rustc][rust-avr].
+
+[rust-var]: https://github.com/avr-rust/rust/issues
+
+TL;DR `rustc` will support the AVR architecture when the LLVM backend is
+relatively bug free. As LLVM is a project independent of the Rust project we
+can't give you any estimate on when that might happen.
+
+## (When) will Rust support the Xtensa architecture?
+
+As of 2018-09-19 the official Rust compiler, `rustc`, relies on LLVM for
+generating machine code. It's a requirement that LLVM supports an architecture
+for `rustc` to support it.
+
+There is no support for the Xtensa architecture in LLVM proper. You may be able
+to find several forks of LLVM with varying levels of support for the Xtensa
+architecture but `rustc` will not be able to use any of those forks due to the
+maintenance and infrastructure costs of developing `rustc` against different
+versions of LLVM.
+
+TL;DR `rustc` will support the Xtensa architecture when the official LLVM gains
+support for the Xtensa architecture. As LLVM is a project independent of the
+Rust project we can't give you any estimate on when that might happen.
