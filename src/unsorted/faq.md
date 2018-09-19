@@ -3,6 +3,7 @@
 - [Does Rust support my device?](#does-rust-support-my-device)
 - [(When) will Rust support AVR?](#when-will-rust-support-the-avr-architecture)
 - [(When) will Rust support Xtensa?](#when-will-rust-support-the-xtensa-architecture)
+- [My embedded Rust program is too big!](#my-embedded-rust-program-is-too-big)
 
 ## Does Rust support my device?
 
@@ -207,3 +208,67 @@ versions of LLVM.
 TL;DR `rustc` will support the Xtensa architecture when the official LLVM gains
 support for the Xtensa architecture. As LLVM is a project independent of the
 Rust project we can't give you any estimate on when that might happen.
+
+## My embedded Rust program is too big!
+
+We sometimes get questions like this one: "My Rust program is 500 KB but my
+microcontroller only has 16 KB of Flash; how can I make it fit?".
+
+The first thing to confirm is that correctly measuring the size of your program.
+`rustc` produces ELF files for most embedded targets. ELF files have metadata
+and contain debug information so measuring their size on disk with e.g. `ls -l`
+will give you the wrong number.
+
+``` console
+$ # 500 KB?
+$ ls -hl target/thumbv7m-none-eabi/debug/app
+-rwxr-xr-x 2 japaric japaric 554K Sep 19 13:37 target/thumbv7m-none-eabi/debug/app
+```
+
+The correct way to measure the size of an embedded program is to use the `size`
+program or the [`cargo size`] subcommand.
+
+[`cargo size`]: https://github.com/rust-embedded/cargo-binutils
+
+``` console
+$ # ~ 2 KB of Flash
+$ cargo size --bin app -- -A
+    Finished dev [unoptimized + debuginfo] target(s) in 0.01s
+app  :
+section               size        addr
+.vector_table         1024   0x8000000
+.text                  776   0x8000400
+.rodata                208   0x8000708
+.data                    0  0x20000000
+.bss                     0  0x20000000
+.debug_str          145354         0x0
+.debug_abbrev        11264         0x0
+.debug_info         139259         0x0
+.debug_macinfo          33         0x0
+.debug_pubnames      40901         0x0
+.debug_pubtypes      14326         0x0
+.ARM.attributes         50         0x0
+.debug_frame         21224         0x0
+.debug_line         117666         0x0
+.debug_ranges        63800         0x0
+.comment                75         0x0
+Total               555960
+```
+
+Of the standard sections, `.text`, `.rodata` and `.data` will occupy Flash /
+ROM; `.bss` and `.data` will occupy RAM; `.debug_*`, `.ARM.attributes` and
+`.comments` can be ignored as they won't be loaded into the target device
+memory. For the other sections you'll have to check your dependencies' docs.
+
+In this examples the program will occupy `2008` bytes of Flash.
+
+Note that most (all?) runtime crates, like `cortex-m-rt`, will check at link
+time that the program fits in the target device memory. If it doesn't fit you'll
+get a linker error and no output binary. So, provided that you correctly entered
+the size of the memory regions of your device then if it links it should fit in
+the target device!
+
+If you are measuring size using the right method and your program is still too
+big then check out our section on optimizations.
+
+> **TODO** add link to the optimizations section
