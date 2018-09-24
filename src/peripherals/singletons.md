@@ -71,7 +71,7 @@ fn main() {
 }
 ```
 
-[cortex_m docs](https://docs.rs/cortex-m/0.5.2/cortex_m/macro.singleton.html)
+[cortex_m docs](https://docs.rs/cortex-m/latest/cortex_m/macro.singleton.html)
 
 Additionally, if you use `cortex-m-rtfm`, the entire process of defining and obtaining these peripherals are abstracted for you, and you are instead handed a `Peripherals` structure that contains a non-`Option<T>` version of all of the items you define.
 
@@ -93,7 +93,7 @@ fn init(p: init::Peripherals) -> init::LateResources {
 
 ## But why?
 
-But how do these Singletons make a noticible difference in how our Rust code works?
+But how do these Singletons make a noticeable difference in how our Rust code works?
 
 ```rust
 impl SerialPort {
@@ -114,7 +114,7 @@ There are two important factors in play here:
 * Because we are using a singleton, there is only one way or place to obtain a `SerialPort` structure
 * To call the `read_speed()` method, we must have ownership or a reference to a `SerialPort` structure
 
-These two factors put together means that it is only possible to access the hardware if we have appropriately satisfied the borrow checker, meaning that at no point do we have multiple mutible references to the same hardware!
+These two factors put together means that it is only possible to access the hardware if we have appropriately satisfied the borrow checker, meaning that at no point do we have multiple mutable references to the same hardware!
 
 ```rust
 fn main() {
@@ -151,4 +151,4 @@ fn read_button(gpio: &GpioPin) -> bool {
 }
 ```
 
-This allows us to enforce whether code should or should not make changes to hardware at **compile time**, rather than at runtime. As a note, this generally only works across one application, but for bare metal systems, our software will be compiled in to a single application, so this is not usually a restriction.
+This allows us to enforce whether code should or should not make changes to hardware at **compile time**, rather than at runtime. As a note, this generally only works across one application, but for bare metal systems, our software will be compiled into a single application, so this is not usually a restriction.

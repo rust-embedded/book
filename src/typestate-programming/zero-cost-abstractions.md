@@ -33,7 +33,7 @@ struct GpioPin;
 
 ```rust
 pub struct PushPull;  // good for general usage
-pub struct OpenDrain; // better for high power LEDs
+pub struct OpenDrain; // used when multiple devices could drive a bus
 
 pub struct OutputGpio<MODE> {
     _mode: MODE
@@ -75,4 +75,4 @@ impl<MODE> LedDriver<MODE> {
 }
 ```
 
-* Nested zero sized types are still zero sized, no matter how deep you nest it
+* Nested zero sized types are still zero sized, no matter how deep you nest them

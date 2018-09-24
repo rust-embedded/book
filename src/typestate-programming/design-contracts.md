@@ -3,7 +3,9 @@
 In
 
 ```rust
-struct GpioPin; struct InputGpio; struct OutputGpio;
+use gpio::{InputGpio, OutputGpio};
+
+struct GpioPin;
 
 impl GpioPin {
     fn into_input(self) -> InputGpio {
@@ -18,7 +20,7 @@ impl GpioPin {
 ```
 
 * Use type transitions to enforce setup steps
-* Like the builder pattern in "normal" rust
+* Like the builder pattern in "normal" Rust
 
 ```rust
 impl LedPin {

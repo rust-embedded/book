@@ -35,7 +35,7 @@ where
     CS: OutputPin,
 {
     /// Creates a new driver from a SPI peripheral
-    /// and a NCS pin
+    /// and a NCS (active low chip select) pin
     pub fn new(spi: SPI, cs: CS) -> Result<Self, E> {
         // ...
     }

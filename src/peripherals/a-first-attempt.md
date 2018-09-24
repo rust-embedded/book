@@ -20,7 +20,7 @@ fn write_serial_port_speed(val: u32) {
 }
 ```
 
-Although this works it is subjectively a little messy, so the first reaction might be to wrap these related things up in to a `struct` to better organize them. A second attempt could come up with something like this:
+Although this works, it is subjectively a little messy, so the first reaction might be to wrap these related things into a `struct` to better organize them. A second attempt could come up with something like this:
 
 ```rust
 use core::ptr;

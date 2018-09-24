@@ -2,11 +2,11 @@
 
 ## What are Peripherals?
 
-Most Microcontrollers have more than just a CPU, RAM, or Flash Memory - they contain sections of silicon which are used for interacting with systems outside of the microcontroller. These components are collectively known as Peripherals, and are often used to manage communication with sensors, Bluetooth radios, screens, or touch pads.
+Most Microcontrollers have more than just a CPU, RAM, or Flash Memory - they contain sections of silicon which are used for interacting with systems outside of the microcontroller, as well as directly and indirectly interacting with their surroundings in the world via sensors, motor controllers, or human interfaces such as a display or keyboard. These components are collectively known as Peripherals.
 
 These peripherals are useful because they allow a developer to offload processing to them, avoiding having to handle everything in software. Similar to how a desktop developer would offload graphics processing to a video card, embedded developers can offload some tasks to peripherals allowing the CPU to spend it's time doing something else important, or doing nothing in order to save power.
 
-However, unlike graphics cards, which typically have a Software API like Vulkan, Metal, or OpenGL, peripherals are exposed to our CPU with a hardware interface, which is mapped to a chunk of the memory.
+However, unlike graphics cards, which typically have a Software API like Vulkan, Metal, or OpenGL, peripherals are exposed to our Microcontroller with a hardware interface, which is mapped to a chunk of the memory.
 
 ## Linear and Real Memory Space
 
@@ -14,7 +14,7 @@ On a microcontroller, writing some data to an arbitrary address, such as `0x4000
 
 On a desktop system, access to memory is tightly controlled by the MMU, or Memory Management Unit. This component has two major responsibilities: enforcing access permission to sections of memory (preventing one thread from reading or modifying the memory of another thread); and re-mapping segments of the physical memory to virtual memory ranges used in software. Microcontrollers do not typically have an MMU, and instead only use real physical addresses in software.
 
-Although 32 bit microcontrollers have a real and linear address space from `0x0000_0000`, and `0xFFFF_FFFF`, they generally only use a few hundred kilobytes of that range for actual memory. This leaves a significant about of address space remaining.
+Although 32 bit microcontrollers have a real and linear address space from `0x0000_0000`, and `0xFFFF_FFFF`, they generally only use a few hundred kilobytes of that range for actual memory. This leaves a significant amount of address space remaining.
 
 Rather than ignore that remaining space, Microcontroller designers instead mapped the interface for peripherals in certain memory locations. This ends up looking something like this:
 
@@ -32,6 +32,6 @@ Configuration of these peripherals works similarly. Instead of calling a functio
 
 [Nordic nRF52832 Datasheet (pdf)]
 
-This interface is how interactions with the hardware are made, no matter what language is used, whether that language is Assembly, C, or even Rust.
+This interface is how interactions with the hardware are made, no matter what language is used, whether that language is Assembly, C, or Rust.
 
 [Nordic nRF52832 Datasheet (pdf)]: http://infocenter.nordicsemi.com/pdf/nRF52832_PS_v1.1.pdf

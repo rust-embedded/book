@@ -12,7 +12,7 @@ How can we reliably interact with these peripherals?
 
 ## The Borrow Checker
 
-The last two of these rules sound suspiciously exactly like what the Borrow Checker does already!
+The last two of these rules sound suspiciously similar to what the Borrow Checker does already!
 
 Imagine if we could pass around ownership of these peripherals, or offer immutable or mutable references to them?
 

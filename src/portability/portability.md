@@ -9,6 +9,6 @@
 ![](./../assets/embedded-hal.svg)
 
 * Device Crates (one per chip)
-* HAL implementation crates (one per chip)
-* embedded-hal (only one)
+* HAL Implementation Crates (one per chip)
+* `embedded-hal` (only one)
 * Driver Crates (one per external component)
