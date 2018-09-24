@@ -1,3 +1,3 @@
 # Interoperability
 
-> ❌: This section has not yet been written. Please refer to [embedded-wg#48](https://github.com/rust-lang-nursery/embedded-wg/issues/48) for discussion of this section.
+> ❌: This section has not yet been written. Please refer to [rust-embedded/book#1](https://github.com/rust-embedded/book/issues/1) for discussion of this section.
