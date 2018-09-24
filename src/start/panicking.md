@@ -1,8 +1,5 @@
 # Panicking
 
-> **TODO**(resources team) move this into the second chapter when it's in better
-> shape
-
 Panicking is a core part of the Rust language. Built-in operations like indexing
 are runtime checked for memory safety. When out of bounds indexing is attempted
 this results in a panic.
@@ -66,3 +63,38 @@ extern crate panic_abort;
 In this example the crate links to the `panic-halt` crate when built with the
 dev profile (`cargo build`), but links to the `panic-abort` crate when built
 with the release profile (`cargo build --release`).
+
+## An example
+
+Here's an example that tries to index an array beyond its length. The operation
+results in a panic.
+
+``` rust
+#![no_main]
+#![no_std]
+
+extern crate panic_semihosting;
+
+use cortex_m_rt::entry;
+
+#[entry]
+fn main() -> ! {
+    let xs = [0, 1, 2];
+    let i = xs.len() + 1;
+    let y = xs[i]; // out of bounds access
+
+    loop {}
+}
+```
+
+This example chose the `panic-semihosting` behavior which prints the panic
+message to the host console using semihosting.
+
+``` console
+$ cargo run
+     Running `qemu-system-arm -cpu cortex-m3 -machine lm3s6965evb (..)
+panicked at 'index out of bounds: the len is 3 but the index is 4', src/main.rs:12:13
+```
+
+You can try changing the behavior to `panic-halt` and confirm that no message is
+printed in that case.
