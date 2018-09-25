@@ -37,7 +37,7 @@ This board contains an STM32F303VCT6 microcontroller. This microcontroller has:
 We'll start from scratch with a fresh template instance. Refer to [previous
 section] for a refresher on how to do this without `cargo-generate`.
 
-[previous section]: ../start/qemu.html
+[previous section]: /start/qemu.html
 
 ``` console
 $ cargo generate --git https://github.com/rust-embedded/cortex-m-quickstart
@@ -99,7 +99,7 @@ time, however, the server will be OpenOCD.
 As done during the [verify] section connect the discovery board to your laptop /
 PC and check that the ST-LINK header is populated.
 
-[verify]: ../intro/install/verify.html
+[verify]: /intro/install/verify.html
 
 On a terminal run `openocd` to connect to the ST-LINK on the discovery board.
 Run this command from the root of the template; `openocd` will pick up the
