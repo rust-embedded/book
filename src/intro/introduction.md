@@ -48,14 +48,12 @@ This book assumes the following:
 If you are not yet comfortable with Rust, we highly suggest completing the [Rust
 Book] before attempting to learn with this book.
 
-If you are not yet comfortable with Embedded Systems, we highly suggest checking
-our other resources before attempting to learn with this book.
-
-> **TODO** "other resources" should link to docs.rust-embedded.org when that's
-> live. In the meantime you can check the [Discovery] book.
-
-[Discovery]: https://rust-embedded.github.io/discovery/
 [Rust Book]: https://doc.rust-lang.org/book/second-edition
+
+If you are not yet comfortable with Embedded Systems, we highly suggest checking
+our [other resources] before attempting to learn with this book.
+
+[other resources]: https://rust-embedded.github.io/bookshelf/
 
 ## How to Use This Book
 
