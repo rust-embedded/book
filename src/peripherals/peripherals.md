@@ -18,7 +18,7 @@ Although 32 bit microcontrollers have a real and linear address space from `0x00
 
 Rather than ignore that remaining space, Microcontroller designers instead mapped the interface for peripherals in certain memory locations. This ends up looking something like this:
 
-![](./../assets/nrf52-memory-map.png)
+![](/assets/nrf52-memory-map.png)
 
 [Nordic nRF52832 Datasheet (pdf)]
 
@@ -28,7 +28,7 @@ Interaction with these peripherals is simple at a first glance - write the right
 
 Configuration of these peripherals works similarly. Instead of calling a function to configure a peripheral, a chunk of memory is exposed which serves as the hardware API. Write `0x8000_0000` to a SPI Frequency Configuration Register, and the SPI port will send data at 8 Megabits per second. Write `0x0200_0000` to the same address, and the SPI port will send data at 125 Kilobits per second. These configuration registers look a little bit like this:
 
-![](./../assets/nrf52-spi-frequency-register.png)
+![](/assets/nrf52-spi-frequency-register.png)
 
 [Nordic nRF52832 Datasheet (pdf)]
 
