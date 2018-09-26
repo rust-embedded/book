@@ -1,10 +1,3 @@
-> **⚠️: This section contains exports from [Japaric's Discovery] book.**
->
-> Contents should be reviewed for consistency in the context
-> of this book before "publishing"
-
-[Japaric's Discovery]: https://japaric.github.io/discovery/
-
 # Meet your hardware
 
 Let's get familiar with the hardware we'll be working with.
@@ -12,7 +5,7 @@ Let's get familiar with the hardware we'll be working with.
 ## STM32F3DISCOVERY (the "F3")
 
 <p align="center">
-<img title="F3" src="/book/assets/f3.jpg">
+<img title="F3" src="/assets/f3.jpg">
 </p>
 
 We'll refer to this board as "F3" throughout this book.
