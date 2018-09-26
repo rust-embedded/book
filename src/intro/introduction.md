@@ -3,10 +3,6 @@
 Welcome to "The Embedded Rust Book", an introductory book about using the Rust
 Programming Language on "Bare Metal" embedded systems, such as Microcontrollers.
 
-## Who Embedded Rust is For
-
-> **TODO**
-
 ## Scope
 
 The goals of this book are:
