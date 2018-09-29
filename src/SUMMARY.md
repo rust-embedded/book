@@ -21,7 +21,7 @@ more information and coordination
 - [Getting started](./start.md)
   - [QEMU](./start/qemu.md)
   - [Hardware](./start/hardware.md)
-  - [Panics](./start/panics.md)
+  - [Panicking](./start/panicking.md)
   - [Exceptions](./start/exceptions.md)
   - [IO](./start/io.md)
 - [Peripherals](./peripherals/peripherals.md)
