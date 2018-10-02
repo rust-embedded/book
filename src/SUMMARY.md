@@ -32,6 +32,10 @@ more information and coordination
     - [Peripherals in Rust](./peripherals/rusty.md)
 - [Static Guarantees](./static-guarantees/static-guarantees.md)
     <!-- TODO: Define Sections -->
+- [Typestate Programming](./typestate-programming/typestate-programming.md)
+    - [Peripherals as State Machines](./typestate-programming/state-machines.md)
+    - [Design Contracts](./typestate-programming/design-contracts.md)
+    - [Zero Cost Abstractions](./typestate-programming/zero-cost-abstractions.md)
 - [Portability](./portability/portability.md)
     <!-- TODO: Define more sections -->
 - [Concurrency](./concurrency/concurrency.md)
