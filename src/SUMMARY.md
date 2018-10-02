@@ -32,6 +32,7 @@ more information and coordination
 - [Static Guarantees](./static-guarantees/static-guarantees.md)
     <!-- TODO: Define Sections -->
 - [Portability](./portability/portability.md)
+    - [The Trait System](./portability/traits.md)
     <!-- TODO: Define more sections -->
 - [Concurrency](./concurrency/concurrency.md)
     <!-- TODO: Define Sections -->
