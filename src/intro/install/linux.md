@@ -70,7 +70,7 @@ $ sudo dnf install \
 ``` console
 $ sudo pacman -S \
   arm-none-eabi-gdb \
-  qemu-system-arm
+  qemu-arch-extra
 
 $ # install openocd from the AUR -- https://aur.archlinux.org/packages/openocd/
 ```
