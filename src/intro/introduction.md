@@ -1,6 +1,6 @@
 # Introduction
 
-Welcome to "The Embedded Rust Book", an introductory book about using the Rust
+Welcome to The Embedded Rust Book: An introductory book about using the Rust
 Programming Language on "Bare Metal" embedded systems, such as Microcontrollers.
 
 ## Scope
@@ -39,22 +39,22 @@ This book assumes the following:
     * Cross Compilation
     * Memory Mapped Peripherals
     * Interrupts
-    * Common interfaces such as I2C, SPI, Serial, and others
+    * Common interfaces such as I2C, SPI, Serial, etc.
 
 If you are not yet comfortable with Rust, we highly suggest completing the [Rust
-Book] before attempting to learn with this book.
+Book] before reading this book.
 
 [Rust Book]: https://doc.rust-lang.org/book/second-edition
 
-If you are not yet comfortable with Embedded Systems, we highly suggest checking
-our [other resources] before attempting to learn with this book.
+If you are not yet comfortable with embedded systems, we highly suggest checking
+out our [other resources] before attempting to read this book.
 
 [other resources]: https://rust-embedded.github.io/bookshelf/
 
 ## How to Use This Book
 
-This book generally assumes that you’re reading it front-to-back, that is, later
-chapters build on top of concepts in earlier chapters, and earlier chapters may
+This book generally assumes that you’re reading it front-to-back. Later
+chapters build on concepts in earlier chapters, and earlier chapters may
 not dig into details on a topic, revisiting the topic in a later chapter.
 
 This book will be using the [STMF3DISCOVERY] development board from
@@ -66,14 +66,14 @@ vendors, and often even different between Microcontroller families from the same
 vendor.
 
 For this reason, we suggest purchasing the [STMF3DISCOVERY] development board
-for the purpose of following this book.
+for the purpose of following the exmaples in this book.
 
 [STMF3DISCOVERY]: http://www.st.com/en/evaluation-tools/stm32f3discovery.html
 
 > **HEADS UP** Until the official release of this book, which is planned to
 > coincide with the 2018 edition release of the Rust Programming Language,
-> expect the sections of this book to shift quite a bit. We recommend
-> bookmarking the root of this book instead of any specific section.
+> expect the sections of this book to change quite a bit. We recommend
+> bookmarking the root of this book instead of any specific version.
 
 ## Contributing to This Book
 
@@ -84,8 +84,8 @@ developed by the [resources team].
 [resources team]: https://github.com/rust-embedded/wg
 
 If you have trouble following the instructions in this book or find that some
-section of the book is not clear enough or hard to follow that's a bug and it
-should be reported in [the issue tracker] of this book.
+section of the book is not clear enough or hard to follow then that's a bug and
+it should be reported in [the issue tracker] of this book.
 
 [the issue tracker]: https://github.com/rust-lang-nursery/embedded-wg/book/issues
 
