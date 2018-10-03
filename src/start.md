@@ -1,4 +1,4 @@
-# Getting started
+# Getting Started
 
 > ❌: This section is work in progress. Please refer to
 > [rust-embedded/book#4](https://github.com/rust-embedded/book/issues/4)

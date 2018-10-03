@@ -4,10 +4,11 @@
 
 > **⚠️: This section was last checked on 2018-09-13**
 
-# Setting up a development environment
+# Setting up a Development Environment
 
-Dealing with microcontrollers involves several tools as we'll be dealing with an architecture
-different than your laptop's and we'll have to run and debug programs on a *remote* device.
+Dealing with microcontrollers involves using several different tools as we'll be
+dealing with an architecture different than your laptop's and we'll have to run
+and debug programs on a *remote* device.
 
 <!-- NOTE(japaric) I'm not sure we are going to need the user to download *all* -->
 <!-- these docs so I'm going to comment out this section. If it turns out we do -->
@@ -37,7 +38,7 @@ different than your laptop's and we'll have to run and debug programs on a *remo
 
 ## Tools
 
-We'll use all the tools listed below. Where a minimum version is not specified, any recent version should work but we have listed the version we have tested.
+We'll use all the tools listed below. Any recent version should work when a minimum version is not specified, but we have listed the versions we have tested.
 
 - Rust 1.30, 1.30-beta, nightly-2018-09-13, or a newer toolchain PLUS ARM
   Cortex-M compilation support.
@@ -52,7 +53,7 @@ We'll use all the tools listed below. Where a minimum version is not specified, 
 
 Next, follow OS-agnostic installation instructions for a few of the tools:
 
-### Rust toolchain
+### Rust Toolchain
 
 Install rustup by following the instructions at [https://rustup.rs](https://rustup.rs).
 
@@ -71,7 +72,7 @@ $ rustc -V
 rustc 1.30.0-beta (????????? 2018-09-1?)
 ```
 
-For bandwidth and disk usage reasons the default installation only supports
+For bandwidth and disk usage concerns the default installation only supports
 native compilation. To add cross compilation support for the ARM Cortex-M
 architecture install the following compilation targets.
 
@@ -87,7 +88,7 @@ $ cargo install cargo-binutils
 $ rustup component add llvm-tools-preview
 ```
 
-### OS specific instructions
+### OS-Specific Instructions
 
 Now follow the instructions specific to the OS you are using:
 
