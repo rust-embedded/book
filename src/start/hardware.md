@@ -34,10 +34,11 @@ This board contains an STM32F303VCT6 microcontroller. This microcontroller has:
 
 ## Configuring
 
-We'll start from scratch with a fresh template instance. Refer to [previous
-section] for a refresher on how to do this without `cargo-generate`.
+We'll start from scratch with a fresh template instance. Refer to the
+[previous section on QEMU] for a refresher on how to do this without
+`cargo-generate`.
 
-[previous section]: /start/qemu.html
+[previous section on QEMU]: /start/qemu.md
 
 ``` console
 $ cargo generate --git https://github.com/rust-embedded/cortex-m-quickstart
@@ -79,7 +80,9 @@ MEMORY
 ```
 
 There's no step three. You can now cross compile programs using `cargo build`
-and inspect the binaries using `cargo-binutils` as you did before.
+and inspect the binaries using `cargo-binutils` as you did before. The
+`cortex-m-rt` crate handles all the magic required to get your chip running,
+as helpfully, pretty much all Cortex-M CPUs boot in the same fashion.
 
 ``` console
 $ cargo build --example hello
@@ -99,7 +102,7 @@ time, however, the server will be OpenOCD.
 As done during the [verify] section connect the discovery board to your laptop /
 PC and check that the ST-LINK header is populated.
 
-[verify]: /intro/install/verify.html
+[verify]: /intro/install/verify.md
 
 On a terminal run `openocd` to connect to the ST-LINK on the discovery board.
 Run this command from the root of the template; `openocd` will pick up the
