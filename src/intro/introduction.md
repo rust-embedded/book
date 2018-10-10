@@ -57,7 +57,7 @@ This book generally assumes that you’re reading it front-to-back. Later
 chapters build on concepts in earlier chapters, and earlier chapters may
 not dig into details on a topic, revisiting the topic in a later chapter.
 
-This book will be using the [STMF3DISCOVERY] development board from
+This book will be using the [STM32F3DISCOVERY] development board from
 STMicroelectronics for the majority of the examples contained within. This board
 is based on the ARM Cortex-M architecture, and while basic functionality is
 common across most CPUs based on this architecture, peripherals and other
@@ -65,10 +65,10 @@ implementation details of Microcontrollers are different between different
 vendors, and often even different between Microcontroller families from the same
 vendor.
 
-For this reason, we suggest purchasing the [STMF3DISCOVERY] development board
+For this reason, we suggest purchasing the [STM32F3DISCOVERY] development board
 for the purpose of following the exmaples in this book.
 
-[STMF3DISCOVERY]: http://www.st.com/en/evaluation-tools/stm32f3discovery.html
+[STM32F3DISCOVERY]: http://www.st.com/en/evaluation-tools/stm32f3discovery.html
 
 > **HEADS UP** Until the official release of this book, which is planned to
 > coincide with the 2018 edition release of the Rust Programming Language,
