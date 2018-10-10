@@ -21,6 +21,7 @@ more information and coordination
 - [Getting started](./start.md)
   - [QEMU](./start/qemu.md)
   - [Hardware](./start/hardware.md)
+  - [Memory-mapped Registers](./start/registers.md)
   - [Panicking](./start/panicking.md)
   - [Exceptions](./start/exceptions.md)
   - [IO](./start/io.md)
