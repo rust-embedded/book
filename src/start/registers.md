@@ -140,4 +140,4 @@ position. We can always wrap this `struct` into a higher level API which
 verifies when these writes are safe - more on that in the chapter on [Static
 Guarantees].
 
-[Static Guarantees]: ../static-guarantees/static-guarantees.md
+[Static Guarantees]: /static-guarantees/static-guarantees.md
