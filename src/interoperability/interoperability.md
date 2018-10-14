@@ -1,14 +1,14 @@
 # Interoperability
 
-Iteroperability between Rust and C code is always dependant 
+Interoperability between Rust and C code is always dependent
 on transforming data between the two languages.
-For this purposes there are two dedicated modules 
-in the `stdlib` called 
-[`std::ffi`](https://doc.rust-lang.org/std/ffi/index.html) and 
+For this purposes there are two dedicated modules
+in the `stdlib` called
+[`std::ffi`](https://doc.rust-lang.org/std/ffi/index.html) and
 [`std::os::raw`](https://doc.rust-lang.org/std/os/raw/index.html).
 
 `std::os::raw` deals with low-level primitive types that can
-be converted implicitly by the compiler 
+be converted implicitly by the compiler
 because the memory layout between Rust and C
 is similar enough or the same.
 

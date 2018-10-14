@@ -13,9 +13,9 @@ any dependencies.
 
 Create a new `cargo` project as usual.
 
-There are flags to tell `cargo` to emmit a systems library, instead of 
+There are flags to tell `cargo` to emit a systems library, instead of
 it's regular rust target.
-This also allows you to set a different output name for your library, 
+This also allows you to set a different output name for your library,
 if you want it to differ from the rest of your crate.
 
 ```toml
@@ -27,8 +27,8 @@ crate-type = ["cdylib"]      # Creates dynamic lib
 
 ## Building a `C` API
 
-Because C++ has no stable ABI for the Rust compiler to target, we use `C` for 
-any interop between different languages. This is no exception when using Rust
+Because C++ has no stable ABI for the Rust compiler to target, we use `C` for
+any interoperability between different languages. This is no exception when using Rust
 inside of C and C++ code.
 
 ### `#[no_mangle]`
@@ -39,9 +39,9 @@ not to be mangled by the compiler.
 
 ### `extern "C"`
 
-By default, any function you write in Rust will use the 
-Rust ABI (which is also not stabilised).
-Instead, when building outwards facing FFI APIs we need to 
+By default, any function you write in Rust will use the
+Rust ABI (which is also not stabilized).
+Instead, when building outwards facing FFI APIs we need to
 tell the compiler to use the system ABI.
 
 Depending on your platform, you might want to target a specific ABI version, which are
@@ -90,13 +90,13 @@ void rust_function();
 
 etc.
 
-There is a tool to automate this process, 
-called [cbindgen] which analyses your  Rust code
+There is a tool to automate this process,
+called [cbindgen] which analyses your Rust code
 and then generates headers for your C and C++ projects from it.
 
 [cbindgen]: https://github.com/eqrion/cbindgen
 
-At this point, using the Rust functions from C 
+At this point, using the Rust functions from C
 is as simple as including the header and calling them!
 
 ```C
