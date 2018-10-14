@@ -1,78 +1,42 @@
 # Zero Cost Abstractions
 
-## "no runtime cost"?
+Type states are also an excellent example of Zero Cost Abstractions - the ability to move certain behaviors to compile time execution or analysis. These type states contain no actual data, and are instead used as markers. Since they contain no data, they have no actual representation in memory at runtime:
 
 ```rust
 use core::mem::size_of;
 
-let _ = size_of::<GpioPin>();     // == 0
-let _ = size_of::<InputGpio>();   // == 0
-let _ = size_of::<OutputGpio>();  // == 0
-let _ = size_of::<()>();          // == 0
+let _ = size_of::<Enabled>();    // == 0
+let _ = size_of::<Input>();      // == 0
+let _ = size_of::<PulledHigh>(); // == 0
+let _ = size_of::<GpioConfig<Enabled, Input, PulledHigh>>(); // == 0
 ```
 
 ## Zero Sized Types
 
 ```rust
-struct GpioPin;
+struct Enabled;
 ```
 
-> acts real at compile time
->
-> doesn't exist in the binary
->
-> no RAM, no CPU, no space
->
-> Evaporates at compile time
+Structures defined like this are called Zero Sized Types, as they contain no actual data. Although these types act "real" at compile time - you can copy them, move them, take references to them, etc., however the optimizer will completely strip them away.
 
-## What if our `OutputGpio` has multiple modes?
-
-> (it does)
-
----
+In this snippet of code:
 
 ```rust
-pub struct PushPull;  // good for general usage
-pub struct OpenDrain; // used when multiple devices could drive a bus
-
-pub struct OutputGpio<MODE> {
-    _mode: MODE
-}
-
-impl<MODE> OutputGpio<MODE> {
-    fn default() -> OutputGpio<OpenDrain> { ... }
-    fn into_push_pull(self) -> OutputGpio<PushPull> { ... }
-    fn into_open_drain(self) -> OutputGpio<OpenDrain> { ... }
+pub fn into_input_high_z(self) -> GpioConfig<Enabled, Input, HighZ> {
+    self.periph.modify(|_r, w| w.input_mode().high_z());
+    GpioConfig {
+        periph: self.periph,
+        enabled: Enabled,
+        direction: Input,
+        mode: HighZ,
+    }
 }
 ```
 
----
+The GpioConfig we return never exists at runtime. Calling this function will generally boil down to a single assembly instruction - storing a constant register value to a register location. This means that the type state interface we've developed is a zero cost abstraction - it uses no more CPU, RAM, or code space tracking the state of `GpioConfig`, and renders to the same machine code as a direct register access.
 
-```rust
-/// This kind of LED only works with OpenDrain settings
-struct DrainLed {
-    pin: OutputGpio<OpenDrain>,
-}
+## Nesting
 
-impl DrainLed {
-    fn new(pin: OutputGpio<OpenDrain>) -> Self { ... }
-    fn toggle(&self) -> bool { ... }
-}
-```
+In general, these abstractions may be nested as deeply as you would like. As long as all components used are zero sized types, the whole structure will not exist at runtime.
 
----
-
-```rust
-/// This kind of LED works with any output
-struct LedDriver<MODE> {
-    pin: OutputGpio<MODE>,
-}
-
-/// Generically support any OutputGpio variant!
-impl<MODE> LedDriver<MODE> {
-    fn new(pin: OutputGpio<MODE>) -> LedDriver<MODE> { ... }
-    fn toggle(&self) -> bool { ... }
-}
-```
-
-* Nested zero sized types are still zero sized, no matter how deep you nest them
+For complex or deeply nested structures, it may be tedious to define all possible combinations of state. In these cases, macros may be used to generate all implementations.
