@@ -19,14 +19,13 @@ to C-types that are easier and safer to handle.
 For `#![no_std]` environments, there is also `core::raw` that
 covers all the primitive types.
 
-------------------------------------------
-| Rust type | Intermediate | C type       |
-|-----------|--------------|--------------|
-| String    | CString      | *char        |
-| &str      | CStr         | *const char  |
-| ()        | c_void       | void         |
-| u32 | u64 | c_uint       | unsigned int |
-| etc       | ...          | ...          |
+| Rust type  | Intermediate | C type       |
+|------------|--------------|--------------|
+| String     | CString      | *char        |
+| &str       | CStr         | *const char  |
+| ()         | c_void       | void         |
+| u32 or u64 | c_uint       | unsigned int |
+| etc        | ...          | ...          |
 
 As mentioned above, primitive types can be converted
 by the compiler implicitly.
