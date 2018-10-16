@@ -143,6 +143,12 @@ This solves our immediate problem, but we're still left writing a lot of
 critical sections needlessly -- which comes at a cost to overhead and interrupt
 latency and jitter.
 
+It's worth noting that while a critical section guarantees no interrupts will
+fire, it does not provide an exclusivity guarantee on multi-core systems!  The
+other core could be happily accessing the same memory as your core, even
+without interrupts. You will need stronger synchronisation primitives if you
+are using multiple cores.
+
 ## Atomic Access
 
 On some platforms, atomic instructions are available, which provide guarantees
@@ -151,7 +157,8 @@ about read-modify-write operations. Specifically for Cortex-M, `thumbv6`
 and above) do. These instructions give an alternative to the heavy-handed
 disabling of all interrupts: we can attempt the increment, it will succeed most
 of the time, but if it was interrupted it will automatically retry the entire
-increment operation.
+increment operation. These atomic operations are safe even across multiple
+cores.
 
 ```rust
 // New type for COUNTER
@@ -281,7 +288,10 @@ requiring multiple nested critical sections.
 This also brings up an important topic for concurrency in Rust: the
 [`Send` and `Sync`] traits. To summarise the Rust book, a type is Send
 when it can safely be moved to another thread, while it is Sync when
-it can be safely shared between multiple threads.
+it can be safely shared between multiple threads. In an embedded context,
+we consider interrupts to be executing in a separate thread to the application
+code, so variables accessed by both an interrupt and the main code must be
+Sync.
 
 [`Send` and `Sync`]: https://doc.rust-lang.org/nomicon/send-and-sync.html
 
@@ -293,7 +303,9 @@ variables _must_ be Sync, since they can be accessed by multiple threads.
 [`UnsafeCell`]: https://doc.rust-lang.org/core/cell/struct.UnsafeCell.html
 
 To tell the compiler we have taken care that the `CSCounter` is in fact safe
-to share between threads, we implement the Sync trait explicitly.
+to share between threads, we implement the Sync trait explicitly. As with the
+previous use of critical sections, this is only safe on single-core platforms:
+with multiple cores you would need to go to greater lengths to ensure safety.
 
 ## Mutexes
 
@@ -535,3 +547,18 @@ primitives, and often interoperate with hardware features such as DMA engines.
 
 At the time of writing there are not many Rust RTOS examples to point to,
 but it's an interesting area so watch this space!
+
+## Multiple Cores
+
+It is becoming more common to have two or more cores in embedded processors,
+which adds an extra layer of complexity to concurrency. All the examples using
+a critical section (including the `cortex_m::interrupt::Mutex`) assume the only
+other execution thread is the interrupt thread, but on a multi-core system
+that's no longer true. Instead, we'll need synchronisation primitives designed
+for multiple cores (also called SMP, for symmetric multi-processing).
+
+These typically use the atomic instructions we saw earlier, since the
+processing system will ensure that atomicity is maintained over all cores.
+
+Covering these topics in detail is currently beyond the scope of this book,
+but the general patterns are the same as for the single-core case.
