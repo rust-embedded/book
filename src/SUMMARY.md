@@ -18,13 +18,22 @@ more information and coordination
     - [Tooling](./intro/tooling.md)
     - [Hardware](./intro/hardware.md)
     - [`no_std`](./intro/no-std.md)
-- [Blinking your first LED](./blinky/blinky.md)
+- [Getting started](./start.md)
+  - [QEMU](./start/qemu.md)
+  - [Hardware](./start/hardware.md)
+  - [Memory-mapped Registers](./start/registers.md)
+  - [Panicking](./start/panicking.md)
+  - [Exceptions](./start/exceptions.md)
+  - [IO](./start/io.md)
+- [Peripherals](./peripherals/peripherals.md)
+    - [A first attempt in Rust](./peripherals/a-first-attempt.md)
+    - [The Borrow Checker](./peripherals/borrowck.md)
+    - [Singletons](./peripherals/singletons.md)
+    - [Peripherals in Rust](./peripherals/rusty.md)
 - [Static Guarantees](./static-guarantees/static-guarantees.md)
     <!-- TODO: Define Sections -->
 - [Portability](./portability/portability.md)
-    <!-- TODO: Define Sections -->
-- [Singletons](./singletons/singletons.md)
-    <!-- TODO: Define Sections -->
+    <!-- TODO: Define more sections -->
 - [Concurrency](./concurrency/concurrency.md)
     <!-- TODO: Define Sections -->
 - [Collections](./collections/collections.md)
@@ -34,3 +43,5 @@ more information and coordination
 - [Interoperability](./interoperability/interoperability.md)
     - [A little C with your Rust](./interoperability/c-with-rust.md)
     - [A little Rust with your C](./interoperability/rust-with-c.md)
+- [Unsorted topics](./unsorted.md)
+  - [Optimizations: The speed size tradeoff](./unsorted/speed-vs-size.md)
