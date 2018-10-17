@@ -7,13 +7,15 @@ This section contains details about the tools we'll be using.
 Bare metal programs are non-standard (`no_std`) Rust programs that require some
 fiddling with the linking process to get the memory layout of the program
 right. All this requires unusual files (like linker scripts) and unusual
-settings (like linker flags). We have packaged all that for you in a template
+settings (like linker flags). We have packaged all that for you in templates
 so that you only need to fill in the blanks such as the project name and the
 characteristics of your target hardware.
 
-Our template is compatible with `cargo-generate`: a Cargo subcommand for
+Our templates are compatible with `cargo-generate`: a Cargo subcommand for
 creating new Cargo projects from templates. You can also download the
 template using `git`, `curl`, `wget`, or your web browser.
+
+The cortex-m template is available [here](https://github.com/rust-embedded/cortex-m-quickstart).
 
 ## `cargo-binutils`
 
