@@ -86,10 +86,10 @@ main loop continually measures the signal, and incremements the counter when
 it sees a change from low to high. We've had to use `unsafe` to access
 `COUNTER`, as it's `static mut`, and that means we're promising the compiler
 we won't cause any undefined behaviour. Can you spot the race condition? The
-increment on `COUNTER` is _not_ guaranteed to be atomic -- in fact, on most
+increment on `COUNTER` is _not_ guaranteed to be atomic — in fact, on most
 embedded platforms, it will be split into a load, then the increment, then
 a store. If the interrupt fired after the load but before the store, the
-reset back to 0 would be ignored after the interrupt returns -- and we would
+reset back to 0 would be ignored after the interrupt returns — and we would
 count twice as many transitions for that period.
 
 ## Critical Sections
@@ -140,7 +140,7 @@ _preempt_ each other, then each one might require a critical section as well.
 
 This solves our immediate problem, but we're still left writing a lot of
 `unsafe` code which we need to carefully reason about, and we might be using
-critical sections needlessly -- which comes at a cost to overhead and interrupt
+critical sections needlessly — which comes at a cost to overhead and interrupt
 latency and jitter.
 
 It's worth noting that while a critical section guarantees no interrupts will
@@ -188,7 +188,7 @@ fn timer() {
 
 We still require `unsafe` blocks since `COUNTER` is a `static mut`, but we no
 longer have the overhead of disabling all interrupts. When possible, this is a
-better solution -- but it may not be supported on your platform.
+better solution — but it may not be supported on your platform.
 
 A note on [`Ordering`]: this affects how the compiler and hardware may reorder
 instructions, and also has consequences on cache visibility. For simple atomic
@@ -369,7 +369,7 @@ fn timer() {
 
 We're now using [`Cell`], which along with its sibling `RefCell` is used to
 provide safe interior mutability. We've already seen `UnsafeCell` which is
-the botom layer of interior mutability in Rust: it allows you to obtain
+the bottom layer of interior mutability in Rust: it allows you to obtain
 multiple mutable references to its value, but only with unsafe code. A `Cell`
 is like an `UnsafeCell` but it provides a safe interface: it only permits
 taking a copy of the current value or replacing it, not taking a reference,
@@ -380,7 +380,7 @@ constraints mean it's safe to use, but we couldn't use it directly in a
 [`Cell`]: https://doc.rust-lang.org/core/cell/struct.Cell.html
 
 So why does the example above work? The `Mutex<T>` implements Sync for any
-`T` which is Send -- such as a `Cell`. It can do this safely because it only
+`T` which is Send — such as a `Cell`. It can do this safely because it only
 gives access to its contents during a critical section. We're therefore able
 to get a safe counter with no unsafe code at all!
 
