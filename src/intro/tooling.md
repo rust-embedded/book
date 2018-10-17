@@ -11,7 +11,7 @@ settings (like linker flags). We have packaged all that for you in templates
 so that you only need to fill in the blanks such as the project name and the
 characteristics of your target hardware.
 
-Our templates are compatible with `cargo-generate`: a Cargo subcommand for
+Our templates are compatible with [`cargo-generate`](https://github.com/ashleygwilliams/cargo-generate): a Cargo subcommand for
 creating new Cargo projects from templates. You can also download the
 template using `git`, `curl`, `wget`, or your web browser.
 
