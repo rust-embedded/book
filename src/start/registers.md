@@ -3,8 +3,8 @@
 Embedded systems can only get so far by executing normal Rust code and moving
 data around in RAM. If we want to get any information into or out of our
 system (be that blinking an LED, detecting a button press or communicating
-with an off-chip peripheral on some sort of bus) we're going to have to do dip
-in to the world of 'memory mapped registers'.
+with an off-chip peripheral on some sort of bus) we're going to have to dip
+into the world of 'memory mapped registers'.
 
 If you look at the main circuit board in an old-fashioned home computer from
 the 1970s or 1980s (and actually, the desktop PCs of yesterday are not so far
@@ -38,7 +38,7 @@ have three or four addressable locations. These locations are known as
 *memory-mapped registers*. By writing data to these registers, the processor
 can affect the operation of the hardware. What happens when you do this is
 entirely down to the design of the peripheral. For example, on an I/O
-peripheral, each bit of one register might correspond the output level of an
+peripheral, each bit of one register might correspond to the output level of an
 I/O pin allowing us to turn on some LEDs, while some other register might
 allow us to set whether each pin is an Input pin or an Output pin. On a UART
 peripheral, we might instead expect to see one register which lets us set the
