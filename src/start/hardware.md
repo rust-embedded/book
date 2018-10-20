@@ -13,7 +13,7 @@ as these will be used to configure the project:
 
 - Does the ARM core include an FPU? Cortex-M4**F** and Cortex-M7**F** cores do.
 
-- How much Flash memory and RAM does the target device has? e.g. 256 KiB of
+- How much Flash memory and RAM does the target device have? e.g. 256 KiB of
   Flash and 32 KiB of RAM.
 
 - Where are Flash memory and RAM mapped in the address space? e.g. RAM is
