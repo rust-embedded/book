@@ -82,15 +82,15 @@ This rule lets you use OpenOCD with the Discovery board without root privilege.
 Create this file in `/etc/udev/rules.d` with the contents shown below.
 
 ``` console
-$ cat /etc/udev/rules.d/99-st-link.rules
+$ cat /etc/udev/rules.d/70-st-link.rules
 ```
 
 ``` text
 # STM32F3DISCOVERY rev A/B - ST-LINK/V2
-ATTRS{idVendor}=="0483", ATTRS{idProduct}=="3748", MODE:="0666"
+ATTRS{idVendor}=="0483", ATTRS{idProduct}=="3748", TAG+="uaccess"
 
 # STM32F3DISCOVERY rev C+ - ST-LINK/V2-1
-ATTRS{idVendor}=="0483", ATTRS{idProduct}=="374b", MODE:="0666"
+ATTRS{idVendor}=="0483", ATTRS{idProduct}=="374b", TAG+="uaccess"
 ```
 
 Then reload all the udev rules with:
@@ -116,11 +116,15 @@ command:
 ``` console
 $ # the format of the path is /dev/bus/usb/<bus>/<device>
 $ ls -l /dev/bus/usb/001/018
-crw-rw-rw- 1 root root 189, 17 Sep 13 12:34 /dev/bus/usb/001/018
+crw-------+ 1 root root 189, 17 Sep 13 12:34 /dev/bus/usb/001/018
+$ getfacl /dev/bus/usb/001/018 | grep user
+user::rw-
+user:you:rw-
 ```
 
-The permissions should be `crw-rw-rw-`; this indicates that all users can make
-use of this device.
+The `+` appended to permissions indicates the existence of an extended
+permission. The `getfacl` command tells the user `you` can make use of
+this device.
 
 Now, go to the [next section].
 
