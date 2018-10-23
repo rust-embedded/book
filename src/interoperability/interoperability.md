@@ -36,3 +36,24 @@ unsafe fn foo(num: u32) {
     let r_num: u32 = c_num;
 }
 ```
+
+## Interoperability with other build systems
+
+A common requirement for including Rust in your embedded project is combining
+Cargo with your existing build system, such as make or cmake.
+
+We are collecting examples and use cases for this on our issue tracker in
+[issue #61].
+
+[issue #61]: https://github.com/rust-embedded/book/issues/61
+
+
+## Interoperability with RTOSs
+
+Integrating Rust with an RTOS such as FreeRTOS or ChibiOS is still a work in
+progress; especially calling RTOS functions from Rust can be tricky.
+
+We are collecting examples and use cases for this on our issue tracker in
+[issue #62].
+
+[issue #62]: https://github.com/rust-embedded/book/issues/62
