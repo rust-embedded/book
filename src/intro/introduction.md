@@ -3,6 +3,10 @@
 Welcome to The Embedded Rust Book: An introductory book about using the Rust
 Programming Language on "Bare Metal" embedded systems, such as Microcontrollers.
 
+## Who Embedded Rust is For
+Embedded Rust is for everyone who wants to do embedded programming backed by the higher-level concepts and safety guarantees the Rust language provides.
+(See also [Who Rust Is For](https://doc.rust-lang.org/book/2018-edition/ch00-00-introduction.html))
+
 ## Scope
 
 The goals of this book are:
@@ -24,8 +28,13 @@ particular architecture and explains details particular to this architecture
 where required.
 
 ## Who This Book is For
+This book caters towards people with either some embedded background or some Rust background, however we assume
+everybody curious about embedded Rust programming can get something out of this book. For those without any prior knowledge
+we suggest you read the "Assumptions and Prerequisites" section and catch up on missing knowledge to get more out of the book
+and improve your reading experience. You can check out the "Other Resources" section to find resources on topics
+you want to catch up on.
 
-This book assumes the following:
+### Assumptions and Prerequisites
 
 * You are comfortable using the Rust Programming Language, and have written,
   run, and debugged Rust applications on a desktop environment. You should also
@@ -41,15 +50,19 @@ This book assumes the following:
     * Interrupts
     * Common interfaces such as I2C, SPI, Serial, etc.
 
-If you are not yet comfortable with Rust, we highly suggest completing the [Rust
-Book] before reading this book.
+### Other Resources
+If you are unfamiliar with anything mentioned above or if you want more information about a specific topic mentioned in this book you might find some of these resources helpful.
 
-[Rust Book]: https://doc.rust-lang.org/book/second-edition
-
-If you are not yet comfortable with embedded systems, we highly suggest checking
-out our [other resources] before attempting to read this book.
-
-[other resources]: https://rust-embedded.github.io/bookshelf/
+| Topic        | Resource | Description |
+|--------------|----------|-------------|
+| Rust         | [Rust Book 2018 Edition](https://doc.rust-lang.org/book/2018-edition/index.html) | If you are not yet comfortable with Rust, we highly suggest reading the this book. |
+| Rust         | [Rust Book Second Edition](https://doc.rust-lang.org/book/second-edition) | - |
+| Rust, Embedded | [Embedded Rust Bookshelf](https://rust-embedded.github.io/bookshelf/) | - |
+| Rust, Embedded | [Embedonomicon](https://rust-embedded.github.io/embedonomicon/) | The nitty gritty details when doing embedded programming in Rust. |
+| Rust, Embedded | [embedded FAQ](https://rust-embedded.github.io/bookshelf/faq.html) | Frequently asked questions about Rust in an embedded context |
+| Interrupts | [Interrupt](https://en.wikipedia.org/wiki/Interrupt) | - |
+| Memory-mapped IO/Peripherals | [Memory-mapped I/O](https://en.wikipedia.org/wiki/Memory-mapped_I/O) | - |
+| SPI, UART, RS232, USB, I2C, TTL | [Stack Exchange about SPI, UART, and other interfaces](https://electronics.stackexchange.com/questions/37814/usart-uart-rs232-usb-spi-i2c-ttl-etc-what-are-all-of-these-and-how-do-th) | - |
 
 ## How to Use This Book
 
