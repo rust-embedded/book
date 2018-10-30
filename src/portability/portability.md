@@ -30,7 +30,7 @@ Some of the defined traits in **embedded-hal** are:
 
 ## Users of the embedded-hal
 
-As said above there're three main users of the HAL:
+As said above there are three main users of the HAL:
 
 ### HAL implementation
 
