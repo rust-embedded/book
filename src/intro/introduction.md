@@ -59,7 +59,7 @@ If you are unfamiliar with anything mentioned above or if you want more informat
 | Rust         | [Rust Book Second Edition](https://doc.rust-lang.org/book/second-edition) | - |
 | Rust, Embedded | [Embedded Rust Bookshelf](https://rust-embedded.github.io/bookshelf/) | - |
 | Rust, Embedded | [Embedonomicon](https://rust-embedded.github.io/embedonomicon/) | The nitty gritty details when doing embedded programming in Rust. |
-| Rust, Embedded | [embedded FAQ](https://rust-embedded.github.io/bookshelf/faq.html) | Frequently asked questions about rust in an embedded context |
+| Rust, Embedded | [embedded FAQ](https://rust-embedded.github.io/bookshelf/faq.html) | Frequently asked questions about Rust in an embedded context |
 | Interrupts | [Interrupt](https://en.wikipedia.org/wiki/Interrupt) | - |
 | Memory-mapped IO/Peripherals | [Memory-mapped I/O](https://en.wikipedia.org/wiki/Memory-mapped_I/O) | - |
 | SPI, UART, RS232, USB, I2C, TTL | [Stack Exchange about SPI, UART, and other interfaces](https://electronics.stackexchange.com/questions/37814/usart-uart-rs232-usb-spi-i2c-ttl-etc-what-are-all-of-these-and-how-do-th) | - |
