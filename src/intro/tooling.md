@@ -34,10 +34,6 @@ QEMU is an emulator. In this case we use the variant that can fully emulate ARM
 systems. We use QEMU to run embedded programs on the host. Thanks to this you
 can follow some parts of this book even if you don't have any hardware with you!
 
-## OpenOCD
-
-> **TODO** What is this, what is it used for, and why are we using this tool?
-
 ## GDB
 
 Debugging is very important skill for embedded development as you may not always
@@ -47,3 +43,24 @@ have LEDs to blink on your hardware!
 In general, LLDB works as well as GDB when it comes to debugging but we haven't
 found an LLDB counterpart to GDB's `load` command, which uploads the program to
 the target hardware, so currently we recommend that you use GDB.
+
+## OpenOCD
+
+GDB isn't able to communicate directly with the ST-Link debugging hardware on
+your STM32F3DISCOVERY development board. It needs a translator and the Open
+On-Chip Debugger, OpenOCD, is that translator. OpenOCD is a program that runs
+on your laptop/PC and translates between GDB's TCP/IP based remote debug
+protocol and ST-Link's USB based protocol.
+
+OpenOCD also performs other important work as part of its translation for the
+debugging of the ARM Cortex-M based microcontroller on your STM32F3DISCOVERY
+development board:
+* It knows how to interact with the memory mapped registers used by the ARM
+  CoreSight debug peripheral. It is these CoreSight registers that allow for:
+  * Breakpoint/Watchpoint manipulation
+  * Reading and writing of the CPU registers
+  * Detecting when the CPU has been halted for a debug event
+  * Continuing CPU execution after a debug event has been encountered
+  * etc.
+* It also knows how to erase and write to the microcontroller's FLASH
+
