@@ -192,13 +192,12 @@ main thread without disabling interrupts. When possible, this is a better
 solution — but it may not be supported on your platform.
 
 A note on [`Ordering`]: this affects how the compiler and hardware may reorder
-instructions, and also has consequences on cache visibility. For simple atomic
-operations like incrementing a counter, where we are not synchronising any
-other tasks on the counter, `Relaxed` is sufficient, and will have the best
-performance on typical embedded platforms. Stricter ordering will cause the
-compiler to emit memory barriers around the atomic operations; depending on
-what you're using atomics for you may or may not need this! The precise
-details of the atomic model are complicated and best described elsewhere.
+instructions, and also has consequences on cache visibility. Assuming that the
+target is a single core platform `Relaxed` is sufficient and the most efficient
+choice in this particular case. Stricter ordering will cause the compiler to
+emit memory barriers around the atomic operations; depending on what you're
+using atomics for you may or may not need this! The precise details of the
+atomic model are complicated and best described elsewhere.
 
 For more details on atomics and ordering, see the [nomicon].
 
