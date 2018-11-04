@@ -222,9 +222,10 @@ available.
 
 Furthermore, fixed capacity collections allocated on the stack will be reported
 by [`-Z emit-stack-sizes`] flag which means that tools that analyze stack usage
-will include them in their analysis.
+(like [`stack-sizes`]) will include them in their analysis.
 
-<!-- [`-Z emit-stack-sizes`]: TODO add link to the unstable book -->
+[`-Z emit-stack-sizes`]: https://doc.rust-lang.org/beta/unstable-book/compiler-flags/emit-stack-sizes.html
+[`stack-sizes`]: https://crates.io/crates/stack-sizes
 
 However, fixed capacity collections can *not* be shrunk which can result in
 lower load factors (the ratio between the size of the collection and its
