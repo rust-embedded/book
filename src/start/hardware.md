@@ -38,7 +38,7 @@ We'll start from scratch with a fresh template instance. Refer to the
 [previous section on QEMU] for a refresher on how to do this without
 `cargo-generate`.
 
-[previous section on QEMU]: /start/qemu.md
+[previous section on QEMU]: qemu.md
 
 ``` console
 $ cargo generate --git https://github.com/rust-embedded/cortex-m-quickstart
@@ -102,7 +102,7 @@ time, however, the server will be OpenOCD.
 As done during the [verify] section connect the discovery board to your laptop /
 PC and check that the ST-LINK header is populated.
 
-[verify]: /intro/install/verify.md
+[verify]: ../intro/install/verify.md
 
 On a terminal run `openocd` to connect to the ST-LINK on the discovery board.
 Run this command from the root of the template; `openocd` will pick up the

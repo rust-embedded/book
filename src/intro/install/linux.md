@@ -128,4 +128,4 @@ this device.
 
 Now, go to the [next section].
 
-[next section]: /intro/install/verify.html
+[next section]: verify.md

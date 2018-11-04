@@ -45,7 +45,7 @@ The contents may not match exactly but you should get the last line about
 breakpoints and watchpoints. If you got it then terminate the OpenOCD process
 and move to the [next section].
 
-[next section]: /install/hardware.html
+[next section]: ../hardware.md
 
 If you didn't get the "breakpoints" line then try the following command.
 
@@ -62,7 +62,7 @@ If neither command worked as a normal user then try to run them with root
 permission (e.g. `sudo openocd ..`). If the commands do work with root
 permission then check that the [udev rules] has been correctly set.
 
-[udev rules]: /install/linux.html
+[udev rules]: linux.md
 
 If you have reached this point and OpenOCD is not working please open [an issue]
 and we'll help you out!
