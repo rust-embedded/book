@@ -42,8 +42,8 @@ Info : stm32f3x.cpu: hardware has 6 breakpoints, 4 watchpoints
 ```
 
 The contents may not match exactly but you should get the last line about
-breakpoints and watchpoints. If you got it terminate the OpenOCD process and
-move to the [next section].
+breakpoints and watchpoints. If you got it then terminate the OpenOCD process
+and move to the [next section].
 
 [next section]: /install/hardware.html
 
