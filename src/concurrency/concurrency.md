@@ -161,9 +161,9 @@ increment operation. These atomic operations are safe even across multiple
 cores.
 
 ```rust
-// New type for COUNTER
-use core::sync::atomic;
-static mut COUNTER: atomic::AtomicUsize = atomic::ATOMIC_USIZE_INIT;
+use core::sync::atomic::{AtomicUsize, Ordering};
+
+static COUNTER: AtomicUsize = AtomicUsize::new(0);
 
 #[entry]
 fn main() -> ! {
@@ -174,7 +174,7 @@ fn main() -> ! {
         if state && !last_state {
             last_state = state;
             // Use `fetch_add` to atomically add 1 to COUNTER
-            unsafe { COUNTER.fetch_add(1, atomic::Ordering::Relaxed) };
+            COUNTER.fetch_add(1, atomic::Ordering::Relaxed);
         }
     }
 }
@@ -182,13 +182,14 @@ fn main() -> ! {
 #[interrupt]
 fn timer() {
     // Use `store` to write 0 directly to COUNTER
-    unsafe { COUNTER.store(0, atomic::Ordering::Relaxed) }
+    COUNTER.store(0, atomic::Ordering::Relaxed)
 }
 ```
 
-We still require `unsafe` blocks since `COUNTER` is a `static mut`, but we no
-longer have the overhead of disabling all interrupts. When possible, this is a
-better solution — but it may not be supported on your platform.
+This time `COUNTER` is a safe `static` variable. Thanks to the `AtomicUsize`
+type `COUNTER` can be safely modified from both the interrupt handler and the
+main thread without disabling interrupts. When possible, this is a better
+solution — but it may not be supported on your platform.
 
 A note on [`Ordering`]: this affects how the compiler and hardware may reorder
 instructions, and also has consequences on cache visibility. For simple atomic
