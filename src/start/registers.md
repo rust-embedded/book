@@ -122,13 +122,13 @@ struct SysTick {
 }
 
 fn get_systick() -> &'static mut SysTick {
-	unsafe { &mut *(0xE000_E010 as *mut SysTick) }
+    unsafe { &mut *(0xE000_E010 as *mut SysTick) }
 }
 
 fn test() {
-	let systick = get_systick();
-	let time = systick.cvr.read();
-	unsafe { systick.rvr.write(time) };
+    let systick = get_systick();
+    let time = systick.cvr.read();
+    unsafe { systick.rvr.write(time) };
 }
 ```
 
@@ -140,4 +140,4 @@ position. We can always wrap this `struct` into a higher level API which
 verifies when these writes are safe - more on that in the chapter on [Static
 Guarantees].
 
-[Static Guarantees]: /static-guarantees/static-guarantees.md
+[Static Guarantees]: ../static-guarantees/static-guarantees.md
