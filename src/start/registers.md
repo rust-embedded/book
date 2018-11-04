@@ -20,7 +20,7 @@ through a series of parallel traces known as a 'bus'. This bus carries address
 information, which selects which device on the bus the processor wishes to
 communicate with, and a data bus which carries the actual data. In our
 embedded microcontrollers, the same principles apply - it's just that
-everything is packed on to a single piece of sillicon.
+everything is packed on to a single piece of silicon.
 
 In earlier chapters, we were talking about RAM being located at address
 `0x2000_0000`. This is a 32-bit number because the ARM Cortex-M processor
@@ -59,7 +59,7 @@ see there are four registers:
 | 0x00   | SYST_CSR    | Control and Status Register | 32 bits|
 | 0x04   | SYST_RVR    | Reload Value Register       | 32 bits|
 | 0x08   | SYST_CVR    | Current Value Register      | 32 bits|
-| 0x0C   | SYST_CALIB  | Calibration Value Regsister | 32 bits|
+| 0x0C   | SYST_CALIB  | Calibration Value Register | 32 bits|
 
 In Rust, we can represent a collection of registers in exactly the same way as we do in C - with a `struct`.
 
@@ -97,7 +97,7 @@ Now, the problem is that compilers are clever. If you make two writes to the
 same piece of RAM, one after the other, the compiler can notice this and just
 skip the first write entirely. In C, we can mark variables as `volatile` to
 ensure that every read or write occurs as intended. In Rust, we instead mark
-the *accesses* as volatie, not the variable.
+the *accesses* as volatile, not the variable.
 
 ```rust
 let systick = unsafe { &mut *(0xE000_E010 as *mut SysTick) };
