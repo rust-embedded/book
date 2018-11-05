@@ -56,7 +56,6 @@ If you are unfamiliar with anything mentioned above or if you want more informat
 | Topic        | Resource | Description |
 |--------------|----------|-------------|
 | Rust         | [Rust Book 2018 Edition](https://doc.rust-lang.org/book/2018-edition/index.html) | If you are not yet comfortable with Rust, we highly suggest reading the this book. |
-| Rust         | [Rust Book Second Edition](https://doc.rust-lang.org/book/second-edition) | - |
 | Rust, Embedded | [Embedded Rust Bookshelf](https://docs.rust-embedded.org) | Here you can find several other resources provided by Rust's Embedded Working Group. |
 | Rust, Embedded | [Embedonomicon](https://docs.rust-embedded.org/embedonomicon/) | The nitty gritty details when doing embedded programming in Rust. |
 | Rust, Embedded | [embedded FAQ](https://docs.rust-embedded.org/faq.html) | Frequently asked questions about Rust in an embedded context. |
