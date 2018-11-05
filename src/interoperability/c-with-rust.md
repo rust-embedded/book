@@ -33,13 +33,13 @@ When translated to Rust, this interface would look as such:
 /* File: cool_bindings.rs */
 #[repr(C)]
 pub struct CoolStruct {
-    pub x: core::raw::c_int,
-    pub y: core::raw::c_int,
+    pub x: cty::c_int,
+    pub y: cty::c_int,
 }
 
 pub extern "C" fn cool_function(
-    i: core::raw::c_int,
-    c: core::raw::c_char,
+    i: cty::c_int,
+    c: cty::c_char,
     cs: *mut CoolStruct
 );
 ```
@@ -54,11 +54,11 @@ pub struct CoolStruct { ... }
 By default, Rust does not guarantee order, padding, or the size of data included in a `struct`. In order to guarantee compatibility with C code, we include the `#[repr(C)]` attribute, which instructs the Rust compiler to always use the same rules C does for organizing data within a struct.
 
 ```rust
-pub x: core::raw::c_int,
-pub y: core::raw::c_int,
+pub x: cty::c_int,
+pub y: cty::c_int,
 ```
 
-Due to the flexibility of how C or C++ defines an `int` or `char`, it is recommended to use primative data types defined in `core::raw`, which will map types from C to types in Rust
+Due to the flexibility of how C or C++ defines an `int` or `char`, it is recommended to use primative data types defined in `cty`, which will map types from C to types in Rust
 
 ```rust
 pub extern "C" fn cool_function( ... );
@@ -67,9 +67,9 @@ pub extern "C" fn cool_function( ... );
 This statement defines the signature of a function that uses the C ABI, called `cool_function`. By defining the signature without defining the body of the function, the definition of this function will need to be provided elsewhere, or linked into the final library or binary from a static library.
 
 ```rust
-i: core::raw::c_int,
-c: core::raw::c_char,
-cs: *mut CoolStruct
+    i: cty::c_int,
+    c: cty::c_char,
+    cs: *mut CoolStruct
 ```
 
 Similar to our datatype above, we define the datatypes of the function arguments using C-compatible definitions. We also retain the same argument names, for clarity.
@@ -82,7 +82,9 @@ Rather than manually generating these interfaces, which may be tedious and error
 
 1. Gather all C or C++ headers defining interfaces or datatypes you would like to use with Rust
 2. Write a `bindings.h` file, which `#include "..."`'s each of the files you gathered in step one
-3. Feed this `bindings.h` file, along with any compilation flags used to compile your code into `bindgen`.
+3. Feed this `bindings.h` file, along with any compilation flags used to compile
+  your code into `bindgen`. Tip: use `Builder.ctypes_prefix("cty")` /
+  `--ctypes-prefix=cty` to make the generated code `#![no_std]` compatible.
 4. `bindgen` will produce the generated Rust code to the output of the terminal window. This file may be piped to a file in your project, such as `bindings.rs`. You may use this file in your Rust project to interact with C/C++ code compiled and linked as an external library
 
 [bindgen]: https://github.com/rust-lang-nursery/rust-bindgen

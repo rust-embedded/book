@@ -16,8 +16,12 @@ is similar enough or the same.
 types such as Strings, mapping both `&str` and `String`
 to C-types that are easier and safer to handle.
 
-For `#![no_std]` environments, there is also `core::raw` that
-covers all the primitive types.
+Neither of these modules in available in `core`, but you can find a `#![no_std]`
+compatible version of `std::ffi::{CStr,CString}` in the [`cstr_core`] crate, and
+most of the `std::os::raw` types in the [`cty`] crate.
+
+[`cstr_core`]: https://crates.io/crates/cstr_core
+[`cty`]: https://crates.io/crates/cty
 
 | Rust type  | Intermediate | C type       |
 |------------|--------------|--------------|
