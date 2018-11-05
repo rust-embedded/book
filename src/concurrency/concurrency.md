@@ -174,7 +174,7 @@ fn main() -> ! {
         if state && !last_state {
             last_state = state;
             // Use `fetch_add` to atomically add 1 to COUNTER
-            COUNTER.fetch_add(1, atomic::Ordering::Relaxed);
+            COUNTER.fetch_add(1, Ordering::Relaxed);
         }
     }
 }
@@ -182,7 +182,7 @@ fn main() -> ! {
 #[interrupt]
 fn timer() {
     // Use `store` to write 0 directly to COUNTER
-    COUNTER.store(0, atomic::Ordering::Relaxed)
+    COUNTER.store(0, Ordering::Relaxed)
 }
 ```
 
