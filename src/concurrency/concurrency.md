@@ -519,17 +519,20 @@ we can do?
 ## RTFM
 
 One alternative is the [RTFM framework], short for Real Time For the Masses. It
-uses interrupt priorities to statically ensure that shared resources are always
-accessed safely, without requiring the overhead of always entering critical
-sections and using reference counting (as in `RefCell`). This has a number of
-advantages such as guaranteeing no deadlocks and giving extremely low time and
-memory overhead.
+enforces static priorities and tracks accesses to `static mut` variables
+("resources") to statically ensure that shared resources are always accessed
+safely, without requiring the overhead of always entering critical sections and
+using reference counting (as in `RefCell`). This has a number of advantages such
+as guaranteeing no deadlocks and giving extremely low time and memory overhead.
 
 [RTFM framework]: https://github.com/japaric/cortex-m-rtfm
 
-Check out [the documentation] for more information!
+The framework also includes other features like message passing, which reduces
+the need for explicit shared state, and the ability to schedule tasks to run at
+a given time, which can be used to implement periodic tasks. Check out [the
+documentation] for more information!
 
-[the documentation]: https://japaric.github.io/cortex-m-rtfm/cortex_m_rtfm/
+[the documentation]: https://japaric.github.io/cortex-m-rtfm/book/
 
 ## Real Time Operating Systems
 
