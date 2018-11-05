@@ -85,7 +85,7 @@ for the purpose of following the examples in this book.
 > **HEADS UP** Until the official release of this book, which is planned to
 > coincide with the 2018 edition release of the Rust Programming Language,
 > expect the sections of this book to change quite a bit. We recommend
-> bookmarking the root of this book instead of any specific version.
+> bookmarking the root of this book instead of any specific section.
 
 ## Contributing to This Book
 
