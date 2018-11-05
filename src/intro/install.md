@@ -1,7 +1,3 @@
-> **⚠️: This section still references `beta` Rust**
->
-> Contents should be updated to work on `stable` Rust when possible
-
 # Setting up a Development Environment
 
 Dealing with microcontrollers involves using several different tools as we'll be
