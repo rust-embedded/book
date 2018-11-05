@@ -2,8 +2,6 @@
 >
 > Contents should be updated to work on `stable` Rust when possible
 
-> **⚠️: This section was last checked on 2018-09-13**
-
 # Setting up a Development Environment
 
 Dealing with microcontrollers involves using several different tools as we'll be
@@ -40,8 +38,8 @@ and debug programs on a *remote* device.
 
 We'll use all the tools listed below. Any recent version should work when a minimum version is not specified, but we have listed the versions we have tested.
 
-- Rust 1.30, 1.30-beta, nightly-2018-09-13, or a newer toolchain PLUS ARM
-  Cortex-M compilation support.
+- Rust 1.31, 1.31-beta, or a newer toolchain PLUS ARM Cortex-M compilation
+  support.
 - [`cargo-binutils`](https://github.com/rust-embedded/cargo-binutils) ~0.1.4
 - [`qemu-system-arm`](https://www.qemu.org/). Tested versions: 3.0.0
 - OpenOCD >=0.8. Tested versions: v0.9.0 and v0.10.0
@@ -63,13 +61,12 @@ Then switch to the beta channel.
 $ rustup default beta
 ```
 
-**NOTE** Make sure you have a beta equal to or newer than `1.30-beta`. `rustc
--V` should return a date newer than the one shown below. If `1.30-beta` is not
-out yet then use the nightly channel for the time being.
+**NOTE** Make sure you have a beta equal to or newer than `1.31-beta`. `rustc
+-V` should return a date newer than the one shown below.
 
 ``` console
 $ rustc -V
-rustc 1.30.0-beta (????????? 2018-09-1?)
+rustc 1.31.0-beta.4 (04da282bb 2018-11-01)
 ```
 
 For bandwidth and disk usage concerns the default installation only supports
