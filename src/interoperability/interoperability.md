@@ -16,7 +16,7 @@ is similar enough or the same.
 types such as Strings, mapping both `&str` and `String`
 to C-types that are easier and safer to handle.
 
-Neither of these modules in available in `core`, but you can find a `#![no_std]`
+Neither of these modules are available in `core`, but you can find a `#![no_std]`
 compatible version of `std::ffi::{CStr,CString}` in the [`cstr_core`] crate, and
 most of the `std::os::raw` types in the [`cty`] crate.
 
