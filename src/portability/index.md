@@ -40,7 +40,7 @@ As said above there are three main users of the HAL:
 
 ### HAL implementation
 
-A HAL implementation provides the interfacing between the hardware and and the users of the HAL traits. Typical implementations consist of three parts:
+A HAL implementation provides the interfacing between the hardware and the users of the HAL traits. Typical implementations consist of three parts:
 * One or more hardware specific types
 * Functions to create and initialize such a type, often providing various configuration options (speed, operation mode, use pins, etc.)
 * one or more `trait` `impl` of **embedded-hal** traits for that type
