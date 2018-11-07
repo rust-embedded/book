@@ -97,7 +97,7 @@ impl Gpio {
 }
 ```
 
-Because we need to enforce the restrictions on the hardware, we end up doing a lot of runtime checking whch wastes time and resources, and this code will be much less pleasant for the developer to use.
+Because we need to enforce the restrictions on the hardware, we end up doing a lot of runtime checking which wastes time and resources, and this code will be much less pleasant for the developer to use.
 
 ## Type States
 
