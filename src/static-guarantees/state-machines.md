@@ -51,7 +51,7 @@ Typically the states listed above are set by writing values to given registers m
 |              |               | 1     | set-high  | Output pin is driven high |
 | input_status | 5             | x     | in-val    | 0 if input is < 1.5v, 1 if input >= 1.5v |
 
-We could simple expose the following structure in Rust to control this GPIO:
+We _could_ expose the following structure in Rust to control this GPIO:
 
 ```rust,ignore
 /// GPIO interface
