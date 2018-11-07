@@ -10,7 +10,7 @@ See [the issue tracker] for more details. This is a very early work in progress.
 
 ## Online Copies of this Book
 
-This book is being temporarily hosted in https://rust-embedded.github.io/book/
+This book is located at https://docs.rust-embedded.org/book/
 
 ## License
 
