@@ -245,7 +245,7 @@ output_pin.set_bit(false);
 // output_pin.into_input_pull_down();
 ```
 
-This is defintely a convenient way to store the state of the pin, but why do it this way? Why is this better than storing the state as an `enum` inside of our `GpioConfig` structure?
+This is definitely a convenient way to store the state of the pin, but why do it this way? Why is this better than storing the state as an `enum` inside of our `GpioConfig` structure?
 
 ## Compile Time Functional Safety
 
