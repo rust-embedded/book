@@ -79,7 +79,7 @@ impl Gpio {
         });
     }
 
-    pub fn set_output_status(&mut self, is_high: bool) {
+    pub fn set_output_mode(&mut self, is_high: bool) {
         self.periph.modify(|_r, w| {
             w.output_mode.set_bit(is_high)
         });
