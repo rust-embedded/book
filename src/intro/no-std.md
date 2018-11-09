@@ -44,12 +44,19 @@ bootstrapping (stage 0) code like bootloaders, firmware or kernels.
 
 | feature                                                   | no\_std | std |
 |-----------------------------------------------------------|--------|-----|
-| heap (dynamic memory)                                     |   ✘    |  ✓  |
+| heap (dynamic memory)                                     |   *    |  ✓  |
+| collections (Vec, HashMap, etc)                           |  **    |  ✓  |
 | stack overflow protection                                 |   ✘    |  ✓  |
 | runs init code before main                                |   ✘    |  ✓  |
 | libstd available                                          |   ✘    |  ✓  |
 | libcore available                                         |   ✓    |  ✓  |
 | writing firmware, kernel, or bootloader code              |   ✓    |  ✘  |
+
+\* Only if you use the `alloc` crate and use a suitable allocator like [alloc-cortex-m].
+
+\** Only if you use the `collections` crate and configure a global default allocator.
+
+[alloc-cortex-m]: https://github.com/rust-embedded/alloc-cortex-m
 
 ## See Also
 * [FAQ](https://www.rust-lang.org/en-US/faq.html#does-rust-work-without-the-standard-library)
