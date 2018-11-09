@@ -4,10 +4,10 @@
 
 Embedded systems can only get so far by executing normal Rust code and moving data around in RAM. If we want to get any information into or out of our system (be that blinking an LED, detecting a button press or communicating with an off-chip peripheral on some sort of bus) we're going to have to dip into the world of Peripherals and their 'memory mapped registers'.
 
-You may well find that the code you need to access the peripherals in your microcontroller has already been written, at one of the following levels:
+You may well find that the code you need to access the peripherals in your micro-controller has already been written, at one of the following levels:
 
-* Microarchitecture Crate - This sort of crate handles any useful routines common to the processor core your microcontroller is using, as well as any peripherals that are common to all microcontrollers that use that particular type of processor core. For example the [cortex-m] crate gives you functions to enable and disable interrupts, which are the same for all Cortex-M based microcontrollers. It also gives you access to the 'SysTick' peripheral included with all Cortex-M based microcontrollers.
-* Peripheral Access Crate (PAC) - This sort of crate is a thin wrapper over the various memory-wrapper registers defined for your particular part-number of microcontroller you are using. For example, [tm4c123x] for the Texas Instruments Tiva-C TM4C123 series, or [stm32f30x] for the ST-Micro STM32F30x series. Here, you'll be interacting with the registers directly, following each peripheral's operating instructions given in your microcontroller's Technical Reference Manual.
+* Micro-architecture Crate - This sort of crate handles any useful routines common to the processor core your microcontroller is using, as well as any peripherals that are common to all micro-controllers that use that particular type of processor core. For example the [cortex-m] crate gives you functions to enable and disable interrupts, which are the same for all Cortex-M based micro-controllers. It also gives you access to the 'SysTick' peripheral included with all Cortex-M based micro-controllers.
+* Peripheral Access Crate (PAC) - This sort of crate is a thin wrapper over the various memory-wrapper registers defined for your particular part-number of micro-controller you are using. For example, [tm4c123x] for the Texas Instruments Tiva-C TM4C123 series, or [stm32f30x] for the ST-Micro STM32F30x series. Here, you'll be interacting with the registers directly, following each peripheral's operating instructions given in your micro-controller's Technical Reference Manual.
 * HAL Crate - These crates offer a more user-friendly API for your particular processor, often by implementing some common traits defined in [embedded-hal]. For example, this crate might offer a `Serial` struct, with a constructor that takes an appropriate set of GPIO pins and a board rate, and offers some sort of `write_byte` function for sending data. See the chapter on [Portability] for more information on [embedded-hal].
 * Board Crate - These crates go one step further than a HAL Crate by pre-configuring various peripherals and GPIO pins to suit the specific developer kit or board you are using, such as [F3] for the STM32F3DISCOVERY board.
 
@@ -21,7 +21,7 @@ You may well find that the code you need to access the peripherals in your micro
 
 ## Starting at the bottom
 
-Let's look at the SysTick peripheral that's common to all Cortex-M based microcontrollers. We can find a pretty low-level API in the [cortex-m] crate, and we can use it like this:
+Let's look at the SysTick peripheral that's common to all Cortex-M based micro-controllers. We can find a pretty low-level API in the [cortex-m] crate, and we can use it like this:
 
 ```rust
 use cortex_m::peripheral::{syst, Peripherals};
@@ -46,7 +46,7 @@ The functions on the `SYST` struct map pretty closely to the functionality defin
 
 ## Using a Peripheral Access Crate (PAC)
 
-We won't get very far with our embedded software development if we restrict ourselves to only the basic peripherals included with every Cortex-M. At some point, we're going to need to write some code that's specific to the particular microcontroller we're using. In this example, let's assume we have an Texas Instruments TM4C123 - a middling 80MHz Cortex-M4 with 256 KiB of Flash. We're going to pull in the [tm4c123x] crate to make use of this chip.
+We won't get very far with our embedded software development if we restrict ourselves to only the basic peripherals included with every Cortex-M. At some point, we're going to need to write some code that's specific to the particular micro-controller we're using. In this example, let's assume we have an Texas Instruments TM4C123 - a middling 80MHz Cortex-M4 with 256 KiB of Flash. We're going to pull in the [tm4c123x] crate to make use of this chip.
 
 ```rust
 #![no_std]
@@ -103,7 +103,7 @@ If we wish to change only on particular sub-field in this register and leave the
 pwm.ctl.modify(|r, w| w.globalsync0().clear_bit());
 ```
 
-The `modify` function really shows the power of closures here. In C, we'd have to read into some temporary value, modify the correct bits and then write the value back. This mean's there's considerable scope for error:
+The `modify` function really shows the power of closures here. In C, we'd have to read into some temporary value, modify the correct bits and then write the value back. This means there's considerable scope for error:
 
 ```C
 uint32_t temp = pwm0.ctl.read();
