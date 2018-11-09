@@ -34,7 +34,7 @@ that define the `#[panic_handler]` function. Some examples include:
 [`panic-itm`]: https://crates.io/crates/panic-itm
 [`panic-semihosting`]: https://crates.io/crates/panic-semihosting
 
-You may able to find even more crates searching for the [`panic-handler`]
+You may be able to find even more crates searching for the [`panic-handler`]
 keyword on crates.io.
 
 [`panic-handler`]: https://crates.io/keywords/panic-handler
