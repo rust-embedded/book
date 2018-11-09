@@ -22,6 +22,7 @@ more information and coordination
   - [QEMU](./start/qemu.md)
   - [Hardware](./start/hardware.md)
   - [Memory-mapped Registers](./start/registers.md)
+  - [Semihosting](./start/semihosting.md)
   - [Panicking](./start/panicking.md)
   - [Exceptions](./start/exceptions.md)
   - [IO](./start/io.md)
