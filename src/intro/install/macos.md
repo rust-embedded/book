@@ -1,5 +1,3 @@
-> **⚠️: This section has not been checked as of 2018-09-13**
-
 # macOS
 
 All the tools can be install using [Homebrew]:

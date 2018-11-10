@@ -1,6 +1,26 @@
 # Tooling
 
-This section contains details about the tools we'll be using.
+Dealing with microcontrollers involves using several different tools as we'll be
+dealing with an architecture different than your laptop's and we'll have to run
+and debug programs on a *remote* device.
+
+We'll use all the tools listed below. Any recent version should work when a
+minimum version is not specified, but we have listed the versions we have
+tested.
+
+- Rust 1.31, 1.31-beta, or a newer toolchain PLUS ARM Cortex-M compilation
+  support.
+- [`cargo-binutils`](https://github.com/rust-embedded/cargo-binutils) ~0.1.4
+- [`qemu-system-arm`](https://www.qemu.org/). Tested versions: 3.0.0
+- OpenOCD >=0.8. Tested versions: v0.9.0 and v0.10.0
+- GDB with ARM support. Version 7.12 or newer highly recommended. Tested
+  versions: 7.10, 7.11, 7.12 and 8.1
+- [OPTIONAL] `git` OR
+  [`cargo-generate`](https://github.com/ashleygwilliams/cargo-generate). If you
+  have neither installed then don't worry about installing either.
+
+The text below explains why we are using these tools. Installation instructions
+can be found in the next page.
 
 ## `cargo-generate` OR `git`
 
@@ -36,9 +56,9 @@ can follow some parts of this book even if you don't have any hardware with you!
 
 ## GDB
 
-Debugging is very important skill for embedded development as you may not always
-have the luxury to log stuff to the host console. In some cases, you may not
-have LEDs to blink on your hardware!
+A debugger is a very important component of embedded development as you may not
+always have the luxury to log stuff to the host console. In some cases, you may
+not have LEDs to blink on your hardware!
 
 In general, LLDB works as well as GDB when it comes to debugging but we haven't
 found an LLDB counterpart to GDB's `load` command, which uploads the program to
@@ -63,4 +83,3 @@ development board:
   * Continuing CPU execution after a debug event has been encountered
   * etc.
 * It also knows how to erase and write to the microcontroller's FLASH
-

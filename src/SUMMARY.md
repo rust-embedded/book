@@ -10,14 +10,14 @@ more information and coordination
 -->
 
 - [Introduction](./intro/introduction.md)
+    - [`no_std`](./intro/no-std.md)
+    - [Tooling](./intro/tooling.md)
     - [Installation](./intro/install.md)
         - [Linux](./intro/install/linux.md)
         - [MacOS](./intro/install/macos.md)
         - [Windows](./intro/install/windows.md)
         - [Verify Installation](./intro/install/verify.md)
-    - [Tooling](./intro/tooling.md)
     - [Hardware](./intro/hardware.md)
-    - [`no_std`](./intro/no-std.md)
 - [Getting started](./start.md)
   - [QEMU](./start/qemu.md)
   - [Hardware](./start/hardware.md)

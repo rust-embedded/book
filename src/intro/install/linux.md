@@ -1,5 +1,3 @@
-> **⚠️: This section was last checked on 2018-09-13
-
 # Linux
 
 Here are the installation commands for a few Linux distributions.
