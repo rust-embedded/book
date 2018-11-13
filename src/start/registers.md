@@ -79,17 +79,17 @@ We've access the `PWM0` peripheral in exactly the same as as we access the `SYST
 
 ### Reading
 
-The `read()` function takes a closure with a single argument. Typically we call this `r`. This argument then gives read-only access to the various sub-fields within this register, as defined by the manufacturer's SVD file for this chip. You can find all the functions available on the 'r' for this particular register, in this particular peripheral, on this particular chip, in the [tm4c123x documentation].
+The `read()` function returns an object which gives read-only access to the various sub-fields within this register, as defined by the manufacturer's SVD file for this chip. You can find all the functions available on special `R` return type for this particular register, in this particular peripheral, on this particular chip, in the [tm4c123x documentation][tm4c123x documentation R].
 
 ```rust
-if pwm.ctl.read(|r| r.globalsync0().is_set()) {
+if pwm.ctl.read().globalsync0().is_set() {
     // Do a thing
 }
 ```
 
 ### Writing
 
-The `write()` function takes a closure with a single argument. Typically we call this `w`. This argument then gives read-write access to the various sub-fields within this register, as defined by the manufacturer's SVD file for this chip. Again, you can find all the functions available on the 'w' for this particular register, in this particular peripheral, on this particular chip, in the [tm4c123x documentation]. Note that all of the sub-fields that we do not set will be set to a default value for us - any existing content in the register will be lost.
+The `write()` function takes a closure with a single argument. Typically we call this `w`. This argument then gives read-write access to the various sub-fields within this register, as defined by the manufacturer's SVD file for this chip. Again, you can find all the functions available on the 'w' for this particular register, in this particular peripheral, on this particular chip, in the [tm4c123x documentation][tm4c123x Documentation W]. Note that all of the sub-fields that we do not set will be set to a default value for us - any existing content in the register will be lost.
 
 ```rust
 pwm.ctl.write(|w| w.globalsync0().clear_bit());
@@ -115,7 +115,8 @@ pwm0.enable.write(temp); // Uh oh! Wrong variable!
 ```
 
 [svd2rust]: https://crates.io/crates/svd2rust
-[tm4c123x documentation]: https://docs.rs/tm4c123x/0.7.0/tm4c123x/pwm0/ctl/struct.R.html
+[tm4c123x documentation R]: https://docs.rs/tm4c123x/0.7.0/tm4c123x/pwm0/ctl/struct.R.html
+[tm4c123x documentation W]: https://docs.rs/tm4c123x/0.7.0/tm4c123x/pwm0/ctl/struct.W.html
 
 ## Using a HAL crate
 
