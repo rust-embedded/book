@@ -30,7 +30,6 @@ more information and coordination
     - [A first attempt in Rust](./peripherals/a-first-attempt.md)
     - [The Borrow Checker](./peripherals/borrowck.md)
     - [Singletons](./peripherals/singletons.md)
-    - [Peripherals in Rust](./peripherals/rusty.md)
 - [Static Guarantees](./static-guarantees/static-guarantees.md)
     <!-- TODO: Define Sections -->
 - [Typestate Programming](./typestate-programming/typestate-programming.md)
