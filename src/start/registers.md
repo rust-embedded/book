@@ -13,7 +13,7 @@ You may well find that the code you need to access the peripherals in your micro
 [tm4c123x]: https://crates.io/crates/tm4c123x
 [stm32f30x]: https://crates.io/crates/stm32f30x
 [embedded-hal]: https://crates.io/crates/embedded-hal
-[Portability]: ../portability/portability.md
+[Portability]: ../portability/index.md
 [F3]: https://crates.io/crates/f3
 
 
@@ -40,7 +40,7 @@ fn main() {
 
 The functions on the `SYST` struct map pretty closely to the functionality defined by the ARM Technical Reference Manual for this peripheral. There's nothing in this API about 'delaying for X milliseconds' - we have to crudely implement that ourselves using a `while` loop. Note that we can't access our `SYST` struct until we have called `Peripherals::take()` - this is a special routine that guarantees that there is only one `SYST` structure in our entire program. For more on that, see the [Peripherals] section.
 
-[Peripherals]: ../peripherals/peripherals.md
+[Peripherals]: ../peripherals/index.md
 
 ## Using a Peripheral Access Crate (PAC)
 
@@ -179,7 +179,7 @@ fn main() -> ! {
     );
 
     loop {
-        writeln!(uart, "Hello, World!\r\n").unwrap();   
+        writeln!(uart, "Hello, World!\r\n").unwrap();
     }
 }
 ```
