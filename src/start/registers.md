@@ -1,7 +1,5 @@
 # Memory Mapped Registers
 
-> The getting started chapter is about "how do I" and "what can I do with this". Later chapters cover "how does this works" and "why does it look like this". So start/peripherals.md should cover one of the cortex-m peripheral APIs, e.g. peripheral::SYST. Specifically it should cover: taking peripherals into the current scope (skipping explaining why is done like that), the low level API (read / write on individual registers: e.g. SYST.rvr.write) and the high level API (SYST.enable_counter, which is just some registers reads / writes).
-
 Embedded systems can only get so far by executing normal Rust code and moving data around in RAM. If we want to get any information into or out of our system (be that blinking an LED, detecting a button press or communicating with an off-chip peripheral on some sort of bus) we're going to have to dip into the world of Peripherals and their 'memory mapped registers'.
 
 You may well find that the code you need to access the peripherals in your micro-controller has already been written, at one of the following levels:
