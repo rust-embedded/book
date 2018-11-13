@@ -117,7 +117,7 @@ impl SystemTimer {
 
 pub fn example_usage() -> String {
     let mut st = SystemTimer::new();
-    st.set_reload(0);
+    st.set_reload(0x00FF_FFFF);
     format!("Time is now 0x{:08x}", st.get_time())
 }
 ```
@@ -127,12 +127,12 @@ Now, the problem with this approach is that the following code is perfectly acce
 ```rust
 fn thread1() {
     let mut st = SystemTimer::new();
-    st.set_reload(2000); 
+    st.set_reload(2000);
 }
 
 fn thread2() {
     let mut st = SystemTimer::new();
-    st.set_reload(1000); 
+    st.set_reload(1000);
 }
 ```
 
