@@ -20,6 +20,10 @@ How do we do this in Rust? Enter **embedded-hal**...
 
 In a nutshell it is a set of traits which define implementation contracts between **HAL implementations**, **drivers** and **applications (or firmwares)**. Those contracts include both capabilities (i.e. if a trait is implemented for a certain type, the **HAL implementation** provides a certain capability) and methods (i.e. if you can construct a type implementing a trait it is guarenteed that you have the methods specified in the trait available).
 
+A typical layering might look like this:
+
+![](../assets/rust_layers.svg)
+
 Some of the defined traits in **embedded-hal** are:
 * GPIO (input and output pins)
 * Serial communication
