@@ -20,7 +20,7 @@ tested.
   have neither installed then don't worry about installing either.
 
 The text below explains why we are using these tools. Installation instructions
-can be found in the next page.
+can be found on the next page.
 
 ## `cargo-generate` OR `git`
 

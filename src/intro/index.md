@@ -22,7 +22,7 @@ The goals of this book are:
   project?
 
 This book tries to be as general as possible but to make things easier for both
-the readers and the writers it uses the ARM Cortex-M architectures in all its
+the readers and the writers it uses the ARM Cortex-M architecture in all its
 examples. However, the book assumes that the reader is not familiar with this
 particular architecture and explains details particular to this architecture
 where required.
@@ -93,7 +93,7 @@ The work on this book is coordinated in [this repository] and is mainly
 developed by the [resources team].
 
 [this repository]: https://github.com/rust-embedded/book
-[resources team]: https://github.com/rust-embedded/wg
+[resources team]: https://github.com/rust-embedded/wg#the-resources-team
 
 If you have trouble following the instructions in this book or find that some
 section of the book is not clear enough or hard to follow then that's a bug and

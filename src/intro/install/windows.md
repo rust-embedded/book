@@ -17,14 +17,14 @@ GNU gdb (GNU Tools for Arm Embedded Processors 7-2018-q2-update) 8.1.0.20180315-
 ## OpenOCD
 
 There's no official binary release of OpenOCD for Windows but there are unofficial releases
-available [here][openocd]. Grab the 0.10.x zipfile and extract it somewhere in your drive (I
+available [here][openocd]. Grab the 0.10.x zipfile and extract it somewhere on your drive (I
 recommend `C:\OpenOCD` but with the drive letter that makes sense to you) then update your `%PATH%`
 environment variable to include the following path: `C:\OpenOCD\bin` (or the path that you used
 before).
 
 [openocd]: https://github.com/gnu-mcu-eclipse/openocd/releases
 
-Verify that OpenOCD is in yout `%PATH%` with:
+Verify that OpenOCD is in your `%PATH%` with:
 
 ``` console
 $ openocd -v
