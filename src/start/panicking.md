@@ -45,7 +45,7 @@ an application as a single line of code is not only useful as documentation but
 can also be used to change the panicking behavior according to the compilation
 profile. For example:
 
-``` rust
+``` rust,ignore
 #![no_main]
 #![no_std]
 
@@ -81,7 +81,7 @@ use cortex_m_rt::entry;
 fn main() -> ! {
     let xs = [0, 1, 2];
     let i = xs.len() + 1;
-    let y = xs[i]; // out of bounds access
+    let _y = xs[i]; // out of bounds access
 
     loop {}
 }

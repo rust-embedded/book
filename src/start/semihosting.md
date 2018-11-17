@@ -18,8 +18,6 @@ world!":
 
 extern crate panic_halt;
 
-use core::fmt::Write;
-
 use cortex_m_rt::entry;
 use cortex_m_semihosting::hprintln;
 
@@ -39,6 +37,12 @@ $ openocd
 (..)
 Hello, world!
 (..)
+```
+
+You do need to enable semihosting in OpenOCD from GDB first:
+``` console
+(gdb) monitor arm semihosting enable
+semihosting is enabled
 ```
 
 QEMU understands semihosting operations so the above program will also work with
