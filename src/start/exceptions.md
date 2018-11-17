@@ -10,7 +10,7 @@ handlers.
 
 [`exception`]: https://rust-embedded.github.io/cortex-m-rt/0.6.1/cortex_m_rt_macros/fn.exception.html
 
-``` rust
+``` rust,ignore
 // Exception handler for the SysTick (System Timer) exception
 #[exception]
 fn SysTick() {
@@ -26,7 +26,7 @@ would result in a compilation error.
 This behavior is pretty much intended and it's required to provide a feature:
 `static mut` variables declared *inside* `exception` handlers are *safe* to use.
 
-``` rust
+``` rust,ignore
 #[exception]
 fn SysTick() {
     static mut COUNT: u32 = 0;
@@ -141,7 +141,7 @@ handler for a specific exception. If you don't override the handler for a
 particular exception it will be handled by the `DefaultHandler` function, which
 defaults to:
 
-``` rust
+``` rust,ignore
 fn DefaultHandler() {
     loop {}
 }
@@ -153,7 +153,7 @@ This function is provided by the `cortex-m-rt` crate and marked as
 
 It's possible to override this `DefaultHandler` using the `exception` attribute:
 
-``` rust
+``` rust,ignore
 #[exception]
 fn DefaultHandler(irqn: i16) {
     // custom default handler

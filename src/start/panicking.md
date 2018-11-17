@@ -45,7 +45,7 @@ an application as a single line of code is not only useful as documentation but
 can also be used to change the panicking behavior according to the compilation
 profile. For example:
 
-``` rust
+``` rust,ignore
 #![no_main]
 #![no_std]
 
