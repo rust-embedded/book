@@ -93,7 +93,7 @@ $ cargo build --example hello
 Debugging will look a bit different. In fact, the first steps can look different
 depending on the target device. In this section we'll show the steps required to
 debug a program running on the STM32F3DISCOVERY. This is meant to serve as a
-reference; for device specific about debugging check out [the
+reference; for device specific information about debugging check out [the
 Debugonomicon](https://github.com/rust-embedded/debugonomicon).
 
 As before we'll do remote debugging and the client will be a GDB process. This
