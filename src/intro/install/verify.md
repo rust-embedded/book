@@ -62,7 +62,7 @@ If neither command worked as a normal user then try to run them with root
 permission (e.g. `sudo openocd ..`). If the commands do work with root
 permission then check that the [udev rules] has been correctly set.
 
-[udev rules]: linux.md
+[udev rules]: linux.md#udev-rules
 
 If you have reached this point and OpenOCD is not working please open [an issue]
 and we'll help you out!

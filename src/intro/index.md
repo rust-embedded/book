@@ -93,7 +93,7 @@ The work on this book is coordinated in [this repository] and is mainly
 developed by the [resources team].
 
 [this repository]: https://github.com/rust-embedded/book
-[resources team]: https://github.com/rust-embedded/wg
+[resources team]: https://github.com/rust-embedded/wg#the-resources-team
 
 If you have trouble following the instructions in this book or find that some
 section of the book is not clear enough or hard to follow then that's a bug and
