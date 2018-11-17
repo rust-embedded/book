@@ -22,7 +22,7 @@ The goals of this book are:
   project?
 
 This book tries to be as general as possible but to make things easier for both
-the readers and the writers it uses the ARM Cortex-M architectures in all its
+the readers and the writers it uses the ARM Cortex-M architecture in all its
 examples. However, the book assumes that the reader is not familiar with this
 particular architecture and explains details particular to this architecture
 where required.
