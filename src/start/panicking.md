@@ -81,7 +81,7 @@ use cortex_m_rt::entry;
 fn main() -> ! {
     let xs = [0, 1, 2];
     let i = xs.len() + 1;
-    let y = xs[i]; // out of bounds access
+    let _y = xs[i]; // out of bounds access
 
     loop {}
 }

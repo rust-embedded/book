@@ -26,15 +26,18 @@ use cortex_m::peripheral::{syst, Peripherals};
 use cortex_m_rt::entry;
 
 #[entry]
-fn main() {
+fn main() -> ! {
     let mut peripherals = Peripherals::take().unwrap();
     let mut systick = peripherals.SYST;
     systick.set_clock_source(syst::SystClkSource::Core);
+    systick.set_reload(1_000);
     systick.clear_current();
     systick.enable_counter();
-    while systick.get_current() < 1_000 {
+    while !systick.has_wrapped() {
         // Loop
     }
+
+    loop {}
 }
 ```
 
