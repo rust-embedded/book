@@ -91,7 +91,7 @@ impl Gpio {
 }
 ```
 
-However, this could allow us to modify certain registers that do not make sense. For example, what happens if we set the `output_mode` field when our GPIO is configured as an input? For some hardware, ths may not matter, but on some hardware, it could cause unexpected or undefined behavior.
+However, this could allow us to modify certain registers that do not make sense. For example, what happens if we set the `output_mode` field when our GPIO is configured as an input? For some hardware, this may not matter, but on some hardware, it could cause unexpected or undefined behavior.
 
 This would allow us to reach states not defined by our state machine above: An output that is pulled low, or an input that was set high!
 
