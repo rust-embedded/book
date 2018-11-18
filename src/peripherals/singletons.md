@@ -27,7 +27,7 @@ But this has a few problems. It is a mutable global variable, and in Rust, these
 
 Instead of just making our peripheral a global variable, we might instead decide to make a global variable, in this case called `PERIPHERALS`, which contains an `Option<T>` for each of our peripherals.
 
-```rust
+```rust,ignore
 struct Peripherals {
     serial: Option<SerialPort>,
 }
@@ -75,7 +75,7 @@ fn main() {
 
 Additionally, if you use `cortex-m-rtfm`, the entire process of defining and obtaining these peripherals are abstracted for you, and you are instead handed a `Peripherals` structure that contains a non-`Option<T>` version of all of the items you define.
 
-```rust
+```rust,ignore
 // cortex-m-rtfm v0.3.x
 app! {
     resources: {
@@ -95,7 +95,7 @@ fn init(p: init::Peripherals) -> init::LateResources {
 
 But how do these Singletons make a noticeable difference in how our Rust code works?
 
-```rust
+```rust,ignore
 impl SerialPort {
     const SER_PORT_SPEED_REG: *mut u32 = 0x4000_1000 as _;
 
@@ -134,7 +134,7 @@ Additionally, because some references are mutable, and some are immutable, it be
 
 This is allowed to change hardware settings:
 
-```rust
+```rust,ignore
 fn setup_spi_port(
     spi: &mut SpiPort,
     cs_pin: &mut GpioPin
@@ -145,7 +145,7 @@ fn setup_spi_port(
 
 This isn't:
 
-```rust
+```rust,ignore
 fn read_button(gpio: &GpioPin) -> bool {
     // ...
 }

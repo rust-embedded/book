@@ -17,7 +17,7 @@ Let's look at the 'SysTick' peripheral - a simple timer which comes with every C
 
 In Rust, we can represent a collection of registers in exactly the same way as we do in C - with a `struct`.
 
-```rust
+```rust,ignore
 #[repr(C)]
 struct SysTick {
     pub csr: u32,
@@ -29,7 +29,7 @@ struct SysTick {
 
 The qualifier `#[repr(C)]` tells the Rust compiler to lay this structure out like a C compiler would. That's very important, as Rust allows structure fields to be re-ordered, while C does not. You can imagine the debugging we'd have to do if these fields were silently re-arranged by the compiler! With this qualifier in place, we have our four 32-bit fields which correspond to the table above. But of course, this `struct` is of no use by itself - we need a variable.
 
-```rust
+```rust,ignore
 let systick = 0xE000_E010 as *mut SysTick;
 let time = unsafe { (*systick).cvr };
 ```
@@ -46,7 +46,7 @@ Now, there are a couple of problems with the approach above.
 
 Now, the problem is that compilers are clever. If you make two writes to the same piece of RAM, one after the other, the compiler can notice this and just skip the first write entirely. In C, we can mark variables as `volatile` to ensure that every read or write occurs as intended. In Rust, we instead mark the *accesses* as volatile, not the variable.
 
-```rust
+```rust,ignore
 let systick = unsafe { &mut *(0xE000_E010 as *mut SysTick) };
 let time = unsafe { std::ptr::read_volatile(&mut systick.cvr) };
 ```
@@ -55,7 +55,7 @@ So, we've fixed one of our four problems, but now we have even more `unsafe` cod
 
 [`volatile_register`]: https://crates.io/crates/volatile_register
 
-```rust
+```rust,ignore
 use volatile_register::{RW, RO};
 
 #[repr(C)]
@@ -84,7 +84,7 @@ We need to wrap this `struct` up into a higher-layer API that is safe for our us
 
 One example might be:
 
-```rust
+```rust,ignore
 use volatile_register::{RW, RO};
 
 pub struct SystemTimer {
@@ -124,7 +124,7 @@ pub fn example_usage() -> String {
 
 Now, the problem with this approach is that the following code is perfectly acceptable to the compiler:
 
-```rust
+```rust,ignore
 fn thread1() {
     let mut st = SystemTimer::new();
     st.set_reload(2000);

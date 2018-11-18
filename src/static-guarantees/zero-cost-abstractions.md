@@ -2,7 +2,7 @@
 
 Type states are also an excellent example of Zero Cost Abstractions - the ability to move certain behaviors to compile time execution or analysis. These type states contain no actual data, and are instead used as markers. Since they contain no data, they have no actual representation in memory at runtime:
 
-```rust
+```rust,ignore
 use core::mem::size_of;
 
 let _ = size_of::<Enabled>();    // == 0
@@ -13,7 +13,7 @@ let _ = size_of::<GpioConfig<Enabled, Input, PulledHigh>>(); // == 0
 
 ## Zero Sized Types
 
-```rust
+```rust,ignore
 struct Enabled;
 ```
 
@@ -21,7 +21,7 @@ Structures defined like this are called Zero Sized Types, as they contain no act
 
 In this snippet of code:
 
-```rust
+```rust,ignore
 pub fn into_input_high_z(self) -> GpioConfig<Enabled, Input, HighZ> {
     self.periph.modify(|_r, w| w.input_mode().high_z());
     GpioConfig {

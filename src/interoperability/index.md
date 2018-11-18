@@ -34,7 +34,7 @@ most of the `std::os::raw` types in the [`cty`] crate.
 As mentioned above, primitive types can be converted
 by the compiler implicitly.
 
-```rust
+```rust,ignore
 unsafe fn foo(num: u32) {
     let c_num: c_uint = num;
     let r_num: u32 = c_num;
