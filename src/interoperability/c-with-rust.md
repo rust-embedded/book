@@ -58,7 +58,7 @@ pub x: cty::c_int,
 pub y: cty::c_int,
 ```
 
-Due to the flexibility of how C or C++ defines an `int` or `char`, it is recommended to use primative data types defined in `cty`, which will map types from C to types in Rust
+Due to the flexibility of how C or C++ defines an `int` or `char`, it is recommended to use primitive data types defined in `cty`, which will map types from C to types in Rust
 
 ```rust
 pub extern "C" fn cool_function( ... );

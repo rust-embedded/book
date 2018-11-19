@@ -5,8 +5,8 @@ In embedded environments portability is a very important topic: Every vendor and
 A common way to equalize such differences is via a layer called Hardware Abstraction layer or **HAL**.
 
 > Hardware abstractions are sets of routines in software that emulate some platform-specific details, giving programs direct access to the hardware resources.
-> 
-> They often allow programmers to write device-independent, high performance applications by providing standard operating system (OS) calls to hardware. 
+>
+> They often allow programmers to write device-independent, high performance applications by providing standard operating system (OS) calls to hardware.
 >
 > *Wikipedia: [Hardware Abstraction Layer]*
 
@@ -18,7 +18,7 @@ How do we do this in Rust? Enter **embedded-hal**...
 
 ## What is embedded-hal?
 
-In a nutshell it is a set of traits which define implementation contracts between **HAL implementations**, **drivers** and **applications (or firmwares)**. Those contracts include both capabilities (i.e. if a trait is implemented for a certain type, the **HAL implementation** provides a certain capability) and methods (i.e. if you can construct a type implementing a trait it is guarenteed that you have the methods specified in the trait available).
+In a nutshell it is a set of traits which define implementation contracts between **HAL implementations**, **drivers** and **applications (or firmwares)**. Those contracts include both capabilities (i.e. if a trait is implemented for a certain type, the **HAL implementation** provides a certain capability) and methods (i.e. if you can construct a type implementing a trait it is guaranteed that you have the methods specified in the trait available).
 
 A typical layering might look like this:
 
@@ -53,7 +53,7 @@ Such a **HAL implementation** can come in various flavours:
 
 ### Driver
 
-A driver implements a set of custom functionality for an internal or external component, connected to a peripheral implementing the embedded-hal traits. Typical examples for such drivers include various sensors (temperatur, magnetometer, accelerometer, light), display devices (LED arays, LCD displays) and actors (motors, relais).
+A driver implements a set of custom functionality for an internal or external component, connected to a peripheral implementing the embedded-hal traits. Typical examples for such drivers include various sensors (temperature, magnetometer, accelerometer, light), display devices (LED arrays, LCD displays) and actors (motors, transmitter).
 
 A driver has to be initialised with an instance of type that implements a certain `trait` of the embedded-hal which is ensured via trait bound and provides its own type instance with a custom set of methods allowing to interact with the driven device.
 
