@@ -68,10 +68,10 @@ fn main() -> ! {
     loop {
         let state = read_signal_level();
         if state && !last_state {
-            last_state = state;
             // DANGER - Not actually safe! Could cause data races.
             unsafe { COUNTER += 1 };
         }
+        last_state = state;
     }
 }
 
@@ -109,12 +109,12 @@ fn main() -> ! {
     loop {
         let state = read_signal_level();
         if state && !last_state {
-            last_state = state;
             // New critical section ensures synchronised access to COUNTER
             cortex_m::interrupt::free(|_| {
                 unsafe { COUNTER += 1 };
             });
         }
+        last_state = state;
     }
 }
 
@@ -172,10 +172,10 @@ fn main() -> ! {
     loop {
         let state = read_signal_level();
         if state && !last_state {
-            last_state = state;
             // Use `fetch_add` to atomically add 1 to COUNTER
             COUNTER.fetch_add(1, Ordering::Relaxed);
         }
+        last_state = state;
     }
 }
 
@@ -254,10 +254,10 @@ fn main() -> ! {
     loop {
         let state = read_signal_level();
         if state && !last_state {
-            last_state = state;
             // No unsafe here!
             interrupt::free(|cs| COUNTER.increment(cs));
         }
+        last_state = state;
     }
 }
 
@@ -353,10 +353,10 @@ fn main() -> ! {
     loop {
         let state = read_signal_level();
         if state && !last_state {
-            last_state = state;
             interrupt::free(|cs|
                 COUNTER.borrow(cs).set(COUNTER.borrow(cs).get() + 1));
         }
+        last_state = state;
     }
 }
 
@@ -448,14 +448,13 @@ fn main() -> ! {
         });
 
         if state && !last_state {
-            last_state = state;
-
             // Set PA1 high if we've seen a rising edge on PA0.
             interrupt::free(|cs| {
                 let gpioa = MY_GPIO.borrow(cs).borrow();
                 gpioa.as_ref().unwrap().odr.modify(|_, w| w.odr1().set_bit());
             });
         }
+        last_state = state;
     }
 }
 
