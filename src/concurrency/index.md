@@ -473,7 +473,7 @@ fn timer() {
 
 That's quite a lot to take in, so let's break down the important lines.
 
-```rust
+```rust,ignore
 static MY_GPIO: Mutex<RefCell<Option<stm32f405::GPIOA>>> =
     Mutex::new(RefCell::new(None));
 ```
@@ -487,7 +487,7 @@ to something empty, and only later actually move the variable in. We cannot
 access the peripheral singleton statically, only at runtime, so this is
 required.
 
-```rust
+```rust,ignore
 interrupt::free(|cs| MY_GPIO.borrow(cs).replace(Some(dp.GPIOA)));
 ```
 
@@ -495,7 +495,7 @@ Inside a critical section we can call `borrow()` on the mutex, which gives us
 a reference to the `RefCell`. We then call `replace()` to move our new value
 into the `RefCell`.
 
-```rust
+```rust,ignore
 interrupt::free(|cs| {
     let gpioa = MY_GPIO.borrow(cs).borrow();
     gpioa.as_ref().unwrap().odr.modify(|_, w| w.odr1().set_bit());

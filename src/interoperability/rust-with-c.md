@@ -51,7 +51,7 @@ documented [here](https://doc.rust-lang.org/reference/items/external-blocks.html
 
 Putting these parts together, you get a function that looks roughly like this.
 
-```rust
+```rust,ignore
 #[no_mangle]
 pub extern "C" fn rust_function() {
 
@@ -77,7 +77,7 @@ the function signatures.
 
 Every function in your Rust-ffi API needs to have a corresponding header function.
 
-```rust
+```rust,ignore
 #[no_mangle]
 pub extern "C" fn rust_function() {}
 ```

@@ -27,7 +27,7 @@ The `alloc` crate is shipped with the standard Rust distribution. To import the
 crate you can directly `use` it *without* declaring it as a dependency in your
 `Cargo.toml` file.
 
-``` rust
+``` rust,ignore
 #![feature(alloc)]
 
 extern crate alloc;
@@ -46,7 +46,7 @@ implement a simple bump pointer allocator and use that as the global allocator.
 However, we *strongly* suggest you use a battle tested allocator from crates.io
 in your program instead of this allocator.
 
-``` rust
+``` rust,ignore
 // Bump pointer allocator implementation
 
 extern crate cortex_m;
@@ -103,7 +103,7 @@ Apart from selecting a global allocator the user will also have to define how
 Out Of Memory (OOM) errors are handled using the *unstable*
 `alloc_error_handler` attribute.
 
-``` rust
+``` rust,ignore
 #![feature(alloc_error_handler)]
 
 use cortex_m::asm;
