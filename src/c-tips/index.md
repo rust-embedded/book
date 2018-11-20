@@ -54,6 +54,7 @@ pub mod iir;
 You can similarly include code blocks only if a feature is _not_ enabled, or if
 any combination or features is or is not enabled.
 
+The feature selection will only apply to the next statement or block. If a block can not be used in the current scope then then `cfg` attribute will need to be used multiple times.
 It's worth noting that most of the time it is better to simply include all the
 code and allow the compiler to remove dead code when optimising: it's simpler
 for you and your users, and in general the compiler will do a good job of
