@@ -168,7 +168,7 @@ Instead, use iterators:
 ```rust
 let arr = [0u16; 16];
 for element in arr.iter() {
-    process(*arr);
+    process(*element);
 }
 ```
 
