@@ -162,7 +162,7 @@ for(i=0; i<sizeof(arr)/sizeof(arr[0]); i++) {
 
 In Rust this is an anti-pattern: indexed access can be slower (as it needs to
 be bounds checked) and may prevent various compiler optimisations.
-
+It is important to see this distinction in Rust vs C, as Rust needs to check for out-of-bounds access when manually indexing an array to guarantee memory safety, while C will happily index outside the array if given an index that will do so.  
 Instead, use iterators:
 
 ```rust
