@@ -136,6 +136,10 @@ Common use cases for build scripts include:
 * change the Cargo build configuration
 * add extra static libraries to link against
 
+At present there is no support for post-build scripts, which you might
+traditionally have used for tasks like automatic generation of binaries from
+the build objects or printing build information.
+
 ### Cross-Compiling
 
 Using Cargo for your build system also simplifies cross-compiling. In most
@@ -184,9 +188,9 @@ See the [Iterators in the Book] and [Iterator documentation] for more details.
 
 ## References vs Pointers
 
-In Rust, pointers (called [_raw pointers_]) exist but are rarely used:
-dereferencing them is always considered `unsafe` as Rust cannot provide its
-usual guarantees about what might be behind the pointer.
+In Rust, pointers (called [_raw pointers_]) exist but are only used in specific
+circumstances, as dereferencing them is always considered `unsafe` -- Rust
+cannot provide its usual guarantees about what might be behind the pointer.
 
 [_raw pointers_]: https://doc.rust-lang.org/book/second-edition/ch19-01-unsafe-rust.html#dereferencing-a-raw-pointer
 
@@ -200,6 +204,11 @@ the same value at any given time.
 In practice this means you have to be more careful about whether you need
 mutable access to data: where in C the default is mutable and you must be
 explicit about `const`, in Rust the opposite is true.
+
+One situation where you might still use raw pointers is interacting directly
+with hardware (for example, writing a pointer to a buffer into a DMA peripheral
+register), and they are also used under the hood for all peripheral access
+crates to allow you to read and write memory-mapped registers.
 
 ## Other Resources
 
