@@ -51,7 +51,7 @@ Typically the states listed above are set by writing values to given registers m
 |              |               | 1     | set-high  | Output pin is driven high |
 | input_status | 5             | x     | in-val    | 0 if input is < 1.5v, 1 if input >= 1.5v |
 
-We could simple expose the following structure in Rust to control this GPIO:
+We _could_ expose the following structure in Rust to control this GPIO:
 
 ```rust,ignore
 /// GPIO interface
@@ -79,7 +79,7 @@ impl Gpio {
         });
     }
 
-    pub fn set_output_status(&mut self, is_high: bool) {
+    pub fn set_output_mode(&mut self, is_high: bool) {
         self.periph.modify(|_r, w| {
             w.output_mode.set_bit(is_high)
         });
@@ -91,8 +91,8 @@ impl Gpio {
 }
 ```
 
-However, this could allow us to modify certain registers that do not make sense. For example, what happens if we set the `output_mode` field when our GPIO is configured as an input? For some hardware, this may not matter, but on some hardware, it could cause unexpected or undefined behavior.
+However, this would allow us to modify certain registers that do not make sense. For example, what happens if we set the `output_mode` field when our GPIO is configured as an input? 
 
-This would allow us to reach states not defined by our state machine above: An output that is pulled low, or an input that was set high!
+In general, use of this structure would allow us to reach states not defined by our state machine above: e.g. an output that is pulled low, or an input that is set high. For some hardware, this may not matter. On other hardware, it could cause unexpected or undefined behavior!
 
 Although this interface is convenient to write, it doesn't enforce the design contracts set out by our hardware implementation.

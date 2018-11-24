@@ -40,9 +40,9 @@ As said above there are three main users of the HAL:
 
 ### HAL implementation
 
-A HAL implementation provides the interfacing between the hardware and and the users of the HAL traits. Typical implementations consist of three parts:
+A HAL implementation provides the interfacing between the hardware and the users of the HAL traits. Typical implementations consist of three parts:
 * One or more hardware specific types
-* Functions to create and intialise such a type, often providing various configuration options (speed, operation mode, use pins, etc.)
+* Functions to create and initialize such a type, often providing various configuration options (speed, operation mode, use pins, etc.)
 * one or more `trait` `impl` of **embedded-hal** traits for that type
 
 Such a **HAL implementation** can come in various flavours:
@@ -53,10 +53,10 @@ Such a **HAL implementation** can come in various flavours:
 
 ### Driver
 
-A driver implements a set of custom functionality for an internal or external component, connected to a peripheral implementing the embedded-hal traits. Typical examples for such drivers include various sensors (temperature, magnetometer, accelerometer, light), display devices (LED arrays, LCD displays) and actors (motors, transmitters).
+A driver implements a set of custom functionality for an internal or external component, connected to a peripheral implementing the embedded-hal traits. Typical examples for such drivers include various sensors (temperature, magnetometer, accelerometer, light), display devices (LED arrays, LCD displays) and actuators (motors, transmitters).
 
-A driver has to be initialised with an instance of type that implements a certain `trait` of the embedded-hal which is ensured via trait bound and provides its own type instance with a custom set of methods allowing to interact with the driven device.
+A driver has to be initialized with an instance of type that implements a certain `trait` of the embedded-hal which is ensured via trait bound and provides its own type instance with a custom set of methods allowing to interact with the driven device.
 
 ### Application
 
-The application binds the various parts together and ensures that the desired functionality is achieved. When porting between different systems, this is the part which requires the most adaptation efforts, since the application needs to correctly intialise the real hardware via the HAL implementation and the initialisation of different hardware differs, sometimes drastically so. Also the user choice often plays a big role, since components can be physically connected to different terminals, hardware buses sometimes need external hardware to match the configuration or there are different trade-offs to be made in the use of internal peripherals (e.g. multiple timers with different capabilities are available or peripherals conflict with others).
+The application binds the various parts together and ensures that the desired functionality is achieved. When porting between different systems, this is the part which requires the most adaptation efforts, since the application needs to correctly initialize the real hardware via the HAL implementation and the initialisation of different hardware differs, sometimes drastically so. Also the user choice often plays a big role, since components can be physically connected to different terminals, hardware buses sometimes need external hardware to match the configuration or there are different trade-offs to be made in the use of internal peripherals (e.g. multiple timers with different capabilities are available or peripherals conflict with others).
