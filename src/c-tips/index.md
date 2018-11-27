@@ -54,11 +54,19 @@ pub mod iir;
 You can similarly include code blocks only if a feature is _not_ enabled, or if
 any combination or features is or is not enabled.
 
-The feature selection will only apply to the next statement or block. If a block can not be used in the current scope then then `cfg` attribute will need to be used multiple times.
-It's worth noting that most of the time it is better to simply include all the
-code and allow the compiler to remove dead code when optimising: it's simpler
-for you and your users, and in general the compiler will do a good job of
-removing unused code.
+Additionally, Rust provides a number of automatically-set conditions you can
+use, such as `target_arch` to select different code based on architecture. For
+full details of the conditional compilation support, refer to the [Rust
+Reference].
+
+[Rust Reference]: https://doc.rust-lang.org/reference/conditional-compilation.html
+
+The conditional compilation will only apply to the next statement or block. If
+a block can not be used in the current scope then then `cfg` attribute will
+need to be used multiple times.  It's worth noting that most of the time it is
+better to simply include all the code and allow the compiler to remove dead
+code when optimising: it's simpler for you and your users, and in general the
+compiler will do a good job of removing unused code.
 
 ### Compile-Time Sizes and Computation
 
