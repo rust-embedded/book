@@ -56,10 +56,10 @@ any combination or features is or is not enabled.
 
 Additionally, Rust provides a number of automatically-set conditions you can
 use, such as `target_arch` to select different code based on architecture. For
-full details of the conditional compilation support, refer to the [Rust
-Reference].
+full details of the conditional compilation support, refer to the
+[conditional compilation] chapter of the Rust reference.
 
-[Rust Reference]: https://doc.rust-lang.org/reference/conditional-compilation.html
+[conditional compilation]: https://doc.rust-lang.org/reference/conditional-compilation.html
 
 The conditional compilation will only apply to the next statement or block. If
 a block can not be used in the current scope then then `cfg` attribute will
@@ -217,6 +217,111 @@ One situation where you might still use raw pointers is interacting directly
 with hardware (for example, writing a pointer to a buffer into a DMA peripheral
 register), and they are also used under the hood for all peripheral access
 crates to allow you to read and write memory-mapped registers.
+
+## Packed and Aligned Types
+
+In embedded C it is common to tell the compiler a variable must have a certain
+alignment or a struct must be packed rather than aligned, usually to meet
+specific hardware or protocol requirements.
+
+In Rust this is controlled by the `repr` attribute on a struct or union. The
+default representation provides no guarantees of layout, so should not be used
+for code that interoperates with hardware or C. The compiler may re-order
+struct members or insert padding and the behaviour may change with future
+versions of Rust.
+
+```rust
+struct Foo {
+    x: u16,
+    y: u8,
+    z: u16,
+}
+
+fn main() {
+    let v = Foo { x: 0, y: 0, z: 0 };
+    println!("{:p} {:p} {:p}", &v.x, &v.y, &v.z);
+}
+
+// 0x7ffecb3511d0 0x7ffecb3511d4 0x7ffecb3511d2
+// Note ordering has been changed to y, z, y to improve packing.
+```
+
+To ensure layouts that are interoperable with C, use `repr(C)`:
+
+```rust
+#[repr(C)]
+struct Foo {
+    x: u16,
+    y: u8,
+    z: u16,
+}
+
+fn main() {
+    let v = Foo { x: 0, y: 0, z: 0 };
+    println!("{:p} {:p} {:p}", &v.x, &v.y, &v.z);
+}
+
+// 0x7fffd0d84c60 0x7fffd0d84c62 0x7fffd0d84c64
+// Ordering is preserved and the layout will not change over time.
+// `z` is two-byte aligned so a byte of padding exists between `y` and `z`.
+```
+
+To ensure a packed representation, use `repr(packed)`:
+
+```rust
+#[repr(packed)]
+struct Foo {
+    x: u16,
+    y: u8,
+    z: u16,
+}
+
+fn main() {
+    let v = Foo { x: 0, y: 0, z: 0 };
+    // Unsafe is required to borrow a field of a packed struct.
+    unsafe { println!("{:p} {:p} {:p}", &v.x, &v.y, &v.z) };
+}
+
+// 0x7ffd33598490 0x7ffd33598492 0x7ffd33598493
+// No padding has been inserted between `y` and `z`, so now `z` is unaligned.
+```
+
+Note that using `repr(packed)` also sets the alignment of the type to `1`.
+
+Finally, to specify a specific alignment, use `repr(align(n))`, where `n` is
+the number of bytes to align to (and must be a power of two):
+
+```rust
+#[repr(C)]
+#[repr(align(4096))]
+struct Foo {
+    x: u16,
+    y: u8,
+    z: u16,
+}
+
+fn main() {
+    let v = Foo { x: 0, y: 0, z: 0 };
+    let u = Foo { x: 0, y: 0, z: 0 };
+    println!("{:p} {:p} {:p}", &v.x, &v.y, &v.z);
+    println!("{:p} {:p} {:p}", &u.x, &u.y, &u.z);
+}
+
+// 0x7ffec909a000 0x7ffec909a002 0x7ffec909a004
+// 0x7ffec909b000 0x7ffec909b002 0x7ffec909b004
+// The two instances `u` and `v` have been placed on 4096-byte alignments,
+// evidenced by the `000` at the end of their addresses.
+```
+
+Note we can combine `repr(C)` with `repr(align(n))` to obtain an aligned and
+C-compatible layout. It is not permissible to combine `repr(align(n))` with
+`repr(packed)`, since `repr(packed)` sets the alignment to `1`. It is also not
+permissible for a `repr(packed)` type to contain a `repr(align(n))` type.
+
+For further details on type layouts, refer to the [type layout] chapter of the
+Rust Reference.
+
+[type layout]: https://doc.rust-lang.org/reference/type-layout.html
 
 ## Other Resources
 
