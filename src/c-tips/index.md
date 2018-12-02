@@ -218,6 +218,82 @@ with hardware (for example, writing a pointer to a buffer into a DMA peripheral
 register), and they are also used under the hood for all peripheral access
 crates to allow you to read and write memory-mapped registers.
 
+## Volatile Access
+
+In C, individual variables may be marked `volatile`, indicating to the compiler
+that the value in the variable may change between accesses. Volatile variables
+are commonly used in an embedded context for memory-mapped registers.
+
+In Rust, instead of marking a variable as `volatile`, we use specific methods
+to perform volatile access: [`core::ptr::read_volatile`] and
+[`core::ptr::write_volatile`]. These methods take a `*const T` or a `*mut T`
+(_raw pointers_, as discussed above) and perform a volatile read or write.
+
+[`core::ptr::read_volatile`]: https://doc.rust-lang.org/core/ptr/fn.read_volatile.html
+[`core::ptr::write_volatile`]: https://doc.rust-lang.org/core/ptr/fn.write_volatile.html
+
+For example, in C you might write:
+
+```c
+volatile bool signalled = false;
+
+void ISR() {
+    // Signal that the interrupt has occurred
+    signalled = true;
+}
+
+void driver() {
+    while(true) {
+        // Sleep until signalled
+        while(!signalled) { WFI(); }
+        // Reset signalled indicator
+        signalled = false;
+        // Perform some task that was waiting for the interrupt
+        run_task();
+    }
+}
+```
+
+The equivalent in Rust would use volatile methods on each access:
+
+```rust
+static mut SIGNALLED: bool = false;
+
+#[interrupt]
+fn ISR() {
+    // Signal that the interrupt has occurred
+    // (In real code, you should consider a higher level primitive,
+    //  such as an atomic type).
+    unsafe { core::ptr::write_volatile(&mut SIGNALLED, true) };
+}
+
+fn driver() {
+    loop {
+        // Sleep until signalled
+        while unsafe { !core::ptr::read_volatile(&SIGNALLED) } {}
+        // Reset signalled indicator
+        unsafe { core::ptr::write_volatile(&mut SIGNALLED, false) };
+        // Perform some task that was waiting for the interrupt
+        run_task();
+    }
+}
+```
+
+A few things are worth noting in the code sample:
+  * We can pass `&mut SIGNALLED` into the function requiring `*mut T`, since
+    `&mut T` automatically converts to a `*mut T` (and the same for `*const T`)
+  * We need `unsafe` blocks for the `read_volatile`/`write_volatile` methods,
+    since they are `unsafe` functions. It is the programmer's responsibility
+    to ensure safe use: see the methods' documentation for further details.
+
+It is rare to require these functions directly in your code, as they will
+usually be taken care of for you by higher-level libraries. For memory mapped
+peripherals, the peripheral access crates will implement volatile access
+automatically, while for concurrency primitives there are better abstractions
+available (see the [Concurrency chapter]).
+
+[Concurrency chapter]: ../concurency/
+
 ## Packed and Aligned Types
 
 In embedded C it is common to tell the compiler a variable must have a certain
