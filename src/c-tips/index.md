@@ -243,7 +243,7 @@ fn main() {
 }
 
 // 0x7ffecb3511d0 0x7ffecb3511d4 0x7ffecb3511d2
-// Note ordering has been changed to y, z, y to improve packing.
+// Note ordering has been changed to x, z, y to improve packing.
 ```
 
 To ensure layouts that are interoperable with C, use `repr(C)`:
