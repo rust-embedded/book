@@ -192,7 +192,7 @@ data processing code.
 See the [Iterators in the Book] and [Iterator documentation] for more details.
 
 [Iterators in the Book]: https://doc.rust-lang.org/book/second-edition/ch13-02-iterators.html
-[Iterator method documentation]: https://doc.rust-lang.org/core/iter/trait.Iterator.html
+[Iterator documentation]: https://doc.rust-lang.org/core/iter/trait.Iterator.html
 
 ## References vs Pointers
 
