@@ -401,8 +401,9 @@ Rust Reference.
 
 ## Other Resources
 
-* In this book: [A little C with your Rust](../interoperability/c-with-rust.md)
-* In this book: [A little Rust with your C](../interoperability/rust-with-c.md)
+* In this book: 
+    * [A little C with your Rust](../interoperability/c-with-rust.md)
+    * [A little Rust with your C](../interoperability/rust-with-c.md)
 * [The Rust Embedded FAQs](https://docs.rust-embedded.org/faq.html)
 * [Rust Pointers for C Programmers](http://blahg.josefsipek.net/?p=580)
 * [I used to use pointers - now what?](https://github.com/diwic/reffers-rs/blob/master/docs/Pointers.md)
