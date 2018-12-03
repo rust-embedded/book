@@ -295,7 +295,7 @@ peripherals, the peripheral access crates will implement volatile access
 automatically, while for concurrency primitives there are better abstractions
 available (see the [Concurrency chapter]).
 
-[Concurrency chapter]: ../concurency/index.md
+[Concurrency chapter]: ../concurrency/index.md
 
 ## Packed and Aligned Types
 
