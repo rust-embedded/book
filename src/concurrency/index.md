@@ -52,7 +52,7 @@ because without taking special care, you might trigger a race condition,
 where your access to the variable is interrupted halfway through by an
 interrupt which also accesses that variable.
 
-[`static mut`]: https://doc.rust-lang.org/book/second-edition/ch19-01-unsafe-rust.html#accessing-or-modifying-a-mutable-static-variable
+[`static mut`]: https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html#accessing-or-modifying-a-mutable-static-variable
 
 For an example of how this behaviour can cause subtle errors in your code,
 consider an embedded program which counts rising edges of some input signal

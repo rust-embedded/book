@@ -203,7 +203,7 @@ In Rust, pointers (called [_raw pointers_]) exist but are only used in specific
 circumstances, as dereferencing them is always considered `unsafe` -- Rust
 cannot provide its usual guarantees about what might be behind the pointer.
 
-[_raw pointers_]: https://doc.rust-lang.org/book/second-edition/ch19-01-unsafe-rust.html#dereferencing-a-raw-pointer
+[_raw pointers_]: https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html#dereferencing-a-raw-pointer
 
 In most cases, we instead use _references_, indicated by the `&` symbol, or
 _mutable references_, indicated by `&mut`. References behave similarly to
