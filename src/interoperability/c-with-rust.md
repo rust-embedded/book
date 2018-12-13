@@ -88,7 +88,7 @@ Rather than manually generating these interfaces, which may be tedious and error
 4. `bindgen` will produce the generated Rust code to the output of the terminal window. This file may be piped to a file in your project, such as `bindings.rs`. You may use this file in your Rust project to interact with C/C++ code compiled and linked as an external library
 
 [bindgen]: https://github.com/rust-lang-nursery/rust-bindgen
-[bindgen user's manual]: https://rust-lang-nursery.github.io/rust-bindgen/
+[bindgen user's manual]: https://rust-lang.github.io/rust-bindgen/
 
 ## Building your C/C++ code
 
