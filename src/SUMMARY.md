@@ -25,6 +25,7 @@ more information and coordination
   - [Semihosting](./start/semihosting.md)
   - [Panicking](./start/panicking.md)
   - [Exceptions](./start/exceptions.md)
+  - [Interrupts](./start/interrupts.md)
   - [IO](./start/io.md)
 - [Peripherals](./peripherals/index.md)
     - [A first attempt in Rust](./peripherals/a-first-attempt.md)
