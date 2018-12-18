@@ -52,3 +52,9 @@ fn TIM2() {
     // `COUNT` has type `&mut u32` and it's safe to use
     *COUNT += 1;
 }
+```
+
+For a more detailed description about the mechanisms demonstrated here please
+refer to the [exceptions section].
+
+[exceptions section]: ./exceptions.md
