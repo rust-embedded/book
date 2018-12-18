@@ -79,7 +79,23 @@ MEMORY
 }
 ```
 
-There's no step three. You can now cross compile programs using `cargo build`
+Make sure the `debug::exit()` call is commented out or removed, it is used
+only for running in QEMU.
+
+``` rust
+#[entry]
+fn main() -> ! {
+    hprintln!("Hello, world!").unwrap();
+
+    // exit QEMU
+    // NOTE do not run this on hardware; it can corrupt OpenOCD state
+    // debug::exit(debug::EXIT_SUCCESS);
+
+    loop {}
+}
+```
+
+You can now cross compile programs using `cargo build`
 and inspect the binaries using `cargo-binutils` as you did before. The
 `cortex-m-rt` crate handles all the magic required to get your chip running,
 as helpfully, pretty much all Cortex-M CPUs boot in the same fashion.
