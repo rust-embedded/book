@@ -173,6 +173,10 @@ On another terminal run GDB, also from the root of the template.
 $ <gdb> -q target/thumbv7em-none-eabihf/debug/examples/hello
 ```
 
+**NOTE**: `<gdb>` represents a GDB program capable of debugging ARM binaries.
+This could be `arm-none-eabi-gdb`, `gdb-multiarch` or `gdb` depending on your
+system -- you may have to try all three.
+
 Next connect GDB to OpenOCD, which is waiting for a TCP connection on port 3333.
 
 ``` console
