@@ -227,7 +227,7 @@ let input_pin = pin.into_enabled_input();
 let pin_state = input_pin.bit_is_set();
 
 // Can't do this, input pins don't have this interface!
-// pin_state.set_bit(true);
+// input_pin.set_bit(true);
 
 /*
  * Example 2: High-Z input to Pulled Low input

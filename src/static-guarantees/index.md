@@ -9,7 +9,7 @@ at compile time; reducing the need for runtime checks in some cases.
 
 When applied to embedded programs these *static checks* can be used, for
 example, to enforce that configuration of I/O interfaces is done properly. For
-instance, one can design an API where is only possible to initialize a serial
+instance, one can design an API where it is only possible to initialize a serial
 interface by first configuring the pins that will be used by the interface.
 
 One can also statically check that operations, like setting a pin low, can only
