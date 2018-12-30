@@ -417,7 +417,7 @@ $ head -n3 .cargo/config
 ``` toml
 [target.thumbv7m-none-eabi]
 # uncomment this to make `cargo run` execute programs on QEMU
-runner = ["qemu-system-arm", "-cpu", "cortex-m3", "-machine", "lm3s6965evb", "-nographic", "-semihosting-config", "enable=on,target=native", "-kernel"]
+runner = "qemu-system-arm -cpu cortex-m3 -machine lm3s6965evb -nographic -semihosting-config enable=on,target=native -kernel"
 ```
 
 This runner only applies to the `thumbv7m-none-eabi` target, which is our
