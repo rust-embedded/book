@@ -20,7 +20,7 @@ The general initialisation steps at runtime are always the same:
 * Enable the interrupt handler in the interrupt controller
 
 Similarly to exceptions, the `cortex-m-rt` crate provides an [`interrupt`]
-attribute to declare interrupt handlers. The available interrupts are (and
+attribute to declare interrupt handlers. The available interrupts (and
 their position in the interrupt handler table) are usually automatically
 generated via `svd2rust` from a SVD description.
 
