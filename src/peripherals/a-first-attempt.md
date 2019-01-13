@@ -48,7 +48,7 @@ Now, the problem is that compilers are clever. If you make two writes to the sam
 
 ```rust,ignore
 let systick = unsafe { &mut *(0xE000_E010 as *mut SysTick) };
-let time = unsafe { std::ptr::read_volatile(&mut systick.cvr) };
+let time = unsafe { core::ptr::read_volatile(&mut systick.cvr) };
 ```
 
 So, we've fixed one of our four problems, but now we have even more `unsafe` code! Fortunately, there's a third party crate which can help - [`volatile_register`].
