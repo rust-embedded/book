@@ -2,11 +2,11 @@
 
 Interrupts differ from exceptions in a variety of ways but their operation and
 use is largely similar and they are also handled by the same interrupt
-controller. Whereas exeptions are defined by the Cortex-M architecture,
+controller. Whereas exceptions are defined by the Cortex-M architecture,
 interrupts are always vendor (and often even chip) specific implementations,
 both in naming and functionality.
 
-Interrupts do allow for a lot of flexbility which needs to be accounted for
+Interrupts do allow for a lot of flexibility which needs to be accounted for
 when attempting to use them in an advanced way. We will not cover those uses in
 this book, however it is a good idea to keep the following in mind:
 
@@ -14,9 +14,9 @@ this book, however it is a good idea to keep the following in mind:
 * Interrupts can nest and preempt, i.e. execution of an interrupt handler might be interrupted by another higher-priority interrupt
 * In general the reason causing the interrupt to trigger needs to be cleared to prevent re-entering the interrupt handler endlessly
 
-The general initialisation steps at runtime are always the same:
+The general initialization steps at runtime are always the same:
 * Setup the peripheral(s) to generate interrupts requests at the desired occasions
-* Set the desired priority of the interrupt handler in the interupt controller
+* Set the desired priority of the interrupt handler in the interrupt controller
 * Enable the interrupt handler in the interrupt controller
 
 Similarly to exceptions, the `cortex-m-rt` crate provides an [`interrupt`]
@@ -41,7 +41,7 @@ parts of the firmware due to the special calling conventions. It is however
 possible to generate interrupt requests in software to trigger a diversion to
 to the interrupt handler.
 
-Similar to exeption handlers it is also possible to declare `static mut`
+Similar to exception handlers it is also possible to declare `static mut`
 variables inside the interrupt handlers for *safe* state keeping.
 
 ``` rust,ignore
