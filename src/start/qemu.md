@@ -284,8 +284,8 @@ Reset:
      430:       bl      #0x1c
      434:       b       #-0x4 <Reset+0x34>
 
-UserHardFault_:
-     436:       b       #-0x4 <UserHardFault_>
+HardFault_:
+     436:       b       #-0x4 <HardFault_>
 
 UsageFault:
      438:       b       #-0x4 <UsageFault>
