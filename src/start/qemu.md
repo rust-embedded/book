@@ -129,7 +129,7 @@ to mark the entry point of the program. As we are not using the standard `main`
 interface we need another way to indicate the entry point of the program and
 that'd be `#[entry]`.
 
-[`#[entry]`]: https://rust-embedded.github.io/cortex-m-rt/0.6.1/cortex_m_rt_macros/fn.entry.html
+[`#[entry]`]: https://docs.rs/cortex-m-rt-macros/latest/cortex_m_rt_macros/attr.entry.html
 [`cortex-m-rt`]: https://crates.io/crates/cortex-m-rt
 
 `fn main() -> !`. Our program will be the *only* process running on the target
