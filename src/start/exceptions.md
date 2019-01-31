@@ -8,7 +8,7 @@ subroutines executed in response to the signal that triggered the event.
 The `cortex-m-rt` crate provides an [`exception`] attribute to declare exception
 handlers.
 
-[`exception`]: https://rust-embedded.github.io/cortex-m-rt/0.6.1/cortex_m_rt_macros/fn.exception.html
+[`exception`]: https://docs.rs/cortex-m-rt-macros/latest/cortex_m_rt_macros/attr.exception.html
 
 ``` rust,ignore
 // Exception handler for the SysTick (System Timer) exception
