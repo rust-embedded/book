@@ -14,7 +14,7 @@ any dependencies.
 Create a new `cargo` project as usual.
 
 There are flags to tell `cargo` to emit a systems library, instead of
-it's regular rust target.
+its regular rust target.
 This also allows you to set a different output name for your library,
 if you want it to differ from the rest of your crate.
 
