@@ -1,0 +1,27 @@
+# Contributors
+
+Here is a list of the contributors who have helped creating this book:
+
+* [James Munns](mailto:james.munns@ferrous-systems.com)
+* [rmsthebest](mailto:11652273+rmsthebest@users.noreply.github.com)
+* [tomoyuki-nakabayashi](mailto:tomo.wait.for.it.yuki@gmail.com)
+* [Steffan Karger](mailto:steffan.karger@fox-it.com)
+* [Adam Greig](mailto:adam@adamgreig.com)
+* [Zhuowei Zhang](mailto:zhuoweizhang@yahoo.com)
+* [Katharina](mailto:kookie@spacekookie.de)
+* [Robert Warmka](mailto:robertwarmka@gmail.com)
+* [Adam Green](mailto:adamgreen@users.noreply.github.com)
+* [Christopher J. McClellan](mailto:chris.mcclellan203@gmail.com)
+* [Henrik Enggaard Hansen](mailto:henrik.enggaard@gmail.com)
+* [Roberto Vidal](mailto:vidal.roberto.j@gmail.com)
+* [Daniel Egger](mailto:daniel@eggers-club.de)
+* [Jonathan Pallant](mailto:jonathan.pallant@cambridgeconsultants.com)
+* [Jorge Aparicio](mailto:jorge@japaric.io)
+* [Nathan](mailto:2266858+njmartin10@users.noreply.github.com)
+* [Jonathan 'theJPster' Pallant](mailto:github@thejpster.org.uk)
+* [Sam Stelfox](mailto:sstelfox@bedroomprogrammers.net)
+* [shellwirt](mailto:shellwirt@protonmail.com)
+* [Nicola Coretti](mailto:nico.coretti@gmail.com)
+* [Vincent Bernat](mailto:vincent@bernat.ch)
+* [Eddy Petrișor](mailto:eddy.petrisor@gmail.com)
+* [Katharina Fey](mailto:kookie@spacekookie.de)
