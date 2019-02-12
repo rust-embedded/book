@@ -52,7 +52,7 @@ pub mod iir;
 ```
 
 You can similarly include code blocks only if a feature is _not_ enabled, or if
-any combination or features is or is not enabled.
+any combination of features are or are not enabled.
 
 Additionally, Rust provides a number of automatically-set conditions you can
 use, such as `target_arch` to select different code based on architecture. For
