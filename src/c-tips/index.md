@@ -6,7 +6,7 @@ highlight how things you might already be used to in C are different in Rust.
 
 ## Preprocessor
 
-In embedded C it is very common to use the preprocessor for a varity of
+In embedded C it is very common to use the preprocessor for a variety of
 purposes, such as:
 
 * Compile-time selection of code blocks with `#ifdef`
