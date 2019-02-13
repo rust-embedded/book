@@ -1,8 +1,8 @@
 # Optimizations: the speed size tradeoff
 
 Everyone wants their program to be super fast and super small but it's usually
-not possible to have maximize both characteristics. This section discusses the
-different optimization levels that `rustc` provides and how the affect the
+not possible to have both characteristics. This section discusses the
+different optimization levels that `rustc` provides and how they affect the
 execution time and binary size of a program.
 
 ## No optimizations
@@ -25,7 +25,7 @@ debug = true
 
 No optimizations is great for debugging because stepping through the code feels
 like you are executing the program statement by statement, plus you can `print`
-stack variables and function arguments in GDB. When the code is optimized trying
+stack variables and function arguments in GDB. When the code is optimized, trying
 to print variables results in `$0 = <value optimized out>` being printed.
 
 The biggest downside of the `dev` profile is that the resulting binary will be
@@ -33,7 +33,7 @@ huge and slow. The size is usually more of a problem because unoptimized
 binaries can occupy dozens of KiB of Flash, which your target device may not
 have -- the result: your unoptimized binary doesn't fit in your device!
 
-Can we have smaller debugger friendly binaries? Yes, there's a trick.
+Can we have smaller, debugger friendly binaries? Yes, there's a trick.
 
 ### Optimizing dependencies
 
@@ -117,7 +117,7 @@ profile which defaults to `opt-level = 3`.
 
 Both `opt-level = 2` and `3` optimize for speed at the expense of binary size,
 but level `3` does more vectorization and inlining than level `2`. In
-particular, you'll see that at `opt-level` equal or greater than `2` LLVM will
+particular, you'll see that at `opt-level` equal to or greater than `2` LLVM will
 unroll loops. Loop unrolling has a rather high cost in terms of Flash / ROM
 (e.g. from 26 bytes to 194 for a zero this array loop) but can also halve the
 execution time given the right conditions (e.g. number of iterations is big
