@@ -1,7 +1,7 @@
 # QEMU
 
 We'll start writing a program for the [LM3S6965], a Cortex-M3 microcontroller.
-We have chosen this as our initial target because it can be emulated using QEMU
+We have chosen this as our initial target because it [can be emulated](https://wiki.qemu.org/Documentation/Platforms/ARM#Supported_in_qemu-system-arm) using QEMU
 so you don't need to fiddle with hardware in this section and we can focus on
 the tooling and the development process.
 
