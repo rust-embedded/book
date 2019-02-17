@@ -37,7 +37,7 @@ fn SysTick() {
 ```
 
 As you may know, using `static mut` variables in a function makes it
-*non-reentrant*. It's undefined behavior to call a non-reentrant function,
+[*non-reentrant*](https://en.wikipedia.org/wiki/Reentrancy_(computing)). It's undefined behavior to call a non-reentrant function,
 directly or indirectly, from more than one exception / interrupt handler or from
 `main` and one or more exception / interrupt handlers.
 
