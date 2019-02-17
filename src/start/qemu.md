@@ -133,7 +133,7 @@ that'd be `#[entry]`.
 [`cortex-m-rt`]: https://crates.io/crates/cortex-m-rt
 
 `fn main() -> !`. Our program will be the *only* process running on the target
-hardware so we don't want it to end! We use a divergent function (the `-> !`
+hardware so we don't want it to end! We use a [divergent function](https://doc.rust-lang.org/rust-by-example/fn/diverging.html) (the `-> !`
 bit in the function signature) to ensure at compile time that'll be the case.
 
 ### Cross compiling
