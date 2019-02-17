@@ -18,12 +18,14 @@ You may also have some sort of sysroot and restrictions on RAM/ROM-usage, and pe
 special HW or I/Os. Overall it feels like coding on a special-purpose PC environment.
 
 ## Bare Metal Environments
-In a bare metal environment there will be no high-level OS running and hosting our code.
-This means there will be no primitives, which means there's also no standard library by default.
-By marking our code with `no_std` we indicate that our code is capable of running in such an environment.
-This means the rust [libstd](https://doc.rust-lang.org/std/) and dynamic memory allocation can't be used by such code.
-However, such code can use [libcore](https://doc.rust-lang.org/core/), which can easily be made available
-in any kind of environment by providing just a few symbols (for details see [libcore](https://doc.rust-lang.org/core/)).
+In a bare metal environment no code has been loaded before your program.
+Without the software provided by an OS we can not load the standard library.
+Instead the program, along with the crates it uses, can only use the hardware (bare metal) to run.
+To prevent rust from loading the standard library use `no_std`.
+The platform-agnostic parts of the standard library are available through [libcore](https://doc.rust-lang.org/core/).
+libcore also excludes things which are not always desirable in an embedded environment.
+One of these things is a memory allocator for dynamic memory allocation.
+If you require this or any other functionalities there are often crates which provide these.
 
 ### The libstd Runtime
 As mentioned before using [libstd](https://doc.rust-lang.org/std/) requires some sort of system integration, but this is not only because
