@@ -8,11 +8,11 @@ In the standard library panicking has a defined behavior: it unwinds the stack
 of the panicking thread, unless the user opted for aborting the program on
 panics.
 
-In non-standard programs, however, the panicking behavior is left undefined. A
-behavior can be chosen by declaring a `#[panic_handler]` function. This function
-must appear exactly *once* in the dependency graph of a program, and must have
-the following signature: `fn(&PanicInfo) -> !`, where [`PanicInfo`] is a struct
-containing information about the location of the panic.
+In programs without standard library, however, the panicking behavior is left
+undefined. A behavior can be chosen by declaring a `#[panic_handler]` function.
+This function must appear exactly *once* in the dependency graph of a program,
+and must have the following signature: `fn(&PanicInfo) -> !`, where [`PanicInfo`]
+is a struct containing information about the location of the panic.
 
 [`PanicInfo`]: https://doc.rust-lang.org/core/panic/struct.PanicInfo.html
 
