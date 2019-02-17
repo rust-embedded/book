@@ -16,25 +16,25 @@ rustc 1.31.1 (b6c32da9b 2018-12-18)
 
 For bandwidth and disk usage concerns the default installation only supports
 native compilation. To add cross compilation support for the ARM Cortex-M
-architecture choose one of the following compilation targets. Use the last one
-for the STM32F3DISCOVERY board and follow along with the book.
+architectures choose one of the following compilation targets. For the STM32F3DISCOVERY
+board used for the examples in this book, use the final `thumbv7em-none-eabihf` target.
 
-Cortex M0 M0+
+Cortex-M0, M0+, and M1 (ARMv6-M architecture):
 ``` console
 $ rustup target add thumbv6m-none-eabi
 ```
 
-Cortex M3
+Cortex-M3 (ARMv7-M architecture):
 ``` console
 $ rustup target add thumbv7m-none-eabi
 ```
 
-Cortex M4 M7 without FPU
+Cortex-M4 and M7 without hardware floating point (ARMv7E-M architecture):
 ``` console
 $ rustup target add thumbv7em-none-eabi
 ```
 
-Cortex M4 M7 with FPU <-- STM32F3DISCOVERY
+Cortex-M4F and M7F with hardware floating point (ARMv7E-M architecture):
 ``` console
 $ rustup target add thumbv7em-none-eabihf
 ```
