@@ -140,8 +140,10 @@ _preempt_ each other, then each one might require a critical section as well.
 
 This solves our immediate problem, but we're still left writing a lot of
 `unsafe` code which we need to carefully reason about, and we might be using
-critical sections needlessly — which comes at a cost to overhead and interrupt
-latency and jitter.
+critical sections needlessly. Each critical section adds a small amount of
+code size. Also delay of interrupts (latency) and varying delay between
+repetitive interrupts (jitter) can be added, which is often worse because the
+system will be less capable of handling real time events.
 
 It's worth noting that while a critical section guarantees no interrupts will
 fire, it does not provide an exclusivity guarantee on multi-core systems!  The
