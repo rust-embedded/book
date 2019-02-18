@@ -36,4 +36,4 @@ What does this board contain?
 
 For a more detailed features list and further specification of the board take a look at [STMicroelectronics](https://www.st.com/en/evaluation-tools/stm32f3discovery.html) website.
 
-A word of warning: be careful if you want to apply external signals to the board. The microcontroller STM32F303VCT6 pins take a maximum voltage of 4 volts, but ideally should be driven by the nominal voltage of 3.3 volts. For further information consult the [6.2 Absolute maximum ratings section in the manual](https://www.st.com/resource/en/datasheet/stm32f303vc.pdf)
+A word of warning: be careful if you want to apply external signals to the board. The microcontroller STM32F303VCT6 pins take a nominal voltage of 3.3 volts. For further information consult the [6.2 Absolute maximum ratings section in the manual](https://www.st.com/resource/en/datasheet/stm32f303vc.pdf)
