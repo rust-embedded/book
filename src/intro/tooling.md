@@ -15,15 +15,13 @@ tested.
 - OpenOCD >=0.8. Tested versions: v0.9.0 and v0.10.0
 - GDB with ARM support. Version 7.12 or newer highly recommended. Tested
   versions: 7.10, 7.11, 7.12 and 8.1
-- [OPTIONAL] `git` OR
-  [`cargo-generate`](https://github.com/ashleygwilliams/cargo-generate). If you
-  have neither installed then don't worry about installing either.
+- [`cargo-generate`](https://github.com/ashleygwilliams/cargo-generate) and `git`.
+These tools are optional but will make it easier to follow along with the book.
 
 The text below explains why we are using these tools. Installation instructions
 can be found on the next page.
 
-## `cargo-generate` OR `git`
-
+## Using a template for the first project ##
 Bare metal programs are non-standard (`no_std`) Rust programs that require some
 fiddling with the linking process to get the memory layout of the program
 right. All this requires unusual files (like linker scripts) and unusual
