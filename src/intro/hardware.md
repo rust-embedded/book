@@ -32,7 +32,7 @@ What does this board contain?
 
 - 8 user LEDs arranged in the shape of a compass.
 
-- A second microcontroller: a [STM32F103CBT](https://www.st.com/en/microcontrollers/stm32f103cb.html). This microcontroller is actually part of an on-board programmer and debugger named ST-LINK and is connected to the USB port named "USB ST-LINK".
+- A second microcontroller: a [STM32F103CBT](https://www.st.com/en/microcontrollers/stm32f103cb.html). This microcontroller is actually part of an on-board programmer / debugger and is connected to the USB port named "USB ST-LINK".
 
 For a more detailed features list and further specification of the board take a look at [STMicroelectronics](https://www.st.com/en/evaluation-tools/stm32f3discovery.html) website.
 
