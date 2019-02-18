@@ -10,6 +10,7 @@ more information and coordination
 -->
 
 - [Introduction](./intro/index.md)
+    - [Hardware](./intro/hardware.md)
     - [`no_std`](./intro/no-std.md)
     - [Tooling](./intro/tooling.md)
     - [Installation](./intro/install.md)
@@ -17,7 +18,6 @@ more information and coordination
         - [MacOS](./intro/install/macos.md)
         - [Windows](./intro/install/windows.md)
         - [Verify Installation](./intro/install/verify.md)
-    - [Hardware](./intro/hardware.md)
 - [Getting started](./start/index.md)
   - [QEMU](./start/qemu.md)
   - [Hardware](./start/hardware.md)
