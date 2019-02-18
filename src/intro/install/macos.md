@@ -6,7 +6,6 @@ All the tools can be install using [Homebrew]:
 
 ``` console
 $ # GDB
-$ brew tap armmbed/formulae
 $ brew install armmbed/formulae/arm-none-eabi-gcc
 
 $ # OpenOCD
