@@ -84,7 +84,7 @@ Whenever you see the word "app" you should replace it with the name you selected
 for your project. Or, you could also name your project "app" and avoid the
 substitutions.
 
-For convenience here's the source code of `src/main.rs`:
+For convenience here are the most important parts of the source code in `src/main.rs`:
 
 ``` console
 $ cat src/main.rs
@@ -94,11 +94,7 @@ $ cat src/main.rs
 #![no_std]
 #![no_main]
 
-// pick a panicking behavior
-extern crate panic_halt; // you can put a breakpoint on `rust_begin_unwind` to catch panics
-// extern crate panic_abort; // requires nightly
-// extern crate panic_itm; // logs messages over ITM; requires ITM support
-// extern crate panic_semihosting; // logs messages to the host stderr; requires a debugger
+extern crate panic_halt;
 
 use cortex_m_rt::entry;
 
@@ -122,7 +118,8 @@ with `no_main` is that using the `main` interface in `no_std` context requires
 nightly.
 
 `extern crate panic_halt;`. This crate provides a `panic_handler` that defines
-the panicking behavior of the program. More on this later on.
+the panicking behavior of the program. We will cover this in more detail in the
+[Panicking](panicking.md) chapter of the book.
 
 [`#[entry]`] is an attribute provided by the [`cortex-m-rt`] crate that's used
 to mark the entry point of the program. As we are not using the standard `main`
