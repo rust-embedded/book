@@ -11,7 +11,7 @@ There are two general Embedded Programming classifications:
 
 ## Hosted Environments
 These kinds of environments are close to a normal PC environment.
-What this means is you are provided with a System Interface [E.G. POSIX](https://en.wikipedia.org/wiki/POSIX)
+What this means is that you are provided with a System Interface [E.G. POSIX](https://en.wikipedia.org/wiki/POSIX)
 that provides you with primitives to interact with various systems, such as file systems, networking, memory management, threads, etc.
 Standard libraries in turn usually depend on these primitives to implement their functionality.
 You may also have some sort of sysroot and restrictions on RAM/ROM-usage, and perhaps some
