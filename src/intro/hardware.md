@@ -18,7 +18,7 @@ What does this board contain?
 
   - 48 KiB of RAM.
 
-  - Many integrated peripherals such as timers, I2C, SPI and USART.
+  - A variety of integrated peripherals such as timers, I2C, SPI and USART.
 
   - General purpose Input Output (GPIO) and other types of pins accessible through the two rows of headers along side the board.
   
@@ -34,6 +34,6 @@ What does this board contain?
 
 - A second microcontroller: a [STM32F103](https://www.st.com/en/microcontrollers/stm32f103cb.html). This microcontroller is actually part of an on-board programmer / debugger and is connected to the USB port named "USB ST-LINK".
 
-For a more detailed features list and further specification of the board take a look at [STMicroelectronics](https://www.st.com/en/evaluation-tools/stm32f3discovery.html) website.
+For a more detailed list of features and further specifications of the board take a look at the [STMicroelectronics](https://www.st.com/en/evaluation-tools/stm32f3discovery.html) website.
 
-A word of warning: be careful if you want to apply external signals to the board. The microcontroller STM32F303VCT6 pins take a nominal voltage of 3.3 volts. For further information consult the [6.2 Absolute maximum ratings section in the manual](https://www.st.com/resource/en/datasheet/stm32f303vc.pdf)
+A word of caution: be careful if you want to apply external signals to the board. The microcontroller STM32F303VCT6 pins take a nominal voltage of 3.3 volts. For further information consult the [6.2 Absolute maximum ratings section in the manual](https://www.st.com/resource/en/datasheet/stm32f303vc.pdf)

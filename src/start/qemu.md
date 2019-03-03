@@ -7,9 +7,9 @@ the tooling and the development process.
 
 [LM3S6965]: http://www.ti.com/product/LM3S6965
 
-## A non standard Rust program
+## Creating a non standard Rust program
 
-We'll use the [`cortex-m-quickstart`] project template so go generate a new
+We'll use the [`cortex-m-quickstart`] project template to generate a new
 project from it.
 
 [`cortex-m-quickstart`]: https://github.com/rust-embedded/cortex-m-quickstart
@@ -73,7 +73,7 @@ $ mv cortex-m-quickstart-master app
 $ cd app
 ```
 
-OR you can browse to [`cortex-m-quickstart`], click the green "Clone or
+Or you can browse to [`cortex-m-quickstart`], click the green "Clone or
 download" button and then click "Download ZIP".
 
 Then fill in the placeholders in the `Cargo.toml` file as done in the second
