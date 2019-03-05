@@ -5,7 +5,7 @@ Programming Language on "Bare Metal" embedded systems, such as Microcontrollers.
 
 ## Who Embedded Rust is For
 Embedded Rust is for everyone who wants to do embedded programming while taking advantage of the higher-level concepts and safety guarantees the Rust language provides.
-(See also [Who Rust Is For](https://doc.rust-lang.org/book/2018-edition/ch00-00-introduction.html))
+(See also [Who Rust Is For](https://doc.rust-lang.org/book/ch00-00-introduction.html))
 
 ## Scope
 
@@ -41,7 +41,7 @@ you might want to catch up on.
   be familiar with the idioms of the [2018 edition] as this book targets
   Rust 2018.
 
-[2018 edition]: https://rust-lang-nursery.github.io/edition-guide/
+[2018 edition]: https://doc.rust-lang.org/edition-guide/
 
 * You are comfortable developing and debugging embedded systems in another
   language such as C, C++, or Ada, and are familiar with concepts such as:
@@ -55,7 +55,7 @@ If you are unfamiliar with anything mentioned above or if you want more informat
 
 | Topic        | Resource | Description |
 |--------------|----------|-------------|
-| Rust         | [Rust Book 2018 Edition](https://doc.rust-lang.org/book/2018-edition/index.html) | If you are not yet comfortable with Rust, we highly suggest reading the this book. |
+| Rust         | [Rust Book](https://doc.rust-lang.org/book/) | If you are not yet comfortable with Rust, we highly suggest reading the this book. |
 | Rust, Embedded | [Embedded Rust Bookshelf](https://docs.rust-embedded.org) | Here you can find several other resources provided by Rust's Embedded Working Group. |
 | Rust, Embedded | [Embedonomicon](https://docs.rust-embedded.org/embedonomicon/) | The nitty gritty details when doing embedded programming in Rust. |
 | Rust, Embedded | [embedded FAQ](https://docs.rust-embedded.org/faq.html) | Frequently asked questions about Rust in an embedded context. |
