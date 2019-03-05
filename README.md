@@ -43,4 +43,4 @@ Conduct][CoC], the maintainer of this crate, the [Resources team][team], promise
 to intervene to uphold that code of conduct.
 
 [CoC]: CODE_OF_CONDUCT.md
-[team]: https://github.com/rust-embedded/wg#the-cortex-m-team
+[team]: https://github.com/rust-embedded/wg#the-resources-team
