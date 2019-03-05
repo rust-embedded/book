@@ -1,10 +1,10 @@
-# [Work in Progress] - The Embedded Rust Book
+# The Embedded Rust Book
 
 > Documentation on how to use the Rust Programming Language to develop firmware for bare metal (microcontroller) devices
 
 This project is developed and maintained by the [Resources team][team].
 
-See [the issue tracker] for more details. This is a very early work in progress.
+See [the issue tracker] for more details. This book is a living document, and is updated continuously.
 
 [the issue tracker]: https://github.com/rust-embedded/book/issues
 
