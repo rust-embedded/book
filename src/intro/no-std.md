@@ -61,5 +61,4 @@ bootstrapping (stage 0) code like bootloaders, firmware or kernels.
 [alloc-cortex-m]: https://github.com/rust-embedded/alloc-cortex-m
 
 ## See Also
-* [FAQ](https://www.rust-lang.org/en-US/faq.html#does-rust-work-without-the-standard-library)
 * [RFC-1184](https://github.com/rust-lang/rfcs/blob/master/text/1184-stabilize-no_std.md)
