@@ -22,7 +22,7 @@ are no interrupts at all. Sometimes this is perfectly suited to the problem
 at hand! Typically your loop will read some inputs, perform some processing,
 and write some outputs.
 
-```rust
+```rust,ignore
 #[entry]
 fn main() {
     let peripherals = setup_peripherals();
@@ -58,7 +58,7 @@ For an example of how this behaviour can cause subtle errors in your code,
 consider an embedded program which counts rising edges of some input signal
 in each one-second period (a frequency counter):
 
-```rust
+```rust,ignore
 static mut COUNTER: u32 = 0;
 
 #[entry]
@@ -99,7 +99,7 @@ sections_, a context where interrupts are disabled. By wrapping the access to
 `COUNTER` in `main` in a critical section, we can be sure the timer interrupt
 will not fire until we're finished incrementing `COUNTER`:
 
-```rust
+```rust,ignore
 static mut COUNTER: u32 = 0;
 
 #[entry]
@@ -160,7 +160,7 @@ of the time, but if it was interrupted it will automatically retry the entire
 increment operation. These atomic operations are safe even across multiple
 cores.
 
-```rust
+```rust,ignore
 use core::sync::atomic::{AtomicUsize, Ordering};
 
 static COUNTER: AtomicUsize = AtomicUsize::new(0);
@@ -215,7 +215,7 @@ We can abstract our counter into a safe interface which can be safely used
 anywhere else in our code. For this example we'll use the critical-section
 counter, but you could do something very similar with atomics.
 
-```rust
+```rust,ignore
 use core::cell::UnsafeCell;
 use cortex_m::interrupt;
 
@@ -340,7 +340,7 @@ the lock/unlock state of the mutex.
 This is in fact done for us in the `cortex_m` crate! We could have written
 our counter using it:
 
-```rust
+```rust,ignore
 use core::cell::Cell;
 use cortex_m::interrupt::Mutex;
 
@@ -410,7 +410,7 @@ the shared variable after it has been initialised in the main code. To do
 this we can use the `Option` type, initialised to `None` and later set to
 the instance of the peripheral.
 
-```rust
+```rust,ignore
 use core::cell::RefCell;
 use cortex_m::interrupt::{self, Mutex};
 use stm32f4::stm32f405;

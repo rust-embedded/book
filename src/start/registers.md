@@ -21,7 +21,7 @@ You may well find that the code you need to access the peripherals in your micro
 
 Let's look at the SysTick peripheral that's common to all Cortex-M based micro-controllers. We can find a pretty low-level API in the [cortex-m] crate, and we can use it like this:
 
-```rust
+```rust,ignore
 use cortex_m::peripheral::{syst, Peripherals};
 use cortex_m_rt::entry;
 
@@ -125,7 +125,7 @@ The HAL crate for a chip typically works by implementing a custom Trait for the 
 
 Let's see an example:
 
-```rust
+```rust,ignore
 #![no_std]
 #![no_main]
 

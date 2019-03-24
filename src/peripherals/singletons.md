@@ -11,13 +11,13 @@
 
 We could make everything a public static, like this
 
-```rust
+```rust,ignore
 static mut THE_SERIAL_PORT: SerialPort = SerialPort;
 
 fn main() {
     let _ = unsafe {
         THE_SERIAL_PORT.read_speed();
-    }
+    };
 }
 ```
 
@@ -44,7 +44,7 @@ static mut PERIPHERALS: Peripherals = Peripherals {
 
 This structure allows us to obtain a single instance of our peripheral. If we try to call `take_serial()` more than once, our code will panic!
 
-```rust
+```rust,ignore
 fn main() {
     let serial_1 = unsafe { PERIPHERALS.take_serial() };
     // This panics!
@@ -60,7 +60,7 @@ This has a small runtime overhead because we must wrap the `SerialPort` structur
 
 Although we created our own `Peripherals` structure above, it is not necessary to do this for your code. the `cortex_m` crate contains a macro called `singleton!()` that will perform this action for you.
 
-```rust
+```rust,ignore
 #[macro_use(singleton)]
 extern crate cortex_m;
 
@@ -116,7 +116,7 @@ There are two important factors in play here:
 
 These two factors put together means that it is only possible to access the hardware if we have appropriately satisfied the borrow checker, meaning that at no point do we have multiple mutable references to the same hardware!
 
-```rust
+```rust,ignore
 fn main() {
     // missing reference to `self`! Won't work.
     // SerialPort::read_speed();
