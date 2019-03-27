@@ -79,7 +79,7 @@ for example:
 const fn array_size() -> usize {
     #[cfg(feature="use_more_ram")]
     { 1024 }
-    #[cfg(not(feature="use_more_ram")]
+    #[cfg(not(feature="use_more_ram"))]
     { 128 }
 }
 
@@ -180,7 +180,7 @@ happily index outside the array.
 
 Instead, use iterators:
 
-```rust
+```rust,ignore
 let arr = [0u16; 16];
 for element in arr.iter() {
     process(*element);
@@ -259,7 +259,7 @@ void driver() {
 
 The equivalent in Rust would use volatile methods on each access:
 
-```rust
+```rust,ignore
 static mut SIGNALLED: bool = false;
 
 #[interrupt]

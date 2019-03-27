@@ -118,7 +118,7 @@ fn on_oom(_layout: Layout) -> ! {
 
 Once all that is in place, the user can finally use the collections in `alloc`.
 
-``` rust
+```rust,ignore
 #[entry]
 fn main() -> ! {
     let mut xs = Vec::new();
@@ -140,7 +140,7 @@ as they are exact same implementation.
 `heapless` requires no setup as its collections don't depend on a global memory
 allocator. Just `use` its collections and proceed to instantiate them:
 
-``` rust
+```rust,ignore
 extern crate heapless; // v0.4.x
 
 use heapless::Vec;

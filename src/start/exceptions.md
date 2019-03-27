@@ -57,7 +57,7 @@ times it has been called in the `COUNT` variable and then prints the value of
 > **NOTE**: You can run this example on any Cortex-M device; you can also run it
 > on QEMU
 
-``` rust
+```rust,ignore
 #![deny(unsafe_code)]
 #![no_main]
 #![no_std]
@@ -185,7 +185,7 @@ memory location.
 > `qemu-system-arm -machine lm3s6965evb` doesn't check memory loads and will
 > happily return `0 `on reads to invalid memory.
 
-``` rust
+```rust,ignore
 #![no_main]
 #![no_std]
 

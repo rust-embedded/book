@@ -12,7 +12,7 @@ world!":
 
 [`cortex-m-semihosting`]: https://crates.io/crates/cortex-m-semihosting
 
-``` rust
+```rust,ignore
 #![no_main]
 #![no_std]
 
@@ -63,7 +63,7 @@ QEMU process. Important: do **not** use `debug::exit` on hardware; this function
 can corrupt your OpenOCD session and you will not be able to debug more programs
 until you restart it.
 
-``` rust
+```rust,ignore
 #![no_main]
 #![no_std]
 
@@ -101,7 +101,7 @@ For convenience, the `panic-semihosting` crate has an "exit" feature that when
 enabled invokes `exit(EXIT_FAILURE)` after logging the panic message to the host
 stderr.
 
-``` rust
+```rust,ignore
 #![no_main]
 #![no_std]
 

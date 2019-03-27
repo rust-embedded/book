@@ -82,7 +82,7 @@ substitutions.
 
 For convenience here are the most important parts of the source code in `src/main.rs`:
 
-``` rust
+```rust,ignore
 #![no_std]
 #![no_main]
 
@@ -300,7 +300,7 @@ Next, let's see how to run an embedded program on QEMU! This time we'll use the
 
 For convenience here's the source code of `examples/hello.rs`:
 
-``` rust
+```rust,ignore
 //! Prints "Hello, world!" on the host console using semihosting
 
 #![no_main]
