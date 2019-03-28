@@ -68,9 +68,9 @@ $ sudo dnf install \
 ``` console
 $ sudo pacman -S \
   arm-none-eabi-gdb \
-  qemu-arch-extra
+  qemu-arch-extra \
+  openocd
 
-$ # install openocd from the AUR -- https://aur.archlinux.org/packages/openocd/
 ```
 
 ## udev rules
