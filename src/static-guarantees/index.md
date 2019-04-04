@@ -1,8 +1,8 @@
 # Static Guarantees
 
-It's Rust's type system what prevents data races at compile time (see [`Send`]
-and [`Sync`] traits). The type system can also be used to check other properties
-at compile time; reducing the need for runtime checks in some cases.
+Rust's type system prevents data races at compile time (see [`Send`] and
+[`Sync`] traits). The type system can also be used to check other properties at
+compile time; reducing the need for runtime checks in some cases.
 
 [`Send`]: https://doc.rust-lang.org/core/marker/trait.Send.html
 [`Sync`]: https://doc.rust-lang.org/core/marker/trait.Sync.html
