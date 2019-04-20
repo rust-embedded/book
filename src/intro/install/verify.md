@@ -60,7 +60,7 @@ you'll need to configure things a bit differently later on. You can move to the
 
 If neither command worked as a normal user then try to run them with root
 permission (e.g. `sudo openocd ..`). If the commands do work with root
-permission then check that the [udev rules] has been correctly set.
+permission then check that the [udev rules] have been correctly set.
 
 [udev rules]: linux.md#udev-rules
 
