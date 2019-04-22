@@ -362,7 +362,7 @@ echo $?
 0
 ```
 
-Let me break down that long QEMU command for you:
+Let's break down that QEMU command:
 
 - `qemu-system-arm`. This is the QEMU emulator. There are a few variants of
   these QEMU binaries; this one does full *system* emulation of *ARM* machines
