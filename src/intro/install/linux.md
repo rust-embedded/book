@@ -60,8 +60,6 @@ sudo dnf install arm-none-eabi-gdb openocd qemu-system-arm
 sudo pacman -S arm-none-eabi-gdb qemu-arch-extra openocd
 ```
 
-Now install openocd from [AUR](https://aur.archlinux.org/packages/openocd/)
-
 ## udev rules
 
 This rule lets you use OpenOCD with the Discovery board without root privilege.
