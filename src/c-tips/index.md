@@ -79,7 +79,7 @@ for example:
 const fn array_size() -> usize {
     #[cfg(feature="use_more_ram")]
     { 1024 }
-    #[cfg(not(feature="use_more_ram")]
+    #[cfg(not(feature="use_more_ram"))]
     { 128 }
 }
 
@@ -102,7 +102,7 @@ item, or pattern. Procedural macros are more complex but permit extremely
 powerful additions to the Rust language: they can transform arbitrary Rust
 syntax into new Rust syntax.
 
-[macro system]: https://doc.rust-lang.org/book/second-edition/appendix-04-macros.html
+[macro system]: https://doc.rust-lang.org/book/ch19-06-macros.html
 
 In general, where you might have used a C preprocessor macro, you probably want
 to see if a macro-by-example can do the job instead. They can be defined in
@@ -180,7 +180,7 @@ happily index outside the array.
 
 Instead, use iterators:
 
-```rust
+```rust,ignore
 let arr = [0u16; 16];
 for element in arr.iter() {
     process(*element);
@@ -194,7 +194,7 @@ data processing code.
 
 See the [Iterators in the Book] and [Iterator documentation] for more details.
 
-[Iterators in the Book]: https://doc.rust-lang.org/book/second-edition/ch13-02-iterators.html
+[Iterators in the Book]: https://doc.rust-lang.org/book/ch13-02-iterators.html
 [Iterator documentation]: https://doc.rust-lang.org/core/iter/trait.Iterator.html
 
 ## References vs Pointers
@@ -259,7 +259,7 @@ void driver() {
 
 The equivalent in Rust would use volatile methods on each access:
 
-```rust
+```rust,ignore
 static mut SIGNALLED: bool = false;
 
 #[interrupt]

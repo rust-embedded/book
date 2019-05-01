@@ -7,41 +7,41 @@ the tooling and the development process.
 
 [LM3S6965]: http://www.ti.com/product/LM3S6965
 
-## A non standard Rust program
+## Creating a non standard Rust program
 
-We'll use the [`cortex-m-quickstart`] project template so go generate a new
+We'll use the [`cortex-m-quickstart`] project template to generate a new
 project from it.
 
 [`cortex-m-quickstart`]: https://github.com/rust-embedded/cortex-m-quickstart
 
 - Using `cargo-generate`
 
-``` console
-$ cargo generate --git https://github.com/rust-embedded/cortex-m-quickstart
+```console
+cargo generate --git https://github.com/rust-embedded/cortex-m-quickstart
+```
+
+```text
  Project Name: app
  Creating project called `app`...
  Done! New project created /tmp/app
+```
 
-$ cd app
+```console
+cd app
 ```
 
 - Using `git`
 
 Clone the repository
 
-``` console
-$ git clone https://github.com/rust-embedded/cortex-m-quickstart app
-
-$ cd app
+```console
+git clone https://github.com/rust-embedded/cortex-m-quickstart app
+cd app
 ```
 
 And then fill in the placeholders in the `Cargo.toml` file
 
-``` console
-$ cat Cargo.toml
-```
-
-``` toml
+```toml
 [package]
 authors = ["{{authors}}"] # "{{authors}}" -> "John Smith"
 edition = "2018"
@@ -62,18 +62,14 @@ Grab the latest snapshot of the `cortex-m-quickstart` template and extract it.
 
 Using the command line:
 
-``` console
-$ # NOTE there's also a tarball available: archive/master.tar.gz
-$ curl -LO https://github.com/rust-embedded/cortex-m-quickstart/archive/master.zip
-
-$ unzip master.zip
-
-$ mv cortex-m-quickstart-master app
-
-$ cd app
+```console
+curl -LO https://github.com/rust-embedded/cortex-m-quickstart/archive/master.zip
+unzip master.zip
+mv cortex-m-quickstart-master app
+cd app
 ```
 
-OR you can browse to [`cortex-m-quickstart`], click the green "Clone or
+Or you can browse to [`cortex-m-quickstart`], click the green "Clone or
 download" button and then click "Download ZIP".
 
 Then fill in the placeholders in the `Cargo.toml` file as done in the second
@@ -84,21 +80,13 @@ Whenever you see the word "app" you should replace it with the name you selected
 for your project. Or, you could also name your project "app" and avoid the
 substitutions.
 
-For convenience here's the source code of `src/main.rs`:
+For convenience here are the most important parts of the source code in `src/main.rs`:
 
-``` console
-$ cat src/main.rs
-```
-
-``` rust
+```rust,ignore
 #![no_std]
 #![no_main]
 
-// pick a panicking behavior
-extern crate panic_halt; // you can put a breakpoint on `rust_begin_unwind` to catch panics
-// extern crate panic_abort; // requires nightly
-// extern crate panic_itm; // logs messages over ITM; requires ITM support
-// extern crate panic_semihosting; // logs messages to the host stderr; requires a debugger
+extern crate panic_halt;
 
 use cortex_m_rt::entry;
 
@@ -122,7 +110,8 @@ with `no_main` is that using the `main` interface in `no_std` context requires
 nightly.
 
 `extern crate panic_halt;`. This crate provides a `panic_handler` that defines
-the panicking behavior of the program. More on this later on.
+the panicking behavior of the program. We will cover this in more detail in the
+[Panicking](panicking.md) chapter of the book.
 
 [`#[entry]`] is an attribute provided by the [`cortex-m-rt`] crate that's used
 to mark the entry point of the program. As we are not using the standard `main`
@@ -143,11 +132,11 @@ That's as simple as running `cargo build --target $TRIPLE` if you know what the
 compilation target (`$TRIPLE`) should be. Luckily, the `.cargo/config` in the
 template has the answer:
 
-``` console
-$ tail -n6 .cargo/config
+```console
+tail -n6 .cargo/config
 ```
 
-``` toml
+```toml
 [build]
 # Pick ONE of these compilation targets
 # target = "thumbv6m-none-eabi"    # Cortex-M0 and Cortex-M0+
@@ -160,10 +149,9 @@ To cross compile for the Cortex-M3 architecture we have to use
 `thumbv7m-none-eabi`. This compilation target has been set as the default so the
 two commands below do the same:
 
-``` console
-$ cargo build --target thumbv7m-none-eabi
-
-$ cargo build
+```console
+cargo build --target thumbv7m-none-eabi
+cargo build
 ```
 
 ### Inspecting
@@ -175,11 +163,13 @@ With `cargo-readobj` we can print the ELF headers to confirm that this is an ARM
 binary.
 
 ``` console
-$ # `--bin app` is sugar for inspect the binary at `target/$TRIPLE/debug/app`
-$ # `--bin app` will also (re)compile the binary, if necessary
-
-$ cargo readobj --bin app -- -file-headers
+cargo readobj --bin app -- -file-headers
 ```
+
+Note that:
+* `--bin app` is sugar for inspect the binary at `target/$TRIPLE/debug/app`
+* `--bin app` will also (re)compile the binary, if necessary
+
 
 ``` text
 ELF Header:
@@ -209,11 +199,10 @@ ELF Header:
 > **NOTE** this output assumes that rust-embedded/cortex-m-rt#111 has been
 > merged
 
-``` console
-$ # we use `--release` to inspect the optimized version
-
-$ cargo size --bin app --release -- -A
+```console
+cargo size --bin app --release -- -A
 ```
+we use `--release` to inspect the optimized version
 
 ``` text
 app  :
@@ -257,61 +246,51 @@ is.
 
 `cargo-objdump` can be used to disassemble the binary.
 
-``` console
-$ cargo objdump --bin app --release -- -disassemble -no-show-raw-insn -print-imm-hex
+```console
+cargo objdump --bin app --release -- -disassemble -no-show-raw-insn -print-imm-hex
 ```
 
-> **NOTE** this output assumes that rust-embedded/cortex-m-rt#111 has been
-> merged
+> **NOTE** this output can differ on your system. New versions of rustc, LLVM
+> and libraries can generate different assembly. We truncated some of the instructions
+> to keep the snippet small.
 
-``` text
-app:    file format ELF32-arm-little
+```text
+app:  file format ELF32-arm-little
 
 Disassembly of section .text:
-Reset:
-     400:       bl      #0x36
-     404:       movw    r0, #0x0
-     408:       movw    r1, #0x0
-     40c:       movt    r0, #0x2000
-     410:       movt    r1, #0x2000
-     414:       bl      #0x2c
-     418:       movw    r0, #0x0
-     41c:       movw    r1, #0x45c
-     420:       movw    r2, #0x0
-     424:       movt    r0, #0x2000
-     428:       movt    r1, #0x0
-     42c:       movt    r2, #0x2000
-     430:       bl      #0x1c
-     434:       b       #-0x4 <Reset+0x34>
+main:
+     400: bl  #0x256
+     404: b #-0x4 <main+0x4>
 
-HardFault_:
-     436:       b       #-0x4 <HardFault_>
+Reset:
+     406: bl  #0x24e
+     40a: movw  r0, #0x0
+     < .. truncated any more instructions .. >
+
+DefaultHandler_:
+     656: b #-0x4 <DefaultHandler_>
 
 UsageFault:
-     438:       b       #-0x4 <UsageFault>
+     657: strb  r7, [r4, #0x3]
+
+DefaultPreInit:
+     658: bx  lr
 
 __pre_init:
-     43a:       bx      lr
+     659: strb  r7, [r0, #0x1]
+
+__nop:
+     65a: bx  lr
+
+HardFaultTrampoline:
+     65c: mrs r0, msp
+     660: b #-0x2 <HardFault_>
+
+HardFault_:
+     662: b #-0x4 <HardFault_>
 
 HardFault:
-     43c:       mrs     r0, msp
-     440:       bl      #-0xe
-
-__zero_bss:
-     444:       movs    r2, #0x0
-     446:       b       #0x0 <__zero_bss+0x6>
-     448:       stm     r0!, {r2}
-     44a:       cmp     r0, r1
-     44c:       blo     #-0x8 <__zero_bss+0x4>
-     44e:       bx      lr
-
-__init_data:
-     450:       b       #0x2 <__init_data+0x6>
-     452:       ldm     r1!, {r3}
-     454:       stm     r0!, {r3}
-     456:       cmp     r0, r2
-     458:       blo     #-0xa <__init_data+0x2>
-     45a:       bx      lr
+     663: <unknown>
 ```
 
 ### Running
@@ -319,13 +298,9 @@ __init_data:
 Next, let's see how to run an embedded program on QEMU! This time we'll use the
 `hello` example which actually does something.
 
-For convenience here's the source code of `src/main.rs`:
+For convenience here's the source code of `examples/hello.rs`:
 
-``` console
-$ cat examples/hello.rs
-```
-
-``` rust
+```rust,ignore
 //! Prints "Hello, world!" on the host console using semihosting
 
 #![no_main]
@@ -333,17 +308,15 @@ $ cat examples/hello.rs
 
 extern crate panic_halt;
 
-use core::fmt::Write;
-
 use cortex_m_rt::entry;
-use cortex_m_semihosting::{debug, hio};
+use cortex_m_semihosting::{debug, hprintln};
 
 #[entry]
 fn main() -> ! {
-    let mut stdout = hio::hstdout().unwrap();
-    writeln!(stdout, "Hello, world!").unwrap();
+    hprintln!("Hello, world!").unwrap();
 
-    // exit QEMU or the debugger section
+    // exit QEMU
+    // NOTE do not run this on hardware; it can corrupt OpenOCD state
     debug::exit(debug::EXIT_SUCCESS);
 
     loop {}
@@ -356,8 +329,8 @@ QEMU this Just Works.
 
 Let's start by compiling the example:
 
-``` console
-$ cargo build --example hello
+```console
+cargo build --example hello
 ```
 
 The output binary will be located at
@@ -365,25 +338,31 @@ The output binary will be located at
 
 To run this binary on QEMU run the following command:
 
-``` console
-$ qemu-system-arm \
-      -cpu cortex-m3 \
-      -machine lm3s6965evb \
-      -nographic \
-      -semihosting-config enable=on,target=native \
-      -kernel target/thumbv7m-none-eabi/debug/examples/hello
+```console
+qemu-system-arm \
+  -cpu cortex-m3 \
+  -machine lm3s6965evb \
+  -nographic \
+  -semihosting-config enable=on,target=native \
+  -kernel target/thumbv7m-none-eabi/debug/examples/hello
+```
+
+```text
 Hello, world!
 ```
 
 The command should successfully exit (exit code = 0) after printing the text. On
 *nix you can check that with the following command:
 
-``` console
-$ echo $?
+```console
+echo $?
+```
+
+```text
 0
 ```
 
-Let me break down that long QEMU command for you:
+Let's break down that QEMU command:
 
 - `qemu-system-arm`. This is the QEMU emulator. There are a few variants of
   these QEMU binaries; this one does full *system* emulation of *ARM* machines
@@ -410,11 +389,11 @@ Typing out that long QEMU command is too much work! We can set a custom runner
 to simplify the process. `.cargo/config` has a commented out runner that invokes
 QEMU; let's uncomment it:
 
-``` console
-$ head -n3 .cargo/config
+```console
+head -n3 .cargo/config
 ```
 
-``` toml
+```toml
 [target.thumbv7m-none-eabi]
 # uncomment this to make `cargo run` execute programs on QEMU
 runner = "qemu-system-arm -cpu cortex-m3 -machine lm3s6965evb -nographic -semihosting-config enable=on,target=native -kernel"
@@ -424,8 +403,11 @@ This runner only applies to the `thumbv7m-none-eabi` target, which is our
 default compilation target. Now `cargo run` will compile the program and run it
 on QEMU:
 
-``` console
-$ cargo run --example hello --release
+```console
+cargo run --example hello --release
+```
+
+```text
    Compiling app v0.1.0 (file:///tmp/app)
     Finished release [optimized + debuginfo] target(s) in 0.26s
      Running `qemu-system-arm -cpu cortex-m3 -machine lm3s6965evb -nographic -semihosting-config enable=on,target=native -kernel target/thumbv7m-none-eabi/release/examples/hello`
@@ -448,15 +430,15 @@ In this section we'll use the `hello` example we already compiled.
 
 The first debugging step is to launch QEMU in debugging mode:
 
-``` console
-$ qemu-system-arm \
-      -cpu cortex-m3 \
-      -machine lm3s6965evb \
-      -nographic \
-      -semihosting-config enable=on,target=native \
-      -gdb tcp::3333 \
-      -S \
-      -kernel target/thumbv7m-none-eabi/debug/examples/hello
+```console
+qemu-system-arm \
+  -cpu cortex-m3 \
+  -machine lm3s6965evb \
+  -nographic \
+  -semihosting-config enable=on,target=native \
+  -gdb tcp::3333 \
+  -S \
+  -kernel target/thumbv7m-none-eabi/debug/examples/hello
 ```
 
 This command won't print anything to the console and will block the terminal. We
@@ -472,19 +454,22 @@ have passed two extra flags this time:
 Next we launch GDB in another terminal and tell it to load the debug symbols of
 the example:
 
-``` console
-$ <gdb> -q target/thumbv7m-none-eabi/debug/examples/hello
+```console
+gdb-multiarch -q target/thumbv7m-none-eabi/debug/examples/hello
 ```
 
-**NOTE**: `<gdb>` represents a GDB program capable of debugging ARM binaries.
-This could be `arm-none-eabi-gdb`, `gdb-multiarch` or `gdb` depending on your
-system -- you may have to try all three.
+**NOTE**: you might need another version of gdb instead of `gdb-multiarch` depending
+on which one you installed in the installation chapter. This could also be
+`arm-none-eabi-gdb` or just `gdb`.
 
 Then within the GDB shell we connect to QEMU, which is waiting for a connection
 on TCP port 3333.
 
-``` console
-(gdb) target remote :3333
+```console
+target remote :3333
+```
+
+```text
 Remote debugging using :3333
 Reset () at $REGISTRY/cortex-m-rt-0.6.1/src/lib.rs:473
 473     pub unsafe extern "C" fn Reset() -> ! {
@@ -497,11 +482,19 @@ execute upon booting.
 This reset handler will eventually call our main function. Let's skip all the
 way there using a breakpoint and the `continue` command:
 
-``` console
-(gdb) break main
-Breakpoint 1 at 0x400: file examples/panic.rs, line 29.
+```console
+break main
+```
 
-(gdb) continue
+```text
+Breakpoint 1 at 0x400: file examples/panic.rs, line 29.
+```
+
+```console
+continue
+```
+
+```text
 Continuing.
 
 Breakpoint 1, main () at examples/hello.rs:17
@@ -512,30 +505,41 @@ We are now close to the code that prints "Hello, world!". Let's move forward
 using the `next` command.
 
 ``` console
-(gdb) next
-18          writeln!(stdout, "Hello, world!").unwrap();
+next
+```
 
-(gdb) next
+```text
+18          writeln!(stdout, "Hello, world!").unwrap();
+```
+
+```console
+next
+```
+
+```text
 20          debug::exit(debug::EXIT_SUCCESS);
 ```
 
 At this point you should see "Hello, world!" printed on the terminal that's
 running `qemu-system-arm`.
 
-``` console
+```text
 $ qemu-system-arm (..)
 Hello, world!
 ```
 
 Calling `next` again will terminate the QEMU process.
 
-``` console
-(gdb) next
+```console
+next
+```
+
+```text
 [Inferior 1 (Remote target) exited normally]
 ```
 
 You can now exit the GDB session.
 
 ``` console
-(gdb) quit
+quit
 ```

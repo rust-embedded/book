@@ -82,7 +82,7 @@ MEMORY
 Make sure the `debug::exit()` call is commented out or removed, it is used
 only for running in QEMU.
 
-``` rust
+```rust,ignore
 #[entry]
 fn main() -> ! {
     hprintln!("Hello, world!").unwrap();

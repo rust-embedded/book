@@ -2,6 +2,7 @@ set -euxo pipefail
 
 main() {
     mdbook build
+    mdbook test
 
     # FIXME(rust-lang-nursery/mdbook#789) remove `--ignore-url` when that bug is fixed
     linkchecker --ignore-url "print.html" book

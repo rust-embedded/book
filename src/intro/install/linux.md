@@ -57,7 +57,7 @@ sudo dnf install arm-none-eabi-gdb openocd qemu-system-arm
 > Cortex-M programs
 
 ``` console
-sudo pacman -S arm-none-eabi-gdb qemu-arch-extra
+sudo pacman -S arm-none-eabi-gdb qemu-arch-extra openocd
 ```
 
 Now install openocd from [AUR](https://aur.archlinux.org/packages/openocd/)

@@ -8,11 +8,9 @@ Let's get familiar with the hardware we'll be working with.
 <img title="F3" src="../assets/f3.jpg">
 </p>
 
-We'll refer to this board as "F3" throughout this book.
-
 What does this board contain?
 
-- A STM32F303VCT6 microcontroller. This microcontroller has
+- A [STM32F303VCT6](https://www.st.com/en/microcontrollers/stm32f303vc.html) microcontroller. This microcontroller has
   - A single-core ARM Cortex-M4F processor with hardware support for single-precision floating point
     operations and a maximum clock frequency of 72 MHz.
 
@@ -20,25 +18,22 @@ What does this board contain?
 
   - 48 KiB of RAM.
 
-  - many "peripherals": timers, GPIO, I2C, SPI, USART, etc.
+  - A variety of integrated peripherals such as timers, I2C, SPI and USART.
 
-  - lots of "pins" that are exposed in the two lateral "headers".
+  - General purpose Input Output (GPIO) and other types of pins accessible through the two rows of headers along side the board.
+  
+  - A USB interface accessible through the USB port labeled "USB USER".
 
-  - **IMPORTANT** This microcontroller operates at (around) 3.3V.
+- An [accelerometer](https://en.wikipedia.org/wiki/Accelerometer) as part of the [LSM303DLHC](https://www.st.com/en/mems-and-sensors/lsm303dlhc.html) chip.
 
-- An [accelerometer] and a [magnetometer][] (in a single package).
+- A [magnetometer](https://en.wikipedia.org/wiki/Magnetometer) as part of the [LSM303DLHC](https://www.st.com/en/mems-and-sensors/lsm303dlhc.html) chip.
 
-[accelerometer]: https://en.wikipedia.org/wiki/Accelerometer
-[magnetometer]: https://en.wikipedia.org/wiki/Magnetometer
+- A [gyroscope](https://en.wikipedia.org/wiki/Gyroscope) as part of the [L3GD20](https://www.pololu.com/file/0J563/L3GD20.pdf) chip.
 
-- A [gyroscope].
+- 8 user LEDs arranged in the shape of a compass.
 
-[gyroscope]: https://en.wikipedia.org/wiki/Gyroscope
+- A second microcontroller: a [STM32F103](https://www.st.com/en/microcontrollers/stm32f103cb.html). This microcontroller is actually part of an on-board programmer / debugger and is connected to the USB port named "USB ST-LINK".
 
-- 8 user LEDs arranged in the shape of a compass
+For a more detailed list of features and further specifications of the board take a look at the [STMicroelectronics](https://www.st.com/en/evaluation-tools/stm32f3discovery.html) website.
 
-- A second microcontroller: a STM32F103CBT. This microcontroller is actually part of an on-board
-  programmer and debugger named ST-LINK and is connected to the USB port named "USB ST-LINK".
-
-- There's a second USB port, labeled "USB USER" that is connected to the main microcontroller, the
-  STM32F303VCT6, and can be used in applications.
+A word of caution: be careful if you want to apply external signals to the board. The microcontroller STM32F303VCT6 pins take a nominal voltage of 3.3 volts. For further information consult the [6.2 Absolute maximum ratings section in the manual](https://www.st.com/resource/en/datasheet/stm32f303vc.pdf)

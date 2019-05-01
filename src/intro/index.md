@@ -4,8 +4,8 @@ Welcome to The Embedded Rust Book: An introductory book about using the Rust
 Programming Language on "Bare Metal" embedded systems, such as Microcontrollers.
 
 ## Who Embedded Rust is For
-Embedded Rust is for everyone who wants to do embedded programming backed by the higher-level concepts and safety guarantees the Rust language provides.
-(See also [Who Rust Is For](https://doc.rust-lang.org/book/2018-edition/ch00-00-introduction.html))
+Embedded Rust is for everyone who wants to do embedded programming while taking advantage of the higher-level concepts and safety guarantees the Rust language provides.
+(See also [Who Rust Is For](https://doc.rust-lang.org/book/ch00-00-introduction.html))
 
 ## Scope
 
@@ -23,16 +23,16 @@ The goals of this book are:
 
 This book tries to be as general as possible but to make things easier for both
 the readers and the writers it uses the ARM Cortex-M architecture in all its
-examples. However, the book assumes that the reader is not familiar with this
+examples. However, the book doesn't assume that the reader is familiar with this
 particular architecture and explains details particular to this architecture
 where required.
 
 ## Who This Book is For
-This book caters towards people with either some embedded background or some Rust background, however we assume
+This book caters towards people with either some embedded background or some Rust background, however we believe
 everybody curious about embedded Rust programming can get something out of this book. For those without any prior knowledge
 we suggest you read the "Assumptions and Prerequisites" section and catch up on missing knowledge to get more out of the book
 and improve your reading experience. You can check out the "Other Resources" section to find resources on topics
-you want to catch up on.
+you might want to catch up on.
 
 ### Assumptions and Prerequisites
 
@@ -41,7 +41,7 @@ you want to catch up on.
   be familiar with the idioms of the [2018 edition] as this book targets
   Rust 2018.
 
-[2018 edition]: https://rust-lang-nursery.github.io/edition-guide/
+[2018 edition]: https://doc.rust-lang.org/edition-guide/
 
 * You are comfortable developing and debugging embedded systems in another
   language such as C, C++, or Ada, and are familiar with concepts such as:
@@ -55,7 +55,7 @@ If you are unfamiliar with anything mentioned above or if you want more informat
 
 | Topic        | Resource | Description |
 |--------------|----------|-------------|
-| Rust         | [Rust Book 2018 Edition](https://doc.rust-lang.org/book/2018-edition/index.html) | If you are not yet comfortable with Rust, we highly suggest reading the this book. |
+| Rust         | [Rust Book](https://doc.rust-lang.org/book/) | If you are not yet comfortable with Rust, we highly suggest reading this book. |
 | Rust, Embedded | [Embedded Rust Bookshelf](https://docs.rust-embedded.org) | Here you can find several other resources provided by Rust's Embedded Working Group. |
 | Rust, Embedded | [Embedonomicon](https://docs.rust-embedded.org/embedonomicon/) | The nitty gritty details when doing embedded programming in Rust. |
 | Rust, Embedded | [embedded FAQ](https://docs.rust-embedded.org/faq.html) | Frequently asked questions about Rust in an embedded context. |
@@ -72,7 +72,7 @@ not dig into details on a topic, revisiting the topic in a later chapter.
 This book will be using the [STM32F3DISCOVERY] development board from
 STMicroelectronics for the majority of the examples contained within. This board
 is based on the ARM Cortex-M architecture, and while basic functionality is
-common across most CPUs based on this architecture, peripherals and other
+the same across most CPUs based on this architecture, peripherals and other
 implementation details of Microcontrollers are different between different
 vendors, and often even different between Microcontroller families from the same
 vendor.

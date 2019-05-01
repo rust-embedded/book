@@ -69,7 +69,7 @@ with the release profile (`cargo build --release`).
 Here's an example that tries to index an array beyond its length. The operation
 results in a panic.
 
-``` rust
+```rust,ignore
 #![no_main]
 #![no_std]
 
