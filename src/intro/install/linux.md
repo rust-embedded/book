@@ -20,10 +20,7 @@ Here are the installation commands for a few Linux distributions.
 <!-- QEMU 2.11.1 -->
 
 ``` console
-$ sudo apt install \
-  gdb-multiarch \
-  openocd \
-  qemu-system-arm
+sudo apt install gdb-multiarch openocd qemu-system-arm
 ```
 
 - Ubuntu 14.04 and 16.04
@@ -37,10 +34,7 @@ $ sudo apt install \
 <!-- QEMU 2.0.0 (?) -->
 
 ``` console
-$ sudo apt install \
-  gdb-arm-none-eabi \
-  openocd \
-  qemu-system-arm
+sudo apt install gdb-arm-none-eabi openocd qemu-system-arm
 ```
 
 - Fedora 27 or newer
@@ -54,10 +48,7 @@ $ sudo apt install \
 <!-- QEMU 2.10.2 -->
 
 ``` console
-$ sudo dnf install \
-  arm-none-eabi-gdb \
-  openocd \
-  qemu-system-arm
+sudo dnf install arm-none-eabi-gdb openocd qemu-system-arm
 ```
 
 - Arch Linux
@@ -66,22 +57,14 @@ $ sudo dnf install \
 > Cortex-M programs
 
 ``` console
-$ sudo pacman -S \
-  arm-none-eabi-gdb \
-  qemu-arch-extra \
-  openocd
-
+sudo pacman -S arm-none-eabi-gdb qemu-arch-extra openocd
 ```
 
 ## udev rules
 
 This rule lets you use OpenOCD with the Discovery board without root privilege.
 
-Create this file in `/etc/udev/rules.d` with the contents shown below.
-
-``` console
-$ cat /etc/udev/rules.d/70-st-link.rules
-```
+Create the file `/etc/udev/rules.d/70-st-link.rules` with the contents shown below.
 
 ``` text
 # STM32F3DISCOVERY rev A/B - ST-LINK/V2
@@ -94,28 +77,41 @@ ATTRS{idVendor}=="0483", ATTRS{idProduct}=="374b", TAG+="uaccess"
 Then reload all the udev rules with:
 
 ``` console
-$ sudo udevadm control --reload-rules
+sudo udevadm control --reload-rules
 ```
 
 If you had the board plugged to your laptop, unplug it and then plug it again.
 
-You can check the permissions by running these commands:
+You can check the permissions by running this command:
 
 ``` console
-$ lsusb
+lsusb
+```
+
+Which should show something like
+
+```text
 (..)
 Bus 001 Device 018: ID 0483:374b STMicroelectronics ST-LINK/V2.1
 (..)
 ```
 
-Take note of the bus and device numbers. Use those numbers in the following
-command:
+Take note of the bus and device numbers. Use those numbers to create a path like
+`/dev/bus/usb/<bus>/<device>`. Then use this path like so:
 
 ``` console
-$ # the format of the path is /dev/bus/usb/<bus>/<device>
-$ ls -l /dev/bus/usb/001/018
+ls -l /dev/bus/usb/001/018
+```
+
+```text
 crw-------+ 1 root root 189, 17 Sep 13 12:34 /dev/bus/usb/001/018
-$ getfacl /dev/bus/usb/001/018 | grep user
+```
+
+```console
+getfacl /dev/bus/usb/001/018 | grep user
+```
+
+```text
 user::rw-
 user:you:rw-
 ```
