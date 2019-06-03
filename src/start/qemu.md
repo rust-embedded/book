@@ -64,8 +64,6 @@ bench = false
 
 Grab the latest snapshot of the `cortex-m-quickstart` template and extract it.
 
-Using the command line:
-
 ```console
 curl -LO https://github.com/rust-embedded/cortex-m-quickstart/archive/master.zip
 unzip master.zip
