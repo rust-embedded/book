@@ -14,7 +14,7 @@ project from it.
 
 [`cortex-m-quickstart`]: https://github.com/rust-embedded/cortex-m-quickstart
 
-- Using `cargo-generate`
+### Using `cargo-generate`
 
 ```console
 cargo generate --git https://github.com/rust-embedded/cortex-m-quickstart
@@ -30,7 +30,7 @@ cargo generate --git https://github.com/rust-embedded/cortex-m-quickstart
 cd app
 ```
 
-- Using `git`
+### Using `git`
 
 Clone the repository
 
@@ -56,7 +56,7 @@ test = false
 bench = false
 ```
 
-- Using neither
+### Using neither
 
 Grab the latest snapshot of the `cortex-m-quickstart` template and extract it.
 
@@ -74,7 +74,7 @@ download" button and then click "Download ZIP".
 
 Then fill in the placeholders in the `Cargo.toml` file as done in the second
 part of the "Using `git`" version.
-
+___
 **IMPORTANT** We'll use the name "app" for the project name in this tutorial.
 Whenever you see the word "app" you should replace it with the name you selected
 for your project. Or, you could also name your project "app" and avoid the
@@ -125,7 +125,7 @@ that'd be `#[entry]`.
 hardware so we don't want it to end! We use a [divergent function](https://doc.rust-lang.org/rust-by-example/fn/diverging.html) (the `-> !`
 bit in the function signature) to ensure at compile time that'll be the case.
 
-### Cross compiling
+## Cross compiling
 
 The next step is to *cross* compile the program for the Cortex-M3 architecture.
 That's as simple as running `cargo build --target $TRIPLE` if you know what the
@@ -154,7 +154,7 @@ cargo build --target thumbv7m-none-eabi
 cargo build
 ```
 
-### Inspecting
+## Inspecting
 
 Now we have a non-native ELF binary in `target/thumbv7m-none-eabi/debug/app`. We
 can inspect it using `cargo-binutils`.
@@ -293,7 +293,7 @@ HardFault:
      663: <unknown>
 ```
 
-### Running
+## Running
 
 Next, let's see how to run an embedded program on QEMU! This time we'll use the
 `hello` example which actually does something.
@@ -414,7 +414,7 @@ cargo run --example hello --release
 Hello, world!
 ```
 
-### Debugging
+## Debugging
 
 Debugging is critical to embedded development. Let's see how it's done.
 
