@@ -83,6 +83,8 @@ download" button and then click "Download ZIP".
 Then fill in the placeholders in the `Cargo.toml` file as done in the second
 part of the "Using `git`" version.
 
+## Program Overview
+
 For convenience here are the most important parts of the source code in `src/main.rs`:
 
 ```rust,ignore
