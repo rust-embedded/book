@@ -7,6 +7,12 @@ the tooling and the development process.
 
 [LM3S6965]: http://www.ti.com/product/LM3S6965
 
+**IMPORTANT** 
+We'll use the name "app" for the project name in this tutorial.
+Whenever you see the word "app" you should replace it with the name you selected
+for your project. Or, you could also name your project "app" and avoid the
+substitutions.
+
 ## Creating a non standard Rust program
 
 We'll use the [`cortex-m-quickstart`] project template to generate a new
@@ -76,11 +82,6 @@ download" button and then click "Download ZIP".
 
 Then fill in the placeholders in the `Cargo.toml` file as done in the second
 part of the "Using `git`" version.
-___
-**IMPORTANT** We'll use the name "app" for the project name in this tutorial.
-Whenever you see the word "app" you should replace it with the name you selected
-for your project. Or, you could also name your project "app" and avoid the
-substitutions.
 
 For convenience here are the most important parts of the source code in `src/main.rs`:
 
