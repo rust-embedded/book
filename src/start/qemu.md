@@ -15,7 +15,11 @@ project from it.
 [`cortex-m-quickstart`]: https://github.com/rust-embedded/cortex-m-quickstart
 
 ### Using `cargo-generate`
-
+First install cargo-generate
+```console
+cargo install cargo-generate
+```
+Then generate a new project
 ```console
 cargo generate --git https://github.com/rust-embedded/cortex-m-quickstart
 ```
