@@ -7,7 +7,7 @@ the tooling and the development process.
 
 [LM3S6965]: http://www.ti.com/product/LM3S6965
 
-**IMPORTANT** 
+**IMPORTANT**
 We'll use the name "app" for the project name in this tutorial.
 Whenever you see the word "app" you should replace it with the name you selected
 for your project. Or, you could also name your project "app" and avoid the
@@ -118,12 +118,12 @@ nightly.
 the panicking behavior of the program. We will cover this in more detail in the
 [Panicking](panicking.md) chapter of the book.
 
-[`#[entry]`] is an attribute provided by the [`cortex-m-rt`] crate that's used
+[`#[entry]`][entry] is an attribute provided by the [`cortex-m-rt`] crate that's used
 to mark the entry point of the program. As we are not using the standard `main`
 interface we need another way to indicate the entry point of the program and
 that'd be `#[entry]`.
 
-[`#[entry]`]: https://docs.rs/cortex-m-rt-macros/latest/cortex_m_rt_macros/attr.entry.html
+[entry]: https://docs.rs/cortex-m-rt-macros/latest/cortex_m_rt_macros/attr.entry.html
 [`cortex-m-rt`]: https://crates.io/crates/cortex-m-rt
 
 `fn main() -> !`. Our program will be the *only* process running on the target
