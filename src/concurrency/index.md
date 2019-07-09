@@ -555,6 +555,23 @@ fn timer() {
 
 ```
 
+> **NOTE**
+>
+> At the moment `cortex-m` crate hides const versions of some functions
+> (including `Mutex::new()`) behind the `const-fn` feature.  So you need to add
+> the `const-fn` feature to dependency on cortex-m in Cargo.toml to make
+> the above examples work:
+>
+> ``` toml
+> [dependencies.cortex-m]
+> version="0.6.0"
+> features=["const-fn"]
+> ```
+> Meanwhile `const-fn` has been working on stable Rust for some time now.
+> So this additional switch in Cargo.toml will not be needed as soon as 
+> it is enabled in `cortex-m` by defauilt.
+>
+
 Whew! This is safe, but it is also a little unwieldy. Is there anything else
 we can do?
 
