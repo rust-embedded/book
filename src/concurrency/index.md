@@ -512,8 +512,8 @@ Since we can't move the `GPIOA` out of the `&Option`, we need to convert it to
 an `&Option<&GPIOA>` with `as_ref()`, which we can finally `unwrap()` to obtain
 the `&GPIOA` which lets us modify the peripheral.
 
-If we need a mutable reference to shared resource, then `borrow_mut` and `deref_mut`
-should be used instead. The following example makes use of mutable reference TIM2 timer.
+If we need a mutable references to shared resources, then `borrow_mut` and `deref_mut`
+should be used instead. The following code shows an example using the TIM2 timer.
 
 ```rust,ignore
 use core::cell::RefCell;
@@ -531,7 +531,7 @@ fn main() -> ! {
     let dp = stm32f405::Peripherals::take().unwrap();
 
     // Some sort of timer configuration function.
-    // Assume it configures TIM2 timer, its NVIC interrupt,
+    // Assume it configures the TIM2 timer, its NVIC interrupt,
     // and finally starts the timer.
     let tim = configure_timer_interrupt(&mut cp, dp);
 
@@ -557,9 +557,9 @@ fn timer() {
 
 > **NOTE**
 >
-> At the moment `cortex-m` crate hides const versions of some functions
-> (including `Mutex::new()`) behind the `const-fn` feature.  So you need to add
-> the `const-fn` feature to dependency on cortex-m in Cargo.toml to make
+> At the moment, the `cortex-m` crate hides const versions of some functions
+> (including `Mutex::new()`) behind the `const-fn` feature. So you need to add
+> the `const-fn` feature as a dependency for cortex-m in the Cargo.toml to make
 > the above examples work:
 >
 > ``` toml
@@ -567,9 +567,9 @@ fn timer() {
 > version="0.6.0"
 > features=["const-fn"]
 > ```
-> Meanwhile `const-fn` has been working on stable Rust for some time now.
+> Meanwhile, `const-fn` has been working on stable Rust for some time now.
 > So this additional switch in Cargo.toml will not be needed as soon as 
-> it is enabled in `cortex-m` by defauilt.
+> it is enabled in `cortex-m` by default.
 >
 
 Whew! This is safe, but it is also a little unwieldy. Is there anything else
