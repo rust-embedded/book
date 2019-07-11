@@ -512,6 +512,66 @@ Since we can't move the `GPIOA` out of the `&Option`, we need to convert it to
 an `&Option<&GPIOA>` with `as_ref()`, which we can finally `unwrap()` to obtain
 the `&GPIOA` which lets us modify the peripheral.
 
+If we need a mutable references to shared resources, then `borrow_mut` and `deref_mut`
+should be used instead. The following code shows an example using the TIM2 timer.
+
+```rust,ignore
+use core::cell::RefCell;
+use core::ops::DerefMut;
+use cortex_m::interrupt::{self, Mutex};
+use cortex_m::asm::wfi;
+use stm32f4::stm32f405;
+
+static G_TIM: Mutex<RefCell<Option<Timer<stm32::TIM2>>>> =
+	Mutex::new(RefCell::new(None));
+
+#[entry]
+fn main() -> ! {
+    let mut cp = cm::Peripherals::take().unwrap();
+    let dp = stm32f405::Peripherals::take().unwrap();
+
+    // Some sort of timer configuration function.
+    // Assume it configures the TIM2 timer, its NVIC interrupt,
+    // and finally starts the timer.
+    let tim = configure_timer_interrupt(&mut cp, dp);
+
+    interrupt::free(|cs| {
+        G_TIM.borrow(cs).replace(Some(tim));
+    });
+
+    loop {
+        wfi();
+    }
+}
+
+#[interrupt]
+fn timer() {
+    interrupt::free(|cs| {
+        if let Some(ref mut tim)) =  G_TIM.borrow(cs).borrow_mut().deref_mut() {
+            tim.start(1.hz());
+        }
+    });
+}
+
+```
+
+> **NOTE**
+>
+> At the moment, the `cortex-m` crate hides const versions of some functions
+> (including `Mutex::new()`) behind the `const-fn` feature. So you need to add
+> the `const-fn` feature as a dependency for cortex-m in the Cargo.toml to make
+> the above examples work:
+>
+> ``` toml
+> [dependencies.cortex-m]
+> version="0.6.0"
+> features=["const-fn"]
+> ```
+> Meanwhile, `const-fn` has been working on stable Rust for some time now.
+> So this additional switch in Cargo.toml will not be needed as soon as 
+> it is enabled in `cortex-m` by default.
+>
+
 Whew! This is safe, but it is also a little unwieldy. Is there anything else
 we can do?
 
