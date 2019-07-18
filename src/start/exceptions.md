@@ -82,6 +82,7 @@ fn main() -> ! {
     syst.set_clock_source(SystClkSource::Core);
     // this is configured for the LM3S6965 which has a default CPU clock of 12 MHz
     syst.set_reload(12_000_000);
+    syst.clear_current();
     syst.enable_counter();
     syst.enable_interrupt();
 
