@@ -45,7 +45,7 @@ The contents may not match exactly but you should get the last line about
 breakpoints and watchpoints. If you got it then terminate the OpenOCD process
 and move to the [next section].
 
-[next section]: ../hardware.md
+[next section]: ../../start/index.md
 
 If you didn't get the "breakpoints" line then try the following command.
 
