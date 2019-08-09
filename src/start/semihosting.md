@@ -130,3 +130,16 @@ panicked at 'assertion failed: `(left == right)`
 $ echo $?
 1
 ```
+
+**NOTE**: To enable this feature on `panic-semihosting`, edit your
+`Cargo.toml` dependencies section where `panic-semihosting` is specified with:
+
+``` toml
+panic-semihosting = { version = "VERSION", features = ["exit"] }
+```
+
+where `VERSION` is the version desired. For more information on dependencies
+features check the [`specifying dependencies`] section of the Cargo book.
+
+[`specifying dependencies`]:
+https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
