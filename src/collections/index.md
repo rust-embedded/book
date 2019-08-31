@@ -70,15 +70,18 @@ unsafe impl GlobalAlloc for BumpPointerAlloc {
         // to use from within interrupts
         interrupt::free(|_| {
             let head = self.head.get();
-
+            let size = layout.size();
             let align = layout.align();
-            let res = *head % align;
-            let start = if res == 0 { *head } else { *head + align - res };
-            if start + align > self.end {
+            let align_mask = !(align - 1);
+
+            // move start up to the next alignment boundary
+            let start = (*head + align - 1) & align_mask;
+
+            if start + size > self.end {
                 // a null pointer signal an Out Of Memory condition
                 ptr::null_mut()
             } else {
-                *head = start + align;
+                *head = start + size;
                 start as *mut u8
             }
         })
