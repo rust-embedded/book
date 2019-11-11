@@ -6,7 +6,7 @@ The concept of [typestates] describes the encoding of information about the curr
 [Builder Pattern]: https://doc.rust-lang.org/1.0.0/style/ownership/builders.html
 
 ```rust
-#[derive(Debug)]
+##[derive(Debug)]
 struct Foo {
     inner: u32,
 }
