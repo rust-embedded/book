@@ -44,10 +44,10 @@ Then, in your code, use `#[cfg(feature="FIR")]` to control what is included.
 ```rust
 /// In your top-level lib.rs
 
-#[cfg(feature="FIR")]
+##[cfg(feature="FIR")]
 pub mod fir;
 
-#[cfg(feature="IIR")]
+##[cfg(feature="IIR")]
 pub mod iir;
 ```
 
@@ -77,9 +77,9 @@ for example:
 
 ```rust
 const fn array_size() -> usize {
-    #[cfg(feature="use_more_ram")]
+    ##[cfg(feature="use_more_ram")]
     { 1024 }
-    #[cfg(not(feature="use_more_ram"))]
+    ##[cfg(not(feature="use_more_ram"))]
     { 128 }
 }
 
@@ -328,7 +328,7 @@ fn main() {
 To ensure layouts that are interoperable with C, use `repr(C)`:
 
 ```rust
-#[repr(C)]
+##[repr(C)]
 struct Foo {
     x: u16,
     y: u8,
@@ -348,7 +348,7 @@ fn main() {
 To ensure a packed representation, use `repr(packed)`:
 
 ```rust
-#[repr(packed)]
+##[repr(packed)]
 struct Foo {
     x: u16,
     y: u8,
@@ -371,8 +371,8 @@ Finally, to specify a specific alignment, use `repr(align(n))`, where `n` is
 the number of bytes to align to (and must be a power of two):
 
 ```rust
-#[repr(C)]
-#[repr(align(4096))]
+##[repr(C)]
+##[repr(align(4096))]
 struct Foo {
     x: u16,
     y: u8,
