@@ -219,6 +219,11 @@ Breakpoint 1, main () at examples/hello.rs:15
 15          let mut stdout = hio::hstdout().unwrap();
 ```
 
+> **NOTE** If GDB blocks the terminal instead of hitting the breakpoint after
+> you issue the `continue` command above, you might want to double check that
+> the memory region information in the `memory.x` file is correctly set up
+> for your device (both the starts *and* lengths). 
+
 Advancing the program with `next` should produce the same results as before.
 
 ``` console
