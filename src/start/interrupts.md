@@ -39,7 +39,7 @@ Interrupt handlers look like plain functions (except for the lack of arguments)
 similar to exception handlers. However they can not be called directly by other
 parts of the firmware due to the special calling conventions. It is however
 possible to generate interrupt requests in software to trigger a diversion to
-to the interrupt handler.
+the interrupt handler.
 
 Similar to exception handlers it is also possible to declare `static mut`
 variables inside the interrupt handlers for *safe* state keeping.
