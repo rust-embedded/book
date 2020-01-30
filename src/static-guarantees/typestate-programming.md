@@ -6,40 +6,42 @@ The concept of [typestates] describes the encoding of information about the curr
 [Builder Pattern]: https://doc.rust-lang.org/1.0.0/style/ownership/builders.html
 
 ```rust
-#[derive(Debug)]
-struct Foo {
-    inner: u32,
-}
-
-struct FooBuilder {
-    a: u32,
-    b: u32,
-}
-
-impl FooBuilder {
-    pub fn new(starter: u32) -> Self {
-        Self {
-            a: starter,
-            b: starter,
-        }
+pub mod foo_module {
+    #[derive(Debug)]
+    pub struct Foo {
+        inner: u32,
     }
 
-    pub fn double_a(self) -> Self {
-        Self {
-            a: self.a * 2,
-            b: self.b,
-        }
+    pub struct FooBuilder {
+        a: u32,
+        b: u32,
     }
 
-    pub fn into_foo(self) -> Foo {
-        Foo {
-            inner: self.a + self.b,
+    impl FooBuilder {
+        pub fn new(starter: u32) -> Self {
+            Self {
+                a: starter,
+                b: starter,
+            }
+        }
+
+        pub fn double_a(self) -> Self {
+            Self {
+                a: self.a * 2,
+                b: self.b,
+            }
+        }
+
+        pub fn into_foo(self) -> Foo {
+            Foo {
+                inner: self.a + self.b,
+            }
         }
     }
 }
 
 fn main() {
-    let x = FooBuilder::new(10)
+    let x = foo_module::FooBuilder::new(10)
         .double_a()
         .into_foo();
 
