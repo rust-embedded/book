@@ -98,3 +98,22 @@ it should be reported in [the issue tracker] of this book.
 [the issue tracker]: https://github.com/rust-embedded/book/issues/
 
 Pull requests fixing typos and adding new content are very welcome!
+
+## Re-using this material
+
+This book is distributed under the following licenses:
+
+* The code samples and free-standing Cargo projects contained within this book are licensed under the terms of both the [MIT License] and the [Apache License v2.0].
+* The written prose, pictures and diagrams contained within this book are licensed under the terms of the Creative Commons [CC-BY-SA v4.0] license.
+
+[MIT License]: https://opensource.org/licenses/MIT
+[Apache License v2.0]: http://www.apache.org/licenses/LICENSE-2.0
+[CC-BY-SA v4.0]: https://creativecommons.org/licenses/by-sa/4.0/legalcode
+
+TL;DR: If you want to use our text or images in your work, you need to:
+
+* Give the appropriate credit (i.e. mention this book on your slide, and provide a link to the relevant page)
+* Provide a link to the [CC-BY-SA v4.0] licence
+* Indicate if you have changed the material in any way, and make any changes to our material available under the same licence
+
+Also, please do let us know if you find this book useful!
