@@ -37,22 +37,17 @@ Can we have smaller, debugger friendly binaries? Yes, there's a trick.
 
 ### Optimizing dependencies
 
-> **WARNING** This section uses an unstable feature and it was last tested on
-> 2018-09-18. Things may have changed since then!
-
-On nightly, there's a Cargo feature named [`profile-overrides`] that lets you
+There's a Cargo feature named [`profile-overrides`] that lets you
 override the optimization level of dependencies. You can use that feature to
 optimize all dependencies for size while keeping the top crate unoptimized and
 debugger friendly.
 
-[`profile-overrides`]: https://doc.rust-lang.org/nightly/cargo/reference/unstable.html#profile-overrides
+[`profile-overrides`]: https://doc.rust-lang.org/nightly/cargo/reference/profiles.html#overrides
 
 Here's an example:
 
 ``` toml
 # Cargo.toml
-cargo-features = ["profile-overrides"] # +
-
 [package]
 name = "app"
 # ..
