@@ -42,7 +42,7 @@ override the optimization level of dependencies. You can use that feature to
 optimize all dependencies for size while keeping the top crate unoptimized and
 debugger friendly.
 
-[`profile-overrides`]: https://doc.rust-lang.org/nightly/cargo/reference/profiles.html#overrides
+[`profile-overrides`]: https://doc.rust-lang.org/cargo/reference/profiles.html#overrides
 
 Here's an example:
 
@@ -52,7 +52,7 @@ Here's an example:
 name = "app"
 # ..
 
-[profile.dev.overrides."*"] # +
+[profile.dev.package."*"] # +
 opt-level = "z" # +
 ```
 
@@ -93,11 +93,11 @@ particular dependency from being optimized. See example below:
 # ..
 
 # don't optimize the `cortex-m-rt` crate
-[profile.dev.overrides.cortex-m-rt] # +
+[profile.dev.package.cortex-m-rt] # +
 opt-level = 0 # +
 
 # but do optimize all the other dependencies
-[profile.dev.overrides."*"]
+[profile.dev.package."*"]
 codegen-units = 1 # better optimizations
 opt-level = "z"
 ```
