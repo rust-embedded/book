@@ -52,7 +52,8 @@ possible.
 Here's an example that uses the system timer to raise a `SysTick` exception
 roughly every second. The `SysTick` exception handler keeps track of how many
 times it has been called in the `COUNT` variable and then prints the value of
-`COUNT` to the host console using semihosting.
+`COUNT` to the host console using semihosting. The exception 
+macro currently (Rust 1.39.0 nightly) creates an error - ```error[E0658]: attributes on function parameters are unstable```. This can be avoided by using the inner attribute ```#![feature(param_attrs)]```.
 
 > **NOTE**: You can run this example on any Cortex-M device; you can also run it
 > on QEMU
@@ -61,6 +62,7 @@ times it has been called in the `COUNT` variable and then prints the value of
 #![deny(unsafe_code)]
 #![no_main]
 #![no_std]
+#![feature(param_attrs)]
 
 extern crate panic_halt;
 
