@@ -138,12 +138,7 @@ for two reasons:
 If `COUNTER` was being shared by multiple interrupt handlers that might
 _preempt_ each other, then each one might require a critical section as well.
 
-This solves our immediate problem, but we're still left writing a lot of
-`unsafe` code which we need to carefully reason about, and we might be using
-critical sections needlessly. Each critical section adds a small amount of
-code size. Also delay of interrupts (latency) and varying delay between
-repetitive interrupts (jitter) can be added, which is often worse because the
-system will be less capable of handling real time events.
+This solves our immediate problem, but we're still left writing a lot of unsafe code which we need to carefully reason about, and we might be using critical sections needlessly. Since each critical section temporarily pauses interrupt processing, there is an associated cost of some extra code size and higher interrupt latency and jitter (interrupts may take longer to be processed, and the time until they are processed will be more variable). Whether this is a problem depends on your system, but in general we'd like to avoid it.
 
 It's worth noting that while a critical section guarantees no interrupts will
 fire, it does not provide an exclusivity guarantee on multi-core systems!  The
