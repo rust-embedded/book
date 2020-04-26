@@ -47,6 +47,14 @@ $ cargo install cargo-binutils
 $ rustup component add llvm-tools-preview
 ```
 
+### `cargo-generate`
+
+We'll use this later to generate a project from a template.
+
+``` console
+$ cargo install cargo-generate
+```
+
 ### OS-Specific Instructions
 
 Now follow the instructions specific to the OS you are using:
