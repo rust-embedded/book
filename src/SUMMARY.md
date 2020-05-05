@@ -41,6 +41,7 @@ more information and coordination
 - [Collections](./collections/index.md)
 - [Design Patterns](./design-patterns/index.md)
     - [HALs](./design-patterns/hal/index.md)
+        - [Checklist](./design-patterns/hal/checklist.md)
         - [Naming](./design-patterns/hal/naming.md)
         - [Interoperability](./design-patterns/hal/interoperability.md)
         - [Predictability](./design-patterns/hal/predictability.md)
