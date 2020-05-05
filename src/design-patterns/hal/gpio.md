@@ -104,14 +104,14 @@ erased and non-erased pin types should provide the same API):
 
 * `pub fn into_input<N: InputState>(self, input: N) -> Pin<N>`
 * `pub fn into_output<N: OutputState>(self, output: N) -> Pin<N>`
-* ```
+* ```ignore
   pub fn with_input_state<N: InputState, R>(
       &mut self,
       input: N,
       f: impl FnOnce(&mut PA1<N>) -> R,
   ) -> R
   ```
-* ```
+* ```ignore
   pub fn with_output_state<N: OutputState, R>(
       &mut self,
       output: N,
@@ -127,9 +127,9 @@ required to implement the pin state API.
 Example:
 
 ```rust
-# use core::mem::PhantomData;
+# use std::marker::PhantomData;
 mod sealed {
-    // ...
+    pub trait Sealed {}
 }
 
 pub trait PinState: sealed::Sealed {}
@@ -143,18 +143,22 @@ pub struct Output<S: OutputState> {
 }
 
 impl<S: OutputState> PinState for Output<S> {}
+impl<S: OutputState> sealed::Sealed for Output<S> {}
 
 pub struct PushPull;
 pub struct OpenDrain;
 
 impl OutputState for PushPull {}
 impl OutputState for OpenDrain {}
+impl sealed::Sealed for PushPull {}
+impl sealed::Sealed for OpenDrain {}
 
 pub struct Input<S: InputState> {
     _p: PhantomData<S>,
 }
 
 impl<S: InputState> PinState for Input<S> {}
+impl<S: InputState> sealed::Sealed for Input<S> {}
 
 pub struct Floating;
 pub struct PullUp;
@@ -163,17 +167,20 @@ pub struct PullDown;
 impl InputState for Floating {}
 impl InputState for PullUp {}
 impl InputState for PullDown {}
+impl sealed::Sealed for Floating {}
+impl sealed::Sealed for PullUp {}
+impl sealed::Sealed for PullDown {}
 
 pub struct PA1<S: PinState> {
     _p: PhantomData<S>,
 }
 
 impl<S: PinState> PA1<S> {
-    pub fn into_input<N: InputState>(self, input: N) -> PA1<N> {
+    pub fn into_input<N: InputState>(self, input: N) -> PA1<Input<N>> {
         todo!()
     }
 
-    pub fn into_output<N: OutputState>(self, output: N) -> PA1<N> {
+    pub fn into_output<N: OutputState>(self, output: N) -> PA1<Output<N>> {
         todo!()
     }
 
