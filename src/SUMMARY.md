@@ -39,6 +39,13 @@ more information and coordination
 - [Portability](./portability/index.md)
 - [Concurrency](./concurrency/index.md)
 - [Collections](./collections/index.md)
+- [Design Patterns](./design-patterns/index.md)
+    - [HALs](./design-patterns/hal/index.md)
+        - [Checklist](./design-patterns/hal/checklist.md)
+        - [Naming](./design-patterns/hal/naming.md)
+        - [Interoperability](./design-patterns/hal/interoperability.md)
+        - [Predictability](./design-patterns/hal/predictability.md)
+        - [GPIO](./design-patterns/hal/gpio.md)
 - [Tips for embedded C developers](./c-tips/index.md)
     <!-- TODO: Define Sections -->
 - [Interoperability](./interoperability/index.md)
