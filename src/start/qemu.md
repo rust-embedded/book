@@ -16,7 +16,10 @@ substitutions.
 ## Creating a non standard Rust program
 
 We'll use the [`cortex-m-quickstart`] project template to generate a new
-project from it.
+project from it. The created project will contain a barebone application: a good
+starting point for a new embedded rust application. In addition, the project will
+contain an `examples` directory, with several separate applications, highlighting
+some of the key embedded rust functionality. 
 
 [`cortex-m-quickstart`]: https://github.com/rust-embedded/cortex-m-quickstart
 
@@ -151,8 +154,14 @@ target = "thumbv7m-none-eabi"    # Cortex-M3
 ```
 
 To cross compile for the Cortex-M3 architecture we have to use
-`thumbv7m-none-eabi`. This compilation target has been set as the default so the
-two commands below do the same:
+`thumbv7m-none-eabi`. That target is not automatically installed when installing
+the Rust toolchain, it would now be a good time to add that target to the toolchain,
+if you haven't done it yet:
+``` console
+$ rustup target add thumbv7m-none-eabi
+```
+ Since the `thumbv7m-none-eabi` compilation target has been set as the default in 
+ your `.cargo/config` file, the two commands below do the same:
 
 ```console
 cargo build --target thumbv7m-none-eabi
@@ -201,8 +210,6 @@ ELF Header:
 
 `cargo-size` can print the size of the linker sections of the binary.
 
-> **NOTE** this output assumes that rust-embedded/cortex-m-rt#111 has been
-> merged
 
 ```console
 cargo size --bin app --release -- -A
@@ -433,6 +440,26 @@ also running the embedded program.
 
 In this section we'll use the `hello` example we already compiled.
 
+Before getting started remotely debugging our app running in QEMU with GDB,
+let's modify our app configuration `.cargo/config`, to enable the GNU ARM linker: 
+
+```toml
+...
+rustflags = [
+  # LLD (shipped with the Rust toolchain) is used as the default linker
+  #"-C", "link-arg=-Tlink.x",  <--- Comment this line
+
+  # if you run into problems with LLD switch to the GNU linker by commenting out
+  # this line
+  "-C", "linker=arm-none-eabi-ld", #<--- Uncomment this line
+```
+We do that, as the default linker (LLD) doesn't always play nice with the GNU ARM GDB.
+Rebuild the application.
+
+```console
+cargo build --example hello
+```
+
 The first debugging step is to launch QEMU in debugging mode:
 
 ```console
@@ -488,11 +515,11 @@ This reset handler will eventually call our main function. Let's skip all the
 way there using a breakpoint and the `continue` command:
 
 ```console
-break main
+break hello::__cortex_m_rt_main
 ```
 
 ```text
-Breakpoint 1 at 0x400: file examples/panic.rs, line 29.
+Breakpoint 1 at 0x410: file examples\hello.rs, line 13.
 ```
 
 ```console
@@ -502,8 +529,8 @@ continue
 ```text
 Continuing.
 
-Breakpoint 1, main () at examples/hello.rs:17
-17          let mut stdout = hio::hstdout().unwrap();
+Breakpoint 1, hello::__cortex_m_rt_main () at examples\hello.rs:13
+13          hprintln!("Hello, world!").unwrap();
 ```
 
 We are now close to the code that prints "Hello, world!". Let's move forward
@@ -512,15 +539,6 @@ using the `next` command.
 ``` console
 next
 ```
-
-```text
-18          writeln!(stdout, "Hello, world!").unwrap();
-```
-
-```console
-next
-```
-
 ```text
 20          debug::exit(debug::EXIT_SUCCESS);
 ```
