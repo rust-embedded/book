@@ -440,26 +440,6 @@ also running the embedded program.
 
 In this section we'll use the `hello` example we already compiled.
 
-Before getting started remotely debugging our app running in QEMU with GDB,
-let's modify our app configuration `.cargo/config`, to enable the GNU ARM linker: 
-
-```toml
-...
-rustflags = [
-  # LLD (shipped with the Rust toolchain) is used as the default linker
-  #"-C", "link-arg=-Tlink.x",  <--- Comment this line
-
-  # if you run into problems with LLD switch to the GNU linker by commenting out
-  # this line
-  "-C", "linker=arm-none-eabi-ld", #<--- Uncomment this line
-```
-We do that, as the default linker (LLD) doesn't always play nice with the GNU ARM GDB.
-Rebuild the application.
-
-```console
-cargo build --example hello
-```
-
 The first debugging step is to launch QEMU in debugging mode:
 
 ```console
@@ -507,20 +487,45 @@ Reset () at $REGISTRY/cortex-m-rt-0.6.1/src/lib.rs:473
 473     pub unsafe extern "C" fn Reset() -> ! {
 ```
 
+
 You'll see that the process is halted and that the program counter is pointing
 to a function named `Reset`. That is the reset handler: what Cortex-M cores
 execute upon booting.
 
+>  Note that on some setup, instead of displaying the line `Reset () at $REGISTRY/cortex-m-rt-0.6.1/src/lib.rs:473` as shown above, gdb may print some warnings like : 
+>
+>`core::num::bignum::Big32x40::mul_small () at src/libcore/num/bignum.rs:254`
+> `    src/libcore/num/bignum.rs: No such file or directory.`
+> 
+> That's a known glitch. You can safely ignore those warnings, you're most likely at Reset(). 
+
+
 This reset handler will eventually call our main function. Let's skip all the
-way there using a breakpoint and the `continue` command:
+way there using a breakpoint and the `continue` command. To set the breakpoint, let's first take a look where we would like to break in our code, with the `list` command.
 
 ```console
-break hello::__cortex_m_rt_main
+list main
 ```
+This will show the source code, from the file examples/hello.rs. 
 
 ```text
-Breakpoint 1 at 0x410: file examples\hello.rs, line 13.
+6       extern crate panic_halt;
+7
+8       use cortex_m_rt::entry;
+9       use cortex_m_semihosting::{debug, hprintln};
+10
+11      #[entry]
+12      fn main() -> ! {
+13          hprintln!("Hello, world!").unwrap();
+14
+15          // exit QEMU
 ```
+We would like to add a breakpoint just before the "Hello, world!", which is on line 13. We do that with the `break` command:
+
+```console
+break 13
+```
+We can now instruct gdb to run up to our main function, with the `continue` command:
 
 ```console
 continue
@@ -539,8 +544,9 @@ using the `next` command.
 ``` console
 next
 ```
+
 ```text
-20          debug::exit(debug::EXIT_SUCCESS);
+16          debug::exit(debug::EXIT_SUCCESS);
 ```
 
 At this point you should see "Hello, world!" printed on the terminal that's
