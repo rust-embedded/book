@@ -17,7 +17,7 @@ ST-LINK header is circled in red.
 Now run the following command:
 
 ``` console
-$ openocd -f interface/stlink-v2-1.cfg -f target/stm32f3x.cfg
+$ openocd -f interface/stlink.cfg -f target/stm32f3x.cfg
 ```
 
 You should get the following output and the program should block the console:

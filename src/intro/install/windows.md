@@ -16,13 +16,13 @@ GNU gdb (GNU Tools for Arm Embedded Processors 7-2018-q2-update) 8.1.0.20180315-
 
 ## OpenOCD
 
-There's no official binary release of OpenOCD for Windows but there are unofficial releases
-available [here][openocd]. Grab the 0.10.x zipfile and extract it somewhere on your drive (I
-recommend `C:\OpenOCD` but with the drive letter that makes sense to you) then update your `%PATH%`
-environment variable to include the following path: `C:\OpenOCD\bin` (or the path that you used
-before).
+There's no official binary release of OpenOCD for Windows but if you're not in the mood to compile
+it yourself, the xPack project provides a binary distribution, [here][openocd]. Follow the
+provided installation instructions. Then update your `%PATH%` environment variable to
+include the path where the binaries were installed. (`C:\Users\USERNAME\AppData\Roaming\xPacks\@xpack-dev-tools\openocd\0.10.0-13.1\.content\bin\`,
+if you've been using the easy install) 
 
-[openocd]: https://github.com/gnu-mcu-eclipse/openocd/releases
+[openocd]: https://xpack.github.io/openocd/
 
 Verify that OpenOCD is in your `%PATH%` with:
 

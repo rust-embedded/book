@@ -16,7 +16,10 @@ substitutions.
 ## Creating a non standard Rust program
 
 We'll use the [`cortex-m-quickstart`] project template to generate a new
-project from it.
+project from it. The created project will contain a barebone application: a good
+starting point for a new embedded rust application. In addition, the project will
+contain an `examples` directory, with several separate applications, highlighting
+some of the key embedded rust functionality. 
 
 [`cortex-m-quickstart`]: https://github.com/rust-embedded/cortex-m-quickstart
 
@@ -151,8 +154,14 @@ target = "thumbv7m-none-eabi"    # Cortex-M3
 ```
 
 To cross compile for the Cortex-M3 architecture we have to use
-`thumbv7m-none-eabi`. This compilation target has been set as the default so the
-two commands below do the same:
+`thumbv7m-none-eabi`. That target is not automatically installed when installing
+the Rust toolchain, it would now be a good time to add that target to the toolchain,
+if you haven't done it yet:
+``` console
+$ rustup target add thumbv7m-none-eabi
+```
+ Since the `thumbv7m-none-eabi` compilation target has been set as the default in 
+ your `.cargo/config` file, the two commands below do the same:
 
 ```console
 cargo build --target thumbv7m-none-eabi
@@ -201,8 +210,6 @@ ELF Header:
 
 `cargo-size` can print the size of the linker sections of the binary.
 
-> **NOTE** this output assumes that rust-embedded/cortex-m-rt#111 has been
-> merged
 
 ```console
 cargo size --bin app --release -- -A
@@ -480,20 +487,45 @@ Reset () at $REGISTRY/cortex-m-rt-0.6.1/src/lib.rs:473
 473     pub unsafe extern "C" fn Reset() -> ! {
 ```
 
+
 You'll see that the process is halted and that the program counter is pointing
 to a function named `Reset`. That is the reset handler: what Cortex-M cores
 execute upon booting.
 
+>  Note that on some setup, instead of displaying the line `Reset () at $REGISTRY/cortex-m-rt-0.6.1/src/lib.rs:473` as shown above, gdb may print some warnings like : 
+>
+>`core::num::bignum::Big32x40::mul_small () at src/libcore/num/bignum.rs:254`
+> `    src/libcore/num/bignum.rs: No such file or directory.`
+> 
+> That's a known glitch. You can safely ignore those warnings, you're most likely at Reset(). 
+
+
 This reset handler will eventually call our main function. Let's skip all the
-way there using a breakpoint and the `continue` command:
+way there using a breakpoint and the `continue` command. To set the breakpoint, let's first take a look where we would like to break in our code, with the `list` command.
 
 ```console
-break main
+list main
 ```
+This will show the source code, from the file examples/hello.rs. 
 
 ```text
-Breakpoint 1 at 0x400: file examples/panic.rs, line 29.
+6       extern crate panic_halt;
+7
+8       use cortex_m_rt::entry;
+9       use cortex_m_semihosting::{debug, hprintln};
+10
+11      #[entry]
+12      fn main() -> ! {
+13          hprintln!("Hello, world!").unwrap();
+14
+15          // exit QEMU
 ```
+We would like to add a breakpoint just before the "Hello, world!", which is on line 13. We do that with the `break` command:
+
+```console
+break 13
+```
+We can now instruct gdb to run up to our main function, with the `continue` command:
 
 ```console
 continue
@@ -502,8 +534,8 @@ continue
 ```text
 Continuing.
 
-Breakpoint 1, main () at examples/hello.rs:17
-17          let mut stdout = hio::hstdout().unwrap();
+Breakpoint 1, hello::__cortex_m_rt_main () at examples\hello.rs:13
+13          hprintln!("Hello, world!").unwrap();
 ```
 
 We are now close to the code that prints "Hello, world!". Let's move forward
@@ -514,15 +546,7 @@ next
 ```
 
 ```text
-18          writeln!(stdout, "Hello, world!").unwrap();
-```
-
-```console
-next
-```
-
-```text
-20          debug::exit(debug::EXIT_SUCCESS);
+16          debug::exit(debug::EXIT_SUCCESS);
 ```
 
 At this point you should see "Hello, world!" printed on the terminal that's
