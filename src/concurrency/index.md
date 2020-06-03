@@ -509,7 +509,7 @@ Since we can't move the `GPIOA` out of the `&Option`, we need to convert it to
 an `&Option<&GPIOA>` with `as_ref()`, which we can finally `unwrap()` to obtain
 the `&GPIOA` which lets us modify the peripheral.
 
-If we need mutable references to shared resources, then `borrow_mut` and `deref_mut`
+If we need a mutable reference to a shared resource, then `borrow_mut` and `deref_mut`
 should be used instead. The following code shows an example using the TIM2 timer.
 
 ```rust,ignore
