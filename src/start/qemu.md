@@ -121,6 +121,9 @@ nightly.
 the panicking behavior of the program. We will cover this in more detail in the
 [Panicking](panicking.md) chapter of the book.
 
+> Note that while `extern crate` looks odd in modern Rust syntax, this declaration
+> form is required since it resolves the implicit dependency in `no_std` context.
+
 [`#[entry]`][entry] is an attribute provided by the [`cortex-m-rt`] crate that's used
 to mark the entry point of the program. As we are not using the standard `main`
 interface we need another way to indicate the entry point of the program and
