@@ -51,11 +51,11 @@ profile. For example:
 
 // dev profile: easier to debug panics; can put a breakpoint on `rust_begin_unwind`
 #[cfg(debug_assertions)]
-extern crate panic_halt;
+use panic_halt as _;
 
 // release profile: minimize the binary size of the application
 #[cfg(not(debug_assertions))]
-extern crate panic_abort;
+use panic_abort as _;
 
 // ..
 ```
@@ -63,6 +63,12 @@ extern crate panic_abort;
 In this example the crate links to the `panic-halt` crate when built with the
 dev profile (`cargo build`), but links to the `panic-abort` crate when built
 with the release profile (`cargo build --release`).
+
+> Note that the _underscore import_ form of the _use_ declaration is used to import a `#[panic_handler]` function
+> symbol without importing of trait's symbol itself since it is not used elsewhere on its own.
+> Sometimes you might see the `extern crate` form of importing which is used for the same reason but it is unidiomatic.
+> `extern crate` should be used only for importing _"sysroot"_ crates (crates distributed with Rust itself) like `proc_macro`,
+> `alloc`, `test`, and similar ones.
 
 ## An example
 
@@ -73,7 +79,7 @@ results in a panic.
 #![no_main]
 #![no_std]
 
-extern crate panic_semihosting;
+use panic_semihosting as _;
 
 use cortex_m_rt::entry;
 

@@ -62,7 +62,7 @@ times it has been called in the `COUNT` variable and then prints the value of
 #![no_main]
 #![no_std]
 
-extern crate panic_halt;
+use panic_halt as _;
 
 use core::fmt::Write;
 
@@ -190,7 +190,7 @@ memory location.
 #![no_main]
 #![no_std]
 
-extern crate panic_halt;
+use panic_halt as _;
 
 use core::fmt::Write;
 use core::ptr;
