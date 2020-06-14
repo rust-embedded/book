@@ -16,7 +16,7 @@ world!":
 #![no_main]
 #![no_std]
 
-extern crate panic_halt;
+use panic_halt as _;
 
 use cortex_m_rt::entry;
 use cortex_m_semihosting::hprintln;
@@ -67,7 +67,7 @@ until you restart it.
 #![no_main]
 #![no_std]
 
-extern crate panic_halt;
+use panic_halt as _;
 
 use cortex_m_rt::entry;
 use cortex_m_semihosting::debug;
@@ -105,7 +105,7 @@ stderr.
 #![no_main]
 #![no_std]
 
-extern crate panic_semihosting; // features = ["exit"]
+use panic_semihosting as _; // features = ["exit"]
 
 use cortex_m_rt::entry;
 use cortex_m_semihosting::debug;

@@ -94,7 +94,7 @@ For convenience here are the most important parts of the source code in `src/mai
 #![no_std]
 #![no_main]
 
-extern crate panic_halt;
+use panic_halt as _;
 
 use cortex_m_rt::entry;
 
@@ -117,7 +117,7 @@ interface that most Rust programs use. The main (no pun intended) reason to go
 with `no_main` is that using the `main` interface in `no_std` context requires
 nightly.
 
-`extern crate panic_halt;`. This crate provides a `panic_handler` that defines
+`use panic_halt as _;`. This crate provides a `panic_handler` that defines
 the panicking behavior of the program. We will cover this in more detail in the
 [Panicking](panicking.md) chapter of the book.
 
@@ -318,7 +318,7 @@ For convenience here's the source code of `examples/hello.rs`:
 #![no_main]
 #![no_std]
 
-extern crate panic_halt;
+use panic_halt as _;
 
 use cortex_m_rt::entry;
 use cortex_m_semihosting::{debug, hprintln};
@@ -509,7 +509,7 @@ list main
 This will show the source code, from the file examples/hello.rs. 
 
 ```text
-6       extern crate panic_halt;
+6       use panic_halt as _;
 7
 8       use cortex_m_rt::entry;
 9       use cortex_m_semihosting::{debug, hprintln};
