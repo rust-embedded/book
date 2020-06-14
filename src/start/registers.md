@@ -22,12 +22,15 @@ You may well find that the code you need to access the peripherals in your micro
 Let's look at the SysTick peripheral that's common to all Cortex-M based micro-controllers. We can find a pretty low-level API in the [cortex-m] crate, and we can use it like this:
 
 ```rust,ignore
+#![no_std]
+#![no_main]
 use cortex_m::peripheral::{syst, Peripherals};
 use cortex_m_rt::entry;
+extern crate panic_halt;
 
 #[entry]
 fn main() -> ! {
-    let mut peripherals = Peripherals::take().unwrap();
+    let peripherals = Peripherals::take().unwrap();
     let mut systick = peripherals.SYST;
     systick.set_clock_source(syst::SystClkSource::Core);
     systick.set_reload(1_000);
@@ -41,7 +44,7 @@ fn main() -> ! {
 }
 ```
 
-The functions on the `SYST` struct map pretty closely to the functionality defined by the ARM Technical Reference Manual for this peripheral. There's nothing in this API about 'delaying for X milliseconds' - we have to crudely implement that ourselves using a `while` loop. Note that we can't access our `SYST` struct until we have called `Peripherals::take()` - this is a special routine that guarantees that there is only one `SYST` structure in our entire program. For more on that, see the [Peripherals] section.
+The code above will wait for 1000 milliseconds. The functions on the `SYST` struct map pretty closely to the functionality defined by the ARM Technical Reference Manual for this peripheral. There's nothing in this API about 'delaying for X milliseconds' - we have to crudely implement that ourselves using a `while` loop. Note that we can't access our `SYST` struct until we have called `Peripherals::take()` - this is a special routine that guarantees that there is only one `SYST` structure in our entire program. For more on that, see the [Peripherals] section.
 
 [Peripherals]: ../peripherals/index.md
 
