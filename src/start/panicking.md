@@ -64,11 +64,12 @@ In this example the crate links to the `panic-halt` crate when built with the
 dev profile (`cargo build`), but links to the `panic-abort` crate when built
 with the release profile (`cargo build --release`).
 
-> Note that the _underscore import_ form of the _use_ declaration is used to import a `#[panic_handler]` function
-> symbol without importing of trait's symbol itself since it is not used elsewhere on its own.
-> Sometimes you might see the `extern crate` form of importing which is used for the same reason but it is unidiomatic.
-> `extern crate` should be used only for importing _"sysroot"_ crates (crates distributed with Rust itself) like `proc_macro`,
-> `alloc`, `test`, and similar ones.
+> The `use panic_abort as _;` form of the `use` statement is used to ensure the `panic_abort` panic handler is
+> included in our final executable while making it clear to the compiler that we won't explicitly use anything from
+> the crate. Without the `as _` rename, the compiler would warn that we have an unused import.
+> Sometimes you might see `extern crate panic_abort` instead, which is an older style used before the
+> 2018 edition of Rust, and should now only be used for "sysroot" crates (those distributed with Rust itself) such
+> as `proc_macro`, `alloc`, `std`, and `test`.
 
 ## An example
 
