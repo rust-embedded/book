@@ -10,21 +10,21 @@ You may well find that the code you need to access the peripherals in your micro
 * Micro-architecture Crate - This sort of crate handles any useful routines common to the processor core your microcontroller is using, as well as any peripherals that are common to all micro-controllers that use that particular type of processor core. For example the [cortex-m] crate gives you functions to enable and disable interrupts, which are the same for all Cortex-M based micro-controllers. It also gives you access to the 'SysTick' peripheral included with all Cortex-M based micro-controllers.
 * Peripheral Access Crate (PAC) - This sort of crate is a thin wrapper over the various memory-wrapper registers defined for your particular part-number of micro-controller you are using. For example, [tm4c123x] for the Texas Instruments Tiva-C TM4C123 series, or [stm32f30x] for the ST-Micro STM32F30x series. Here, you'll be interacting with the registers directly, following each peripheral's operating instructions given in your micro-controller's Technical Reference Manual.
 * HAL Crate - These crates offer a more user-friendly API for your particular processor, often by implementing some common traits defined in [embedded-hal]. For example, this crate might offer a `Serial` struct, with a constructor that takes an appropriate set of GPIO pins and a baud rate, and offers some sort of `write_byte` function for sending data. See the chapter on [Portability] for more information on [embedded-hal].
-* Board Crate - These crates go one step further than a HAL Crate by pre-configuring various peripherals and GPIO pins to suit the specific developer kit or board you are using, such as [F3] for the STM32F3DISCOVERY board.
+* Board Crate - These crates go one step further than a HAL Crate by pre-configuring various peripherals and GPIO pins to suit the specific developer kit or board you are using, such as [stm32f3-discovery] for the STM32F3DISCOVERY board.
 
 [cortex-m]: https://crates.io/crates/cortex-m
 [tm4c123x]: https://crates.io/crates/tm4c123x
 [stm32f30x]: https://crates.io/crates/stm32f30x
 [embedded-hal]: https://crates.io/crates/embedded-hal
 [Portability]: ../portability/index.md
-[F3]: https://crates.io/crates/f3
+[stm32f3-discovery]: https://crates.io/crates/stm32f3-discovery
 [Discovery]: https://rust-embedded.github.io/discovery/
 
 ## Board Crate
 
 A board crate is the perfect starting point, if you're new to embedded Rust. They nicely abstracts the HW details that might be overwelming when starting studying this subject, and makes standard tasks easy, like turning a LED on or off. The functionality they exposes varies a lot between boards. Since this book aims at staying hardware agnostic, the board crates won't be covered by this book.
 
-If you want to experiment with the STM32F3DISCOVERY board, it is highly recommmand to take a look at the [F3] board crate, which provides functionality to blink the board LEDs, access its compass, bluetooth and more. The [Discovery] book offers a great introduction to the [F3] board crate.
+If you want to experiment with the STM32F3DISCOVERY board, it is highly recommmand to take a look at the [stm32f3-discovery] board crate, which provides functionality to blink the board LEDs, access its compass, bluetooth and more. The [Discovery] book offers a great introduction to the use of a board crate.
 
 But if you're working on a system that doesn't yet have dedicated board crate, or you need functionality not provided by existing crates, read on as we start from the bottom, with the micro-architecture crates.
 
@@ -37,7 +37,7 @@ Let's look at the SysTick peripheral that's common to all Cortex-M based micro-c
 #![no_main]
 use cortex_m::peripheral::{syst, Peripherals};
 use cortex_m_rt::entry;
-extern crate panic_halt;
+use panic_halt as _;
 
 #[entry]
 fn main() -> ! {
@@ -66,7 +66,7 @@ We won't get very far with our embedded software development if we restrict ours
 #![no_std]
 #![no_main]
 
-extern crate panic_halt; // panic handler
+use panic_halt as _;
 
 use cortex_m_rt::entry;
 use tm4c123x;
@@ -142,7 +142,7 @@ Let's see an example:
 #![no_std]
 #![no_main]
 
-extern crate panic_halt; // panic handler
+use panic_halt as _;
 
 use cortex_m_rt::entry;
 use tm4c123x_hal as hal;
