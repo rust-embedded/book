@@ -51,11 +51,11 @@ profile. For example:
 
 // dev profile: easier to debug panics; can put a breakpoint on `rust_begin_unwind`
 #[cfg(debug_assertions)]
-extern crate panic_halt;
+use panic_halt as _;
 
 // release profile: minimize the binary size of the application
 #[cfg(not(debug_assertions))]
-extern crate panic_abort;
+use panic_abort as _;
 
 // ..
 ```
@@ -63,6 +63,13 @@ extern crate panic_abort;
 In this example the crate links to the `panic-halt` crate when built with the
 dev profile (`cargo build`), but links to the `panic-abort` crate when built
 with the release profile (`cargo build --release`).
+
+> The `use panic_abort as _;` form of the `use` statement is used to ensure the `panic_abort` panic handler is
+> included in our final executable while making it clear to the compiler that we won't explicitly use anything from
+> the crate. Without the `as _` rename, the compiler would warn that we have an unused import.
+> Sometimes you might see `extern crate panic_abort` instead, which is an older style used before the
+> 2018 edition of Rust, and should now only be used for "sysroot" crates (those distributed with Rust itself) such
+> as `proc_macro`, `alloc`, `std`, and `test`.
 
 ## An example
 
@@ -73,7 +80,7 @@ results in a panic.
 #![no_main]
 #![no_std]
 
-extern crate panic_semihosting;
+use panic_semihosting as _;
 
 use cortex_m_rt::entry;
 
