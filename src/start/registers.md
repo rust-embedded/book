@@ -66,7 +66,6 @@ We won't get very far with our embedded software development if we restrict ours
 #![no_std]
 #![no_main]
 
-
 use panic_halt as _; // panic handler
 
 use cortex_m_rt::entry;
