@@ -78,6 +78,9 @@ MEMORY
   RAM : ORIGIN = 0x20000000, LENGTH = 40K
 }
 ```
+> **NOTE**: If you for some reason changed the `memory.x` file after you had made
+> the first build of a specific build target, then do `cargo clean` before
+> `cargo build`, because `cargo build` does not track updates of `memory.x`.
 
 Make sure the `debug::exit()` call is commented out or removed, it is used
 only for running in QEMU.
