@@ -555,23 +555,23 @@ fn timer() {
 Whew! This is safe, but it is also a little unwieldy. Is there anything else
 we can do?
 
-## RTFM
+## RTIC
 
-One alternative is the [RTFM framework], short for Real Time For the Masses. It
+One alternative is the [RTIC framework], short for Real Time Interrupt-driven Concurrency. It
 enforces static priorities and tracks accesses to `static mut` variables
 ("resources") to statically ensure that shared resources are always accessed
 safely, without requiring the overhead of always entering critical sections and
 using reference counting (as in `RefCell`). This has a number of advantages such
 as guaranteeing no deadlocks and giving extremely low time and memory overhead.
 
-[RTFM framework]: https://github.com/japaric/cortex-m-rtfm
+[RTIC framework]: https://github.com/rtic-rs/cortex-m-rtic
 
 The framework also includes other features like message passing, which reduces
 the need for explicit shared state, and the ability to schedule tasks to run at
 a given time, which can be used to implement periodic tasks. Check out [the
 documentation] for more information!
 
-[the documentation]: https://japaric.github.io/cortex-m-rtfm/book/
+[the documentation]: https://rtic.rs
 
 ## Real Time Operating Systems
 

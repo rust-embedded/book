@@ -73,23 +73,24 @@ fn main() {
 
 [cortex_m docs](https://docs.rs/cortex-m/latest/cortex_m/macro.singleton.html)
 
-Additionally, if you use `cortex-m-rtfm`, the entire process of defining and obtaining these peripherals are abstracted for you, and you are instead handed a `Peripherals` structure that contains a non-`Option<T>` version of all of the items you define.
+Additionally, if you use [`cortex-m-rtic`](https://github.com/rtic-rs/cortex-m-rtic), the entire process of defining and obtaining these peripherals are abstracted for you, and you are instead handed a `Peripherals` structure that contains a non-`Option<T>` version of all of the items you define.
 
 ```rust,ignore
-// cortex-m-rtfm v0.3.x
-app! {
-    resources: {
-        static RX: Rx<USART1>;
-        static TX: Tx<USART1>;
+// cortex-m-rtic v0.5.x
+#[rtic::app(device = lm3s6965, peripherals = true)]
+const APP: () = {
+    #[init]
+    fn init(cx: init::Context) {
+        static mut X: u32 = 0;
+         
+        // Cortex-M peripherals
+        let core: cortex_m::Peripherals = cx.core;
+        
+        // Device specific peripherals
+        let device: lm3s6965::Peripherals = cx.device;
     }
 }
-fn init(p: init::Peripherals) -> init::LateResources {
-    // Note that this is now an owned value, not a reference
-    let usart1: USART1 = p.device.USART1;
-}
 ```
-
-[japaric.io rtfm v3](https://blog.japaric.io/rtfm-v3/)
 
 ## But why?
 
