@@ -51,7 +51,7 @@ possible.
 > inside the function by wrapping them into `unsafe` blocks and providing us
 > with new appropriate variables of type `&mut` of the same name.
 > Thus we can use operator `*` to access the values of the variables without
-> need to wrap them into the `unsafe` blocks.
+> needing to wrap them in an `unsafe` block.
 
 ## A complete example
 
