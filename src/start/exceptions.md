@@ -50,7 +50,7 @@ possible.
 > Note that the `exception` attribute transforms definitions of static variables
 > inside the function by wrapping them into `unsafe` blocks and providing us
 > with new appropriate variables of type `&mut` of the same name.
-> Thus we can use operator `*` to access the values of the variables without
+> Thus we can derefence the reference via `*` to access the values of the variables without
 > needing to wrap them in an `unsafe` block.
 
 ## A complete example
