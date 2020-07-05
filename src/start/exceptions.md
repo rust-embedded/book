@@ -47,11 +47,11 @@ use `static mut` variables. How is this possible? This is possible because
 `exception` handlers can *not* be called by software thus reentrancy is not
 possible.
 
-> Note that the `exception` attribute makes transformation of static variables
-> inside the function by wrapping the static variable definitions into `unsafe`
-> blocks and providing us with new appropriate variables of type `&mut` which
-> names match user defined. Thus we can use operator `*` to access the values
-> of the variables without need to wrap them into the `unsafe` blocks.
+> Note that the `exception` attribute transforms definitions of static variables
+> inside the function by wrapping them into `unsafe` blocks and providing us
+> with new appropriate variables of type `&mut` which names match user defined.
+> Thus we can use operator `*` to access the values of the variables without
+> need to wrap them into the `unsafe` blocks.
 
 ## A complete example
 
