@@ -31,7 +31,7 @@ This behavior is pretty much intended and it's required to provide a feature:
 fn SysTick() {
     static mut COUNT: u32 = 0;
 
-    // `COUNT` has type `&mut u32` and it's safe to use
+    // `COUNT` has transformed to type `&mut u32` and it's safe to use
     *COUNT += 1;
 }
 ```
@@ -46,6 +46,12 @@ must be marked as `unsafe`. Yet I just told that `exception` handlers can safely
 use `static mut` variables. How is this possible? This is possible because
 `exception` handlers can *not* be called by software thus reentrancy is not
 possible.
+
+> Note that the `exception` attribute transforms definitions of static variables
+> inside the function by wrapping them into `unsafe` blocks and providing us
+> with new appropriate variables of type `&mut` of the same name.
+> Thus we can derefence the reference via `*` to access the values of the variables without
+> needing to wrap them in an `unsafe` block.
 
 ## A complete example
 
