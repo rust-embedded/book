@@ -47,18 +47,22 @@ and move to the [next section].
 
 [next section]: ../../start/index.md
 
-If you didn't get the "breakpoints" line then try the following command.
+If you didn't get the "breakpoints" line then try one of the following commands.
 
 ``` console
 $ openocd -f interface/stlink-v2.cfg -f target/stm32f3x.cfg
 ```
 
-If that command works that means you got an old hardware revision of the
+``` console
+$ openocd -f interface/stlink-v2-1.cfg -f target/stm32f3x.cfg
+```
+
+If one of those commands works it means you got an old hardware revision of the
 discovery board. That won't be a problem but commit that fact to memory as
 you'll need to configure things a bit differently later on. You can move to the
 [next section].
 
-If neither command worked as a normal user then try to run them with root
+If none of the commands work as a normal user then try to run them with root
 permission (e.g. `sudo openocd ..`). If the commands do work with root
 permission then check that the [udev rules] have been correctly set.
 
