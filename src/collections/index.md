@@ -236,8 +236,8 @@ capacity) than what relocatable collections can achieve.
 
 ### Worst Case Execution Time (WCET)
 
-If are building time sensitive applications or hard real time applications then
-you care, maybe a lot, about the worst case execution time of the different
+If you are building time sensitive applications or hard real time applications
+then you care, maybe a lot, about the worst case execution time of the different
 parts of your program.
 
 The `alloc` collections can reallocate so the WCET of operations that may grow
