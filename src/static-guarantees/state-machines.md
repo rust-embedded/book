@@ -68,7 +68,7 @@ impl GpioConfig {
     }
 
     pub fn set_direction(&mut self, is_output: bool) {
-        self.periph.modify(|r, w| {
+        self.periph.modify(|_r, w| {
             w.direction().set_bit(is_output)
         });
     }
