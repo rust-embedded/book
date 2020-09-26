@@ -17,7 +17,7 @@ rustc 1.31.1 (b6c32da9b 2018-12-18)
 For bandwidth and disk usage concerns the default installation only supports
 native compilation. To add cross compilation support for the ARM Cortex-M
 architectures choose one of the following compilation targets. For the STM32F3DISCOVERY
-board used for the examples in this book, use the final `thumbv7em-none-eabihf` target.
+board used for the examples in this book, use the `thumbv7em-none-eabihf` target.
 
 Cortex-M0, M0+, and M1 (ARMv6-M architecture):
 ``` console
@@ -38,6 +38,22 @@ Cortex-M4F and M7F with hardware floating point (ARMv7E-M architecture):
 ``` console
 $ rustup target add thumbv7em-none-eabihf
 ```
+
+Cortex-M23 (ARMv8-M architecture):
+``` console
+$ rustup target add thumbv8m.base-none-eabi
+```
+
+Cortex-M33 and M35P (ARMv8-M architecture):
+``` console
+$ rustup target add thumbv8m.main-none-eabi
+```
+
+Cortex-M33F and M35PF with hardware floating point (ARMv8-M architecture):
+``` console
+$ rustup target add thumbv8m.main-none-eabihf
+```
+
 
 ### `cargo-binutils`
 
