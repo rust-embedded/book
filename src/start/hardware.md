@@ -82,8 +82,11 @@ MEMORY
 > the first build of a specific build target, then do `cargo clean` before
 > `cargo build`, because `cargo build` may not track updates of `memory.x`.
 
-Make sure the `debug::exit()` call is commented out or removed, it is used
-only for running in QEMU.
+We'll start with the hello example again, but first we have to make a small
+change.
+
+In `examples/hello.rs`, make sure the `debug::exit()` call is commented out or
+removed. It is used only for running in QEMU.
 
 ```rust,ignore
 #[entry]
