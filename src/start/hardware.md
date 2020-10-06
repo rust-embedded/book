@@ -86,7 +86,7 @@ We'll start with the hello example again, but first we have to make a small
 change.
 
 In `examples/hello.rs`, make sure the `debug::exit()` call is commented out or
-removed, it is used only for running in QEMU.
+removed. It is used only for running in QEMU.
 
 ```rust,ignore
 #[entry]
