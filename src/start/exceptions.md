@@ -249,7 +249,7 @@ If you look at the disassembly of the program:
 
 
 ``` console
-$ cargo objdump --bin app --release -- -d -no-show-raw-insn -print-imm-hex
+$ cargo objdump --bin app --release -- -d --no-show-raw-insn --print-imm-hex
 (..)
 ResetTrampoline:
  8000942:       movw    r0, #0xfffe

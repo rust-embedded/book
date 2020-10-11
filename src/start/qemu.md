@@ -259,8 +259,11 @@ is.
 `cargo-objdump` can be used to disassemble the binary.
 
 ```console
-cargo objdump --bin app --release -- -disassemble -no-show-raw-insn -print-imm-hex
+cargo objdump --bin app --release -- --disassemble --no-show-raw-insn --print-imm-hex
 ```
+
+> **NOTE** if the above command complains about `Unknown command line argument` see
+> the following bug report: https://github.com/rust-embedded/book/issues/269
 
 > **NOTE** this output can differ on your system. New versions of rustc, LLVM
 > and libraries can generate different assembly. We truncated some of the instructions
