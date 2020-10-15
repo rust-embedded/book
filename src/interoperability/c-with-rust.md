@@ -112,6 +112,8 @@ For projects with complex external projects or build systems, it may be easiest 
 
 While your crate may be targeting a `no_std` embedded platform, your `build.rs` executes only on machines compiling your crate. This means you may use any Rust crates which will run on your compilation host.
 
+[`std::process::Command`]: https://doc.rust-lang.org/std/process/struct.Command.html
+
 ### Building C/C++ code with the `cc` crate
 
 For projects with limited dependencies or complexity, or for projects where it is difficult to modify the build system to produce a static library (rather than a final binary or executable), it may be easier to instead utilize the [`cc` crate], which provides an idiomatic Rust interface to the compiler provided by the host.
