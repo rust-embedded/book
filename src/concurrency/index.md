@@ -148,10 +148,11 @@ are using multiple cores.
 
 ## Atomic Access
 
-On some platforms, atomic instructions are available, which provide guarantees
-about read-modify-write operations. Specifically for Cortex-M, `thumbv6`
-(Cortex-M0) does not provide atomic instructions, while `thumbv7` (Cortex-M3
-and above) do. These instructions give an alternative to the heavy-handed
+On some platforms, special atomic instructions are available, which provide
+guarantees about read-modify-write operations. Specifically for Cortex-M: `thumbv6`
+(Cortex-M0, Cortex-M0+) only provide atomic load and store instructions,
+while `thumbv7` (Cortex-M3 and above) provide full Compare and Swap (CAS)
+instructions. These CAS instructions give an alternative to the heavy-handed
 disabling of all interrupts: we can attempt the increment, it will succeed most
 of the time, but if it was interrupted it will automatically retry the entire
 increment operation. These atomic operations are safe even across multiple
