@@ -11,6 +11,7 @@ main() {
     curl -LSfs https://japaric.github.io/trust/install.sh | \
         sh -s -- --git rust-lang/mdbook --tag $tag
 
+    pip install python-dateutil --user
     pip install linkchecker --user
 }
 
