@@ -20,6 +20,10 @@ Now run the following command:
 $ openocd -f interface/stlink.cfg -f target/stm32f3x.cfg
 ```
 
+> **NOTE**: Old versions of openocd, including the 0.10.0 release from 2017, do
+> not contain the new (and preferable) `interface/stlink.cfg` file; instead you
+> may need to use `interface/stlink-v2.cfg` or `interface/stlink-v2-1.cfg`.
+
 You should get the following output and the program should block the console:
 
 ``` text
