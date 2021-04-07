@@ -6,7 +6,7 @@ ARM provides `.exe` installers for Windows. Grab one from [here][gcc], and follo
 Just before the installation process finishes tick/select the "Add path to environment variable"
 option. Then verify that the tools are in your `%PATH%`:
 
-``` console
+``` text
 $ arm-none-eabi-gdb -v
 GNU gdb (GNU Tools for Arm Embedded Processors 7-2018-q2-update) 8.1.0.20180315-git
 (..)
@@ -26,7 +26,7 @@ if you've been using the easy install)
 
 Verify that OpenOCD is in your `%PATH%` with:
 
-``` console
+``` text
 $ openocd -v
 Open On-Chip Debugger 0.10.0
 (..)

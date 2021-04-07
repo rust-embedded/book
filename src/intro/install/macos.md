@@ -4,7 +4,7 @@ All the tools can be install using [Homebrew]:
 
 [Homebrew]: http://brew.sh/
 
-``` console
+``` text
 $ # GDB
 $ brew install armmbed/formulae/arm-none-eabi-gcc
 

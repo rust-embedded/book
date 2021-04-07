@@ -97,7 +97,7 @@ fn main() -> ! {
 This example chose the `panic-semihosting` behavior which prints the panic
 message to the host console using semihosting.
 
-``` console
+``` text
 $ cargo run
      Running `qemu-system-arm -cpu cortex-m3 -machine lm3s6965evb (..)
 panicked at 'index out of bounds: the len is 3 but the index is 4', src/main.rs:12:13

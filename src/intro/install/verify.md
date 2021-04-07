@@ -17,7 +17,7 @@ ST-LINK header is circled in red.
 Now run the following command:
 
 ``` console
-$ openocd -f interface/stlink.cfg -f target/stm32f3x.cfg
+openocd -f interface/stlink.cfg -f target/stm32f3x.cfg
 ```
 
 > **NOTE**: Old versions of openocd, including the 0.10.0 release from 2017, do
@@ -54,11 +54,11 @@ and move to the [next section].
 If you didn't get the "breakpoints" line then try one of the following commands.
 
 ``` console
-$ openocd -f interface/stlink-v2.cfg -f target/stm32f3x.cfg
+openocd -f interface/stlink-v2.cfg -f target/stm32f3x.cfg
 ```
 
 ``` console
-$ openocd -f interface/stlink-v2-1.cfg -f target/stm32f3x.cfg
+openocd -f interface/stlink-v2-1.cfg -f target/stm32f3x.cfg
 ```
 
 If one of those commands works it means you got an old hardware revision of the
