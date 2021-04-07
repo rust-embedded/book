@@ -32,7 +32,7 @@ fn main() -> ! {
 If you run this program on hardware you'll see the "Hello, world!" message
 within the OpenOCD logs.
 
-``` console
+``` text
 $ openocd
 (..)
 Hello, world!
@@ -51,7 +51,7 @@ need to pass the `-semihosting-config` flag to QEMU to enable semihosting
 support; these flags are already included in the `.cargo/config` file of the
 template.
 
-``` console
+``` text
 $ # this program will block the terminal
 $ cargo run
      Running `qemu-system-arm (..)
@@ -86,7 +86,7 @@ fn main() -> ! {
 }
 ```
 
-``` console
+``` text
 $ cargo run
      Running `qemu-system-arm (..)
 
@@ -120,7 +120,7 @@ fn main() -> ! {
 }
 ```
 
-``` console
+``` text
 $ cargo run
      Running `qemu-system-arm (..)
 panicked at 'assertion failed: `(left == right)`

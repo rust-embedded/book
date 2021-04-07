@@ -121,7 +121,7 @@ fn SysTick() {
 ```
 
 ``` console
-$ tail -n5 Cargo.toml
+tail -n5 Cargo.toml
 ```
 
 ``` toml
@@ -132,7 +132,7 @@ panic-halt = "0.2.0"
 cortex-m-semihosting = "0.3.1"
 ```
 
-``` console
+``` text
 $ cargo run --release
      Running `qemu-system-arm -cpu cortex-m3 -machine lm3s6965evb (..)
 123456789
@@ -227,7 +227,7 @@ fn HardFault(ef: &ExceptionFrame) -> ! {
 The `HardFault` handler prints the `ExceptionFrame` value. If you run this
 you'll see something like this on the OpenOCD console.
 
-``` console
+``` text
 $ openocd
 (..)
 ExceptionFrame {
@@ -248,7 +248,7 @@ and it points to the instruction that triggered the exception.
 If you look at the disassembly of the program:
 
 
-``` console
+``` text
 $ cargo objdump --bin app --release -- -d --no-show-raw-insn --print-imm-hex
 (..)
 ResetTrampoline:

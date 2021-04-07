@@ -58,7 +58,7 @@ opt-level = "z" # +
 
 Without the override:
 
-``` console
+``` text
 $ cargo size --bin app -- -A
 app  :
 section               size        addr
@@ -71,7 +71,7 @@ section               size        addr
 
 With the override:
 
-``` console
+``` text
 $ cargo size --bin app -- -A
 app  :
 section               size        addr

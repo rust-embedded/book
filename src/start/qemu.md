@@ -158,7 +158,7 @@ To cross compile for the Cortex-M3 architecture we have to use
 the Rust toolchain, it would now be a good time to add that target to the toolchain,
 if you haven't done it yet:
 ``` console
-$ rustup target add thumbv7m-none-eabi
+rustup target add thumbv7m-none-eabi
 ```
  Since the `thumbv7m-none-eabi` compilation target has been set as the default in 
  your `.cargo/config` file, the two commands below do the same:

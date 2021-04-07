@@ -40,19 +40,19 @@ We'll start from scratch with a fresh template instance. Refer to the
 
 [previous section on QEMU]: qemu.md
 
-``` console
+``` text
 $ cargo generate --git https://github.com/rust-embedded/cortex-m-quickstart
  Project Name: app
  Creating project called `app`...
  Done! New project created /tmp/app
 
- $ cd app
+$ cd app
 ```
 
 Step number one is to set a default compilation target in `.cargo/config`.
 
 ``` console
-$ tail -n5 .cargo/config
+tail -n5 .cargo/config
 ```
 
 ``` toml
@@ -68,7 +68,7 @@ We'll use `thumbv7em-none-eabihf` as that covers the Cortex-M4F core.
 The second step is to enter the memory region information into the `memory.x`
 file.
 
-``` console
+``` text
 $ cat memory.x
 /* Linker script for the STM32F303VCT6 */
 MEMORY
@@ -107,7 +107,7 @@ and inspect the binaries using `cargo-binutils` as you did before. The
 as helpfully, pretty much all Cortex-M CPUs boot in the same fashion.
 
 ``` console
-$ cargo build --example hello
+cargo build --example hello
 ```
 
 ## Debugging
@@ -131,7 +131,7 @@ Run this command from the root of the template; `openocd` will pick up the
 `openocd.cfg` file which indicates which interface file and target file to use.
 
 ``` console
-$ cat openocd.cfg
+cat openocd.cfg
 ```
 
 ``` text
@@ -153,7 +153,7 @@ source [find target/stm32f3x.cfg]
 > board during the [verify] section then you should modify the `openocd.cfg`
 > file at this point to use `interface/stlink-v2.cfg`.
 
-``` console
+``` text
 $ openocd
 Open On-Chip Debugger 0.10.0
 Licensed under GNU GPL v2
@@ -175,7 +175,7 @@ Info : stm32f3x.cpu: hardware has 6 breakpoints, 4 watchpoints
 
 On another terminal run GDB, also from the root of the template.
 
-``` console
+``` text
 $ <gdb> -q target/thumbv7em-none-eabihf/debug/examples/hello
 ```
 
@@ -243,7 +243,7 @@ Advancing the program with `next` should produce the same results as before.
 At this point you should see "Hello, world!" printed on the OpenOCD console,
 among other stuff.
 
-``` console
+``` text
 $ openocd
 (..)
 Info : halted: PC: 0x08000e6c
@@ -269,7 +269,7 @@ Program received signal SIGTRAP, Trace/breakpoint trap.
 
 It also causes this to be printed to the OpenOCD console:
 
-``` console
+``` text
 $ openocd
 (..)
 Info : halted: PC: 0x08001188
@@ -293,7 +293,7 @@ Debugging now requires a few more steps so we have packed all those steps into a
 single GDB script named `openocd.gdb`. The file was created during the `cargo generate` step, and should work without any modifications. Let's have a peak:
 
 ``` console
-$ cat openocd.gdb
+cat openocd.gdb
 ```
 
 ``` text
@@ -323,7 +323,7 @@ Alternatively, you can turn `<gdb> -x openocd.gdb` into a custom runner to make
 in `.cargo/config` but it's commented out.
 
 ``` console
-$ head -n10 .cargo/config
+head -n10 .cargo/config
 ```
 
 ``` toml
@@ -339,7 +339,7 @@ runner = "arm-none-eabi-gdb -x openocd.gdb"
 # runner = "gdb -x openocd.gdb"
 ```
 
-``` console
+``` text
 $ cargo run --example hello
 (..)
 Loading section .vector_table, size 0x400 lma 0x8000000
