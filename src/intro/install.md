@@ -58,9 +58,9 @@ rustup target add thumbv8m.main-none-eabihf
 ### `cargo-binutils`
 
 ``` text
-$ cargo install cargo-binutils
+cargo install cargo-binutils
 
-$ rustup component add llvm-tools-preview
+rustup component add llvm-tools-preview
 ```
 
 ### `cargo-generate`
