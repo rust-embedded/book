@@ -58,7 +58,7 @@ pub x: cty::c_int,
 pub y: cty::c_int,
 ```
 
-Due to the flexibility of how C or C++ defines an `int` or `char`, it is recommended to use primitive data types defined in `cty`, which will map types from C to types in Rust
+Due to the flexibility of how C or C++ defines an `int` or `char`, it is recommended to use primitive data types defined in `cty`, which will map types from C to types in Rust.
 
 ```rust,ignore
 pub extern "C" fn cool_function( ... );
@@ -80,8 +80,8 @@ We have one new type here, `*mut CoolStruct`. As C does not have a concept of Ru
 
 Rather than manually generating these interfaces, which may be tedious and error prone, there is a tool called [bindgen] which will perform these conversions automatically. For instructions of the usage of [bindgen], please refer to the [bindgen user's manual], however the typical process consists of the following:
 
-1. Gather all C or C++ headers defining interfaces or datatypes you would like to use with Rust
-2. Write a `bindings.h` file, which `#include "..."`'s each of the files you gathered in step one
+1. Gather all C or C++ headers defining interfaces or datatypes you would like to use with Rust.
+2. Write a `bindings.h` file, which `#include "..."`'s each of the files you gathered in step one.
 3. Feed this `bindings.h` file, along with any compilation flags used to compile
   your code into `bindgen`. Tip: use `Builder.ctypes_prefix("cty")` /
   `--ctypes-prefix=cty` and `Builder.use_core()` / `--use-core` to make the generated code `#![no_std]` compatible.
@@ -104,7 +104,7 @@ If your code exists as a source project, it will be necessary to compile your C/
 
 A `build.rs` script is a file written in Rust syntax, that is executed on your compilation machine, AFTER dependencies of your project have been built, but BEFORE your project is built.
 
-The full reference may be found [here](https://doc.rust-lang.org/cargo/reference/build-scripts.html). `build.rs` scripts are useful for generating code (such as via [bindgen]), calling out to external build systems such as `Make`, or directly compiling C/C++ through use of the `cc` crate
+The full reference may be found [here](https://doc.rust-lang.org/cargo/reference/build-scripts.html). `build.rs` scripts are useful for generating code (such as via [bindgen]), calling out to external build systems such as `Make`, or directly compiling C/C++ through use of the `cc` crate.
 
 ### Triggering external build systems
 
