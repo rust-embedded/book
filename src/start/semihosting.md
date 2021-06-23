@@ -48,7 +48,7 @@ semihosting is enabled
 QEMU understands semihosting operations so the above program will also work with
 `qemu-system-arm` without having to start a debug session. Note that you'll
 need to pass the `-semihosting-config` flag to QEMU to enable semihosting
-support; these flags are already included in the `.cargo/config` file of the
+support; these flags are already included in the `.cargo/config.toml` file of the
 template.
 
 ``` text
