@@ -148,10 +148,10 @@ closures).
 When optimizing for size you may want to try increasing the inline threshold to
 see if that has any effect on the binary size. The recommended way to change the
 inline threshold is to append the `-C inline-threshold` flag to the other
-rustflags in `.cargo/config`.
+rustflags in `.cargo/config.toml`.
 
 ``` toml
-# .cargo/config
+# .cargo/config.toml
 # this assumes that you are using the cortex-m-quickstart template
 [target.'cfg(all(target_arch = "arm", target_os = "none"))']
 rustflags = [

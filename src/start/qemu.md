@@ -137,11 +137,11 @@ bit in the function signature) to ensure at compile time that'll be the case.
 
 The next step is to *cross* compile the program for the Cortex-M3 architecture.
 That's as simple as running `cargo build --target $TRIPLE` if you know what the
-compilation target (`$TRIPLE`) should be. Luckily, the `.cargo/config` in the
+compilation target (`$TRIPLE`) should be. Luckily, the `.cargo/config.toml` in the
 template has the answer:
 
 ```console
-tail -n6 .cargo/config
+tail -n6 .cargo/config.toml
 ```
 
 ```toml
@@ -161,7 +161,7 @@ if you haven't done it yet:
 rustup target add thumbv7m-none-eabi
 ```
  Since the `thumbv7m-none-eabi` compilation target has been set as the default in 
- your `.cargo/config` file, the two commands below do the same:
+ your `.cargo/config.toml` file, the two commands below do the same:
 
 ```console
 cargo build --target thumbv7m-none-eabi
@@ -401,11 +401,11 @@ Let's break down that QEMU command:
   machine.
 
 Typing out that long QEMU command is too much work! We can set a custom runner
-to simplify the process. `.cargo/config` has a commented out runner that invokes
+to simplify the process. `.cargo/config.toml` has a commented out runner that invokes
 QEMU; let's uncomment it:
 
 ```console
-head -n3 .cargo/config
+head -n3 .cargo/config.toml
 ```
 
 ```toml

@@ -49,10 +49,10 @@ $ cargo generate --git https://github.com/rust-embedded/cortex-m-quickstart
 $ cd app
 ```
 
-Step number one is to set a default compilation target in `.cargo/config`.
+Step number one is to set a default compilation target in `.cargo/config.toml`.
 
 ``` console
-tail -n5 .cargo/config
+tail -n5 .cargo/config.toml
 ```
 
 ``` toml
@@ -320,10 +320,10 @@ OpenOCD, enable semihosting, load the program and start the process.
 
 Alternatively, you can turn `<gdb> -x openocd.gdb` into a custom runner to make
 `cargo run` build a program *and* start a GDB session. This runner is included
-in `.cargo/config` but it's commented out.
+in `.cargo/config.toml` but it's commented out.
 
 ``` console
-head -n10 .cargo/config
+head -n10 .cargo/config.toml
 ```
 
 ``` toml
