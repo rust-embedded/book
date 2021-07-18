@@ -10,7 +10,7 @@ memory allocator (AKA the heap).
 [`HashMap`]: https://doc.rust-lang.org/std/collections/struct.HashMap.html
 
 As `core` is, by definition, free of memory allocations these implementations
-are not available there, but they can be found in the *unstable* `alloc` crate
+are not available there, but they can be found in the `alloc` crate
 that's shipped with the compiler.
 
 If you need collections, a heap allocated implementation is not your only
