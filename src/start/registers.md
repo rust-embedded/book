@@ -22,7 +22,7 @@ You may well find that the code you need to access the peripherals in your micro
 
 ## Board Crate
 
-A board crate is the perfect starting point, if you're new to embedded Rust. They nicely abstracts the HW details that might be overwelming when starting studying this subject, and makes standard tasks easy, like turning a LED on or off. The functionality they exposes varies a lot between boards. Since this book aims at staying hardware agnostic, the board crates won't be covered by this book.
+A board crate is the perfect starting point, if you're new to embedded Rust. They nicely abstract the HW details that might be overwelming when starting studying this subject, and makes standard tasks easy, like turning a LED on or off. The functionality they exposes varies a lot between boards. Since this book aims at staying hardware agnostic, the board crates won't be covered by this book.
 
 If you want to experiment with the STM32F3DISCOVERY board, it is highly recommmand to take a look at the [stm32f3-discovery] board crate, which provides functionality to blink the board LEDs, access its compass, bluetooth and more. The [Discovery] book offers a great introduction to the use of a board crate.
 
