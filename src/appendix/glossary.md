@@ -6,7 +6,7 @@ attempts to list them with pointers for understanding them better.
 
 ### BSP
 
-A Board Support Crate provides a high level interface configured for a specific developer
+A Board Support Crate provides a high level interface configured for a specific
 board. It usually depends on a [HAL](#hal) crate.
 There is a more detailed description on the [memory mapper registers page](../start/registers.md).
 
@@ -23,10 +23,10 @@ There is a more detailed description on the [memory mapper registers page](../st
 
 ### I2C
 
-Sometimes referred to as `I² C` or Inter-IC. It is a protocol meant for hardware communication
-within a single integrated circuit. See [i2c.info] for more details
+Sometimes referred to as `I²C` or Inter-IC. It is a protocol meant for hardware communication
+within a single integrated circuit. See [here][i2c] for more details
 
-[i2c.info]: https://i2c.info/
+[i2c]: https://en.wikipedia.org/wiki/I2c
 
 ### PAC
 
@@ -38,7 +38,9 @@ There is a more detailed description on the [memory mapper registers page](../st
 
 ### SPI
 
-Serial Peripheral Interface
+Serial Peripheral Interface. See [here][spi] for more information.
+
+[spi]: https://en.wikipedia.org/wiki/Serial_peripheral_interface
 
 ### SVD
 
@@ -48,8 +50,12 @@ microcontroller device. You can read more about it on
 
 ### UART
 
-Universal asynchronous receiver-transmitter
+Universal asynchronous receiver-transmitter. See [here][uart] for more information.
+
+[uart]: https://en.wikipedia.org/wiki/Universal_asynchronous_receiver-transmitter
 
 ### USART
 
-Universal synchronous and asynchronous receiver-transmitter
+Universal synchronous and asynchronous receiver-transmitter. See [here][usart] for more information.
+
+[usart]: https://en.wikipedia.org/wiki/Universal_synchronous_and_asynchronous_receiver-transmitter
