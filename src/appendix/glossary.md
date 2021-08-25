@@ -8,7 +8,8 @@ attempts to list them with pointers for understanding them better.
 
 A Board Support Crate provides a high level interface configured for a specific
 board. It usually depends on a [HAL](#hal) crate.
-There is a more detailed description on the [memory-mapped registers page](../start/registers.md).
+There is a more detailed description on the [memory-mapped registers page](../start/registers.md)
+or for a broader overview see [this video](https://youtu.be/vLYit_HHPaY).
 
 ### FPU
 
@@ -19,7 +20,8 @@ Floating-point Unit. A 'math processor' running only operations on floating-poin
 A Hardware Abstraction Layer crate provides a developer friendly interface to a microcontroller's
 features and peripherals. It is usually implemented on top of a [Peripheral Access Crate (PAC)](#pac).
 It may also implement traits from the [`embedded-hal`](https://crates.io/crates/embedded-hal) crate.
-There is a more detailed description on the [memory-mapped registers page](../start/registers.md).
+There is a more detailed description on the [memory-mapped registers page](../start/registers.md)
+or for a broader overview see [this video](https://youtu.be/vLYit_HHPaY).
 
 ### I2C
 
@@ -34,7 +36,8 @@ A Peripheral Access Crate provides access to a microcontroller's peripherals. It
 the lower level crates and is usually generated directly from the provided [SVD](#svd), often
 using [svd2rust](https://github.com/rust-embedded/svd2rust/). The [Hardware Abstraction Layer](#hal)
 would usually depend on this crate.
-There is a more detailed description on the [memory-mapped registers page](../start/registers.md).
+There is a more detailed description on the [memory-mapped registers page](../start/registers.md)
+or for a broader overview see [this video](https://youtu.be/vLYit_HHPaY).
 
 ### SPI
 
