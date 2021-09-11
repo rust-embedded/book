@@ -58,13 +58,13 @@ And then fill in the placeholders in the `Cargo.toml` file
 [package]
 authors = ["{{authors}}"] # "{{authors}}" -> "John Smith"
 edition = "2018"
-name = "{{project-name}}" # "{{project-name}}" -> "awesome-app"
+name = "{{project-name}}" # "{{project-name}}" -> "app"
 version = "0.1.0"
 
 # ..
 
 [[bin]]
-name = "{{project-name}}" # "{{project-name}}" -> "awesome-app"
+name = "{{project-name}}" # "{{project-name}}" -> "app"
 test = false
 bench = false
 ```
