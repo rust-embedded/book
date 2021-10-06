@@ -177,7 +177,7 @@ With `cargo-readobj` we can print the ELF headers to confirm that this is an ARM
 binary.
 
 ``` console
-cargo readobj --bin app -- -file-headers
+cargo readobj --bin app -- --file-headers
 ```
 
 Note that:
