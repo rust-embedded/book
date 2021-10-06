@@ -71,6 +71,8 @@ We'll use this later to generate a project from a template.
 cargo install cargo-generate
 ```
 
+Note: on some Linux distros (e.g. Ubuntu) you may need to install the packages `libssl-dev` and `pkg-config` prior to installing cargo-generate.
+
 ### OS-Specific Instructions
 
 Now follow the instructions specific to the OS you are using:
