@@ -16,4 +16,4 @@ The last two of these rules sound suspiciously similar to what the Borrow Checke
 
 Imagine if we could pass around ownership of these peripherals, or offer immutable or mutable references to them?
 
-Well, we can, but for the Borrow Checker, we need to have exactly one instance of each peripheral, so Rust can handle this correctly. Well, luckliy in the hardware, there is only one instance of any given peripheral, but how can we expose that in the structure of our code?
+Well, we can, but for the Borrow Checker, we need to have exactly one instance of each peripheral, so Rust can handle this correctly. Well, luckily in the hardware, there is only one instance of any given peripheral, but how can we expose that in the structure of our code?
