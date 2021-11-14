@@ -53,6 +53,7 @@ more information and coordination
     - [A little Rust with your C](./interoperability/rust-with-c.md)
 - [Unsorted topics](./unsorted/index.md)
   - [Optimizations: The speed size tradeoff](./unsorted/speed-vs-size.md)
+  - [Performing Math Functionality](./unsorted/math.md)
 
 ---
 
