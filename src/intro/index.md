@@ -64,6 +64,14 @@ If you are unfamiliar with anything mentioned above or if you want more informat
 | Memory-mapped IO/Peripherals | [Memory-mapped I/O](https://en.wikipedia.org/wiki/Memory-mapped_I/O) | - |
 | SPI, UART, RS232, USB, I2C, TTL | [Stack Exchange about SPI, UART, and other interfaces](https://electronics.stackexchange.com/questions/37814/usart-uart-rs232-usb-spi-i2c-ttl-etc-what-are-all-of-these-and-how-do-th) | - |
 
+### Translations
+
+This book has been translated by generous volunteers. If you would like your
+translation listed here, please open a PR to add it.
+
+* [Japanese](https://tomoyuki-nakabayashi.github.io/book/)
+  ([repository](https://github.com/tomoyuki-nakabayashi/book))
+
 ## How to Use This Book
 
 This book generally assumes that you’re reading it front-to-back. Later
