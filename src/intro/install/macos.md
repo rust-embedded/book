@@ -15,6 +15,11 @@ $ # QEMU
 $ brew install qemu
 ```
 
+> **NOTE** If OpenOCD crashes you may need to install the latest version using: 
+```text
+$ brew install --HEAD openocd
+```
+
 That's all! Go to the [next section].
 
 [next section]: verify.md
