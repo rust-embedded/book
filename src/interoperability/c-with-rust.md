@@ -37,11 +37,13 @@ pub struct CoolStruct {
     pub y: cty::c_int,
 }
 
-pub extern "C" fn cool_function(
-    i: cty::c_int,
-    c: cty::c_char,
-    cs: *mut CoolStruct
-);
+extern "C" {
+    pub fn cool_function(
+        i: cty::c_int,
+        c: cty::c_char,
+        cs: *mut CoolStruct
+    );
+}
 ```
 
 Let's take a look at this definition one piece at a time, to explain each of the parts.
@@ -61,7 +63,7 @@ pub y: cty::c_int,
 Due to the flexibility of how C or C++ defines an `int` or `char`, it is recommended to use primitive data types defined in `cty`, which will map types from C to types in Rust.
 
 ```rust,ignore
-pub extern "C" fn cool_function( ... );
+extern "C" { pub fn cool_function( ... ); }
 ```
 
 This statement defines the signature of a function that uses the C ABI, called `cool_function`. By defining the signature without defining the body of the function, the definition of this function will need to be provided elsewhere, or linked into the final library or binary from a static library.
