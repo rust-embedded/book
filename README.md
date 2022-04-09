@@ -1,6 +1,5 @@
 # The Embedded Rust Book
-
-> Documentation on how to use the Rust Programming Language to develop firmware for bare metal (microcontroller) devices
+> 如何使用Rust编程语言在裸板上开发固件的中文文档
 
 This project is developed and maintained by the [Resources team][team].
 

@@ -1,45 +1,23 @@
-# Introduction
+# 引言
+欢迎阅读The Embedded Rust Book:一本关于在裸板(比如，微处理器)上使用Rust编程语言的引导书籍
 
-Welcome to The Embedded Rust Book: An introductory book about using the Rust
-Programming Language on "Bare Metal" embedded systems, such as Microcontrollers.
+## Embedded Rust 是为谁准备的
+Embedded Rust是为了那些想要进行嵌入式编程且又想使用Rust语言提供的高级语言概念和安全保障的人们准备的(See also [Who Rust Is For](https://doc.rust-lang.org/book/ch00-00-introduction.html))
 
-## Who Embedded Rust is For
-Embedded Rust is for everyone who wants to do embedded programming while taking advantage of the higher-level concepts and safety guarantees the Rust language provides.
-(See also [Who Rust Is For](https://doc.rust-lang.org/book/ch00-00-introduction.html))
+## 本书范围
+这本书的目的是：
++ 使开发者快速上手嵌入式Rust开发，比如，如何设置一个开发环境。
++ 分享那些关于使用Rust进行嵌入式开发的，现存的，最好的实践经验，比如，如何最大程度上地利用好Rust语言的特性去写更正确的嵌入式软件
++ 某种程度下作为工具书，比如，如何将C和Rust混进一个单一的项目里
 
-## Scope
+这本书尽可能地尝试变得通用，但是为了使读者和作者更容易理解，在所有的例子中它都使用了ARM Cortex-M架构。然而，这本书并不假设读者熟悉这个特定的架构，并在需要时解释这个架构的特定细节
 
-The goals of this book are:
+## 这本书是为谁准备的
+这本书适合那些有一些嵌入式背景或者有Rust背景的人，然而我相信每一个对嵌入式Rust编程好奇的人都能从这本书中获得某些东西。对于那些先前没有任何经验的人，我们建议你读一下“要求和前提”章节，从书中获取知识补充缺失的知识，提高你的阅读体验。你可以看看“其它资源”章节，以找到你关心的主题的资源。
 
-* Get developers up to speed with embedded Rust development. i.e. How to set
-  up a development environment.
+### 要求和前提
 
-* Share *current* best practices about using Rust for embedded development. i.e.
-  How to best use Rust language features to write more correct embedded
-  software.
-
-* Serve as a cookbook in some cases. e.g. How do I do mix C and Rust in a single
-  project?
-
-This book tries to be as general as possible but to make things easier for both
-the readers and the writers it uses the ARM Cortex-M architecture in all its
-examples. However, the book doesn't assume that the reader is familiar with this
-particular architecture and explains details particular to this architecture
-where required.
-
-## Who This Book is For
-This book caters towards people with either some embedded background or some Rust background, however we believe
-everybody curious about embedded Rust programming can get something out of this book. For those without any prior knowledge
-we suggest you read the "Assumptions and Prerequisites" section and catch up on missing knowledge to get more out of the book
-and improve your reading experience. You can check out the "Other Resources" section to find resources on topics
-you might want to catch up on.
-
-### Assumptions and Prerequisites
-
-* You are comfortable using the Rust Programming Language, and have written,
-  run, and debugged Rust applications on a desktop environment. You should also
-  be familiar with the idioms of the [2018 edition] as this book targets
-  Rust 2018.
++ 你可以轻松地使用Rust编程语言，且在一个桌面环境上写过，运行过，调试过Rust应用。你也应该熟悉[2018 edition]的术语，因为这本书是面向Rust 2018的。
 
 [2018 edition]: https://doc.rust-lang.org/edition-guide/
 
