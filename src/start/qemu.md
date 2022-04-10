@@ -1,34 +1,22 @@
 # QEMU
-
-We'll start writing a program for the [LM3S6965], a Cortex-M3 microcontroller.
-We have chosen this as our initial target because it [can be emulated](https://wiki.qemu.org/Documentation/Platforms/ARM#Supported_in_qemu-system-arm) using QEMU
-so you don't need to fiddle with hardware in this section and we can focus on
-the tooling and the development process.
+我们将开始为[LM3S6965]编写程序，一个Cortex-M3微控制器。我们选择这个作为我们的第一个目标办，因为他能使用[QEMU仿真](https://wiki.qemu.org/Documentation/Platforms/ARM#Supported_in_qemu-system-arm)，因此本节中，你不需要摆弄硬件，我们注意力可以集中在工具和开发过程上。
 
 [LM3S6965]: http://www.ti.com/product/LM3S6965
 
-**IMPORTANT**
-We'll use the name "app" for the project name in this tutorial.
-Whenever you see the word "app" you should replace it with the name you selected
-for your project. Or, you could also name your project "app" and avoid the
-substitutions.
+**重要**
+在这个引导里，我们将使用"app"这个名字来代指项目名。无论何时你看到单词"app"你应该用你选择的项目名来替代它。或者你也能命名你的项目为"app"，避免替代。
 
-## Creating a non standard Rust program
-
-We'll use the [`cortex-m-quickstart`] project template to generate a new
-project from it. The created project will contain a barebone application: a good
-starting point for a new embedded rust application. In addition, the project will
-contain an `examples` directory, with several separate applications, highlighting
-some of the key embedded rust functionality. 
+## 生成一个非标准的 Rust program
+我们将使用[`cortex-m-quickstart`]项目模板来生成一个新项目。生成的项目将包含一个最基本的应用:对于一个新的嵌入式rust应用来说，是一个很好的起点。另外，项目将包含一个`example`文件夹，文件夹中有许多独立的应用，突出一些关键的嵌入式rust功能。
 
 [`cortex-m-quickstart`]: https://github.com/rust-embedded/cortex-m-quickstart
 
-### Using `cargo-generate`
-First install cargo-generate
+### 使用 `cargo-generate`
+首先安装 cargo-generate
 ```console
 cargo install cargo-generate
 ```
-Then generate a new project
+然后生成一个新项目
 ```console
 cargo generate --git https://github.com/rust-embedded/cortex-m-quickstart
 ```
@@ -45,14 +33,14 @@ cd app
 
 ### Using `git`
 
-Clone the repository
+克隆仓库
 
 ```console
 git clone https://github.com/rust-embedded/cortex-m-quickstart app
 cd app
 ```
 
-And then fill in the placeholders in the `Cargo.toml` file
+然后补充`Cargo.toml`文件中的占位符
 
 ```toml
 [package]
@@ -86,9 +74,9 @@ download" button and then click "Download ZIP".
 Then fill in the placeholders in the `Cargo.toml` file as done in the second
 part of the "Using `git`" version.
 
-## Program Overview
+## 项目概览
 
-For convenience here are the most important parts of the source code in `src/main.rs`:
+为了便利，这是`src/main.rs`中源码最重要的部分。
 
 ```rust,ignore
 #![no_std]
@@ -106,44 +94,26 @@ fn main() -> ! {
 }
 ```
 
-This program is a bit different from a standard Rust program so let's take a
-closer look.
+这个程序与标准Rust程序有一点不同，因此让我们走进点看看。
 
-`#![no_std]` indicates that this program will *not* link to the standard crate,
-`std`. Instead it will link to its subset: the `core` crate.
+`#![no_std]`指出这个程序将*不会*链接标准crate`std`。反而它将会链接到它的子集: `core`crate。
 
-`#![no_main]` indicates that this program won't use the standard `main`
-interface that most Rust programs use. The main (no pun intended) reason to go
-with `no_main` is that using the `main` interface in `no_std` context requires
-nightly.
+`#![no_main]`指出这个程序将不会使用标准的大多数Rust程序使用的`main`接口。使用`no_main`的主要理由是在`no_std`上下文中使用`main`接口要求nightly(译者注：原文是`requires nightly`，不知道有什么合适的翻译，主要的理由是`main`接口对程序的运行环境有要求，比如，它假设命令行参数存在，这不适合`no_std`环境)。
 
-`use panic_halt as _;`. This crate provides a `panic_handler` that defines
-the panicking behavior of the program. We will cover this in more detail in the
-[Panicking](panicking.md) chapter of the book.
+`use panic_halt as _;`。这个crate提供了一个`panic_handler`，它定义了程序陷入`panic`时的行为。我们将会在这本书的[Panicking](panicking.md)章节中覆盖更多的细节。
 
-[`#[entry]`][entry] is an attribute provided by the [`cortex-m-rt`] crate that's used
-to mark the entry point of the program. As we are not using the standard `main`
-interface we need another way to indicate the entry point of the program and
-that'd be `#[entry]`.
+[`#[entry]`][entry] 是一个由[`cortex-m-rt`]提供的属性，它用来标记程序的入口。当我们不使用标准的`main`接口时，我们需要其它方法来指示程序的入口，那就是`#[entry]`。
 
 [entry]: https://docs.rs/cortex-m-rt-macros/latest/cortex_m_rt_macros/attr.entry.html
 [`cortex-m-rt`]: https://crates.io/crates/cortex-m-rt
 
-`fn main() -> !`. Our program will be the *only* process running on the target
-hardware so we don't want it to end! We use a [divergent function](https://doc.rust-lang.org/rust-by-example/fn/diverging.html) (the `-> !`
-bit in the function signature) to ensure at compile time that'll be the case.
+`fn main() -> !`。我们的程序将会是运行在目标板子上的*唯一*的进程，因此我们不想要它结束！我们使用一个[divergent function](https://doc.rust-lang.org/rust-by-example/fn/diverging.html) (函数签名中的 `-> !` 位)确保在编译时就是这么回事儿。
 
-## Cross compiling
-
-The next step is to *cross* compile the program for the Cortex-M3 architecture.
-That's as simple as running `cargo build --target $TRIPLE` if you know what the
-compilation target (`$TRIPLE`) should be. Luckily, the `.cargo/config.toml` in the
-template has the answer:
-
+## 交叉编译
+下一步是位Cortex-M3架构*交叉*编译程序。如果你知道编译目标(`$TRIPLE`)应该是什么，那就和运行`cargo build --target $TRIPLE`一样简单。幸运地，模板中的`.cargo/config.toml`有这个答案:
 ```console
 tail -n6 .cargo/config.toml
 ```
-
 ```toml
 [build]
 # Pick ONE of these compilation targets
@@ -152,38 +122,29 @@ target = "thumbv7m-none-eabi"    # Cortex-M3
 # target = "thumbv7em-none-eabi"   # Cortex-M4 and Cortex-M7 (no FPU)
 # target = "thumbv7em-none-eabihf" # Cortex-M4F and Cortex-M7F (with FPU)
 ```
-
-To cross compile for the Cortex-M3 architecture we have to use
-`thumbv7m-none-eabi`. That target is not automatically installed when installing
-the Rust toolchain, it would now be a good time to add that target to the toolchain,
-if you haven't done it yet:
+为了交叉编译Cortex-M3架构我们不得不使用`thumbv7m-none-eabi`。当安装Rust工具时，target不会自动被安装，如果你还没有做，现在是个好时机添加那个target到工具链上。
 ``` console
 rustup target add thumbv7m-none-eabi
 ```
- Since the `thumbv7m-none-eabi` compilation target has been set as the default in 
- your `.cargo/config.toml` file, the two commands below do the same:
-
+因为`thumbv7m-none-eabi`编译目标在你的`.cargo/config.toml`中被设置成默认值，下面的两个命令是一样的效果:
 ```console
 cargo build --target thumbv7m-none-eabi
 cargo build
 ```
 
-## Inspecting
+## 检查
 
-Now we have a non-native ELF binary in `target/thumbv7m-none-eabi/debug/app`. We
-can inspect it using `cargo-binutils`.
+现在我们在`target/thumbv7m-none-eabi/debug/app`中有一个非原生的ELF二进制文件。我们能使用`cargo-binutils`检查它。
 
-With `cargo-readobj` we can print the ELF headers to confirm that this is an ARM
-binary.
+使用`cargo-readobj`我们能打印ELF头，确认这是一个ARM二进制。
 
-``` console
+```console
 cargo readobj --bin app -- --file-headers
 ```
 
-Note that:
-* `--bin app` is sugar for inspect the binary at `target/$TRIPLE/debug/app`
-* `--bin app` will also (re)compile the binary, if necessary
-
+注意:
+* `--bin app` 是一个用来检查`target/$TRIPLE/debug/app`的语法糖
+* `--bin app` 如果需要，将也会重新编译二进制。
 
 ``` text
 ELF Header:
@@ -208,13 +169,13 @@ ELF Header:
   Section header string table index: 18
 ```
 
-`cargo-size` can print the size of the linker sections of the binary.
-
+`cargo-size` 能打印二进制文件的linker部分的大小。
 
 ```console
 cargo size --bin app --release -- -A
 ```
-we use `--release` to inspect the optimized version
+
+我们使用`--release`检查优化的版本
 
 ``` text
 app  :
@@ -238,36 +199,26 @@ section             size        addr
 Total              14570
 ```
 
-> A refresher on ELF linker sections
+> ELF linker sections的新手
 >
-> - `.text` contains the program instructions
-> - `.rodata` contains constant values like strings
-> - `.data` contains statically allocated variables whose initial values are
->   *not* zero
-> - `.bss` also contains statically allocated variables whose initial values
->   *are* zero
-> - `.vector_table` is a *non*-standard section that we use to store the vector
->   (interrupt) table
-> - `.ARM.attributes` and the `.debug_*` sections contain metadata and will
->   *not* be loaded onto the target when flashing the binary.
+> - `.text` 包含程序指令
+> - `.rodata` 包含像是字符串这样的常量
+> - `.data` 包含静态分配的初始值*非*零的变量
+> - `.bss` 也包含静态分配的初始值*是*零的变量
+> - `.vector_table` 是一个我们用来存储向量(中断)表的*非*标准的section
+> - `.ARM.attributes` 和 `.debug_*` sections包含元数据，当烧录二进制文件时，其将不会被加载到目标上的。
 
-**IMPORTANT**: ELF files contain metadata like debug information so their *size
-on disk* does *not* accurately reflect the space the program will occupy when
-flashed on a device. *Always* use `cargo-size` to check how big a binary really
-is.
+**重要**: ELF文件包含像是调试信息这样的元数据，因此它们在*硬盘上的尺寸*不是正确地反应了程序当被烧录到设备上时将占据的空间的大小。*总是*使用`cargo-size`检查一个二进制文件有多大。
 
-`cargo-objdump` can be used to disassemble the binary.
+`cargo-objdump` 能用来反编译二进制文件。
 
 ```console
 cargo objdump --bin app --release -- --disassemble --no-show-raw-insn --print-imm-hex
 ```
 
-> **NOTE** if the above command complains about `Unknown command line argument` see
-> the following bug report: https://github.com/rust-embedded/book/issues/269
+> **注意** 如果上面的命令抱怨 `Unknown command line argument` 看下面的bug报告:https://github.com/rust-embedded/book/issues/269
 
-> **NOTE** this output can differ on your system. New versions of rustc, LLVM
-> and libraries can generate different assembly. We truncated some of the instructions
-> to keep the snippet small.
+> **注意** 这个输出可能在你的系统上不同。rustc, LLVM 和库的新版本能产出不同的汇编。我们截取了一些指令
 
 ```text
 app:  file format ELF32-arm-little
@@ -308,15 +259,14 @@ HardFault:
      663: <unknown>
 ```
 
-## Running
+## 运行
 
-Next, let's see how to run an embedded program on QEMU! This time we'll use the
-`hello` example which actually does something.
+接下来，让我们看一个嵌入式程序是如何在QEMU上运行！这时我们将使用 `hello` 例子，来做些真正的事。
 
-For convenience here's the source code of `examples/hello.rs`:
+为了方便起见，这是`examples/hello.rs`的源码:
 
 ```rust,ignore
-//! Prints "Hello, world!" on the host console using semihosting
+//! 在主机调试台上打印 "Hello, world!"
 
 #![no_main]
 #![no_std]
@@ -330,8 +280,8 @@ use cortex_m_semihosting::{debug, hprintln};
 fn main() -> ! {
     hprintln!("Hello, world!").unwrap();
 
-    // exit QEMU
-    // NOTE do not run this on hardware; it can corrupt OpenOCD state
+    // 退出 QEMU
+    // NOTE 不要在硬件上运行这个;它会打破OpenOCD状态
     debug::exit(debug::EXIT_SUCCESS);
 
     loop {}

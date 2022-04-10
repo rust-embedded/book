@@ -1,6 +1,5 @@
 # Linux
-
-Here are the installation commands for a few Linux distributions.
+这部分是关于某些Linux发行版的安装指令。
 
 ## Packages
 

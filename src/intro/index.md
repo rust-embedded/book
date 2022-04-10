@@ -20,24 +20,22 @@ Embedded Rust是为了那些想要进行嵌入式编程且又想使用Rust语言
 + 你可以轻松地使用Rust编程语言，且在一个桌面环境上写过，运行过，调试过Rust应用。你也应该熟悉[2018 edition]的术语，因为这本书是面向Rust 2018的。
 
 [2018 edition]: https://doc.rust-lang.org/edition-guide/
++ 你可以轻松地使用其它语言，比如C，C++或者Ada开发和调试嵌入式系统，且熟悉如下的概念：
+  + 交叉编译
+  + 存储映射外设（Memory Mapped Peripherals）
+  + 中断
+  + I2C，SPI，串口等等常见接口
 
-* You are comfortable developing and debugging embedded systems in another
-  language such as C, C++, or Ada, and are familiar with concepts such as:
-    * Cross Compilation
-    * Memory Mapped Peripherals
-    * Interrupts
-    * Common interfaces such as I2C, SPI, Serial, etc.
-
-### Other Resources
-If you are unfamiliar with anything mentioned above or if you want more information about a specific topic mentioned in this book you might find some of these resources helpful.
+### 其它资源
+如果你不熟悉上面提到的东西或者你对这本书中提到的某个特定主题关心，你可能可以从这些资源中找到有用的信息。
 
 | Topic        | Resource | Description |
 |--------------|----------|-------------|
-| Rust         | [Rust Book](https://doc.rust-lang.org/book/) | If you are not yet comfortable with Rust, we highly suggest reading this book. |
-| Rust, Embedded | [Discovery Book](https://docs.rust-embedded.org/discovery/) | If you have never done any embedded programming, this book might be a better start |
-| Rust, Embedded | [Embedded Rust Bookshelf](https://docs.rust-embedded.org) | Here you can find several other resources provided by Rust's Embedded Working Group. |
-| Rust, Embedded | [Embedonomicon](https://docs.rust-embedded.org/embedonomicon/) | The nitty gritty details when doing embedded programming in Rust. |
-| Rust, Embedded | [embedded FAQ](https://docs.rust-embedded.org/faq.html) | Frequently asked questions about Rust in an embedded context. |
+| Rust         | [Rust Book](https://doc.rust-lang.org/book/) | 如果你还不能轻松地使用Rust，我们高度地建议读这本书。|
+| Rust, Embedded | [Discovery Book](https://docs.rust-embedded.org/discovery/) | 如果你从来没有做过嵌入式编程，这本书可能是个更好的开始。 |
+| Rust, Embedded | [Embedded Rust Bookshelf](https://docs.rust-embedded.org) | 这里你能找到许多Rust's Embedded Working Group提供的额外资源。|
+| Rust, Embedded | [Embedonomicon](https://docs.rust-embedded.org/embedonomicon/) | 在Rust中进行嵌入式编程的细节。 |
+| Rust, Embedded | [embedded FAQ](https://docs.rust-embedded.org/faq.html) | 关于嵌入式环境中的Rust的常见问题。|
 | Interrupts | [Interrupt](https://en.wikipedia.org/wiki/Interrupt) | - |
 | Memory-mapped IO/Peripherals | [Memory-mapped I/O](https://en.wikipedia.org/wiki/Memory-mapped_I/O) | - |
 | SPI, UART, RS232, USB, I2C, TTL | [Stack Exchange about SPI, UART, and other interfaces](https://electronics.stackexchange.com/questions/37814/usart-uart-rs232-usb-spi-i2c-ttl-etc-what-are-all-of-these-and-how-do-th) | - |
@@ -50,22 +48,10 @@ translation listed here, please open a PR to add it.
 * [Japanese](https://tomoyuki-nakabayashi.github.io/book/)
   ([repository](https://github.com/tomoyuki-nakabayashi/book))
 
-## How to Use This Book
-
-This book generally assumes that you’re reading it front-to-back. Later
-chapters build on concepts in earlier chapters, and earlier chapters may
-not dig into details on a topic, revisiting the topic in a later chapter.
-
-This book will be using the [STM32F3DISCOVERY] development board from
-STMicroelectronics for the majority of the examples contained within. This board
-is based on the ARM Cortex-M architecture, and while basic functionality is
-the same across most CPUs based on this architecture, peripherals and other
-implementation details of Microcontrollers are different between different
-vendors, and often even different between Microcontroller families from the same
-vendor.
-
-For this reason, we suggest purchasing the [STM32F3DISCOVERY] development board
-for the purpose of following the examples in this book.
+## 如何使用这本书
+这本书通常假设你是前后阅读的。之后章节是建立在先前章节中提到的概念之上的，先前章节可能不会深入一个主题的细节，在随后的章节将会再次重温这个主题。
+这本书将在大多数案例中使用[STM32F3DISCOVERY]开发板。这个板子是基于ARM Cortex-M架构的，且基本功能与大多数基于这个架构的CPUs功能相似。微处理器的外设和其它实现细节在不同的供应商之间是不同的，甚至来自同一个供应商的不同处理器家族也是不同的。
+因为这个理由，我们建议购买[STM32F3DISCOVERY]开发板来尝试这本书中的例子。(译者注：我使用[renode](https://renode.io/about/)来测试大多数例子)
 
 [STM32F3DISCOVERY]: http://www.st.com/en/evaluation-tools/stm32f3discovery.html
 

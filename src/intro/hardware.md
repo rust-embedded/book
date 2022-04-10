@@ -1,6 +1,6 @@
-# Meet Your Hardware
+# 熟悉你的硬件
 
-Let's get familiar with the hardware we'll be working with.
+让我们来熟悉下我们将使用的硬件。
 
 ## STM32F3DISCOVERY (the "F3")
 
@@ -8,23 +8,16 @@ Let's get familiar with the hardware we'll be working with.
 <img title="F3" src="../assets/f3.jpg">
 </p>
 
-What does this board contain?
+这个板子包含什么？
 
-- A [STM32F303VCT6](https://www.st.com/en/microcontrollers/stm32f303vc.html) microcontroller. This microcontroller has
-  - A single-core ARM Cortex-M4F processor with hardware support for single-precision floating point
-    operations and a maximum clock frequency of 72 MHz.
-
-  - 256 KiB of "Flash" memory. (1 KiB = 10**24** bytes)
-
-  - 48 KiB of RAM.
-
-  - A variety of integrated peripherals such as timers, I2C, SPI and USART.
-
-  - General purpose Input Output (GPIO) and other types of pins accessible through the two rows of headers along side the board.
-  
-  - A USB interface accessible through the USB port labeled "USB USER".
-
-- An [accelerometer](https://en.wikipedia.org/wiki/Accelerometer) as part of the [LSM303DLHC](https://www.st.com/en/mems-and-sensors/lsm303dlhc.html) chip.
++ 一个[STM32F303VCT6](https://www.st.com/en/microcontrollers/stm32f303vc.html)微控制器。这个微控制器包含
+  + 一个单核的ARM Cortex-M4F 处理器，支持单精度浮点运算，72MHz的最大时钟频率。
+  + 256 KiB的"Flash"存储。
+  + 48 KiB的RAM
+  + 多种多样的外设，比如计时器，I2C，SPI和USART
+  + 通用GPIO和板子两侧的其它类型引脚
+  + 通过被标记为“USB USER”的USB端口访问的一个USB接口
++ 作为[LSM303DLHC](https://www.st.com/en/mems-and-sensors/lsm303dlhc.html)芯片部分的一个[加速度计](https://en.wikipedia.org/wiki/Accelerometer)
 
 - A [magnetometer](https://en.wikipedia.org/wiki/Magnetometer) as part of the [LSM303DLHC](https://www.st.com/en/mems-and-sensors/lsm303dlhc.html) chip.
 

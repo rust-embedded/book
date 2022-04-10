@@ -1,23 +1,16 @@
-# Installing the tools
+# 安装工具
+这一页包含某些工具的操作系统无关的安装指令：
 
-This page contains OS-agnostic installation instructions for a few of the tools:
+### Rust 工具链
+跟着[https://rustup.rs](https://rustup.rs)的指令安装rustup。
 
-### Rust Toolchain
-
-Install rustup by following the instructions at [https://rustup.rs](https://rustup.rs).
-
-**NOTE** Make sure you have a compiler version equal to or newer than `1.31`. `rustc
--V` should return a date newer than the one shown below.
+**NOTE** 确保你的编译器版本等于或者大于`1.31`版本。`rustc -V`应该返回一个比下列日期更新的日期。
 
 ``` text
 $ rustc -V
 rustc 1.31.1 (b6c32da9b 2018-12-18)
 ```
-
-For bandwidth and disk usage concerns the default installation only supports
-native compilation. To add cross compilation support for the ARM Cortex-M
-architectures choose one of the following compilation targets. For the STM32F3DISCOVERY
-board used for the examples in this book, use the `thumbv7em-none-eabihf` target.
+考虑到带宽和磁盘的使用量，默认安装只支持本地环境的编译。为了添加对ARM Cortex-M架构交叉编译的支持，从下列编译目标选择一个。对于这本书里使用的STM32F3DISCOVERY板子，使用`thumbv7em-none-eabihf`目标。
 
 Cortex-M0, M0+, and M1 (ARMv6-M architecture):
 ``` console
@@ -64,18 +57,15 @@ rustup component add llvm-tools-preview
 ```
 
 ### `cargo-generate`
-
-We'll use this later to generate a project from a template.
+我们随后将使用这个来从模板生成一个项目。
 
 ``` console
 cargo install cargo-generate
 ```
+注意:在某些Linux发行版上(e.g. Ubuntu) 在安装cargo-generate之前，你可能需要安装`libssl-dev`和`pkg-config`
 
-Note: on some Linux distros (e.g. Ubuntu) you may need to install the packages `libssl-dev` and `pkg-config` prior to installing cargo-generate.
-
-### OS-Specific Instructions
-
-Now follow the instructions specific to the OS you are using:
+### 操作系统特定指令
+现在根据你使用的操作系统，来执行对应的指令:
 
 - [Linux](install/linux.md)
 - [Windows](install/windows.md)
