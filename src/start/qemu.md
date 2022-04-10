@@ -266,7 +266,7 @@ HardFault:
 为了方便起见，这是`examples/hello.rs`的源码:
 
 ```rust,ignore
-//! 在主机调试台上打印 "Hello, world!"
+//! 使用semihosting在主机调试台上打印 "Hello, world!"
 
 #![no_main]
 #![no_std]
@@ -288,20 +288,17 @@ fn main() -> ! {
 }
 ```
 
-This program uses something called semihosting to print text to the *host*
-console. When using real hardware this requires a debug session but when using
-QEMU this Just Works.
+这个程序使用一些被叫做semihosting的东西去打印文本到主机调试台上。当使用真实的硬件时，这要求一个调试对话但是当使用QEMU时它可以工作。
 
-Let's start by compiling the example:
+通过编译例子，让我们开始
 
 ```console
 cargo build --example hello
 ```
 
-The output binary will be located at
-`target/thumbv7m-none-eabi/debug/examples/hello`.
+输出的二进制文件将位于`target/thumbv7m-none-eabi/debug/examples/hello`。
 
-To run this binary on QEMU run the following command:
+为了在QEMU上运行这个二进制文件，执行下列的命令:
 
 ```console
 qemu-system-arm \
@@ -316,9 +313,7 @@ qemu-system-arm \
 Hello, world!
 ```
 
-The command should successfully exit (exit code = 0) after printing the text. On
-*nix you can check that with the following command:
-
+这个命令应该打印文本之后成功地退出 (exit code = 0)。你能使用下列的指令检查这个:
 ```console
 echo $?
 ```
@@ -327,12 +322,11 @@ echo $?
 0
 ```
 
-Let's break down that QEMU command:
+让我们看看QEMU命令:
 
-- `qemu-system-arm`. This is the QEMU emulator. There are a few variants of
-  these QEMU binaries; this one does full *system* emulation of *ARM* machines
-  hence the name.
++ `qemu-system-arm`。这是QEMU仿真器。这些QEMU二进制有一些变种；因为名字这个仿真器能做ARM机器的全系统仿真。
 
++ `-cpu cortex-m3`。这告诉QEMU去仿真一个Cortex-M3 CPU。指定
 - `-cpu cortex-m3`. This tells QEMU to emulate a Cortex-M3 CPU. Specifying the
   CPU model lets us catch some miscompilation errors: for example, running a
   program compiled for the Cortex-M4F, which has a hardware FPU, will make QEMU
