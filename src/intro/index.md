@@ -18,7 +18,7 @@ The goals of this book are:
   How to best use Rust language features to write more correct embedded
   software.
 
-* Serve as a cookbook in some cases. e.g. How do I do mix C and Rust in a single
+* Serve as a cookbook in some cases. e.g. How do I mix C and Rust in a single
   project?
 
 This book tries to be as general as possible but to make things easier for both
