@@ -357,8 +357,13 @@ struct Foo {
 
 fn main() {
     let v = Foo { x: 0, y: 0, z: 0 };
-    // Unsafe is required to borrow a field of a packed struct.
-    unsafe { println!("{:p} {:p} {:p}", &v.x, &v.y, &v.z) };
+    // References must always be aligned, so to check the addresses of the
+    // struct's fields, we use `std::ptr::addr_of!()` to get a raw pointer
+    // instead of just printing `&v.x`.
+    let px = std::ptr::addr_of!(v.x);
+    let py = std::ptr::addr_of!(v.y);
+    let pz = std::ptr::addr_of!(v.z);
+    println!("{:p} {:p} {:p}", px, py, pz);
 }
 
 // 0x7ffd33598490 0x7ffd33598492 0x7ffd33598493
