@@ -326,46 +326,25 @@ echo $?
 
 + `qemu-system-arm`。这是QEMU仿真器。这些QEMU二进制有一些变种；因为名字这个仿真器能做ARM机器的全系统仿真。
 
-+ `-cpu cortex-m3`。这告诉QEMU去仿真一个Cortex-M3 CPU。指定
-- `-cpu cortex-m3`. This tells QEMU to emulate a Cortex-M3 CPU. Specifying the
-  CPU model lets us catch some miscompilation errors: for example, running a
-  program compiled for the Cortex-M4F, which has a hardware FPU, will make QEMU
-  error during its execution.
++ `-cpu cortex-m3`。这告诉QEMU去仿真一个Cortex-M3 CPU。指定CPU模型会让我们捕捉到一些误编译错误:比如，运行一个为Cortex-M4F编译的程序，它具有一个硬件FPU，在执行时将会使QEMU报错。
++ `-machine lm3s6965evb`。这告诉QEMU去仿真 LM3S6965EVB，一个包含LM3S6965微控制器的评估板。
++ `-nographic`。这告诉QEMU不要启动它的GUI。
++ `-semihosting-config (..)`。这告诉QEMU使能半主机模式。半主机模式允许被仿真的设备，使用主机的stdout，stderr，和stdin，并在主机上创建文件。
++ `-kernel $file`。这告诉QEMU在仿真机器上加载和运行哪个二进制文件。
 
-- `-machine lm3s6965evb`. This tells QEMU to emulate the LM3S6965EVB, a
-  evaluation board that contains a LM3S6965 microcontroller.
-
-- `-nographic`. This tells QEMU to not launch its GUI.
-
-- `-semihosting-config (..)`. This tells QEMU to enable semihosting. Semihosting
-  lets the emulated device, among other things, use the host stdout, stderr and
-  stdin and create files on the host.
-
-- `-kernel $file`. This tells QEMU which binary to load and run on the emulated
-  machine.
-
-Typing out that long QEMU command is too much work! We can set a custom runner
-to simplify the process. `.cargo/config.toml` has a commented out runner that invokes
-QEMU; let's uncomment it:
-
+输入这么长的QEMU命令太费功夫了！我们可以设置一个自定义运行器(runner)简化步骤。`.cargo/config.toml` 有一个被注释掉的，可以调用QEMU的运行器。让我们去掉注释。
 ```console
 head -n3 .cargo/config.toml
 ```
-
 ```toml
 [target.thumbv7m-none-eabi]
 # uncomment this to make `cargo run` execute programs on QEMU
 runner = "qemu-system-arm -cpu cortex-m3 -machine lm3s6965evb -nographic -semihosting-config enable=on,target=native -kernel"
 ```
-
-This runner only applies to the `thumbv7m-none-eabi` target, which is our
-default compilation target. Now `cargo run` will compile the program and run it
-on QEMU:
-
+这个运行器只会应用于 `thumbv7m-none-eabi` 目标，它是我们的默认编译目标。现在 `cargo run` 将会编译程序且在QEMU上运行它。
 ```console
 cargo run --example hello --release
 ```
-
 ```text
    Compiling app v0.1.0 (file:///tmp/app)
     Finished release [optimized + debuginfo] target(s) in 0.26s
@@ -373,21 +352,16 @@ cargo run --example hello --release
 Hello, world!
 ```
 
-## Debugging
+## 调试
+对于嵌入式开发来说，调试非常重要。让我们来看下如何完成它。
 
-Debugging is critical to embedded development. Let's see how it's done.
+因为我们想要调试的程序运行的机器上，并没有运行一个调试器程序(GDB或者LLDB)，所以调试一个嵌入式设备就涉及到了*远程*调试
 
-Debugging an embedded device involves *remote* debugging as the program that we
-want to debug won't be running on the machine that's running the debugger
-program (GDB or LLDB).
+远程调试涉及一个客户端和一个服务器。在QEMU的情况中，客户端将是一个GDB(或者LLDM)进程且服务器将会是运行着嵌入式程序的QEMU进程。
 
-Remote debugging involves a client and a server. In a QEMU setup, the client
-will be a GDB (or LLDB) process and the server will be the QEMU process that's
-also running the embedded program.
+在这部分，我们将使用我们已经编译的 `hello` 示例。
 
-In this section we'll use the `hello` example we already compiled.
-
-The first debugging step is to launch QEMU in debugging mode:
+调试的第一步是在调试模式中启动QEMU：
 
 ```console
 qemu-system-arm \
@@ -400,30 +374,18 @@ qemu-system-arm \
   -kernel target/thumbv7m-none-eabi/debug/examples/hello
 ```
 
-This command won't print anything to the console and will block the terminal. We
-have passed two extra flags this time:
+这个命令将不打印任何东西到调试台上，且将会阻塞住终端。此刻我们还传递了两个额外的标志。
++ `-gdb tcp::3333`。这告诉QEMU在3333的TCP端口上等待一个GDB连接。
++ `-S`。这告诉QEMU在启动时，冻结机器。没有这个，在我们有机会启动调试器之前，程序可能已经到达了主程序的底部了!
 
-- `-gdb tcp::3333`. This tells QEMU to wait for a GDB connection on TCP
-  port 3333.
-
-- `-S`. This tells QEMU to freeze the machine at startup. Without this the
-  program would have reached the end of main before we had a chance to launch
-  the debugger!
-
-Next we launch GDB in another terminal and tell it to load the debug symbols of
-the example:
-
+接下来我们在另一个终端启动GDB，且告诉它去加载示例的调试符号。
 ```console
 gdb-multiarch -q target/thumbv7m-none-eabi/debug/examples/hello
 ```
 
-**NOTE**: you might need another version of gdb instead of `gdb-multiarch` depending
-on which one you installed in the installation chapter. This could also be
-`arm-none-eabi-gdb` or just `gdb`.
+**注意**: 你可能需要另一个gdb版本而不是 `gdb-multiarch`，取决于你在安装章节中安装了哪个。这个可能是 `arm-none-eabi-gdb` 或者只是 `gdb`。
 
-Then within the GDB shell we connect to QEMU, which is waiting for a connection
-on TCP port 3333.
-
+然后在GDB shell中，我们连接QEMU，QEMU正在等待一个在3333 TCP端口上的连接。
 ```console
 target remote :3333
 ```
@@ -434,15 +396,13 @@ Reset () at $REGISTRY/cortex-m-rt-0.6.1/src/lib.rs:473
 473     pub unsafe extern "C" fn Reset() -> ! {
 ```
 
+你将看到，进程被挂起了，程序计数器正指向一个名为 `Reset` 的函数。那是 reset 句柄：Cortex-M核在启动时执行的中断函数。
 
-You'll see that the process is halted and that the program counter is pointing
-to a function named `Reset`. That is the reset handler: what Cortex-M cores
-execute upon booting.
-
->  Note that on some setup, instead of displaying the line `Reset () at $REGISTRY/cortex-m-rt-0.6.1/src/lib.rs:473` as shown above, gdb may print some warnings like : 
+> 注意在一些配置中，可能不会像上面一样，展示那行`Reset() at $REGISTRY/cortex-m-rt-0.6.1/src/lib.rs:473`，gdb可能打印一些警告，比如:
 >
 >`core::num::bignum::Big32x40::mul_small () at src/libcore/num/bignum.rs:254`
 > `    src/libcore/num/bignum.rs: No such file or directory.`
+> 
 > 
 > That's a known glitch. You can safely ignore those warnings, you're most likely at Reset(). 
 
