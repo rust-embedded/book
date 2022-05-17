@@ -1,44 +1,27 @@
-# Hardware
+# 硬件
 
-By now you should be somewhat familiar with the tooling and the development
-process. In this section we'll switch to real hardware; the process will remain
-largely the same. Let's dive in.
+现在你应该有点熟悉工具和开发过程了。这部分我们将转换到真正的硬件上；步骤非常相似。让我们深入进去。
 
-## Know your hardware
+## 认识你的硬件
 
-Before we begin you need to identify some characteristics of the target device
-as these will be used to configure the project:
+在我们开始之前，你需要认识你的目标设备的一些特性，因为它们将被用于配置项目:
+- ARM 核心。e.g. Cortex-M3 。
+- ARM 核心包括一个FPU吗?Cortex-M4**F**和Cortex-M7**F**有。
+- 目标设备有多少Flash和RAM？e.g. 256KiB的Flash和32KiB的RAM。
+- Flash和RAM映射在地址空间什么位置?e.g. RAM通常位于 `0x2000_0000` 地址处。
 
-- The ARM core. e.g. Cortex-M3.
+你可以在你的设备的数据手册和参考手册上找到这些信息。
 
-- Does the ARM core include an FPU? Cortex-M4**F** and Cortex-M7**F** cores do.
+这部分，我们会用我们的参考硬件，STM32F3DISCOVERY。这个板子包含一个STM32F303VCT6微控制器。这个微控制器拥有:
+- 一个Cortex-M4F核心，它包含一个单精度FPU。
+- 位于 0x0800_0000 地址的256KiB的Flash。
+- 位于 0x2000_0000 地址的40KiB的RAM。(这里还有其它的RAM区域，但是为了简便，我们将忽略它)。
 
-- How much Flash memory and RAM does the target device have? e.g. 256 KiB of
-  Flash and 32 KiB of RAM.
+## 配置
 
-- Where are Flash memory and RAM mapped in the address space? e.g. RAM is
-  commonly located at address `0x2000_0000`.
+我们将从一个新的模板实例开始。参考[先前的QEMU]章节，了解如何在没有`cargo-generate`的情况下完成它。
 
-You can find this information in the data sheet or the reference manual of your
-device.
-
-In this section we'll be using our reference hardware, the STM32F3DISCOVERY.
-This board contains an STM32F303VCT6 microcontroller. This microcontroller has:
-
-- A Cortex-M4F core that includes a single precision FPU
-
-- 256 KiB of Flash located at address 0x0800_0000.
-
-- 40 KiB of RAM located at address 0x2000_0000. (There's another RAM region but
-  for simplicity we'll ignore it).
-
-## Configuring
-
-We'll start from scratch with a fresh template instance. Refer to the
-[previous section on QEMU] for a refresher on how to do this without
-`cargo-generate`.
-
-[previous section on QEMU]: qemu.md
+[先前的QEMU]: qemu.md
 
 ``` text
 $ cargo generate --git https://github.com/rust-embedded/cortex-m-quickstart
@@ -49,7 +32,7 @@ $ cargo generate --git https://github.com/rust-embedded/cortex-m-quickstart
 $ cd app
 ```
 
-Step number one is to set a default compilation target in `.cargo/config.toml`.
+第一步是在`.cargo/config.toml`中设置一个默认编译目标。
 
 ``` console
 tail -n5 .cargo/config.toml
@@ -63,10 +46,9 @@ tail -n5 .cargo/config.toml
 target = "thumbv7em-none-eabihf" # Cortex-M4F and Cortex-M7F (with FPU)
 ```
 
-We'll use `thumbv7em-none-eabihf` as that covers the Cortex-M4F core.
+我们将使用`thumbv7em-none-eabihf`，因为它覆盖Cortex-M4F核。
 
-The second step is to enter the memory region information into the `memory.x`
-file.
+第二步是将存储区域信息(memory region information)输入`memory.x`。
 
 ``` text
 $ cat memory.x
@@ -78,15 +60,11 @@ MEMORY
   RAM : ORIGIN = 0x20000000, LENGTH = 40K
 }
 ```
-> **NOTE**: If you for some reason changed the `memory.x` file after you had made
-> the first build of a specific build target, then do `cargo clean` before
-> `cargo build`, because `cargo build` may not track updates of `memory.x`.
+> **注意**：如果你因为一些理由，在对一个特定构建目标第一次构建后，改变了`memory.x`文件，需要在`cargo build`之前执行`cargo clean`。因为`cargo build`可能不会跟踪`memory.x`的更新。
 
-We'll start with the hello example again, but first we have to make a small
-change.
+我们将使用hello示例再次开始，但是首先我们必须做一个小改变。
 
-In `examples/hello.rs`, make sure the `debug::exit()` call is commented out or
-removed. It is used only for running in QEMU.
+在`examples/hello.rs`中，确保`debug::exit()`调用被注释掉了或者移除。它只能用于在QEMU中运行时。
 
 ```rust,ignore
 #[entry]
@@ -101,16 +79,15 @@ fn main() -> ! {
 }
 ```
 
-You can now cross compile programs using `cargo build`
-and inspect the binaries using `cargo-binutils` as you did before. The
-`cortex-m-rt` crate handles all the magic required to get your chip running,
-as helpfully, pretty much all Cortex-M CPUs boot in the same fashion.
+你能像你之前做的一样，使用`cargo build`检查编译程序，使用`cargo-binutils`观察二进制文件。`cortex-m-rt`库可以处理所有运行芯片所需的魔法，同样有用的是，几乎所有的Cortex-M CPUs都按同样的方式启动。
 
 ``` console
 cargo build --example hello
 ```
 
-## Debugging
+## 调试
+
+调试将看起来有点不同。事实上，第一步
 
 Debugging will look a bit different. In fact, the first steps can look different
 depending on the target device. In this section we'll show the steps required to
