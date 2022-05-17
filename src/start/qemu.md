@@ -402,19 +402,15 @@ Reset () at $REGISTRY/cortex-m-rt-0.6.1/src/lib.rs:473
 >
 >`core::num::bignum::Big32x40::mul_small () at src/libcore/num/bignum.rs:254`
 > `    src/libcore/num/bignum.rs: No such file or directory.`
-> 
-> 
-> That's a known glitch. You can safely ignore those warnings, you're most likely at Reset(). 
+>
+> 那是一个已知的小bug，你可以安全地忽略这些警告，you're most likely at Reset()。
 
-
-This reset handler will eventually call our main function. Let's skip all the
-way there using a breakpoint and the `continue` command. To set the breakpoint, let's first take a look where we would like to break in our code, with the `list` command.
+这个reset句柄最终将调用我们的主函数，让我们使用一个断点和`continue`命令跳过所有的步骤。为了设置断点，让我们首先看下我们想要在我们代码哪里打断点，使用`list`指令
 
 ```console
 list main
 ```
-This will show the source code, from the file examples/hello.rs. 
-
+这将从examples/hello.rs文件显示源代码。
 ```text
 6       use panic_halt as _;
 7
@@ -427,12 +423,13 @@ This will show the source code, from the file examples/hello.rs.
 14
 15          // exit QEMU
 ```
-We would like to add a breakpoint just before the "Hello, world!", which is on line 13. We do that with the `break` command:
+我们想要在"Hello, world!"之前添加一个断点，在13行那里。我们可以使用`break`命令
 
 ```console
 break 13
 ```
-We can now instruct gdb to run up to our main function, with the `continue` command:
+
+我们现在能使用`continue`命令指示gdb运行到我们的主函数。
 
 ```console
 continue
@@ -445,8 +442,7 @@ Breakpoint 1, hello::__cortex_m_rt_main () at examples\hello.rs:13
 13          hprintln!("Hello, world!").unwrap();
 ```
 
-We are now close to the code that prints "Hello, world!". Let's move forward
-using the `next` command.
+我们现在靠近打印"Hello, world!"的代码。让我们使用`next`命令继续前进。
 
 ``` console
 next
@@ -456,15 +452,14 @@ next
 16          debug::exit(debug::EXIT_SUCCESS);
 ```
 
-At this point you should see "Hello, world!" printed on the terminal that's
-running `qemu-system-arm`.
+在这里，你应该看到 "Hello, world!" 被打印到正在运行 `qemu-system-arm` 的终端上。
 
 ```text
 $ qemu-system-arm (..)
 Hello, world!
 ```
 
-Calling `next` again will terminate the QEMU process.
+再次调用`next`将会终止QEMU进程。
 
 ```console
 next
@@ -474,7 +469,7 @@ next
 [Inferior 1 (Remote target) exited normally]
 ```
 
-You can now exit the GDB session.
+你现在能退出GDB对话了。
 
 ``` console
 quit
