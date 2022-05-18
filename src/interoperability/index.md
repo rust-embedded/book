@@ -1,21 +1,12 @@
-# Interoperability
+# 互用性
 
-Interoperability between Rust and C code is always dependent
-on transforming data between the two languages.
-For this purposes there are two dedicated modules
-in the `stdlib` called
-[`std::ffi`](https://doc.rust-lang.org/std/ffi/index.html) and
-[`std::os::raw`](https://doc.rust-lang.org/std/os/raw/index.html).
+Rust和C代码间的互用性始终取决于两种语言间的数据转换。为了实现它，在`stdlib`中，有两个专用模块，叫做[`std::ffi`](https://doc.rust-lang.org/std/ffi/index.html)和[`std::os::raw`](https://doc.rust-lang.org/std/os/raw/index.html) 。
 
-`std::os::raw` deals with low-level primitive types that can
-be converted implicitly by the compiler
-because the memory layout between Rust and C
-is similar enough or the same.
+`std::os::raw`处理底层基本类型，这些类型可以被编译器隐式地转换，因为Rust和C之间的内存布局足够相似或相同。
 
-`std::ffi` provides some utility for converting more complex
-types such as Strings, mapping both `&str` and `String`
-to C-types that are easier and safer to handle.
+`std::ffi`提供了一些工具去转换更复杂的类型，比如Strings，将`&str`和`String`映射成更容易和安全处理的C类型。
 
+这两个模块在`core`中都不可用，但是你可以找到一个
 Neither of these modules are available in `core`, but you can find a `#![no_std]`
 compatible version of `std::ffi::{CStr,CString}` in the [`cstr_core`] crate, and
 most of the `std::os::raw` types in the [`cty`] crate.

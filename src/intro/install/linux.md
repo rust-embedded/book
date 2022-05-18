@@ -1,12 +1,12 @@
 # Linux
-这部分是关于某些Linux发行版的安装指令。
+
+这部分是在某些Linux发行版环境下下的安装指令。
 
 ## Packages
 
-- Ubuntu 18.04 or newer / Debian stretch or newer
+- Ubuntu 18.04 或者更新的版本 / Debian stretch 或者更新的版本
 
-> **NOTE** `gdb-multiarch` is the GDB command you'll use to debug your ARM
-> Cortex-M programs
+> **注意** `gdb-multiarch` 是你将用来调试你的ARM Cortex-M程序的GDB命令
 
 <!-- Debian stretch -->
 <!-- GDB 7.12 -->
@@ -24,8 +24,7 @@ sudo apt install gdb-multiarch openocd qemu-system-arm
 
 - Ubuntu 14.04 and 16.04
 
-> **NOTE** `arm-none-eabi-gdb` is the GDB command you'll use to debug your ARM
-> Cortex-M programs
+> **注意** `arm-none-eabi-gdb` 是你将用来调试你的ARM Cortex-M程序的GDB命令
 
 <!-- Ubuntu 14.04 -->
 <!-- GDB 7.6 (!) -->
@@ -36,10 +35,9 @@ sudo apt install gdb-multiarch openocd qemu-system-arm
 sudo apt install gdb-arm-none-eabi openocd qemu-system-arm
 ```
 
-- Fedora 27 or newer
+- Fedora 27 或者更新的版本
 
-> **NOTE** `arm-none-eabi-gdb` is the GDB command you'll use to debug your ARM
-> Cortex-M programs
+> **注意** `arm-none-eabi-gdb` 是你将用来调试你的ARM Cortex-M程序的GDB命令
 
 <!-- Fedora 27 -->
 <!-- GDB 7.6 (!) -->
@@ -52,18 +50,17 @@ sudo dnf install arm-none-eabi-gdb openocd qemu-system-arm
 
 - Arch Linux
 
-> **NOTE** `arm-none-eabi-gdb` is the GDB command you'll use to debug ARM
-> Cortex-M programs
+> **注意** `arm-none-eabi-gdb` 是你将用来调试你的ARM Cortex-M程序的GDB命令
 
 ``` console
 sudo pacman -S arm-none-eabi-gdb qemu-arch-extra openocd
 ```
 
-## udev rules
+## udev 规则
 
-This rule lets you use OpenOCD with the Discovery board without root privilege.
+这个规则可以让你在不需要超级用户权限的情况下，使用OpenOCD和Discovery开发板。
 
-Create the file `/etc/udev/rules.d/70-st-link.rules` with the contents shown below.
+生成包含下列内容的 `/etc/udev/rules.d/70-st-link.rules` 文件
 
 ``` text
 # STM32F3DISCOVERY rev A/B - ST-LINK/V2
