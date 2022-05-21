@@ -1,6 +1,6 @@
-# Peripherals
+# 外设
 
-## What are Peripherals?
+## 什么是外设?
 
 Most Microcontrollers have more than just a CPU, RAM, or Flash Memory - they contain sections of silicon which are used for interacting with systems outside of the microcontroller, as well as directly and indirectly interacting with their surroundings in the world via sensors, motor controllers, or human interfaces such as a display or keyboard. These components are collectively known as Peripherals.
 

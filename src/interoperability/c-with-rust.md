@@ -1,9 +1,10 @@
-# A little C with your Rust
+# Rust配点C
 
-Using C or C++ inside of a Rust project consists of two major parts:
+在一个Rust项目中使用C或者C++，由两个主要部分组成:
 
-- Wrapping the exposed C API for use with Rust
-- Building your C or C++ code to be integrated with the Rust code
++ 使用Rust封装要暴露的C API来用
++ 编译要和Rust代码集成的C或者C++代码
+
 
 As C++ does not have a stable ABI for the Rust compiler to target, it is recommended to use the `C` ABI when combining Rust with C or C++.
 
