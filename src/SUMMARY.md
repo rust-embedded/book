@@ -29,7 +29,7 @@ more information and coordination
   - [IO](./start/io.md)
 - [外设](./peripherals/index.md)
     - [第一次尝试Rust](./peripherals/a-first-attempt.md)
-    - [The Borrow Checker](./peripherals/borrowck.md)
+    - [借用检查器](./peripherals/borrowck.md)
     - [Singletons](./peripherals/singletons.md)
 - [Static Guarantees](./static-guarantees/index.md)
     - [Typestate Programming](./static-guarantees/typestate-programming.md)
