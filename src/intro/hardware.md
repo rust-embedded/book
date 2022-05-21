@@ -16,14 +16,15 @@
   + 48 KiB的RAM
   + 多种多样的外设，比如计时器，I2C，SPI和USART
   + 通用GPIO和板子两侧的其它类型引脚
-  + 通过被标记为“USB USER”的USB端口访问的一个USB接口
-+ 作为[LSM303DLHC](https://www.st.com/en/mems-and-sensors/lsm303dlhc.html)芯片部分的一个[加速度计](https://en.wikipedia.org/wiki/Accelerometer)
+  + 一个写着“USB USER”的USB接口
++ [LSM303DLHC](https://www.st.com/en/mems-and-sensors/lsm303dlhc.html)芯片上的一个[加速度计](https://en.wikipedia.org/wiki/Accelerometer)。
 
-- A [magnetometer](https://en.wikipedia.org/wiki/Magnetometer) as part of the [LSM303DLHC](https://www.st.com/en/mems-and-sensors/lsm303dlhc.html) chip.
++ [LSM303DLHC](https://www.st.com/en/mems-and-sensors/lsm303dlhc.html)芯片上的一个[磁力计](https://en.wikipedia.org/wiki/Magnetometer)。
 
-- A [gyroscope](https://en.wikipedia.org/wiki/Gyroscope) as part of the [L3GD20](https://www.pololu.com/file/0J563/L3GD20.pdf) chip.
++ [L3GD20](https://www.pololu.com/file/0J563/L3GD20.pdf)芯片上的一个[陀螺仪](https://en.wikipedia.org/wiki/Gyroscope).
 
-- 8 user LEDs arranged in the shape of a compass.
++ 摆得像一个指南针形状样的8个用户LEDs。
+
 
 - A second microcontroller: a [STM32F103](https://www.st.com/en/microcontrollers/stm32f103cb.html). This microcontroller is actually part of an on-board programmer / debugger and is connected to the USB port named "USB ST-LINK".
 
