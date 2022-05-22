@@ -87,17 +87,12 @@ cargo build --example hello
 
 ## 调试
 
-调试将看起来有点不同。事实上，第一步
+调试将看起来有点不同。事实上，取决于不同的目标设备，第一步可能看起来不一样。在这个章节里，我们将展示，调试一个在STM32F3DISCOVERY上运行的程序，所需要的步骤。这作为一个参考。对于设备，关于调试的，特定的信息，可以看[the
+Debugonomicon](https://github.com/rust-embedded/debugonomicon)。
 
-Debugging will look a bit different. In fact, the first steps can look different
-depending on the target device. In this section we'll show the steps required to
-debug a program running on the STM32F3DISCOVERY. This is meant to serve as a
-reference; for device specific information about debugging check out [the
-Debugonomicon](https://github.com/rust-embedded/debugonomicon).
+像之前一样，我们将进行远程调试，客户端将是一个GDB进程。不同的是，OpenOCD将是服务器。
 
-As before we'll do remote debugging and the client will be a GDB process. This
-time, however, the server will be OpenOCD.
-
+就像之前在
 As done during the [verify] section connect the discovery board to your laptop /
 PC and check that the ST-LINK header is populated.
 
