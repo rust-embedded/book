@@ -70,21 +70,21 @@ ATTRS{idVendor}=="0483", ATTRS{idProduct}=="3748", TAG+="uaccess"
 ATTRS{idVendor}=="0483", ATTRS{idProduct}=="374b", TAG+="uaccess"
 ```
 
-Then reload all the udev rules with:
+然后重新加载所有的udev规则
 
 ``` console
 sudo udevadm control --reload-rules
 ```
 
-If you had the board plugged to your laptop, unplug it and then plug it again.
+如果开发板已经被插入了你的笔记本，拔下它然后再插上它。
 
-You can check the permissions by running this command:
+你可以通过运行这个命令检查权限:
 
 ``` console
 lsusb
 ```
 
-Which should show something like
+终端显示的东西看起来像是
 
 ```text
 (..)
@@ -92,8 +92,7 @@ Bus 001 Device 018: ID 0483:374b STMicroelectronics ST-LINK/V2.1
 (..)
 ```
 
-Take note of the bus and device numbers. Use those numbers to create a path like
-`/dev/bus/usb/<bus>/<device>`. Then use this path like so:
+记住bus和device号，使用这些数字创造一个像是 `/dev/bus/usb/<bus>/<device>` 这样的路径。然后像这样使用这个路径:
 
 ``` console
 ls -l /dev/bus/usb/001/018
@@ -112,10 +111,11 @@ user::rw-
 user:you:rw-
 ```
 
+
 The `+` appended to permissions indicates the existence of an extended
 permission. The `getfacl` command tells the user `you` can make use of
 this device.
 
-Now, go to the [next section].
+现在，去往[下个章节].
 
-[next section]: verify.md
+[下个章节]: verify.md
