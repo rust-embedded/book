@@ -1,15 +1,13 @@
 # 工具
 与微控制器打交道需要使用几种不同的工具，因为我们要处理的架构与笔记本电脑不同，我们必须在*远程*设备上运行和调试程序。我们将使用下面列举出来的工具。当一个最小版本没有被指定时，最近的版本应该可以工作，但是我们已经列出我们已经测过的那些版本。
-- Rust 1.31, 1.31-beta, or a newer toolchain PLUS ARM Cortex-M compilation
-  support.
+- Rust 1.31, 1.31-beta, 或者一个更新的，支持ARM Cortex-M编译的工具链。
 - [`cargo-binutils`](https://github.com/rust-embedded/cargo-binutils) ~0.1.4
-- [`qemu-system-arm`](https://www.qemu.org/). Tested versions: 3.0.0
-- OpenOCD >=0.8. Tested versions: v0.9.0 and v0.10.0
-- GDB with ARM support. Version 7.12 or newer highly recommended. Tested
-  versions: 7.10, 7.11, 7.12 and 8.1
-- [`cargo-generate`](https://github.com/ashleygwilliams/cargo-generate) or `git`.
+- [`qemu-system-arm`](https://www.qemu.org/). 测试的版本: 3.0.0
+- OpenOCD >=0.8. 测试的版本: v0.9.0 and v0.10.0
+- 有ARM支持的GDB。高度建议7.12或者更新的版本。测试版本: 7.10, 7.11 和 8.1
+- [`cargo-generate`](https://github.com/ashleygwilliams/cargo-generate) 或者 `git`
 
-这些工具都是可选的，但是它们随书使用更容易。下面的文档解释我们为什么使用这些工具。安装指令可以在下一页找到。
+这些工具都是可选的，但是跟着书来使用它们，会更容易。下面的文档解释我们为什么使用这些工具。安装指令可以在下一页找到。
 
 ## `cargo-generate` OR `git`
 裸板编程是non-strandard Rust编程，为了获取正确的程序的内存布局，需要对链接过程进行一些调整，这要求添加一些额外的文件(比如linker scripts)和配置(比如linker flags)。我们已经为你把这些打包进一个模板里，你只需要补充缺失的信息(比如项目名和你的目标硬件的特性)。<br>
@@ -21,9 +19,7 @@
 
 ## `qemu-system-arm`
 
-QEMU is an emulator. In this case we use the variant that can fully emulate ARM
-systems. We use QEMU to run embedded programs on the host. Thanks to this you
-can follow some parts of this book even if you don't have any hardware with you!
+QEMU是一个仿真器。在这个例子里，我们使用能完全仿真ARM系统的变种版。我们使用QEMU在主机上运行嵌入式程序。多亏了它，你可以在没有任何硬件的情况下，尝试这本书的部分例子。
 
 ## GDB
 调试器是嵌入式开发的一个非常重要的组件，你可能不总是有机会将内容记录到主机控制台。在某些情况里，你可能甚至没有LEDs点亮你的硬件！<br>
