@@ -1,30 +1,25 @@
-# Verify Installation
+# 安装验证
 
-In this section we check that some of the required tools / drivers have been
-correctly installed and configured.
+在这个章节中我们将检查工具和驱动是否已经被正确地安装和配置了。
 
-Connect your laptop / PC to the discovery board using a micro USB cable. The
-discovery board has two USB connectors; use the one labeled "USB ST-LINK" that
-sits on the center of the edge of the board.
+使用一个micro USB线缆将你的笔记本/个人电脑连接到discovery开发板上。discovery开发板有两个USB连接器;使用标记着"USB ST-LINK"的那个，它位于开发板边缘的中间位置。
 
-Also check that the ST-LINK header is populated. See the picture below; the
-ST-LINK header is circled in red.
+也要检查下ST-LINK的短路帽被安装了。看下面的图；ST-LINK短路帽用红色圈起来了。
 
 <p align="center">
 <img title="Connected discovery board" src="../../assets/verify.jpeg">
 </p>
 
-Now run the following command:
+现在运行下面的命令:
 
 ``` console
 openocd -f interface/stlink.cfg -f target/stm32f3x.cfg
 ```
 
-> **NOTE**: Old versions of openocd, including the 0.10.0 release from 2017, do
-> not contain the new (and preferable) `interface/stlink.cfg` file; instead you
-> may need to use `interface/stlink-v2.cfg` or `interface/stlink-v2-1.cfg`.
+> **注意**: 旧版的openocd, 包括从2017发布的0.10.0, 不包含新的(且更适合的)`interface/stlink.cfg`文件； 你需要使用`interface/stlink-v2.cfg` 或者 `interface/stlink-v2-1.cfg`。
+ 
 
-You should get the following output and the program should block the console:
+你应该看到下列的输出，且程序应该阻塞住了控制台:
 
 ``` text
 Open On-Chip Debugger 0.10.0
@@ -45,13 +40,11 @@ Info : Target voltage: 2.919881
 Info : stm32f3x.cpu: hardware has 6 breakpoints, 4 watchpoints
 ```
 
-The contents may not match exactly but you should get the last line about
-breakpoints and watchpoints. If you got it then terminate the OpenOCD process
-and move to the [next section].
+内容可能并不是一模一样，但是在最后一行，你应该看到了breakpoints和watchpoints，如果你看到了，那就终止OpenOCD进程然后进入[下个章节]
 
-[next section]: ../../start/index.md
+[下个章节]: ../../start/index.md
 
-If you didn't get the "breakpoints" line then try one of the following commands.
+如果你没看到"breakpoints"这行，尝试下下列命令中的某一个。
 
 ``` console
 openocd -f interface/stlink-v2.cfg -f target/stm32f3x.cfg

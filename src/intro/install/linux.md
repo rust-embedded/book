@@ -111,10 +111,7 @@ user::rw-
 user:you:rw-
 ```
 
-
-The `+` appended to permissions indicates the existence of an extended
-permission. The `getfacl` command tells the user `you` can make use of
-this device.
+权限后的 `+` 指出存在一个扩展权限。`getfacl` 命令显示，`user`也就是`你`能使用这个设备。
 
 现在，去往[下个章节].
 
