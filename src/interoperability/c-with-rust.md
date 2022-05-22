@@ -5,10 +5,9 @@
 + 使用Rust封装要暴露的C API来用
 + 编译要和Rust代码集成的C或者C++代码
 
+因为对于目标的Rust编译器，C++没有一个稳定的ABI，当将Rust和C或者C++结合时，建议使用`C`。
 
-As C++ does not have a stable ABI for the Rust compiler to target, it is recommended to use the `C` ABI when combining Rust with C or C++.
-
-## Defining the interface
+## 定义接口
 
 Before consuming C or C++ code from Rust, it is necessary to define (in Rust) what data types and function signatures exist in the linked code. In C or C++, you would include a header (`.h` or `.hpp`) file which defines this data. In Rust, it is necessary to either manually translate these definitions to Rust, or use a tool to generate these definitions.
 

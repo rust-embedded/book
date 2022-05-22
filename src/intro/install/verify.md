@@ -54,18 +54,12 @@ openocd -f interface/stlink-v2.cfg -f target/stm32f3x.cfg
 openocd -f interface/stlink-v2-1.cfg -f target/stm32f3x.cfg
 ```
 
-If one of those commands works it means you got an old hardware revision of the
-discovery board. That won't be a problem but commit that fact to memory as
-you'll need to configure things a bit differently later on. You can move to the
-[next section].
+如果这些命令的某条起作用了，那意味着你使用的discovery开发板是一个旧的版本。那也不成问题，但是你要记住这件事，因为随后你可能需要有点不同的配置。你可以移到[下个章节]了。
 
-If none of the commands work as a normal user then try to run them with root
-permission (e.g. `sudo openocd ..`). If the commands do work with root
-permission then check that the [udev rules] have been correctly set.
+如果这些命令在normal user模式下都没用，尝试下使用root模式运行它们(e.g. `sudo openocd ..`)。如果命令在root模式下起作用，要检查下[udev rules]是否被正确地设置了。
 
 [udev rules]: linux.md#udev-rules
 
-If you have reached this point and OpenOCD is not working please open [an issue]
-and we'll help you out!
+如果这些都试了，OpenOCD还不工作，请打开一个[issue]，我们将帮助你！
 
-[an issue]: https://github.com/rust-embedded/book/issues
+[issue]: https://github.com/rust-embedded/book/issues
