@@ -15,7 +15,7 @@
 就像之前提到的，使用[libstd](https://doc.rust-lang.org/std/)需要一些系统集成，这不仅仅是因为[libstd](https://doc.rust-lang.org/std/)提供了一个公共的方法访问操作系统，它也提供了一个运行时环境。这个运行时环境，负责设置堆栈溢出保护，处理命令行参数，在一个程序主函数被激活前启动一个主线程。在一个`no_std`环境中，这个运行时环境也是不可用的。
 
 ## 总结
-`#![no_std]`是一个crate-level属性，它说明crate将连接至core-crate而不是std-crate。[libcore](https://doc.rust-lang.org/core/) crate是std crate一个平台无关的子集，它对程序将要运行的系统没有做要求。比如，它提供了像是floats,strings和切片的APIs，暴露了像是原子操作和SIMD指令的处理器特性相关的APIs。然而，它缺少涉及到平台集成的那些APIs。由于这些特性，no_std和[libcore](https://doc.rust-lang.org/core/)代码可以用于任何引导程序(stage 0)像是bootloaders，固件或者内核。
+`#![no_std]`是一个crate-level属性，它说明crate将连接至core-crate而不是std-crate。[libcore](https://doc.rust-lang.org/core/) crate是std crate的一个平台无关的子集，它对程序将要运行的系统没有做要求。比如，它提供了像是floats,strings和切片的APIs，暴露了像是原子操作和SIMD指令的处理器特性相关的APIs。然而，它缺少涉及到平台集成的那些APIs。由于这些特性，no_std和[libcore](https://doc.rust-lang.org/core/)代码可以用于任何引导程序(stage 0)像是bootloaders，固件或者内核。
 
 ### 概述
 
