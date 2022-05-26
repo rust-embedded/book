@@ -72,9 +72,9 @@ Embedded Rust是为了那些想要进行嵌入式编程，又想使用Rust语言
 
 修改拼写错误和添加新内容的Pull requests非常欢迎！
 
-## Re-using this material
+## 二次使用这个材料
 
-This book is distributed under the following licenses:
+这本书根据以下许可证发布:
 
 * The code samples and free-standing Cargo projects contained within this book are licensed under the terms of both the [MIT License] and the [Apache License v2.0].
 * The written prose, pictures and diagrams contained within this book are licensed under the terms of the Creative Commons [CC-BY-SA v4.0] license.
