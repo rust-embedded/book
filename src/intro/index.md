@@ -72,6 +72,9 @@ translation listed here, please open a PR to add it.
 * [Japanese](https://tomoyuki-nakabayashi.github.io/book/)
   ([repository](https://github.com/tomoyuki-nakabayashi/book))
 
+* [Chinese](https://xxchang.github.io/book/)
+  ([repository](https://github.com/XxChang/book))
+
 ## How to Use This Book
 
 This book generally assumes that you’re reading it front-to-back. Later
