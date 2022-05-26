@@ -1,4 +1,6 @@
-# Interrupts
+# 中断
+
+虽然中断和异常在很多方面都不一样，但是它们的操作和使用几乎一样，且它们也能被同一个中断控制器处理。
 
 Interrupts differ from exceptions in a variety of ways but their operation and
 use is largely similar and they are also handled by the same interrupt
