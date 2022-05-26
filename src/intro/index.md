@@ -1,19 +1,20 @@
 # 引言
-欢迎阅读The Embedded Rust Book:一本关于在裸板(比如，微处理器)上使用Rust编程语言的引导书籍。
+欢迎阅读The Embedded Rust Book:一本关于在裸机(比如，微处理器)上使用Rust编程语言的引导书籍。
 
 ## Embedded Rust 是为谁准备的
-Embedded Rust是为了那些想要进行嵌入式编程且，又想使用Rust语言提供的高级语言概念和安全保障的人们准备的(See also [Who Rust Is For](https://doc.rust-lang.org/book/ch00-00-introduction.html))
+Embedded Rust是为了那些想要进行嵌入式编程，又想使用Rust语言提供的高级语言概念和安全保障的人们准备的(See also [Who Rust Is For](https://doc.rust-lang.org/book/ch00-00-introduction.html))
 
 ## 本书范围
 这本书的目的是：
-+ 使开发者快速上手嵌入式Rust开发，比如，如何设置一个开发环境。
++ 让开发者快速上手嵌入式Rust开发，比如，如何设置一个开发环境。
 + 分享那些关于使用Rust进行嵌入式开发的，现存的，最好的实践经验，比如，如何最大程度上地利用好Rust语言的特性去写更正确的嵌入式软件
-+ 某种程度下作为工具书，比如，如何将C和Rust混进一个单一的项目里
++ 某种程度下作为工具书，比如，如何在一个项目里将C和Rust混合进去
 
-这本书尽可能地尝试变得通用，但是为了使读者和作者更容易理解，在所有的例子中它都使用了ARM Cortex-M架构。然而，这本书并不假设读者熟悉这个特定的架构，并在需要时解释这个架构的特定细节
+这本书尽可能地尝试变得适用于所有场景，但是为了使读者和作者更容易理解，在所有的例子中它都使用了ARM Cortex-M架构。然而，这本书并不需要读者熟悉这个特定的架构，并在需要时解释这个架构的特定细节。
 
 ## 这本书是为谁准备的
-这本书适合那些有一些嵌入式背景或者有Rust背景的人，然而我相信每一个对嵌入式Rust编程好奇的人都能从这本书中获得某些东西。对于那些先前没有任何经验的人，我们建议你读一下“要求和前提”章节，从书中获取、补充缺失的知识，提高你的阅读体验。你可以看看“其它资源”章节，以找到你关心的主题的资源。
+
+这本书适合那些有一些嵌入式背景或者有Rust背景的人，然而我相信每一个对嵌入式Rust编程好奇的人都能从这本书中获得某些东西。对于那些先前没有任何经验的人，我们建议你读一下“要求和前提”部分，从书中获取、补充缺失的知识，这样能提高你的阅读体验。你可以看看“其它资源”章节，以找到你感兴趣的主题的资源。
 
 ### 要求和前提
 
@@ -27,7 +28,8 @@ Embedded Rust是为了那些想要进行嵌入式编程且，又想使用Rust语
   + I2C，SPI，串口等等常见接口
 
 ### 其它资源
-如果你不熟悉上面提到的东西或者你对这本书中提到的某个特定主题关心，你可能可以从这些资源中找到有用的信息。
+
+如果你不熟悉上面提到的东西或者你对这本书中提到的某个特定主题感兴趣，你可能可以从这些资源中找到有用的信息。
 
 | Topic        | Resource | Description |
 |--------------|----------|-------------|
@@ -40,36 +42,35 @@ Embedded Rust是为了那些想要进行嵌入式编程且，又想使用Rust语
 | Memory-mapped IO/Peripherals | [Memory-mapped I/O](https://en.wikipedia.org/wiki/Memory-mapped_I/O) | - |
 | SPI, UART, RS232, USB, I2C, TTL | [Stack Exchange about SPI, UART, and other interfaces](https://electronics.stackexchange.com/questions/37814/usart-uart-rs232-usb-spi-i2c-ttl-etc-what-are-all-of-these-and-how-do-th) | - |
 
-### Translations
+### 翻译
 
-This book has been translated by generous volunteers. If you would like your
-translation listed here, please open a PR to add it.
+这本书是已经被一些慷慨的志愿者翻译了。如果你想要将你的翻译列在这里，请打开一个PR去添加它。
 
 * [Japanese](https://tomoyuki-nakabayashi.github.io/book/)
   ([repository](https://github.com/tomoyuki-nakabayashi/book))
 
+* [Chinese](https://xxchang.github.io/book/)
+  ([repository](https://github.com/xxchang/book))
+
 ## 如何使用这本书
-这本书通常假设你是前后阅读的。之后章节是建立在先前章节中提到的概念之上的，先前章节可能不会深入一个主题的细节，在随后的章节将会再次重温这个主题。
+这本书通常假设你是前后阅读的。之后章节是建立在先前章节中提到的概念之上的，先前章节可能不会深入一个主题的细节，因为在随后的章节将会再次重温这个主题。
 这本书将在大多数案例中使用[STM32F3DISCOVERY]开发板。这个板子是基于ARM Cortex-M架构的，且基本功能与大多数基于这个架构的CPUs功能相似。微处理器的外设和其它实现细节在不同的供应商之间是不同的，甚至来自同一个供应商的不同处理器家族也是不同的。
 因为这个理由，我们建议购买[STM32F3DISCOVERY]开发板来尝试这本书中的例子。(译者注：我使用[renode](https://renode.io/about/)来测试大多数例子)
 
 [STM32F3DISCOVERY]: http://www.st.com/en/evaluation-tools/stm32f3discovery.html
 
-## Contributing to This Book
+## 贡献
 
-The work on this book is coordinated in [this repository] and is mainly
-developed by the [resources team].
+这本书的工作主要在[这个仓库]里管理，且主要由[resouces team]开发。
 
-[this repository]: https://github.com/rust-embedded/book
-[resources team]: https://github.com/rust-embedded/wg#the-resources-team
+[这个仓库]: https://github.com/rust-embedded/book
+[resouces team]: https://github.com/rust-embedded/wg#the-resources-team
 
-If you have trouble following the instructions in this book or find that some
-section of the book is not clear enough or hard to follow then that's a bug and
-it should be reported in [the issue tracker] of this book.
+如果你按着这本书的操作遇到了什么麻烦，或者这本书的一些部分不够清楚，或者很难进行下去，那这本书就是有个bug，它应该被报道给这本书的[the issue tracker] 。
 
 [the issue tracker]: https://github.com/rust-embedded/book/issues/
 
-Pull requests fixing typos and adding new content are very welcome!
+修改拼写错误和添加新内容的Pull requests非常欢迎！
 
 ## Re-using this material
 
