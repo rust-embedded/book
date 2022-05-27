@@ -87,20 +87,15 @@ cargo build --example hello
 
 ## 调试
 
-调试将看起来有点不同。事实上，取决于不同的目标设备，第一步可能看起来不一样。在这个章节里，我们将展示，调试一个在STM32F3DISCOVERY上运行的程序，所需要的步骤。这作为一个参考。对于设备，关于调试的，特定的信息，可以看[the
-Debugonomicon](https://github.com/rust-embedded/debugonomicon)。
+调试将看起来有点不同。事实上，取决于不同的目标设备，第一步可能看起来不一样。在这个章节里，我们将展示，调试一个在STM32F3DISCOVERY上运行的程序，所需要的步骤。这作为一个参考。对于设备，关于调试的，特定的信息，可以看[the Debugonomicon](https://github.com/rust-embedded/debugonomicon)。
 
 像之前一样，我们将进行远程调试，客户端将是一个GDB进程。不同的是，OpenOCD将是服务器。
 
-就像之前在
-As done during the [verify] section connect the discovery board to your laptop /
-PC and check that the ST-LINK header is populated.
+像是在[安装验证]中做的那样，把你的笔记本/个人电脑和discovery开发板连接起来，检查ST-LINK的短路帽是否被安装了。
 
-[verify]: ../intro/install/verify.md
+[安装验证]: ../intro/install/verify.md
 
-On a terminal run `openocd` to connect to the ST-LINK on the discovery board.
-Run this command from the root of the template; `openocd` will pick up the
-`openocd.cfg` file which indicates which interface file and target file to use.
+在一个终端上运行 `openocd` 连接到你开发板上的 ST-LINK 。从模板的根目录运行这个命令；`openocd` 将会选择 `openocd.cfg` 文件，它指出了所使用的接口文件(interface file)和目标文件(target file)。
 
 ``` console
 cat openocd.cfg
@@ -121,9 +116,7 @@ source [find interface/stlink.cfg]
 source [find target/stm32f3x.cfg]
 ```
 
-> **NOTE** If you found out that you have an older revision of the discovery
-> board during the [verify] section then you should modify the `openocd.cfg`
-> file at this point to use `interface/stlink-v2.cfg`.
+> **注意** 如果你在[安装验证]章节中，发现你的discovery开发板是一个更旧的版本，那么你应该修改你的 `openocd.cfg` 文件，让它去使用 `interface/stlink-v2.cfg` 。注释掉 `interface/stlink.cfg`
 
 ``` text
 $ openocd
@@ -145,13 +138,13 @@ Info : Target voltage: 2.913879
 Info : stm32f3x.cpu: hardware has 6 breakpoints, 4 watchpoints
 ```
 
-On another terminal run GDB, also from the root of the template.
+在另一个终端，也是从模板的根目录，运行GDB。
 
 ``` text
 $ <gdb> -q target/thumbv7em-none-eabihf/debug/examples/hello
 ```
 
-Next connect GDB to OpenOCD, which is waiting for a TCP connection on port 3333.
+接下来连接GDB和OpenOCD，OpenOCD在3333端口上正在等待一个TCP连接。
 
 ``` console
 (gdb) target remote :3333
@@ -159,8 +152,7 @@ Remote debugging using :3333
 0x00000000 in ?? ()
 ```
 
-Now proceed to *flash* (load) the program onto the microcontroller using the
-`load` command.
+接下来使用`load`命令，继续 *flash*(加载) 程序到微控制器上。
 
 ``` console
 (gdb) load
@@ -171,19 +163,16 @@ Start address 0x800144e, load size 10380
 Transfer rate: 17 KB/sec, 3460 bytes/write.
 ```
 
-The program is now loaded. This program uses semihosting so before we do any
-semihosting call we have to tell OpenOCD to enable semihosting. You can send
-commands to OpenOCD using the `monitor` command.
+程序现在被加载了。这个程序使用半主机模式，因此在我们调用半主机模式之前，我们必须告诉OpenOCD使能半主机。你可以使用 `monitor` 命令，发送命令给OpenOCD 。
 
 ``` console
 (gdb) monitor arm semihosting enable
 semihosting is enabled
 ```
 
-> You can see all the OpenOCD commands by invoking the `monitor help` command.
+> 通过调用 `monitor help` 命令，你能看到所有的OpenOCD命令。
 
-Like before we can skip all the way to `main` using a breakpoint and the
-`continue` command.
+像我们之前一样，使用一个断点和 `continue` 命令我们可以跳过所有的步骤到 `main` 。
 
 ``` console
 (gdb) break main
@@ -197,12 +186,9 @@ Breakpoint 1, main () at examples/hello.rs:15
 15          let mut stdout = hio::hstdout().unwrap();
 ```
 
-> **NOTE** If GDB blocks the terminal instead of hitting the breakpoint after
-> you issue the `continue` command above, you might want to double check that
-> the memory region information in the `memory.x` file is correctly set up
-> for your device (both the starts *and* lengths). 
+> **注意** 如果在你使用了上面的`continue`命令后，GDB阻塞住了终端而不是停在了断点处，你可能需要检查下`memory.x`文件中的存储分区的信息，对于你的设备来说是否被正确的设置了 (both the starts *and* lengths) 。
 
-Advancing the program with `next` should produce the same results as before.
+使用 `next` 让程序继续，应该像之前一样，产生一样的结果。
 
 ``` console
 (gdb) next
@@ -212,8 +198,7 @@ Advancing the program with `next` should produce the same results as before.
 19          debug::exit(debug::EXIT_SUCCESS);
 ```
 
-At this point you should see "Hello, world!" printed on the OpenOCD console,
-among other stuff.
+这时，你应该看到 "Hello, world!" 被打印到了OpenOCD控制台上。
 
 ``` text
 $ openocd
@@ -229,8 +214,7 @@ Info : halted: PC: 0x08000d70
 Info : halted: PC: 0x08000d72
 ```
 
-Issuing another `next` will make the processor execute `debug::exit`. This acts
-as a breakpoint and halts the process:
+使用另一个 `next` 将会让处理器执行 `debug::exit`。这个函数和断点的作用一样，会悬挂其进程。
 
 ``` console
 (gdb) next
@@ -239,7 +223,7 @@ Program received signal SIGTRAP, Trace/breakpoint trap.
 0x0800141a in __syscall ()
 ```
 
-It also causes this to be printed to the OpenOCD console:
+它也会导致这个东西被打印到OpenOCD控制台：
 
 ``` text
 $ openocd
@@ -252,17 +236,15 @@ target halted due to breakpoint, current mode: Thread
 xPSR: 0x21000000 pc: 0x08000d76 msp: 0x20009fc0, semihosting
 ```
 
-However, the process running on the microcontroller has not terminated and you
-can resume it using `continue` or a similar command.
+然而，运行在微控制器上的进程还没有被终止，使用 `continue` 或者一个相同的命令，你能重新启动它。
 
-You can now exit GDB using the `quit` command.
+使用 `quit` 命令，你现在可以退出 GDB 了。
 
 ``` console
 (gdb) quit
 ```
 
-Debugging now requires a few more steps so we have packed all those steps into a
-single GDB script named `openocd.gdb`. The file was created during the `cargo generate` step, and should work without any modifications. Let's have a peak:
+现在调试比之前多了点步骤，因此我们已经把所有步骤打包进一个名为 `openocd.gdb` 的GDB脚本中。这个文件在 `cargo generate` 步骤中被生成，因此不需要任何修改了。让我们看一下:
 
 ``` console
 cat openocd.gdb
@@ -287,12 +269,9 @@ load
 stepi
 ```
 
-Now running `<gdb> -x openocd.gdb target/thumbv7em-none-eabihf/debug/examples/hello` will immediately connect GDB to
-OpenOCD, enable semihosting, load the program and start the process.
+现在运行 `<gdb> -x openocd.gdb target/thumbv7em-none-eabihf/debug/examples/hello` 将会立即把GDB和OpenOCD连接起来，使能半主机，加载程序和启动进程。
 
-Alternatively, you can turn `<gdb> -x openocd.gdb` into a custom runner to make
-`cargo run` build a program *and* start a GDB session. This runner is included
-in `.cargo/config.toml` but it's commented out.
+另外，你能将 `<gdb> -x openocd.gdb` 放进一个自定义的 runner 中，使 `cargo run` 能编译程序并启动一个GDB会话。这个 runner 在 `.cargo/config.toml` 中，但是它被注释掉了。
 
 ``` console
 head -n10 .cargo/config.toml

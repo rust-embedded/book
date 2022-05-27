@@ -31,7 +31,7 @@ cargo generate --git https://github.com/rust-embedded/cortex-m-quickstart
 cd app
 ```
 
-### Using `git`
+### 使用 `git`
 
 克隆仓库
 
@@ -57,9 +57,9 @@ test = false
 bench = false
 ```
 
-### Using neither
+### 要么使用
 
-Grab the latest snapshot of the `cortex-m-quickstart` template and extract it.
+抓取最新的 `cortex-m-quickstart` 模板，解压它。
 
 ```console
 curl -LO https://github.com/rust-embedded/cortex-m-quickstart/archive/master.zip
@@ -68,11 +68,9 @@ mv cortex-m-quickstart-master app
 cd app
 ```
 
-Or you can browse to [`cortex-m-quickstart`], click the green "Clone or
-download" button and then click "Download ZIP".
+或者你可以浏览[`cortex-m-quickstart`]，点击绿色的 "Clone or download" 按钮，然后点击 "Download ZIP" 。
 
-Then fill in the placeholders in the `Cargo.toml` file as done in the second
-part of the "Using `git`" version.
+然后像在 “使用 `git`” 那里的第二部分那样填充 `Cargo.toml` 。
 
 ## 项目概览
 
