@@ -1,18 +1,17 @@
 # 存储映射的寄存器
 
-嵌入式系统只能通过执行普通的Rust代码和在RAM间移动数据来运行下去。如果我们想要获取或者发出信息系统外的信息(点亮一个LED，发现一个按钮按下或者在总线上与芯片外设通信)，我们不得不深入了解外设和它们的"存储映射的寄存器"。
+嵌入式系统只能通过执行普通的Rust代码和在RAM间移动数据来运行下去。如果我们想要获取或者发出信息(点亮一个LED，发现一个按钮按下或者在总线上与芯片外设通信)，我们不得不深入了解外设和它们的"存储映射的寄存器"。
 
-你可能发现，需要用来访问你的微控制器的外设的代码已经写了，
-You may well find that the code you need to access the peripherals in your micro-controller has already been written, at one of the following levels:
+你可能发现，访问你的微控制器外设所需要的代码已经写进了下面某个抽象层中。
+
 <p align="center">
 <img title="Common crates" src="../assets/crates.png">
 </p>
 
-* 微架构Crate - 这种Crate处理任何有用的
-* Micro-architecture Crate - This sort of crate handles any useful routines common to the processor core your microcontroller is using, as well as any peripherals that are common to all micro-controllers that use that particular type of processor core. For example the [cortex-m] crate gives you functions to enable and disable interrupts, which are the same for all Cortex-M based micro-controllers. It also gives you access to the 'SysTick' peripheral included with all Cortex-M based micro-controllers.
-* Peripheral Access Crate (PAC) - This sort of crate is a thin wrapper over the various memory-wrapper registers defined for your particular part-number of micro-controller you are using. For example, [tm4c123x] for the Texas Instruments Tiva-C TM4C123 series, or [stm32f30x] for the ST-Micro STM32F30x series. Here, you'll be interacting with the registers directly, following each peripheral's operating instructions given in your micro-controller's Technical Reference Manual.
-* HAL Crate - These crates offer a more user-friendly API for your particular processor, often by implementing some common traits defined in [embedded-hal]. For example, this crate might offer a `Serial` struct, with a constructor that takes an appropriate set of GPIO pins and a baud rate, and offers some sort of `write_byte` function for sending data. See the chapter on [Portability] for more information on [embedded-hal].
-* Board Crate - These crates go one step further than a HAL Crate by pre-configuring various peripherals and GPIO pins to suit the specific developer kit or board you are using, such as [stm32f3-discovery] for the STM32F3DISCOVERY board.
+* Micro-architecture Crate(微架构Crate) - 这种Crate提供对你正在使用的微控制器的处理器核心，和任何使用这个特定类型处理器核心的微控制器的常见外设来说，有用的程序。比如 [cortex-m] crate提供你可以使能和关闭中断的函数，其对于所有的Cortex-M微控制器都是一样的。它也提供你访问'SysTick'外设的能力，在所有的Cortex-M微控制器中都包括了这个能力。
+* Peripheral Access Crate(PAC)(外设访问Crate) - 这种crate是在不同存储器封装的寄存器上再进行的一次封装，其由你正在使用的微控制器的产品号定义的。比如，[tm4c123x]针对TI的Tiva-C TM4C123系列，[stm32f30x]针对ST的STM32F30x系列。这块，你将根据你的微控制器的技术手册写的每个外设操作指令，直接和寄存器交互。
+* HAL Crate - 这些crates为你的处理器提供了一个更友好的API，通常是通过实现在[embedded-hal]中定义的一些常用的traits来实现的。比如，这个crate可能提供一个`Serial`结构体，它的构造函数获取一组合适的GPIO口和一个波特率，它为了发送数据提供一些 `write_byte` 函数。查看 [Portability] 可以看到更多关于 [embedded-hal] 的信息。
+* Board Crate(开发板crate) - 这个通过预先配置的不同的外设和GPIO管脚再进行了一层抽象去适配你正在使用的特定的开发者工具或者开发板，比如对于STM32F3DISCOVERY开发板来说，是[stm32f3-discovery]
 
 [cortex-m]: https://crates.io/crates/cortex-m
 [tm4c123x]: https://crates.io/crates/tm4c123x
@@ -22,7 +21,7 @@ You may well find that the code you need to access the peripherals in your micro
 [stm32f3-discovery]: https://crates.io/crates/stm32f3-discovery
 [Discovery]: https://rust-embedded.github.io/discovery/
 
-## Board Crate
+## 开发板Crate (Board Crate)
 
 A board crate is the perfect starting point, if you're new to embedded Rust. They nicely abstract the HW details that might be overwelming when starting studying this subject, and makes standard tasks easy, like turning a LED on or off. The functionality they exposes varies a lot between boards. Since this book aims at staying hardware agnostic, the board crates won't be covered by this book.
 
