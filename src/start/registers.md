@@ -55,9 +55,9 @@ fn main() -> ! {
     loop {}
 }
 ```
-The functions on the `SYST` struct map pretty closely to the functionality defined by the ARM Technical Reference Manual for this peripheral. There's nothing in this API about 'delaying for X milliseconds' - we have to crudely implement that ourselves using a `while` loop. Note that we can't access our `SYST` struct until we have called `Peripherals::take()` - this is a special routine that guarantees that there is only one `SYST` structure in our entire program. For more on that, see the [Peripherals] section.
+`SYST`结构体上的功能，相当接近ARM技术手册为这个外设定义的功能。在这个API中没有关于 '延迟X毫秒' 的功能 - 我们不得不使用一个 `while` 循环自己粗略地实现它。注意，我们调用了`Peripherals::take()`才能访问我们的`SYST`结构体 - 这是一个特别的程序，保障了在我们的整个程序中只存在一个`SYST`结构体实例，更多的信息可以看[外设]部分。
 
-[Peripherals]: ../peripherals/index.md
+[外设]: ../peripherals/index.md
 
 ## Using a Peripheral Access Crate (PAC)
 
