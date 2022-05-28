@@ -59,9 +59,9 @@ fn main() -> ! {
 
 [外设]: ../peripherals/index.md
 
-## Using a Peripheral Access Crate (PAC)
+## 使用一个外设访问Crate (PAC)
 
-We won't get very far with our embedded software development if we restrict ourselves to only the basic peripherals included with every Cortex-M. At some point, we're going to need to write some code that's specific to the particular micro-controller we're using. In this example, let's assume we have an Texas Instruments TM4C123 - a middling 80MHz Cortex-M4 with 256 KiB of Flash. We're going to pull in the [tm4c123x] crate to make use of this chip.
+如果我们把自己只局限于每个Cortex-M拥有的基本外设，那我们的嵌入式软件开发将不会走得太远。我们准备需要写一些特定于我们正在使用的微控制器的代码。在这个例子里，让我们假设我们有一个TI的TM4C123 - 一个有256KiB Flash的中等规模的80MHz的Cortex-M4。我们用[tm4c123x] crate去使用这个芯片。
 
 ```rust,ignore
 #![no_std]
