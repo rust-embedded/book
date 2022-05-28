@@ -23,7 +23,7 @@ Embedded Rust是为了那些想要进行嵌入式编程，又想使用Rust语言
 [2018 edition]: https://doc.rust-lang.org/edition-guide/
 + 你可以轻松地使用其它语言，比如C，C++或者Ada开发和调试嵌入式系统，且熟悉如下的概念：
   + 交叉编译
-  + 存储映射外设（Memory Mapped Peripherals）
+  + 存储映射的外设（Memory Mapped Peripherals）
   + 中断
   + I2C，SPI，串口等等常见接口
 
