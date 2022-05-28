@@ -23,15 +23,15 @@
 
 ## 开发板Crate (Board Crate)
 
-A board crate is the perfect starting point, if you're new to embedded Rust. They nicely abstract the HW details that might be overwelming when starting studying this subject, and makes standard tasks easy, like turning a LED on or off. The functionality they exposes varies a lot between boards. Since this book aims at staying hardware agnostic, the board crates won't be covered by this book.
+如果你是嵌入式Rust新手，board crate是一个完美的起点。它们很好地抽象出了，在开始学习这个项目时，需要耗费心力了解的硬件细节，使得标准工作变得简单，像是打开或者关闭LED。不同的板子间，它们提供的功能变化很大。因为这本书是不假设我们使用的是何种板子，所以board crate不会被这本书涉及。
 
-If you want to experiment with the STM32F3DISCOVERY board, it is highly recommmand to take a look at the [stm32f3-discovery] board crate, which provides functionality to blink the board LEDs, access its compass, bluetooth and more. The [Discovery] book offers a great introduction to the use of a board crate.
+如果你想要用STM32F3DISCOVERY开发板做实验，强烈建议看一下[stm32f3-discovery]开发板crate，它提供了功能点亮LEDs，访问它的指南针，蓝牙和其它的。[Discovery]书对于一个board crate的用法提供一个很好介绍。
 
-But if you're working on a system that doesn't yet have dedicated board crate, or you need functionality not provided by existing crates, read on as we start from the bottom, with the micro-architecture crates.
+但是如果你正在使用一个还没有提供专用的board crate的系统，或者你需要一些功能现存的crates不提供，那我们需要从底层的微架构crates开始。
 
 ## Micro-architecture crate
 
-Let's look at the SysTick peripheral that's common to all Cortex-M based micro-controllers. We can find a pretty low-level API in the [cortex-m] crate, and we can use it like this:
+让我们看一下对于所有的Cortex-M微控制器来说很常见的SysTick外设。我们能在[cortex-m] crate中找到一个相当底层的API，我们能像这样使用它：
 
 ```rust,ignore
 #![no_std]
