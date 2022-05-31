@@ -76,17 +76,18 @@ Embedded Rust是为了那些想要进行嵌入式编程，又想使用Rust语言
 
 这本书根据以下许可证发布:
 
-* The code samples and free-standing Cargo projects contained within this book are licensed under the terms of both the [MIT License] and the [Apache License v2.0].
-* The written prose, pictures and diagrams contained within this book are licensed under the terms of the Creative Commons [CC-BY-SA v4.0] license.
+* 本书中包含的代码示例和独立的Cargo项目均根据[MIT License]和[Apache License v2.0]发放许可的。
+* 本书中包含的written prose(?)，图片和表格均根据[CC-BY-SA v4.0]发放许可的。
 
 [MIT License]: https://opensource.org/licenses/MIT
 [Apache License v2.0]: http://www.apache.org/licenses/LICENSE-2.0
 [CC-BY-SA v4.0]: https://creativecommons.org/licenses/by-sa/4.0/legalcode
 
-TL;DR: If you want to use our text or images in your work, you need to:
+总之：如果你想在你的工作中使用我们的文本或者图片，你需要：
 
-* Give the appropriate credit (i.e. mention this book on your slide, and provide a link to the relevant page)
-* Provide a link to the [CC-BY-SA v4.0] licence
-* Indicate if you have changed the material in any way, and make any changes to our material available under the same licence
++ 提供合适的授信 (i.e. 在你的幻灯片中提到本书，提供相关页面的连接)
++ 提供[CC-BY-SA v4.0]的许可证的连接
++ 指出你是否改变了材料的内容，在同一个许可证下，可以对材料进行任何改变
 
-Also, please do let us know if you find this book useful!
+也请告诉我这本书对你是否有帮助！
+
