@@ -80,13 +80,9 @@ $ echo $?
 1
 ```
 
-最后一个提醒：你将
-One last tip: you can set the panicking behavior to `exit(EXIT_FAILURE)`. This
-will let you write `no_std` run-pass tests that you can run on QEMU.
+最后一个提示：你可以将运行时恐慌(panicking)的行为设置成 `exit(EXIT_FAILURE)`。这将允许你编写可以在QEMU上运行通过的 `no_std` 测试。
 
-For convenience, the `panic-semihosting` crate has an "exit" feature that when
-enabled invokes `exit(EXIT_FAILURE)` after logging the panic message to the host
-stderr.
+为了方便，`panic-semihosting`crate有一个 "exit" 特性。当它使能的时候，在主机stderr上打印恐慌(painc)信息后会调用 `exit(EXIT_FAILURE)` 。
 
 ```rust,ignore
 #![no_main]
@@ -118,15 +114,13 @@ $ echo $?
 1
 ```
 
-**注意**: To enable this feature on `panic-semihosting`, edit your
-`Cargo.toml` dependencies section where `panic-semihosting` is specified with:
+**注意**: 为了在`panic-semihosting`上使能这个特性，编辑你的`Cargo.toml`依赖，`panic-semihosting`改写成:
 
 ``` toml
 panic-semihosting = { version = "VERSION", features = ["exit"] }
 ```
 
-where `VERSION` is the version desired. For more information on dependencies
-features check the [`specifying dependencies`] section of the Cargo book.
+`VERSION`是想要的版本。关于依赖特性的更多信息查看Cargo book的[`specifying dependencies`]部分。
 
 [`specifying dependencies`]:
 https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html

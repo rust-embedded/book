@@ -1,27 +1,22 @@
-# Exceptions
+# 异常
 
-Exceptions, and interrupts, are a hardware mechanism by which the processor
-handles asynchronous events and fatal errors (e.g. executing an invalid
-instruction). Exceptions imply preemption and involve exception handlers,
-subroutines executed in response to the signal that triggered the event.
+异常和中断，是处理器用来处理异步事件和致命错误的一种硬件机制(e.g. 执行一个无效的指令)。异常意味着抢占并涉及异常处理程序，即响应触发事件的信号的子例程。
 
-The `cortex-m-rt` crate provides an [`exception`] attribute to declare exception
-handlers.
+`cortex-m-rt` crate提供了一个 [`exception`] 属性去声明异常处理程序。
 
 [`exception`]: https://docs.rs/cortex-m-rt-macros/latest/cortex_m_rt_macros/attr.exception.html
 
 ``` rust,ignore
-// Exception handler for the SysTick (System Timer) exception
+// SysTick (System计时器)异常的异常处理函数
 #[exception]
 fn SysTick() {
     // ..
 }
 ```
 
-Other than the `exception` attribute exception handlers look like plain
-functions but there's one more difference: `exception` handlers can *not* be
-called by software. Following the previous example, the statement `SysTick();`
-would result in a compilation error.
+除了 `exception` 属性，异常处理函数看起来和普通函数一样，但是有一个很大的不同: `exception` 处理函数*不能*被软件调用。按照先前的例子，语句 `SysTick();` 将会导致一个编译错误。
+
+
 
 This behavior is pretty much intended and it's required to provide a feature:
 `static mut` variables declared *inside* `exception` handlers are *safe* to use.
@@ -36,6 +31,7 @@ fn SysTick() {
 }
 ```
 
+就像我们知道的那样，在一个函数里使用`static mut`变量
 As you may know, using `static mut` variables in a function makes it
 [*non-reentrant*](https://en.wikipedia.org/wiki/Reentrancy_(computing)). It's undefined behavior to call a non-reentrant function,
 directly or indirectly, from more than one exception / interrupt handler or from
@@ -53,7 +49,7 @@ possible.
 > Thus we can derefence the reference via `*` to access the values of the variables without
 > needing to wrap them in an `unsafe` block.
 
-## A complete example
+## 一个复杂的例子
 
 Here's an example that uses the system timer to raise a `SysTick` exception
 roughly every second. The `SysTick` exception handler keeps track of how many
