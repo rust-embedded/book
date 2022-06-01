@@ -98,7 +98,7 @@ fn main() -> ! {
 
 `#![no_main]`指出这个程序将不会使用标准的大多数Rust程序使用的`main`接口。使用`no_main`的主要理由是在`no_std`上下文中使用`main`接口要求nightly(译者注：原文是`requires nightly`，不知道有什么合适的翻译，主要的理由是`main`接口对程序的运行环境有要求，比如，它假设命令行参数存在，这不适合`no_std`环境)。
 
-`use panic_halt as _;`。这个crate提供了一个`panic_handler`，它定义了程序陷入`panic`时的行为。我们将会在这本书的[Panicking](panicking.md)章节中覆盖更多的细节。
+`use panic_halt as _;`。这个crate提供了一个`panic_handler`，它定义了程序陷入`panic`时的行为。我们将会在这本书的[运行时恐慌(Panicking)](panicking.md)章节中覆盖更多的细节。
 
 [`#[entry]`][entry] 是一个由[`cortex-m-rt`]提供的属性，它用来标记程序的入口。当我们不使用标准的`main`接口时，我们需要其它方法来指示程序的入口，那就是`#[entry]`。
 

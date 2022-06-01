@@ -1,4 +1,4 @@
-# Panicking
+# 运行时恐慌(Panicking)
 
 Panicking is a core part of the Rust language. Built-in operations like indexing
 are runtime checked for memory safety. When out of bounds indexing is attempted

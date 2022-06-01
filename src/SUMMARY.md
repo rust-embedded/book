@@ -23,7 +23,7 @@ more information and coordination
   - [硬件](./start/hardware.md)
   - [存储映射的寄存器](./start/registers.md)
   - [半主机模式](./start/semihosting.md)
-  - [Panicking](./start/panicking.md)
+  - [运行时恐慌(Panicking)](./start/panicking.md)
   - [异常](./start/exceptions.md)
   - [中断](./start/interrupts.md)
   - [IO](./start/io.md)
