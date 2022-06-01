@@ -1,9 +1,10 @@
-# Portability
+# 可移植性
 
-In embedded environments portability is a very important topic: Every vendor and even each family from a single manufacturer offers different peripherals and capabilities and similarly the ways to interact with the peripherals will vary.
+在嵌入式环境中，可移植性是一个非常重要的主题: 来自单个厂家的每个供应商，甚至每个系列，都提供了不同的外设和功能。同样地，与外设交互的方式将会不一样。
 
-A common way to equalize such differences is via a layer called Hardware Abstraction layer or **HAL**.
+通过一个被叫做硬件抽象层或者**HAL**的层去均等化这种差异是一种常见的方法。
 
+> 
 > Hardware abstractions are sets of routines in software that emulate some platform-specific details, giving programs direct access to the hardware resources.
 >
 > They often allow programmers to write device-independent, high performance applications by providing standard operating system (OS) calls to hardware.
@@ -38,7 +39,7 @@ The main reason for having the **embedded-hal** traits and crates implementing a
 
 As said above there are three main users of the HAL:
 
-### HAL implementation
+### HAL实现
 
 A HAL implementation provides the interfacing between the hardware and the users of the HAL traits. Typical implementations consist of three parts:
 * One or more hardware specific types
@@ -51,12 +52,12 @@ Such a **HAL implementation** can come in various flavours:
 * Via adapter, e.g. a mock of types for unit testing
 * Via driver for hardware adapters, e.g. I2C multiplexer or GPIO expander
 
-### Driver
+### 驱动
 
 A driver implements a set of custom functionality for an internal or external component, connected to a peripheral implementing the embedded-hal traits. Typical examples for such drivers include various sensors (temperature, magnetometer, accelerometer, light), display devices (LED arrays, LCD displays) and actuators (motors, transmitters).
 
 A driver has to be initialized with an instance of type that implements a certain `trait` of the embedded-hal which is ensured via trait bound and provides its own type instance with a custom set of methods allowing to interact with the driven device.
 
-### Application
+### 应用
 
 The application binds the various parts together and ensures that the desired functionality is achieved. When porting between different systems, this is the part which requires the most adaptation efforts, since the application needs to correctly initialize the real hardware via the HAL implementation and the initialisation of different hardware differs, sometimes drastically so. Also the user choice often plays a big role, since components can be physically connected to different terminals, hardware buses sometimes need external hardware to match the configuration or there are different trade-offs to be made in the use of internal peripherals (e.g. multiple timers with different capabilities are available or peripherals conflict with others).

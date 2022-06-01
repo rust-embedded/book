@@ -1,80 +1,55 @@
 # 运行时恐慌(Panicking)
 
-Panicking is a core part of the Rust language. Built-in operations like indexing
-are runtime checked for memory safety. When out of bounds indexing is attempted
-this results in a panic.
+运行时恐慌是Rust语言的一个核心部分。像是索引这样的內建的操作为了存储安全性是运行时检查的。当尝试越界索引时，这会导致运行时恐慌(panic)。
 
-In the standard library panicking has a defined behavior: it unwinds the stack
-of the panicking thread, unless the user opted for aborting the program on
-panics.
+在标准库中，运行时恐慌有一个被定义了的行为:它展开(unwinds)恐慌的线程的栈，除非用户选择在恐慌时终止程序。
 
-In programs without standard library, however, the panicking behavior is left
-undefined. A behavior can be chosen by declaring a `#[panic_handler]` function.
-This function must appear exactly *once* in the dependency graph of a program,
-and must have the following signature: `fn(&PanicInfo) -> !`, where [`PanicInfo`]
-is a struct containing information about the location of the panic.
+然而在没有标准库的程序中，运行时恐慌的行为是未被定义了的。通过声明一个 `#[painc_handler]` 函数可以选择一个运行时恐慌的行为。
+
+这个函数必须在一个程序的依赖图中只出现一次，且必须有这样的签名: `fn(&PanicInfo) -> !`，`PanicInfo`是一个包含关于运行时恐慌位置的信息的结构体。
 
 [`PanicInfo`]: https://doc.rust-lang.org/core/panic/struct.PanicInfo.html
 
-Given that embedded systems range from user facing to safety critical (cannot
-crash) there's no one size fits all panicking behavior but there are plenty of
-commonly used behaviors. These common behaviors have been packaged into crates
-that define the `#[panic_handler]` function. Some examples include:
+鉴于嵌入式系统的范围从面向用户的系统到安全关键系统，没有一个运行时恐慌行为能满足所有场景，但是有许多常用的行为。这些常用的行为已经被打包进了一些crates中，这些crates定义了 `#[panic_handler]`函数。比如:
 
-- [`panic-abort`]. A panic causes the abort instruction to be executed.
-- [`panic-halt`]. A panic causes the program, or the current thread, to halt by
-  entering an infinite loop.
-- [`panic-itm`]. The panicking message is logged using the ITM, an ARM Cortex-M
-  specific peripheral.
-- [`panic-semihosting`]. The panicking message is logged to the host using the
-  semihosting technique.
+- [`panic-abort`]. 这个运行时恐慌会导致终止指令被执行。
+- [`panic-halt`]. 这个运行时恐慌会导致程序，或者现在的线程，通过进入一个无限循环中而挂起。
+- [`panic-itm`]. 运行时恐慌的信息会被ITM记录，ITM是一个ARM Cortex-M的特殊的外设。
+- [`panic-semihosting`]. 使用半主机技术，运行时恐慌的信息被记录到主机上。
 
 [`panic-abort`]: https://crates.io/crates/panic-abort
 [`panic-halt`]: https://crates.io/crates/panic-halt
 [`panic-itm`]: https://crates.io/crates/panic-itm
 [`panic-semihosting`]: https://crates.io/crates/panic-semihosting
 
-You may be able to find even more crates searching for the [`panic-handler`]
-keyword on crates.io.
+在 crates.io 上搜索 [`panic-handler`]，你甚至能找到更多的crates。
 
 [`panic-handler`]: https://crates.io/keywords/panic-handler
 
-A program can pick one of these behaviors simply by linking to the corresponding
-crate. The fact that the panicking behavior is expressed in the source of
-an application as a single line of code is not only useful as documentation but
-can also be used to change the panicking behavior according to the compilation
-profile. For example:
+仅仅通过连接到相关的crate，一个程序就可以从这些行为中选择一个行为。将运行时恐慌的行为作为一行代码放进一个应用的源码中，不仅仅是可以作为文档使用，而且能根据编译配置改变运行时恐慌的行为。比如:
 
 ``` rust,ignore
 #![no_main]
 #![no_std]
 
-// dev profile: easier to debug panics; can put a breakpoint on `rust_begin_unwind`
+// dev配置: 更容易调试运行时恐慌; 可以在 `rust_begin_unwind` 上放一个断点
 #[cfg(debug_assertions)]
 use panic_halt as _;
 
-// release profile: minimize the binary size of the application
+// release配置: 最小化应用的二进制文件的大小
 #[cfg(not(debug_assertions))]
 use panic_abort as _;
 
 // ..
 ```
 
-In this example the crate links to the `panic-halt` crate when built with the
-dev profile (`cargo build`), but links to the `panic-abort` crate when built
-with the release profile (`cargo build --release`).
+在这个例子里，当使用dev配置编译的时候(`cargo build`)，crate链接到 `panic-halt` crate上，但是当使用release配置编译时(`cargo build --release`)，crate链接到`panic-abort` crate上。
 
-> The `use panic_abort as _;` form of the `use` statement is used to ensure the `panic_abort` panic handler is
-> included in our final executable while making it clear to the compiler that we won't explicitly use anything from
-> the crate. Without the `as _` rename, the compiler would warn that we have an unused import.
-> Sometimes you might see `extern crate panic_abort` instead, which is an older style used before the
-> 2018 edition of Rust, and should now only be used for "sysroot" crates (those distributed with Rust itself) such
-> as `proc_macro`, `alloc`, `std`, and `test`.
+> `use panic_abort as _` 形式的 `use` 语句被用来确保 `panic_abort` 运行时恐慌函数被包含进我们最终的可执行程序里，同时让编译器清除地知道我们不会从这个crate显式地使用任何东西。没有 `_` 重命名，编译器将会警告我们有一个未使用的导入。反而，有时候你可能看到的是 `extern crate panic_abort`，这是Rust 2018之前的版本使用的更旧的写法，现在应该只被用于 "sysroot" crates (与Rust一起发布的crates)，比如 `proc_macro`，`alloc`，`std` 和 `test` 。
 
-## An example
+## 一个例子
 
-Here's an example that tries to index an array beyond its length. The operation
-results in a panic.
+这里有一个尝试越界访问数组的例子。操作的结果导致了一个运行时恐慌(panic)。
 
 ```rust,ignore
 #![no_main]
@@ -94,8 +69,7 @@ fn main() -> ! {
 }
 ```
 
-This example chose the `panic-semihosting` behavior which prints the panic
-message to the host console using semihosting.
+这个例子选择了`panic-semihosting`行为，运行时恐慌的信息会被打印至使用了半主机模式的主机控制台上。
 
 ``` text
 $ cargo run
@@ -103,5 +77,4 @@ $ cargo run
 panicked at 'index out of bounds: the len is 3 but the index is 4', src/main.rs:12:13
 ```
 
-You can try changing the behavior to `panic-halt` and confirm that no message is
-printed in that case.
+你可以尝试将行为改成`panic-halt`，确定在这个案例里没有信息被打印。
