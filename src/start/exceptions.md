@@ -16,48 +16,29 @@ fn SysTick() {
 
 除了 `exception` 属性，异常处理函数看起来和普通函数一样，但是有一个很大的不同: `exception` 处理函数*不能*被软件调用。按照先前的例子，语句 `SysTick();` 将会导致一个编译错误。
 
-
-
-This behavior is pretty much intended and it's required to provide a feature:
-`static mut` variables declared *inside* `exception` handlers are *safe* to use.
+这么做是有目的的，因为异常处理函数被要求具有一个特性: 在异常处理函数中被声明`static mut`的变量能被安全(safe)地使用。
 
 ``` rust,ignore
 #[exception]
 fn SysTick() {
     static mut COUNT: u32 = 0;
 
-    // `COUNT` has transformed to type `&mut u32` and it's safe to use
+    // `COUNT` 被转换到了 `&mut u32` 类型且它用起来是安全的
     *COUNT += 1;
 }
 ```
 
-就像我们知道的那样，在一个函数里使用`static mut`变量
-As you may know, using `static mut` variables in a function makes it
-[*non-reentrant*](https://en.wikipedia.org/wiki/Reentrancy_(computing)). It's undefined behavior to call a non-reentrant function,
-directly or indirectly, from more than one exception / interrupt handler or from
-`main` and one or more exception / interrupt handlers.
+就像你可能已经知道的那样，在一个函数里使用`static mut`变量，会让函数变成[*非可重入函数(non-reentrancy)*](https://en.wikipedia.org/wiki/Reentrancy_(computing))。从多个异常/中断处理函数，或者从`main`函数同多个异常/中断处理函数中直接或者间接地调用一个非可重入(non-reentrancy)函数是未定义的行为。
 
-Safe Rust must never result in undefined behavior so non-reentrant functions
-must be marked as `unsafe`. Yet I just told that `exception` handlers can safely
-use `static mut` variables. How is this possible? This is possible because
-`exception` handlers can *not* be called by software thus reentrancy is not
-possible.
+安全的Rust必须从不会造成未定义的行为，所以非可重入函数必须被标记为 `unsafe`。然而，我刚说了`exception`处理函数能安全地使用`static mut`变量。这怎么可能？因为`exception`处理函数*不*能被软件调用因此重入(reentrancy)不会发生，所以这才变得可能。
 
-> Note that the `exception` attribute transforms definitions of static variables
-> inside the function by wrapping them into `unsafe` blocks and providing us
-> with new appropriate variables of type `&mut` of the same name.
-> Thus we can derefence the reference via `*` to access the values of the variables without
-> needing to wrap them in an `unsafe` block.
+> 注意，`exception`属性，通过将静态变量封装进`unsafe`块中，转换了函数中静态变量的定义，为我们提供了同个名字的，类型为 `&mut` 的，新的合适的变量。因此我们可以通过 `*` 解引用访问变量的值而不需要将它们打包进一个 `unsafe` 块中。
 
 ## 一个复杂的例子
 
-Here's an example that uses the system timer to raise a `SysTick` exception
-roughly every second. The `SysTick` exception handler keeps track of how many
-times it has been called in the `COUNT` variable and then prints the value of
-`COUNT` to the host console using semihosting.
+这里有个例子，使用系统计时器大概每秒都会抛出一个 `SysTick` 异常。异常处理函数使用 `COUNT` 变量追踪它自己被调用了多少次，然后使用半主机模式(semihosting)打印 `COUNT` 的值到主机控制台上。
 
-> **NOTE**: You can run this example on any Cortex-M device; you can also run it
-> on QEMU
+> **注意**: 你能在任何Cortex-M设备上运行这个例子;你也能在QEMU运行它。
 
 ```rust,ignore
 #![deny(unsafe_code)]
@@ -80,9 +61,9 @@ fn main() -> ! {
     let p = cortex_m::Peripherals::take().unwrap();
     let mut syst = p.SYST;
 
-    // configures the system timer to trigger a SysTick exception every second
+    // 配置系统的计时器每秒去触发一个SysTick异常
     syst.set_clock_source(SystClkSource::Core);
-    // this is configured for the LM3S6965 which has a default CPU clock of 12 MHz
+    // 这是关于LM3S6965的配置，其有一个12MHz的默认CPU时钟
     syst.set_reload(12_000_000);
     syst.clear_current();
     syst.enable_counter();
@@ -98,7 +79,7 @@ fn SysTick() {
 
     *COUNT += 1;
 
-    // Lazy initialization
+    // 惰性初始化(Lazy initialization)
     if STDOUT.is_none() {
         *STDOUT = hio::hstdout().ok();
     }
@@ -107,10 +88,10 @@ fn SysTick() {
         write!(hstdout, "{}", *COUNT).ok();
     }
 
-    // IMPORTANT omit this `if` block if running on real hardware or your
-    // debugger will end in an inconsistent state
+    // 重要信息 如果运行在真正的硬件上，去掉这个 `if` 块，
+    // 否则你的调试器将会以一种不一致的状态结束
     if *COUNT == 9 {
-        // This will terminate the QEMU process
+        // 这将终结QEMU进程
         debug::exit(debug::EXIT_SUCCESS);
     }
 }
@@ -134,15 +115,11 @@ $ cargo run --release
 123456789
 ```
 
-If you run this on the Discovery board you'll see the output on the OpenOCD
-console. Also, the program will *not* stop when the count reaches 9.
+如果你在Discovery开发板上运行这个例子，你将会在OpenOCD控制太上看到输出。还有，当计数到达9的时候，程序将 *不会* 停止。
 
-## The default exception handler
+## 默认异常处理函数
 
-What the `exception` attribute actually does is *override* the default exception
-handler for a specific exception. If you don't override the handler for a
-particular exception it will be handled by the `DefaultHandler` function, which
-defaults to:
+`exception` 属性真正做的是，*覆盖* 了一个特定异常的默认异常处理函数。如果你不覆盖一个特定异常的处理函数，它将会被 `DefaultHandler` 函数处理，其默认的是:
 
 ``` rust,ignore
 fn DefaultHandler() {
@@ -150,43 +127,28 @@ fn DefaultHandler() {
 }
 ```
 
-This function is provided by the `cortex-m-rt` crate and marked as
-`#[no_mangle]` so you can put a breakpoint on "DefaultHandler" and catch
-*unhandled* exceptions.
+这个函数是 `cortex-m-rt` crate提供的，且被标记为 `#[no_mangle]` 因此你能在 "DefaultHandler" 上放置一个断点和捕获 *unhandled* 异常。 
 
-It's possible to override this `DefaultHandler` using the `exception` attribute:
+可以使用 `exception` 属性覆盖这个 `DefaultHandler`:
 
 ``` rust,ignore
 #[exception]
 fn DefaultHandler(irqn: i16) {
-    // custom default handler
+    // 自定义默认处理函数
 }
 ```
 
-The `irqn` argument indicates which exception is being serviced. A negative
-value indicates that a Cortex-M exception is being serviced; and zero or a
-positive value indicate that a device specific exception, AKA interrupt, is
-being serviced.
+`irqn` 参数指出了被服务的是哪个异常。一个负数值指出了被服务的是一个Cortex-M异常;0或者一个正数值指出了被服务的是一个设备特定的异常，也就是中断。
 
-## The hard fault handler
+## 硬错误(Hard Fault)处理函数
 
-The `HardFault` exception is a bit special. This exception is fired when the
-program enters an invalid state so its handler can *not* return as that could
-result in undefined behavior. Also, the runtime crate does a bit of work before
-the user defined `HardFault` handler is invoked to improve debuggability.
+`HardFault`异常有点特别。当程序进入一个无效的状态，这个异常被触发，因此它的处理函数 *不能* 返回，因为这么做可能导致一个未定义的行为。在用户定义的 `HardFault` 处理函数被调用之前，运行时crate还做了一些工作去提供可调试性。
 
-The result is that the `HardFault` handler must have the following signature:
-`fn(&ExceptionFrame) -> !`. The argument of the handler is a pointer to
-registers that were pushed into the stack by the exception. These registers are
-a snapshot of the processor state at the moment the exception was triggered and
-are useful to diagnose a hard fault.
+结果是，`HardFault`处理函数必须有下列的签名: `fn(&ExceptionFrame) -> !` 。处理函数的参数是一个指针，它指向被异常推入栈中的寄存器。这些寄存器是异常被触发那刻，处理器状态的一个记录，能被用来分析一个硬错误。
 
-Here's an example that performs an illegal operation: a read to a nonexistent
-memory location.
+这里有个执行一个不合法操作的例子: 读取一个不存在的存储位置。
 
-> **NOTE**: This program won't work, i.e. it won't crash, on QEMU because
-> `qemu-system-arm -machine lm3s6965evb` doesn't check memory loads and will
-> happily return `0 `on reads to invalid memory.
+> **注意**: 这个程序在QEMU上将不会工作，i.e. 它将不会崩溃，因为 `qemu-system-arm -machine lm3s6965evb` 不检查存储加载，且读取无效存储时将会开心地返回 `0`。
 
 ```rust,ignore
 #![no_main]
@@ -202,7 +164,7 @@ use cortex_m_semihosting::hio;
 
 #[entry]
 fn main() -> ! {
-    // read a nonexistent memory location
+    // 读取一个无效的存储位置
     unsafe {
         ptr::read_volatile(0x3FFF_FFFE as *const u32);
     }
@@ -220,8 +182,7 @@ fn HardFault(ef: &ExceptionFrame) -> ! {
 }
 ```
 
-The `HardFault` handler prints the `ExceptionFrame` value. If you run this
-you'll see something like this on the OpenOCD console.
+`HardFault`处理函数打印了`ExceptionFrame`值。如果你运行这个，你将会看到下面的东西打印到OpenOCD控制台上。
 
 ``` text
 $ openocd
@@ -238,11 +199,9 @@ ExceptionFrame {
 }
 ```
 
-The `pc` value is the value of the Program Counter at the time of the exception
-and it points to the instruction that triggered the exception.
+`pc`值是异常时，程序计数器(Program Counter)的值，它指向触发了异常的指令。
 
-If you look at the disassembly of the program:
-
+如果你看向程序的反汇编:
 
 ``` text
 $ cargo objdump --bin app --release -- -d --no-show-raw-insn --print-imm-hex
@@ -254,7 +213,4 @@ ResetTrampoline:
  800094c:       b       #-0x4 <ResetTrampoline+0xa>
 ```
 
-You can lookup the value of the program counter `0x0800094a` in the dissassembly.
-You'll see that a load operation (`ldr r0, [r0]` ) caused the exception.
-The `r0` field of `ExceptionFrame` will tell you the value of register `r0`
-was `0x3fff_fffe` at that time.
+你可以在反汇编中搜索程序计数器`0x0800094a`的值。你将会看到一个读取操作(`ldr r0, [r0]`)导致了异常。`ExceptionFrame`的`r0`字段将告诉你，那时寄存器`r0`的值是`0x3fff_fffe` 。
