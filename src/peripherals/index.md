@@ -19,27 +19,26 @@ RAM芯片，ROM芯片和I/O控制器(这个系统中的外设)将会通过一系
 
 ## 线性的真实存储空间
 
-在一个微控制器上，往一些任意别的地址写一些数据，比如 `0x4000_0000` 或者 `0x0000_0000`，
-On a microcontroller, writing some data to some other arbitrary address, such as `0x4000_0000` or `0x0000_0000`, may also be a completely valid action.
+在一个微控制器上，往一些任意别的地址写一些数据，比如 `0x4000_0000` 或者 `0x0000_0000`，可能也是一个完全有效的动作。
 
-On a desktop system, access to memory is tightly controlled by the MMU, or Memory Management Unit. This component has two major responsibilities: enforcing access permission to sections of memory (preventing one process from reading or modifying the memory of another process); and re-mapping segments of the physical memory to virtual memory ranges used in software. Microcontrollers do not typically have an MMU, and instead only use real physical addresses in software.
+在一个桌面系统上，访问内存被MMU，或者内存管理单元紧紧地控制着。这个组件有两个主要责任: 对部分内存加入访问权限(防止一个进程读取或者修改另一个进程的内存);重映射物理内存的段到软件中使用的虚拟内存范围上。微控制器通常没有一个MMU，反而在软件中只使用真实的物理地址。
 
-Although 32 bit microcontrollers have a real and linear address space from `0x0000_0000`, and `0xFFFF_FFFF`, they generally only use a few hundred kilobytes of that range for actual memory. This leaves a significant amount of address space remaining. In earlier chapters, we were talking about RAM being located at address `0x2000_0000`. If our RAM was 64 KiB long (i.e. with a maximum address of 0xFFFF) then addresses `0x2000_0000` to `0x2000_FFFF` would correspond to our RAM. When we write to a variable which lives at address `0x2000_1234`, what happens internally is that some logic detects the upper portion of the address (0x2000 in this example) and then activates the RAM so that it can act upon the lower portion of the address (0x1234 in this case). On a Cortex-M we also have our Flash ROM mapped in at address `0x0000_0000` up to, say, address `0x0007_FFFF` (if we have a 512 KiB Flash ROM). Rather than ignore all remaining space between these two regions, Microcontroller designers instead mapped the interface for peripherals in certain memory locations. This ends up looking something like this:
+虽然32位微控制器有一个从`0x0000_0000`到`0xFFFF_FFFF`的真实的线性的地址空间，但是它们通常只使用几百KiB的实际内存。有相当大部分的地址空间遗留。在早期的章节中，我们说到RAM被放置在地址`0x2000_0000`处。如果我们的RAM是64KiB大小(i.e. 最大地址为0xFFFF),那么地址 `0x2000_0000`到`0x2000_FFFF`与我们的RAM有关。当我们写入一个位于地址`0x2000_1234`的变量时，内部发生的是，一些逻辑发现了地址的上部(这个例子里是0x2000)，然后激活RAM，因此它能对地址的下部(这个例子里是0x1234)起作用。在一个Cortex-M上，我们也把我们的Flash ROM映射进地址 `0x000_0000` 到地址 `0x0007_FFFF` 上 (如果我们有一个512KiB Flash ROM)。微控制器设计者没有忽略这两个区域间的所有剩余空间，反而将外设的接口映射到某些地址上。最后看起来像这样:
 
 ![](../assets/nrf52-memory-map.png)
 
 [Nordic nRF52832 Datasheet (pdf)]
 
-## Memory Mapped Peripherals
+## 存储映射的外设
 
-Interaction with these peripherals is simple at a first glance - write the right data to the correct address. For example, sending a 32 bit word over a serial port could be as direct as writing that 32 bit word to a certain memory address. The Serial Port Peripheral would then take over and send out the data automatically.
+乍一看，与这些外设交互很简单 - 将正确的数据写入正确的地址。比如，在一个串行端口上发送一个32位字(32 bit word)，可以像把那个32位字写入某些存储地址一样直接。串行端口外设然后能自动获取和发出数据。
 
-Configuration of these peripherals works similarly. Instead of calling a function to configure a peripheral, a chunk of memory is exposed which serves as the hardware API. Write `0x8000_0000` to a SPI Frequency Configuration Register, and the SPI port will send data at 8 Megabits per second. Write `0x0200_0000` to the same address, and the SPI port will send data at 125 Kilobits per second. These configuration registers look a little bit like this:
+这些外设的配置工作相似。不是调用一个函数去配置一个外设，而是暴露一块地址空间作为硬件API。向一个SPI频率控制寄存器写入 `0x8000_0000`，SPI端口将会按照每秒8MB的速度发送数据。像同个地址写入 `0x0200_0000`，SPI端口将会按照每秒125KiB的速度发送数据。这些配置寄存器看起来有点像这个:
 
 ![](../assets/nrf52-spi-frequency-register.png)
 
 [Nordic nRF52832 Datasheet (pdf)]
 
-This interface is how interactions with the hardware are made, no matter what language is used, whether that language is Assembly, C, or Rust.
+这个接口是关于如何与硬件交互的，其与被使用的语言无关，无论这个语言是汇编，C，或者Rust。
 
 [Nordic nRF52832 Datasheet (pdf)]: http://infocenter.nordicsemi.com/pdf/nRF52832_PS_v1.1.pdf
