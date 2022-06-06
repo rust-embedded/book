@@ -73,14 +73,13 @@ fn get_time() -> u32 {
 }
 ```
 
-现在通过`read`和`write`方法，volatile accesses可以被自动执行。执行写操作仍然是 `unsafe` 的，但是公平地讲，硬件
-Now, the volatile accesses are performed automatically through the `read` and `write` methods. It's still `unsafe` to perform writes, but to be fair, hardware is a bunch of mutable state and there's no way for the compiler to know whether these writes are actually safe, so this is a good default position.
+现在通过`read`和`write`方法，volatile accesses可以被自动执行。执行写操作仍然是 `unsafe` 的，但是公平地讲，硬件有一堆可替换的状态，对于编译器来说没有方法去知道是否这些写操作是真正安全的，因此默认就这样是个不错的选择。
 
-## The Rusty Wrapper
+## Rusty封装
 
-We need to wrap this `struct` up into a higher-layer API that is safe for our users to call. As the driver author, we manually verify the unsafe code is correct, and then present a safe API for our users so they don't have to worry about it (provided they trust us to get it right!).
+我们需要把这个`struct`封装进一个更高抽象的API中，这个API对于我们用户来说，可以安全地被调用。作为驱动的作者，我们手动地验证不安全的代码是否正确，然后为我们的用户提供一个安全的API，因此他们不必担心它(让他们相信我们做对了!)。
 
-One example might be:
+一个可能的例子是:
 
 ```rust,ignore
 use volatile_register::{RW, RO};
@@ -120,7 +119,7 @@ pub fn example_usage() -> String {
 }
 ```
 
-Now, the problem with this approach is that the following code is perfectly acceptable to the compiler:
+现在，这种方法带来的问题是下列的代码完全可以被编译器接受:
 
 ```rust,ignore
 fn thread1() {
@@ -134,4 +133,4 @@ fn thread2() {
 }
 ```
 
-Our `&mut self` argument to the `set_reload` function checks that there are no other references to *that* particular `SystemTimer` struct, but they don't stop the user creating a second `SystemTimer` which points to the exact same peripheral! Code written in this fashion will work if the author is diligent enough to spot all of these 'duplicate' driver instances, but once the code is spread out over multiple modules, drivers, developers, and days, it gets easier and easier to make these kinds of mistakes.
+虽然 `set_reload` 函数的 `&mut self` 参数保证了对某个`SystemTimer`结构体的引用只有一个，但是他们不能阻止用户去创造第二个`SystemTimer`，其指向同个外设！如果作者足够尽力，能发现所有这些'重复的'驱动实例，按这种方式写的代码将可以工作，但是一旦代码被散播几天，散播到多个模块，驱动，开发者，它会越来越容易犯此类错误。

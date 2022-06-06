@@ -1,15 +1,15 @@
-# Singletons
+# 单例
 
-> In software engineering, the singleton pattern is a software design pattern that restricts the instantiation of a class to one object.
+> 在软件工程中，单例模式是一个软件设计模式，其限制了一个类到一个对象的实例化。
 >
 > *Wikipedia: [Singleton Pattern]*
 
 [Singleton Pattern]: https://en.wikipedia.org/wiki/Singleton_pattern
 
 
-## But why can't we just use global variable(s)?
+## 但是为什么我们不能只是使用全局变量呢？
 
-We could make everything a public static, like this
+可以像这样，我们可以使每个东西都变成公共静态的(public static):
 
 ```rust,ignore
 static mut THE_SERIAL_PORT: SerialPort = SerialPort;
@@ -21,11 +21,11 @@ fn main() {
 }
 ```
 
-But this has a few problems. It is a mutable global variable, and in Rust, these are always unsafe to interact with. These variables are also visible across your whole program, which means the borrow checker is unable to help you track references and ownership of these variables.
+但是这个带来了一些问题。它是一个可替换的全局变量，在Rust，与这些交互总是不安全的。这些变量在你的整个程序间也是可见的，意味着借用检查器不能帮你跟踪引用和这些变量的所有者。
 
-## How do we do this in Rust?
+## 我们在Rust中要怎么做?
 
-Instead of just making our peripheral a global variable, we might instead decide to make a global variable, in this case called `PERIPHERALS`, which contains an `Option<T>` for each of our peripherals.
+与其只是让我们的外设变成一个全局变量，我们不如决定使用一个全局变量，在这个例子里其被叫做 `PERIPHERALS`，我们的每个外设其包含一个`Option<T>`。
 
 ```rust,ignore
 struct Peripherals {
@@ -42,7 +42,7 @@ static mut PERIPHERALS: Peripherals = Peripherals {
 };
 ```
 
-This structure allows us to obtain a single instance of our peripheral. If we try to call `take_serial()` more than once, our code will panic!
+这个结构体允许我们获得我们外设的一个实例。如果我们尝试调用`take_serial()`获得多个实例，我们的代码将会抛出运行时恐慌(panic)！
 
 ```rust,ignore
 fn main() {
