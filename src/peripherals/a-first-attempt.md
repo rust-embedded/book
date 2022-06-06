@@ -1,10 +1,10 @@
-# A First Attempt
+# 首次尝试
 
-## The Registers
+## 寄存器
 
-Let's look at the 'SysTick' peripheral - a simple timer which comes with every Cortex-M processor core. Typically you'll be looking these up in the chip manufacturer's data sheet or *Technical Reference Manual*, but this example is common to all ARM Cortex-M cores, let's look in the [ARM reference manual]. We see there are four registers:
+让我们看向 'SysTick' 外设 - 一个简单的计时器，其在每个Cortex-M处理器内核中都有。通常你能在芯片制造商的数据手册或者*技术参考手册*中看到它们，但是这个例子对所有ARM Cortex-M核心都是通用的，让我们看下[ARM参考手册]。我们能看到这里有四个寄存器:
 
-[ARM reference manual]: http://infocenter.arm.com/help/topic/com.arm.doc.dui0553a/Babieigh.html
+[ARM参考手册]: http://infocenter.arm.com/help/topic/com.arm.doc.dui0553a/Babieigh.html
 
 | Offset | Name        | Description                 | Width  |
 |--------|-------------|-----------------------------|--------|
@@ -13,9 +13,9 @@ Let's look at the 'SysTick' peripheral - a simple timer which comes with every C
 | 0x08   | SYST_CVR    | Current Value Register      | 32 bits|
 | 0x0C   | SYST_CALIB  | Calibration Value Register  | 32 bits|
 
-## The C Approach
+## C语言风格的方法(The C Approach)
 
-In Rust, we can represent a collection of registers in exactly the same way as we do in C - with a `struct`.
+在Rust中，我们可以像我们在C语言中做的那样，用一个 `struct` 表征一组寄存器。
 
 ```rust,ignore
 #[repr(C)]
@@ -26,32 +26,29 @@ struct SysTick {
     pub calib: u32,
 }
 ```
-
-The qualifier `#[repr(C)]` tells the Rust compiler to lay this structure out like a C compiler would. That's very important, as Rust allows structure fields to be re-ordered, while C does not. You can imagine the debugging we'd have to do if these fields were silently re-arranged by the compiler! With this qualifier in place, we have our four 32-bit fields which correspond to the table above. But of course, this `struct` is of no use by itself - we need a variable.
+限定符 `#[repr(C)]` 告诉Rust编译器像C编译器一样去布局这个结构体。那是非常重要的，因为Rust允许结构体字段被重新排序，而C语言不允许。你可以想象下如果这些字段被编译器悄悄地重新排序，我们将不得不进行的调试！有了这个限定符，我们就有了与上表对应的四个32位的字段。但当然，这个 `struct` 本身没什么用处 - 我们需要一个变量。
 
 ```rust,ignore
 let systick = 0xE000_E010 as *mut SysTick;
 let time = unsafe { (*systick).cvr };
 ```
 
-## Volatile Accesses
+## 易变的访问(Volatile Accesses)
 
-Now, there are a couple of problems with the approach above.
+现在，上面的方法有一堆问题。
 
-1. We have to use unsafe every time we want to access our Peripheral.
-2. We've got no way of specifying which registers are read-only or read-write.
-3. Any piece of code anywhere in your program could access the hardware
-   through this structure.
-4. Most importantly, it doesn't actually work...
+1. 每次我们想要访问我们的外设，我们不得不使用unsafe 。
+2. 我们无法指定哪个寄存器是只读的或者读写的。
+3. 你程序中任何地方的任何一段代码都可以通过这个结构体访问硬件。
+4. 最重要的是，实际上它并不能工作。
 
-Now, the problem is that compilers are clever. If you make two writes to the same piece of RAM, one after the other, the compiler can notice this and just skip the first write entirely. In C, we can mark variables as `volatile` to ensure that every read or write occurs as intended. In Rust, we instead mark the *accesses* as volatile, not the variable.
+现在，问题是编译器很聪明。如果你往RAM同个地方写两次，一个接着一个，编译器会注意到这个且完全跳过第一个写入操作。在C语言中，我们能标记变量为`volatile`去确保每个读或写操作按预期发生。在Rust中，我们将*访问* 标记为易变的(volatile)，而不是变量。
 
 ```rust,ignore
 let systick = unsafe { &mut *(0xE000_E010 as *mut SysTick) };
 let time = unsafe { core::ptr::read_volatile(&mut systick.cvr) };
 ```
-
-So, we've fixed one of our four problems, but now we have even more `unsafe` code! Fortunately, there's a third party crate which can help - [`volatile_register`].
+因此，我们已经修复了我们四个问题中的一个，但是现在我们有了更多的 `unsafe` 代码!幸运的是，有个第三方的crate可以帮助到我们 - [`volatile_register`]
 
 [`volatile_register`]: https://crates.io/crates/volatile_register
 
@@ -76,6 +73,7 @@ fn get_time() -> u32 {
 }
 ```
 
+现在通过`read`和`write`方法，volatile accesses可以被自动执行。执行写操作仍然是 `unsafe` 的，但是公平地讲，硬件
 Now, the volatile accesses are performed automatically through the `read` and `write` methods. It's still `unsafe` to perform writes, but to be fair, hardware is a bunch of mutable state and there's no way for the compiler to know whether these writes are actually safe, so this is a good default position.
 
 ## The Rusty Wrapper
