@@ -110,6 +110,7 @@ impl SerialPort {
 }
 ```
 
+
 There are two important factors in play here:
 
 * Because we are using a singleton, there is only one way or place to obtain a `SerialPort` structure
