@@ -1,23 +1,14 @@
 # Static Guarantees
+# 静态保障
 
-Rust's type system prevents data races at compile time (see [`Send`] and
-[`Sync`] traits). The type system can also be used to check other properties at
-compile time; reducing the need for runtime checks in some cases.
+Rust的类型系统可防止编译时的数据竞争(看[`Send`]和[`Sync`]特性(traits))。类型系统也能被用来在编译时检查其它属性；减少某些案例中运行时检查的需要。
 
 [`Send`]: https://doc.rust-lang.org/core/marker/trait.Send.html
 [`Sync`]: https://doc.rust-lang.org/core/marker/trait.Sync.html
 
-When applied to embedded programs these *static checks* can be used, for
-example, to enforce that configuration of I/O interfaces is done properly. For
-instance, one can design an API where it is only possible to initialize a serial
-interface by first configuring the pins that will be used by the interface.
+当应用到嵌入式程序时，这些*静态检查*能被用来，比如，强制I/O接口被恰当地配置了。例如，可以设计一个API来初始化一个串行接口，这个API只能通过先配置接口需要的管脚才能被正确地使用。
 
-One can also statically check that operations, like setting a pin low, can only
-be performed on correctly configured peripherals. For example, trying to change
-the output state of a pin configured in floating input mode would raise a
-compile error.
+也可以静态检查操作是否被执行在正确配置了的外设上，像是拉低一个管脚。例如尝试修改一个被配置成浮空输入模式的管脚的输出状态时，将会出发一个编译时错误。
 
-And, as seen in the previous chapter, the concept of ownership can be applied
-to peripherals to ensure that only certain parts of a program can modify a
-peripheral. This *access control* makes software easier to reason about
-compared to the alternative of treating peripherals as global mutable state.
+且，像是在前面章节看到的，所有权的概念能被应用到外设上确保只有一个程序的某些部分可以修改一个外设。与将这个外设当做全局可变的状态相比，*访问控制*(assess control)使得软件更容易推理。
+

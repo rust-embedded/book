@@ -1,4 +1,6 @@
-# Peripherals as State Machines
+# 作为状态机的外设
+
+一个微控制器的外设可以被想成是一组状态机。比如，
 
 The peripherals of a microcontroller can be thought of as set of state machines. For example, the configuration of a simplified [GPIO pin] could be represented as the following tree of states:
 

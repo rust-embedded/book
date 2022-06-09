@@ -31,7 +31,7 @@ more information and coordination
     - [首次尝试](./peripherals/a-first-attempt.md)
     - [借用检查器](./peripherals/borrowck.md)
     - [单例](./peripherals/singletons.md)
-- [Static Guarantees](./static-guarantees/index.md)
+- [静态保障(static guarantees)](./static-guarantees/index.md)
     - [Typestate Programming](./static-guarantees/typestate-programming.md)
     - [Peripherals as State Machines](./static-guarantees/state-machines.md)
     - [Design Contracts](./static-guarantees/design-contracts.md)

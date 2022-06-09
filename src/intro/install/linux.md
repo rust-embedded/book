@@ -18,6 +18,7 @@
 <!-- OpenOCD 0.10.0 -->
 <!-- QEMU 2.11.1 -->
 
+
 ``` console
 sudo apt install gdb-multiarch openocd qemu-system-arm
 ```
