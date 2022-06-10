@@ -115,7 +115,7 @@ struct GpioConfig<ENABLED, DIRECTION, MODE> {
     mode: MODE,
 }
 
-// Type states for MODE in GpioConfig
+// GpioConfig中MODE的类型状态
 struct Disabled;
 struct Enabled;
 struct Output;
@@ -125,7 +125,7 @@ struct PulledHigh;
 struct HighZ;
 struct DontCare;
 
-/// These functions may be used on any GPIO Pin
+/// 这些函数可能被用于所有的GPIO管脚
 impl<EN, DIR, IN_MODE> GpioConfig<EN, DIR, IN_MODE> {
     pub fn into_disabled(self) -> GpioConfig<Disabled, DontCare, DontCare> {
         self.periph.modify(|_r, w| w.enable.disabled());
@@ -166,14 +166,14 @@ impl<EN, DIR, IN_MODE> GpioConfig<EN, DIR, IN_MODE> {
     }
 }
 
-/// This function may be used on an Output Pin
+/// 这个函数可能被用于一个输出管脚
 impl GpioConfig<Enabled, Output, DontCare> {
     pub fn set_bit(&mut self, set_high: bool) {
         self.periph.modify(|_r, w| w.output_mode.set_bit(set_high));
     }
 }
 
-/// These methods may be used on any enabled input GPIO
+/// 这些方法可能被用于使能一个输入GPIO
 impl<IN_MODE> GpioConfig<Enabled, Input, IN_MODE> {
     pub fn bit_is_set(&self) -> bool {
         self.periph.read().input_status.bit_is_set()
@@ -211,46 +211,46 @@ impl<IN_MODE> GpioConfig<Enabled, Input, IN_MODE> {
 }
 ```
 
-Now let's see what the code using this would look like:
+现在让我们看下代码如何用这个API:
 
 ```rust,ignore
 /*
- * Example 1: Unconfigured to High-Z input
+ * 案例 1: Unconfigured to High-Z input
  */
 let pin: GpioConfig<Disabled, _, _> = get_gpio();
 
-// Can't do this, pin isn't enabled!
+// 不能这么做，pin没有被使能
 // pin.into_input_pull_down();
 
-// Now turn the pin from unconfigured to a high-z input
+// 现在从unconfigured to a high-z input打开管脚
 let input_pin = pin.into_enabled_input();
 
-// Read from the pin
+// 从管脚读取
 let pin_state = input_pin.bit_is_set();
 
-// Can't do this, input pins don't have this interface!
+// 不能这么做，输入管脚没有这个接口
 // input_pin.set_bit(true);
 
 /*
- * Example 2: High-Z input to Pulled Low input
+ * 案例 2: High-Z 输入到下拉输入
  */
 let pulled_low = input_pin.into_input_pull_down();
 let pin_state = pulled_low.bit_is_set();
 
 /*
- * Example 3: Pulled Low input to Output, set high
+ * 案例 3: 下拉输入到输出, 拉高
  */
 let output_pin = pulled_low.into_enabled_output();
 output_pin.set_bit(true);
 
-// Can't do this, output pins don't have this interface!
+// 不能这么做，输出管脚没有这个接口
 // output_pin.into_input_pull_down();
 ```
 
-This is definitely a convenient way to store the state of the pin, but why do it this way? Why is this better than storing the state as an `enum` inside of our `GpioConfig` structure?
+这绝对是存储管脚状态的便捷方法，但是为什么这么做?为什么这比把状态当成一个`enum`存在我们的`CpioConfig`结构体中更好？
 
-## Compile Time Functional Safety
+## 编译时功能安全(Functional Safety)
 
-Because we are enforcing our design constraints entirely at compile time, this incurs no runtime cost. It is impossible to set an output mode when you have a pin in an input mode. Instead, you must walk through the states by converting it to an output pin, and then setting the output mode. Because of this, there is no runtime penalty due to checking the current state before executing a function.
+因为我们在编译时完全强制执行我们的设计约定，这造成了没有运行时消耗。当你有一个在输入模式的管脚时，是不可能去设置一个输出模式的。你必须先把它设置成一个输出管脚，然后在设置输出模式。因为在执行一个函数前会检查现在的状态，因此没有运行时消耗。
 
-Also, because these states are enforced by the type system, there is no longer room for errors by consumers of this interface. If they try to perform an illegal state transition, the code will not compile!
+也因为这些状态被类型系统强制执行，因此没有为这个接口的使用者留太多的犯错空间。如果它们尝试执行一个非法的状态转换，代码将不会编译！
