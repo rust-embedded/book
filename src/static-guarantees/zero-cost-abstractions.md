@@ -1,6 +1,6 @@
 # 零成本抽象
 
-Type states are also an excellent example of Zero Cost Abstractions - the ability to move certain behaviors to compile time execution or analysis. These type states contain no actual data, and are instead used as markers. Since they contain no data, they have no actual representation in memory at runtime:
+类型状态是一个零成本抽象的杰出案例 - 把某些行为移到编译时执行或者分析的能力。这些类型状态不包含真实的数据，只用来作为标记。因为它们不包含数据，在运行时它们在内存中不存在实际的表征。
 
 ```rust,ignore
 use core::mem::size_of;
@@ -11,15 +11,15 @@ let _ = size_of::<PulledHigh>(); // == 0
 let _ = size_of::<GpioConfig<Enabled, Input, PulledHigh>>(); // == 0
 ```
 
-## Zero Sized Types
+## 零大小的类型(Zero Sized Types)
 
 ```rust,ignore
 struct Enabled;
 ```
 
-Structures defined like this are called Zero Sized Types, as they contain no actual data. Although these types act "real" at compile time - you can copy them, move them, take references to them, etc., however the optimizer will completely strip them away.
+像这样定义的结构体被称为零大小的类型，因为它们不包含实际数据。虽然这些类型在编译时像是"真的"(real) - 你可以拷贝它们，移动它们，引用它们，etc.，然而优化器将会完全跳过它们。
 
-In this snippet of code:
+在这个代码片段里:
 
 ```rust,ignore
 pub fn into_input_high_z(self) -> GpioConfig<Enabled, Input, HighZ> {
@@ -33,10 +33,10 @@ pub fn into_input_high_z(self) -> GpioConfig<Enabled, Input, HighZ> {
 }
 ```
 
-The GpioConfig we return never exists at runtime. Calling this function will generally boil down to a single assembly instruction - storing a constant register value to a register location. This means that the type state interface we've developed is a zero cost abstraction - it uses no more CPU, RAM, or code space tracking the state of `GpioConfig`, and renders to the same machine code as a direct register access.
+我们返回的CpioConfig在运行时并不存在。调用这个函数通常将会总结为一个单一的汇编指令 - 保存一个常量寄存器值进一个寄存器里。这意味着我们开发的类型状态接口是一个零成本抽象 - 它不会用更多的CPU，RAM，或者代码空间去跟踪`GpioConfig`的状态，会渲染成和直接访问寄存器一样的机器码。
 
-## Nesting
+## 嵌套
 
-In general, these abstractions may be nested as deeply as you would like. As long as all components used are zero sized types, the whole structure will not exist at runtime.
+通常，你可能会把这些抽象深深地嵌套起来。一旦所有的被使用的组件是零大小类型，整个结构体将不会在运行时存在。
 
-For complex or deeply nested structures, it may be tedious to define all possible combinations of state. In these cases, macros may be used to generate all implementations.
+对于复杂或者深度嵌套的结构体，定义所有可能的状态组合可能很乏味。在这些案例中，宏大概能被用来产生所有的实现。
