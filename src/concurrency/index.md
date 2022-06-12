@@ -61,13 +61,9 @@ fn timer() {
 
 每秒计时器中断会把计数器设置回0。这期间，main循环连续地测量信号，且当它看到从低电平到高电平的变化时，增加计数器的值。因为它是`static mut`，我们不得不使用`unsafe`去访问`COUNTER`，意思是我们向编译器保证我们的操作不会导致任何未定义的行为。你能发现竞态条件吗？`COUNTER`上的增加并不一定是原子的 - 事实上，在大多数嵌入式平台上，它将被分开成一个读取操作，然后是增加，然后是写回。如果中断在读取之后但是写回之前被激活，在中断返回后，重置回0的操作会被忽略 - 那段时间，一些变化我们会计算两次。
 
-## Critical Sections
+## 临界区(Critical Sections)
 
-因此，关于数据竞争我们能做些什么？一个简单的方法是使用 _critical sections_ 。
-So, what can we do about data races? A simple approach is to use _critical
-sections_, a context where interrupts are disabled. By wrapping the access to
-`COUNTER` in `main` in a critical section, we can be sure the timer interrupt
-will not fire until we're finished incrementing `COUNTER`:
+因此，关于数据竞争我们能做些什么？一个简单的方法是使用 _临界区(critical sections）_ ，在临界区的上下文中中断被关闭了。通过把对`main`中的`COUNTER`访问封装进一个临界区，我们能确保计时器中断将不会激活，直到我们完成了增加`COUNTER`的操作:
 
 ```rust,ignore
 static mut COUNTER: u32 = 0;
@@ -79,7 +75,7 @@ fn main() -> ! {
     loop {
         let state = read_signal_level();
         if state && !last_state {
-            // New critical section ensures synchronised access to COUNTER
+            // 新的临界区确保对COUNTER的同步访问
             cortex_m::interrupt::free(|_| {
                 unsafe { COUNTER += 1 };
             });
@@ -94,27 +90,18 @@ fn timer() {
 }
 ```
 
-In this example, we use `cortex_m::interrupt::free`, but other platforms will
-have similar mechanisms for executing code in a critical section. This is also
-the same as disabling interrupts, running some code, and then re-enabling
-interrupts.
+在这个例子里，我们使用 `cortex_m::interrupt::free`，但是其它平台将会有更简单的机制在一个临界区中执行代码。它们都有一样的逻辑，关闭中断，运行一些代码，然后重新使能中断。
 
-Note we didn't need to put a critical section inside the timer interrupt,
-for two reasons:
+注意，有两个理由，我们不需要把一个临界区放进计时器中断中:
 
-  * Writing 0 to `COUNTER` can't be affected by a race since we don't read it
-  * It will never be interrupted by the `main` thread anyway
+  * 向`COUNTER`写入0不会被一个竞争影响，因为我们不需要读取它
+  * 无论如何，它永远不会被`main`线程中断
 
-If `COUNTER` was being shared by multiple interrupt handlers that might
-_preempt_ each other, then each one might require a critical section as well.
+如果`COUNTER`被多个可能相互 _抢占_ 的中断处理函数共享，那么每一个也需要一个临界区。
 
-This solves our immediate problem, but we're still left writing a lot of unsafe code which we need to carefully reason about, and we might be using critical sections needlessly. Since each critical section temporarily pauses interrupt processing, there is an associated cost of some extra code size and higher interrupt latency and jitter (interrupts may take longer to be processed, and the time until they are processed will be more variable). Whether this is a problem depends on your system, but in general, we'd like to avoid it.
+这解决了我们的眼前问题，但是我们仍然要编写许多不安全的代码，我们需要仔细推敲这些代码，有些我们可能不需要使用临界区。因为每个临界区暂时地暂停了中断处理，就会出现一些消耗，其与一些额外的代码大小和更高的中断延迟和抖动有关(中断可能花费很长时间去处理，等待被处理的时间变化非常大)。这是否是个问题取决于你的系统，但是通常，我们想要避免它。
 
-It's worth noting that while a critical section guarantees no interrupts will
-fire, it does not provide an exclusivity guarantee on multi-core systems!  The
-other core could be happily accessing the same memory as your core, even
-without interrupts. You will need stronger synchronisation primitives if you
-are using multiple cores.
+值得注意的是，虽然一个临界区保障了没有中断将会发生，但是它在多核系统上不提供一个排他性保证(exclusivity guarantee)！其它核可能很开心访问与你的核一样的内存区域，设置不用中断。如果你正在使用多核，你将需要更强的同步原语(synchronisation primitives)。
 
 ## 原子访问
 
