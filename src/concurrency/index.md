@@ -1,26 +1,16 @@
-# Concurrency
+# 并发
 
-Concurrency happens whenever different parts of your program might execute
-at different times or out of order. In an embedded context, this includes:
+无论何时你程序的不同部分可能会在不同时刻执行或者不按顺序执行，那并发就发生了。在一个嵌入式环境中，这包括:
 
-* interrupt handlers, which run whenever the associated interrupt happens,
-* various forms of multithreading, where your microprocessor regularly swaps
-  between parts of your program,
-* and in some systems, multiple-core microprocessors, where each core can be
-  independently running a different part of your program at the same time.
+* 中断处理函数，无论何时相关的中断发生时，其会运行，
+* 不同的多线程形式，在这块，你的微处理器通常会在你的程序的不同部分间进行切换，
+* 在一些多核微处理器系统中，每个核可以同时独立地运行你的程序的不同部分。
 
-Since many embedded programs need to deal with interrupts, concurrency will
-usually come up sooner or later, and it's also where many subtle and difficult
-bugs can occur. Luckily, Rust provides a number of abstractions and safety
-guarantees to help us write correct code.
+因为许多嵌入式程序需要处理中断，因此并发迟早会出现，这也是许多微妙和困难的bugs会出现的地方。幸运地是，Rust提供了许多抽象和安全保障去帮助我们写正确的代码。
 
-## No Concurrency
+## 没有并发
 
-The simplest concurrency for an embedded program is no concurrency: your
-software consists of a single main loop which just keeps running, and there
-are no interrupts at all. Sometimes this is perfectly suited to the problem
-at hand! Typically your loop will read some inputs, perform some processing,
-and write some outputs.
+对于一个嵌入式程序来说最简单的并发是没有并发: 你的软件由单个保持运行的main循环组成，一点中断也没有。有时候这非常适合手边的问题! 通常你的循环将会读取一些输入，执行一些处理，且写入一些输出。
 
 ```rust,ignore
 #[entry]
@@ -34,29 +24,17 @@ fn main() {
 }
 ```
 
-Since there's no concurrency, there's no need to worry about sharing data
-between parts of your program or synchronising access to peripherals. If
-you can get away with such a simple approach this can be a great solution.
+因为这里没有并发，因此不需要担心程序不同部分间的共享数据或者同步对外设的访问。如果你可以使用一个简单的方法来解决问题，这种方法是个不错的选择。
 
-## Global Mutable Data
+## 全局可变数据
 
-Unlike non-embedded Rust, we will not usually have the luxury of creating
-heap allocations and passing references to that data into a newly-created
-thread. Instead, our interrupt handlers might be called at any time and must
-know how to access whatever shared memory we are using. At the lowest level,
-this means we must have _statically allocated_ mutable memory, which
-both the interrupt handler and the main code can refer to.
+不像非嵌入式Rust，我们通常不能分配堆和将对那个数据的引用传递进一个新创造的线程。反而，我们的中断处理函数可能在任何时间被调用，且必须知道如何访问我们正在使用的共享内存。从最底层看来，这意味着我们必须有 _static allocated_ 可变的内存，中断处理函数和main代码都可以引用这块内存。
 
-In Rust, such [`static mut`] variables are always unsafe to read or write,
-because without taking special care, you might trigger a race condition,
-where your access to the variable is interrupted halfway through by an
-interrupt which also accesses that variable.
+在Rust中，[`static mut`]这样的变量读取或者写入总是不安全的，因为不特别关注它们的话，你可能会触发一个竞态条件，你对变量的访问在中途就被一个也访问那个变量的中断打断。
 
 [`static mut`]: https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html#accessing-or-modifying-a-mutable-static-variable
 
-For an example of how this behaviour can cause subtle errors in your code,
-consider an embedded program which counts rising edges of some input signal
-in each one-second period (a frequency counter):
+为了举例这种行为如何在你的代码中导致了微妙的错误，思考一个嵌入式程序，这个程序在每个一秒的周期内计数一些输入信号的上升沿(一个频率计数器):
 
 ```rust,ignore
 static mut COUNTER: u32 = 0;
@@ -68,7 +46,7 @@ fn main() -> ! {
     loop {
         let state = read_signal_level();
         if state && !last_state {
-            // DANGER - Not actually safe! Could cause data races.
+            // 危险 - 实际不安全! 可能导致数据竞争。
             unsafe { COUNTER += 1 };
         }
         last_state = state;
@@ -81,19 +59,11 @@ fn timer() {
 }
 ```
 
-Each second, the timer interrupt sets the counter back to 0. Meanwhile, the
-main loop continually measures the signal, and incremements the counter when
-it sees a change from low to high. We've had to use `unsafe` to access
-`COUNTER`, as it's `static mut`, and that means we're promising the compiler
-we won't cause any undefined behaviour. Can you spot the race condition? The
-increment on `COUNTER` is _not_ guaranteed to be atomic — in fact, on most
-embedded platforms, it will be split into a load, then the increment, then
-a store. If the interrupt fired after the load but before the store, the
-reset back to 0 would be ignored after the interrupt returns — and we would
-count twice as many transitions for that period.
+每秒计时器中断会把计数器设置回0。这期间，main循环连续地测量信号，且当它看到从低电平到高电平的变化时，增加计数器的值。因为它是`static mut`，我们不得不使用`unsafe`去访问`COUNTER`，意思是我们向编译器保证我们的操作不会导致任何未定义的行为。你能发现竞态条件吗？`COUNTER`上的增加并不一定是原子的 - 事实上，在大多数嵌入式平台上，它将被分开成一个读取操作，然后是增加，然后是写回。如果中断在读取之后但是写回之前被激活，在中断返回后，重置回0的操作会被忽略 - 那段时间，一些变化我们会计算两次。
 
 ## Critical Sections
 
+因此，关于数据竞争我们能做些什么？一个简单的方法是使用 _critical sections_ 。
 So, what can we do about data races? A simple approach is to use _critical
 sections_, a context where interrupts are disabled. By wrapping the access to
 `COUNTER` in `main` in a critical section, we can be sure the timer interrupt
@@ -146,7 +116,7 @@ other core could be happily accessing the same memory as your core, even
 without interrupts. You will need stronger synchronisation primitives if you
 are using multiple cores.
 
-## Atomic Access
+## 原子访问
 
 On some platforms, special atomic instructions are available, which provide
 guarantees about read-modify-write operations. Specifically for Cortex-M: `thumbv6`
@@ -203,7 +173,7 @@ For more details on atomics and ordering, see the [nomicon].
 [nomicon]: https://doc.rust-lang.org/nomicon/atomics.html
 
 
-## Abstractions, Send, and Sync
+## 抽象，Send和Sync
 
 None of the above solutions are especially satisfactory. They require `unsafe`
 blocks which must be very carefully checked and are not ergonomic. Surely we
@@ -305,7 +275,7 @@ to share between threads, we implement the Sync trait explicitly. As with the
 previous use of critical sections, this is only safe on single-core platforms:
 with multiple cores, you would need to go to greater lengths to ensure safety.
 
-## Mutexes
+## 互斥量(Mutexs)
 
 We've created a useful abstraction specific to our counter problem, but
 there are many common abstractions used for concurrency.
@@ -387,7 +357,7 @@ more complex types which are not Copy? An extremely common example in an
 embedded context is a peripheral struct, which generally is not Copy.
 For that, we can turn to `RefCell`.
 
-## Sharing Peripherals
+## 共享外设
 
 Device crates generated using `svd2rust` and similar abstractions provide
 safe access to peripherals by enforcing that only one instance of the
@@ -574,7 +544,7 @@ documentation] for more information!
 
 [the documentation]: https://rtic.rs
 
-## Real Time Operating Systems
+## 实时操作系统
 
 Another common model for embedded concurrency is the real-time operating system
 (RTOS). While currently less well explored in Rust, they are widely used in
@@ -591,7 +561,7 @@ primitives, and often interoperate with hardware features such as DMA engines.
 At the time of writing, there are not many Rust RTOS examples to point to,
 but it's an interesting area so watch this space!
 
-## Multiple Cores
+## 多个核心
 
 It is becoming more common to have two or more cores in embedded processors,
 which adds an extra layer of complexity to concurrency. All the examples using
