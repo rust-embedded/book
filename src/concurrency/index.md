@@ -105,15 +105,7 @@ fn timer() {
 
 ## 原子访问
 
-On some platforms, special atomic instructions are available, which provide
-guarantees about read-modify-write operations. Specifically for Cortex-M: `thumbv6`
-(Cortex-M0, Cortex-M0+) only provide atomic load and store instructions,
-while `thumbv7` (Cortex-M3 and above) provide full Compare and Swap (CAS)
-instructions. These CAS instructions give an alternative to the heavy-handed
-disabling of all interrupts: we can attempt the increment, it will succeed most
-of the time, but if it was interrupted it will automatically retry the entire
-increment operation. These atomic operations are safe even across multiple
-cores.
+在一些平台上，可以使用特定的原子指令，它保障了读取-修改-写回操作。针对Cortex-M: `thumbv6`(Cortex-M0，Cortex-M0+)只提供原子读取和存取指令，而`thumv7`(Cortex-M3和其上)提供完全的比较和交换(CAS)指令。这些CAS指令提供了一种对所有中断禁用的替代方法: 我们可以尝试执行增加操作，它在大多数情况下都会成功，但是如果它被中断了它将会自动重试完整的增加操作。这些原子操作甚至在多核间也是安全的。
 
 ```rust,ignore
 use core::sync::atomic::{AtomicUsize, Ordering};
@@ -141,20 +133,11 @@ fn timer() {
 }
 ```
 
-This time `COUNTER` is a safe `static` variable. Thanks to the `AtomicUsize`
-type `COUNTER` can be safely modified from both the interrupt handler and the
-main thread without disabling interrupts. When possible, this is a better
-solution — but it may not be supported on your platform.
+这时，`COUNTER`是一个安全的`static`变量。多亏了`AtomicUsize`类型，不需要禁用中断，`COUNTER`能从中断处理函数和main线程被安全地修改。当可以这么做时，这是一个更好的解决方案 - 然而你的平台上可能不支持。
 
-A note on [`Ordering`]: this affects how the compiler and hardware may reorder
-instructions, and also has consequences on cache visibility. Assuming that the
-target is a single core platform `Relaxed` is sufficient and the most efficient
-choice in this particular case. Stricter ordering will cause the compiler to
-emit memory barriers around the atomic operations; depending on what you're
-using atomics for you may or may not need this! The precise details of the
-atomic model are complicated and best described elsewhere.
+一个关于[`Ordering`]的提示: 这影响编译器和硬件可能如何重新排序指令，也会影响缓存可见性。假设目标是个单核平台，在这个案例里`Relaxed`是充足和最有效的选择。更严格的排序将导致编译器在原子操作周围产生内存屏障(Memory Barriers)；取决于你做什么原子操作，你可能需要或者不需要这个！原子模型的精确细节是复杂的，最好写在其它地方。
 
-For more details on atomics and ordering, see the [nomicon].
+关于原子操作和排序的更多细节，可以看这里[nomicon]。
 
 [`Ordering`]: https://doc.rust-lang.org/core/sync/atomic/enum.Ordering.html
 [nomicon]: https://doc.rust-lang.org/nomicon/atomics.html
@@ -162,31 +145,25 @@ For more details on atomics and ordering, see the [nomicon].
 
 ## 抽象，Send和Sync
 
-None of the above solutions are especially satisfactory. They require `unsafe`
-blocks which must be very carefully checked and are not ergonomic. Surely we
-can do better in Rust!
+上面的解决方案都不是特别令人满意。它们需要`unsafe`块，`unsafe`块必须要被十分小心地检查且符合人体工程学。确实，我们在Rust中可以做得更好！
 
-We can abstract our counter into a safe interface which can be safely used
-anywhere else in our code. For this example, we'll use the critical-section
-counter, but you could do something very similar with atomics.
+我们可以把我们的计数器抽象进一个安全的接口，其可以在我们代码的其它地方被安全地使用。对于这个例子，我们将使用临界区的(cirtical-section)计数器，但是你可以用原子操作做一些非常类似的事情。
 
 ```rust,ignore
 use core::cell::UnsafeCell;
 use cortex_m::interrupt;
 
-// Our counter is just a wrapper around UnsafeCell<u32>, which is the heart
-// of interior mutability in Rust. By using interior mutability, we can have
-// COUNTER be `static` instead of `static mut`, but still able to mutate
-// its counter value.
+// 我们的计数器只是包围UnsafeCell<u32>的一个封装，它是Rust中内部可变性
+// (interior mutability)的关键。通过使用内部可变性，我们能让COUNTER
+// 变成`static`而不是`static mut`，但是仍能改变它的计数器值。
 struct CSCounter(UnsafeCell<u32>);
 
 const CS_COUNTER_INIT: CSCounter = CSCounter(UnsafeCell::new(0));
 
 impl CSCounter {
     pub fn reset(&self, _cs: &interrupt::CriticalSection) {
-        // By requiring a CriticalSection be passed in, we know we must
-        // be operating inside a CriticalSection, and so can confidently
-        // use this unsafe block (required to call UnsafeCell::get).
+        // 通过要求一个CriticalSection被传递进来，我们知道我们肯定正在一个
+        // CriticalSection中操作，且因此可以自信地使用这个unsafe块(调用UnsafeCell::get的前提)。
         unsafe { *self.0.get() = 0 };
     }
 
@@ -195,11 +172,11 @@ impl CSCounter {
     }
 }
 
-// Required to allow static CSCounter. See explanation below.
+// 允许静态CSCounter的前提。看下面的解释。
 unsafe impl Sync for CSCounter {}
 
-// COUNTER is no longer `mut` as it uses interior mutability;
-// therefore it also no longer requires unsafe blocks to access.
+// COUNTER不再是`mut`的因为它使用内部可变性;
+// 因此访问它也不再需要unsafe块。
 static COUNTER: CSCounter = CS_COUNTER_INIT;
 
 #[entry]
@@ -209,7 +186,7 @@ fn main() -> ! {
     loop {
         let state = read_signal_level();
         if state && !last_state {
-            // No unsafe here!
+            // 这里不会unsafe!
             interrupt::free(|cs| COUNTER.increment(cs));
         }
         last_state = state;
