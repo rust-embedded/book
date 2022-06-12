@@ -255,11 +255,12 @@ fn main() -> ! {
 
 #[interrupt]
 fn timer() {
-    // We still need to enter a critical section here to satisfy the Mutex.
+    // 这里我们仍然需要进入一个临界区去满足互斥量。
     interrupt::free(|cs| COUNTER.borrow(cs).set(0));
 }
 ```
 
+我们现在使用了[`Cell`]，
 We're now using [`Cell`], which along with its sibling `RefCell` is used to
 provide safe interior mutability. We've already seen `UnsafeCell` which is
 the bottom layer of interior mutability in Rust: it allows you to obtain
