@@ -260,16 +260,7 @@ fn timer() {
 }
 ```
 
-我们现在使用了[`Cell`]，
-We're now using [`Cell`], which along with its sibling `RefCell` is used to
-provide safe interior mutability. We've already seen `UnsafeCell` which is
-the bottom layer of interior mutability in Rust: it allows you to obtain
-multiple mutable references to its value, but only with unsafe code. A `Cell`
-is like an `UnsafeCell` but it provides a safe interface: it only permits
-taking a copy of the current value or replacing it, not taking a reference,
-and since it is not Sync, it cannot be shared between threads. These
-constraints mean it's safe to use, but we couldn't use it directly in a
-`static` variable as a `static` must be Sync.
+我们现在使用了[`Cell`]，它与它的兄弟`RefCell`一起被用于提供安全的内部可变性。我们已经见过`UnsafeCell`了，在Rust中它是内部可变性的底层: 它允许你去获得多个对值的可变引用，但是只能与不安全的代码一起工作。一个`Cell`像一个`UnsafeCell`一样但是它提供了一个安全的接口: 它只允许拷贝现在的值或者替换它，不允许获取一个引用，因此它不是Sync，它不能被在线程间共享。这些限制意味着它用起来是安全的，但是我们不能直接将它用于`static`变量因为一个`static`必须是Sync。
 
 [`Cell`]: https://doc.rust-lang.org/core/cell/struct.Cell.html
 

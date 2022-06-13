@@ -1,17 +1,17 @@
-# HAL Design Patterns Checklist
+# HAL设计模式清单
 
-- **Naming** *(crate aligns with Rust naming conventions)*
-  - [ ] The crate is named appropriately ([C-CRATE-NAME])
-- **Interoperability** *(crate interacts nicely with other library functionality)*
-  - [ ] Wrapper types provide a destructor method ([C-FREE])
-  - [ ] HALs reexport their register access crate ([C-REEXPORT-PAC])
-  - [ ] Types implement the `embedded-hal` traits ([C-HAL-TRAITS])
-- **Predictability** *(crate enables legible code that acts how it looks)*
-  - [ ] Constructors are used instead of extension traits ([C-CTOR])
-- **GPIO Interfaces** *(GPIO Interfaces follow a common pattern)*
-  - [ ] Pin types are zero-sized by default ([C-ZST-PIN])
-  - [ ] Pin types provide methods to erase pin and port ([C-ERASED-PIN])
-  - [ ] Pin state should be encoded as type parameters ([C-PIN-STATE])
+- **命名** *(crate符合Rust命名规则)*
+  - [ ] crate被恰当地命名 ([C-CRATE-NAME])
+- **互用性** *(crate很好地与其它的库功能交互)*
+  - [ ] 封装类型提供一种解构方法 ([C-FREE])
+  - [ ] HALs重新导出了它们的寄存器访问crate ([C-REEXPORT-PAC])
+  - [ ] 类型实现了 `embedded-hal` traits ([C-HAL-TRAITS])
+- **可预见性** *(crate使清晰的代码工作起来像它们看起来一样)*
+  - [ ] 使用构造函数而不是扩展traies ([C-CTOR])
+- **GPIO接口** *(GPIO接口遵循一个常见的模式)*
+  - [ ] Pin类型默认是零大小类型 ([C-ZST-PIN])
+  - [ ] Pin类型提供擦除管脚和端口的方法 ([C-ERASED-PIN])
+  - [ ] Pin状态应该被编码为类型参数 ([C-PIN-STATE])
 
 [C-CRATE-NAME]: naming.html#c-crate-name
 

@@ -1,15 +1,12 @@
-# HAL Design Patterns
+# HAL设计模式
 
-This is a set of common and recommended patterns for writing hardware
-abstraction layers (HALs) for microcontrollers in Rust. These patterns are
-intended to be used in addition to the existing [Rust API Guidelines] when
-writing HALs for microcontrollers.
+这是一组关于使用Rust为微控制器写硬件抽象层的常见的和推荐的模式。当为微控制器编写HALs时，除了现有的 [Rust API 指南] 外，还打算使用这些模式。
 
-[Rust API Guidelines]: https://rust-lang.github.io/api-guidelines/
+[Rust API 指南]: https://rust-lang.github.io/api-guidelines/
 
-[Checklist](checklist.md)
+[清单](checklist.md)
 
-- [Naming](naming.md)
-- [Interoperability](interoperability.md)
-- [Predictability](predictability.md)
+- [命名](naming.md)
+- [互用性](interoperability.md)
+- [可预见性](predictability.md)
 - [GPIO](gpio.md)

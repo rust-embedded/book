@@ -1,3 +1,3 @@
-# Design Patterns
+# 设计模式
 
-This chapter aims to collect various useful design patterns for embedded Rust.
+这个章节的目标是为嵌入式Rust收集不同的有用的设计模式。

@@ -6,15 +6,12 @@ Rust和C代码间的互用性始终取决于两种语言间的数据转换。为
 
 `std::ffi`提供了一些工具去转换更复杂的类型，比如Strings，将`&str`和`String`映射成更容易和安全处理的C类型。
 
-这两个模块在`core`中都不可用，但是你可以找到一个
-Neither of these modules are available in `core`, but you can find a `#![no_std]`
-compatible version of `std::ffi::{CStr,CString}` in the [`cstr_core`] crate, and
-most of the `std::os::raw` types in the [`cty`] crate.
+这两个模块在`core`中都没有，但是你可以在[`cstr_core`] crate中，找到一个`std::ffi::{CStr,CString}` 的 `#![no_std]`兼容版本，大多数的`std::os::raw`类型在[`cty`] crate中。
 
 [`cstr_core`]: https://crates.io/crates/cstr_core
 [`cty`]: https://crates.io/crates/cty
 
-| Rust type  | Intermediate | C type       |
+| Rust 类型  | 中间类型 | C type       |
 |------------|--------------|--------------|
 | String     | CString      | *char        |
 | &str       | CStr         | *const char  |
@@ -22,8 +19,7 @@ most of the `std::os::raw` types in the [`cty`] crate.
 | u32 or u64 | c_uint       | unsigned int |
 | etc        | ...          | ...          |
 
-As mentioned above, primitive types can be converted
-by the compiler implicitly.
+像上面提到的，基本类型能被编译器隐式地转换。
 
 ```rust,ignore
 unsafe fn foo(num: u32) {
@@ -32,23 +28,19 @@ unsafe fn foo(num: u32) {
 }
 ```
 
-## Interoperability with other build systems
+## 与其它编译系统的互用性
 
-A common requirement for including Rust in your embedded project is combining
-Cargo with your existing build system, such as make or cmake.
+把Rust包含进你的嵌入式项目的一个常见需求是，把Cargo结合进你现存的编译系统中，比如make或者cmake。
 
-We are collecting examples and use cases for this on our issue tracker in
-[issue #61].
+在[issue #61]中我们的issue tracker上，我们正在为这个需求收集例子和用例。
 
 [issue #61]: https://github.com/rust-embedded/book/issues/61
 
 
-## Interoperability with RTOSs
+## 与RTOSs的互用性
 
-Integrating Rust with an RTOS such as FreeRTOS or ChibiOS is still a work in
-progress; especially calling RTOS functions from Rust can be tricky.
+将Rust和一个RTOS集成在一起，比如FreeRTOS或者ChibiOS仍然在进行中; 尤其是从Rust调用RTOS函数可能很棘手。
 
-We are collecting examples and use cases for this on our issue tracker in
-[issue #62].
+在[issue #62]中我们的issue tracker上，我们正为这件事收集例子和用例。
 
 [issue #62]: https://github.com/rust-embedded/book/issues/62
