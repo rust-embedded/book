@@ -1,17 +1,12 @@
-# Collections
+# 集合
 
-Eventually you'll want to use dynamic data structures (AKA collections) in your
-program. `std` provides a set of common collections: [`Vec`], [`String`],
-[`HashMap`], etc. All the collections implemented in `std` use a global dynamic
-memory allocator (AKA the heap).
-
+最终，你将希望在你的程序里使用动态数据结构(也称为集合)。`std` 提供了一组常见的集合: [`Vec`]，[`String`]，[`HashMap`]，等等。所有这些在`std`中被实现的集合都使用一个全局动态分配器(也称为堆)。
+ 
 [`Vec`]: https://doc.rust-lang.org/std/vec/struct.Vec.html
 [`String`]: https://doc.rust-lang.org/std/string/struct.String.html
 [`HashMap`]: https://doc.rust-lang.org/std/collections/struct.HashMap.html
 
-As `core` is, by definition, free of memory allocations these implementations
-are not available there, but they can be found in the `alloc` crate
-that's shipped with the compiler.
+因为`core`的定义是没有内存分配的，所以这些实现在`core`中是没有的，但是我们可以在编译器附带的`alloc` crate中找到。
 
 If you need collections, a heap allocated implementation is not your only
 option. You can also use *fixed capacity* collections; one such implementation

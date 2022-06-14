@@ -264,36 +264,19 @@ fn timer() {
 
 [`Cell`]: https://doc.rust-lang.org/core/cell/struct.Cell.html
 
-So why does the example above work? The `Mutex<T>` implements Sync for any
-`T` which is Send — such as a `Cell`. It can do this safely because it only
-gives access to its contents during a critical section. We're therefore able
-to get a safe counter with no unsafe code at all!
+因此为什么上面的例子可以工作?`Mutex<T>`对于任何是Send的`T`实现了Sync - 比如一个`Cell`。因为它只能在临界区对它的内容进行访问，所以它这么做是安全的。因此我们可以即使没有一点unsafe代码我们也能获取一个safe的计数器！
 
-This is great for simple types like the `u32` of our counter, but what about
-more complex types which are not Copy? An extremely common example in an
-embedded context is a peripheral struct, which generally is not Copy.
-For that, we can turn to `RefCell`.
+对于我们的简单类型，像是我们的计数器的`u32`，来说是很棒的，但是对于更复杂的不能拷贝的类型呢？在一个嵌入式上下文中一个极度常见的例子是一个外设结构体，通常它们不是Copy。针对那种情况，我们可以使用`RefCell`。
 
 ## 共享外设
 
-Device crates generated using `svd2rust` and similar abstractions provide
-safe access to peripherals by enforcing that only one instance of the
-peripheral struct can exist at a time. This ensures safety, but makes it
-difficult to access a peripheral from both the main thread and an interrupt
-handler.
+使用`svd2rust`生成的设备crates和相似的抽象，通过强制要求同时只能存在一个外设结构体的实例，提供了对外设的安全的访问。这个确保了安全性，但是使得它很难从main线程和一个中断处理函数一起访问一个外设。
 
-To safely share peripheral access, we can use the `Mutex` we saw before. We'll
-also need to use [`RefCell`], which uses a runtime check to ensure only one
-reference to a peripheral is given out at a time. This has more overhead than
-the plain `Cell`, but since we are giving out references rather than copies,
-we must be sure only one exists at a time.
+为了安全地共享对外设的访问，我们能使用我们之前看到的`Mutex`。我们也将需要使用[`RefCell`]，它使用一个运行时检查去确保对一个外设m每次只有一个引用被给出。这个比纯`Cell`消耗更多，但是因为我们正给出引用而不是拷贝，我们必须确保每次只有一个引用存在。
 
 [`RefCell`]: https://doc.rust-lang.org/core/cell/struct.RefCell.html
 
-Finally, we'll also have to account for somehow moving the peripheral into
-the shared variable after it has been initialised in the main code. To do
-this we can use the `Option` type, initialised to `None` and later set to
-the instance of the peripheral.
+最终，我们也必须考虑在main代码中初始化外设后，如何将外设移到共享变量中。为了做这个，我们使用`Option`类型，初始成`None`，之后设置成外设的实例。
 
 ```rust,ignore
 use core::cell::RefCell;
@@ -305,35 +288,31 @@ static MY_GPIO: Mutex<RefCell<Option<stm32f405::GPIOA>>> =
 
 #[entry]
 fn main() -> ! {
-    // Obtain the peripheral singletons and configure it.
-    // This example is from an svd2rust-generated crate, but
-    // most embedded device crates will be similar.
+    // 获得外设的单例并配置它。这个例子来自一个svd2rust生成的crate，
+    // 但是大多数的嵌入式设备crates都相似。
     let dp = stm32f405::Peripherals::take().unwrap();
     let gpioa = &dp.GPIOA;
 
-    // Some sort of configuration function.
-    // Assume it sets PA0 to an input and PA1 to an output.
+    // 某个配置函数。假设它把PA0设置成一个输入和把PA1设置成一个输出。
     configure_gpio(gpioa);
 
-    // Store the GPIOA in the mutex, moving it.
+    // 把GPIOA存进互斥量中，移动它。
     interrupt::free(|cs| MY_GPIO.borrow(cs).replace(Some(dp.GPIOA)));
-    // We can no longer use `gpioa` or `dp.GPIOA`, and instead have to
-    // access it via the mutex.
+    // 我可以不再用`gpioa`或者`dp.GPIOA`，反而必须通过互斥量访问它。
 
-    // Be careful to enable the interrupt only after setting MY_GPIO:
-    // otherwise the interrupt might fire while it still contains None,
-    // and as-written (with `unwrap()`), it would panic.
+    // 请注意，只有在设置MY_GPIO后才能使能中断: 要不然当MY_GPIO还是包含None的时候，
+    // 中断可能会发生，然后像上面写的那样操作(使用`unwrap()`)，它将发生运行时恐慌。
     set_timer_1hz();
     let mut last_state = false;
     loop {
-        // We'll now read state as a digital input, via the mutex
+        // 我们现在将通过互斥量，读取作为数字输入时的状态。
         let state = interrupt::free(|cs| {
             let gpioa = MY_GPIO.borrow(cs).borrow();
             gpioa.as_ref().unwrap().idr.read().idr0().bit_is_set()
         });
 
         if state && !last_state {
-            // Set PA1 high if we've seen a rising edge on PA0.
+            // 如果我们在PA0上已经看到了一个上升沿，拉高PA1。
             interrupt::free(|cs| {
                 let gpioa = MY_GPIO.borrow(cs).borrow();
                 gpioa.as_ref().unwrap().odr.modify(|_, w| w.odr1().set_bit());
@@ -345,40 +324,30 @@ fn main() -> ! {
 
 #[interrupt]
 fn timer() {
-    // This time in the interrupt we'll just clear PA0.
+    // 这次在中断中，我们将清除PA0。
     interrupt::free(|cs| {
-        // We can use `unwrap()` because we know the interrupt wasn't enabled
-        // until after MY_GPIO was set; otherwise we should handle the potential
-        // for a None value.
+        // 我们可以使用`unwrap()` 因为我们知道直到MY_GPIO被设置后，中断都是禁用的；
+        // 否则我应该处理会出现一个None值的潜在可能
         let gpioa = MY_GPIO.borrow(cs).borrow();
         gpioa.as_ref().unwrap().odr.modify(|_, w| w.odr1().clear_bit());
     });
 }
 ```
 
-That's quite a lot to take in, so let's break down the important lines.
+这需要理解的内容很多，所以让我们把重要的内容分解一下。
 
 ```rust,ignore
 static MY_GPIO: Mutex<RefCell<Option<stm32f405::GPIOA>>> =
     Mutex::new(RefCell::new(None));
 ```
 
-Our shared variable is now a `Mutex` around a `RefCell` which contains an
-`Option`. The `Mutex` ensures we only have access during a critical section,
-and therefore makes the variable Sync, even though a plain `RefCell` would not
-be Sync. The `RefCell` gives us interior mutability with references, which
-we'll need to use our `GPIOA`. The `Option` lets us initialise this variable
-to something empty, and only later actually move the variable in. We cannot
-access the peripheral singleton statically, only at runtime, so this is
-required.
+我们的共享变量现在是一个包围了一个`RefCell`的`Mutex`，`RefCell`包含一个`Option`。`Mutex`确保只在一个临界区的时候可以访问，因此使变量变成Sync，设置即使一个纯`RefCell`不是Sync。`RefCell`赋予了我们引用的内部可变性，我们将需要使用我们的`GPIOA`。`Option`让我们初始化这个变量成空的东西，只在随后实际移动变量进来。我们不能静态地访问外设单例，只有在运行时，因此这是需要的。
 
 ```rust,ignore
 interrupt::free(|cs| MY_GPIO.borrow(cs).replace(Some(dp.GPIOA)));
 ```
 
-Inside a critical section we can call `borrow()` on the mutex, which gives us
-a reference to the `RefCell`. We then call `replace()` to move our new value
-into the `RefCell`.
+在一个临界区中，我们可以在互斥量上调用`borrow()`，其给了我们一个指向`RefCell`的引用。然后我们调用`replace()`去移动我们的新值进来`RefCell`。
 
 ```rust,ignore
 interrupt::free(|cs| {
@@ -387,18 +356,11 @@ interrupt::free(|cs| {
 });
 ```
 
-Finally, we use `MY_GPIO` in a safe and concurrent fashion. The critical section
-prevents the interrupt firing as usual, and lets us borrow the mutex.  The
-`RefCell` then gives us an `&Option<GPIOA>`, and tracks how long it remains
-borrowed - once that reference goes out of scope, the `RefCell` will be updated
-to indicate it is no longer borrowed.
+最终，我们用一种安全和并发的方式使用`MY_GPIO`。临界区禁止了中断像往常一样发生，让我们借用互斥量。`RefCell`然后给了我们一个`&Option<GPIOA>`，追踪它还要借用多久 - 一旦引用超出作用域，`RefCell`将会被更新去指出引用不再被借用。
 
-Since we can't move the `GPIOA` out of the `&Option`, we need to convert it to
-an `&Option<&GPIOA>` with `as_ref()`, which we can finally `unwrap()` to obtain
-the `&GPIOA` which lets us modify the peripheral.
+因为我不能把`GPIOA`移出`&Option`，我们需要用`as_ref()`将它转换成一个`&Option<&GPIOA>`，最终我们能使用`unwrap()`获得`&GPIOA`，其让我们可以修改外设。
 
-If we need a mutable reference to a shared resource, then `borrow_mut` and `deref_mut`
-should be used instead. The following code shows an example using the TIM2 timer.
+如果我们需要一个共享的资源的可变引用，那么`borrow_mut`和`deref_mut`应该被使用。下面的代码展示了一个使用TIM2计时器的例子。
 
 ```rust,ignore
 use core::cell::RefCell;
@@ -415,9 +377,8 @@ fn main() -> ! {
     let mut cp = cm::Peripherals::take().unwrap();
     let dp = stm32f405::Peripherals::take().unwrap();
 
-    // Some sort of timer configuration function.
-    // Assume it configures the TIM2 timer, its NVIC interrupt,
-    // and finally starts the timer.
+    // 某个计时器配置函数。假设它配置了TIM2计时器和它的NVIC中断，
+    // 最终启动计时器。
     let tim = configure_timer_interrupt(&mut cp, dp);
 
     interrupt::free(|cs| {
@@ -432,7 +393,7 @@ fn main() -> ! {
 #[interrupt]
 fn timer() {
     interrupt::free(|cs| {
-        if let Some(ref mut tim)) =  G_TIM.borrow(cs).borrow_mut().deref_mut() {
+        if let Some(ref mut tim) =  G_TIM.borrow(cs).borrow_mut().deref_mut() {
             tim.start(1.hz());
         }
     });
@@ -440,55 +401,31 @@ fn timer() {
 
 ```
 
-Whew! This is safe, but it is also a little unwieldy. Is there anything else
-we can do?
+呼！这是安全的，但也有点笨拙。我们还能做些什么吗？
 
 ## RTIC
 
-One alternative is the [RTIC framework], short for Real Time Interrupt-driven Concurrency. It
-enforces static priorities and tracks accesses to `static mut` variables
-("resources") to statically ensure that shared resources are always accessed
-safely, without requiring the overhead of always entering critical sections and
-using reference counting (as in `RefCell`). This has a number of advantages such
-as guaranteeing no deadlocks and giving extremely low time and memory overhead.
+另一个方法是使用[RTIC框架]，Real Time Interrupt-driven Concurrency的缩写。它强制执行静态优先级并追踪对`static mut`变量("资源")的访问去确保共享资源总是能被安全地访问，而不需要总是进入临界区且使用引用计数带来的消耗(如`RefCell`中所示)。这有许多好处，比如保证没有死锁且时间和内存的消耗极度低。
 
-[RTIC framework]: https://github.com/rtic-rs/cortex-m-rtic
+[RTIC框架]: https://github.com/rtic-rs/cortex-m-rtic
 
-The framework also includes other features like message passing, which reduces
-the need for explicit shared state, and the ability to schedule tasks to run at
-a given time, which can be used to implement periodic tasks. Check out [the
-documentation] for more information!
+这个框架也包括了其它的特性，像是消息传递(message passing)，消息传递减少了对显式共享状态的需要，还提供了在一个给定时间调度任务去运行的功能，这功能能被用来实现周期性的任务。看下[文档]可以知道更多的信息！
 
-[the documentation]: https://rtic.rs
+[文档]: https://rtic.rs
 
 ## 实时操作系统
 
-Another common model for embedded concurrency is the real-time operating system
-(RTOS). While currently less well explored in Rust, they are widely used in
-traditional embedded development. Open source examples include [FreeRTOS] and
-[ChibiOS]. These RTOSs provide support for running multiple application threads
-which the CPU swaps between, either when the threads yield control (called
-cooperative multitasking) or based on a regular timer or interrupts (preemptive
-multitasking). The RTOS typically provide mutexes and other synchronisation
-primitives, and often interoperate with hardware features such as DMA engines.
+与嵌入式并发有关的另一个模型是实时操作系统(RTOS)。虽然现在在Rust中的研究较少，但是它们被广泛用于传统的嵌入式开发。开源的例子包括[FreeRTOS]和[ChibiOS]。这些RTOSs提供对运行多个应用线程的支持，CPU在这些线程间进行切换，切换要么发生在当线程让出控制权的时候(被称为非抢占式多任务)，要么是基于一个常规计时器或者中断(抢占式多任务)。RTOS通常提供互斥量或者其它的同步原语，经常与硬件特性互相操作，比如DMA引擎。
 
 [FreeRTOS]: https://freertos.org/
 [ChibiOS]: http://chibios.org/
 
-At the time of writing, there are not many Rust RTOS examples to point to,
-but it's an interesting area so watch this space!
+在撰写本文时，没有太多的Rust RTOS示例可供参考，但这是一个有趣的领域，所以请关注这块！
 
 ## 多个核心
 
-It is becoming more common to have two or more cores in embedded processors,
-which adds an extra layer of complexity to concurrency. All the examples using
-a critical section (including the `cortex_m::interrupt::Mutex`) assume the only
-other execution thread is the interrupt thread, but on a multi-core system
-that's no longer true. Instead, we'll need synchronisation primitives designed
-for multiple cores (also called SMP, for symmetric multi-processing).
+在嵌入式处理器中有两个或者多个核心很正常，其为并发添加了额外一层复杂性。所有使用临界区的例子(包括`cortex_m::interrupt::Mutex`)都假设了另一个执行的线程仅是中断线程，但是在一个多核系统中，这不再是正确的假设。反而，我们将需要为多核设计的同步原语(也被叫做SMP，symmetric multi-processing的缩写)。
 
-These typically use the atomic instructions we saw earlier, since the
-processing system will ensure that atomicity is maintained over all cores.
+我们之前看到的，这些通常使用原子指令，因为处理系统将确保原子性在所有的核中都保持着。
 
-Covering these topics in detail is currently beyond the scope of this book,
-but the general patterns are the same as for the single-core case.
+覆盖这些主题的细节已经超出了本书的范围，但是常规的模式与单核的相似。
