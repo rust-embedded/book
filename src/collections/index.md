@@ -149,19 +149,16 @@ fn main() -> ! {
 
 自v0.4.x版本起，所有的`heapless`集合将它们所有的元素内联地存储起来了。这意味着像是`let x = heapless::Vec::new()`这样的一个操作将会在栈上分配集合，但是它也能够在一个`static`变量上分配集合，或者甚至在堆上(`Box<Vec<_, _>>`)。
 
-## Trade-offs
+## 取舍
 
-Keep these in mind when choosing between heap allocated, relocatable collections
-and fixed capacity collections.
+当在堆分配的可重定位的集合和固定容量的集合间进行选择的时候，记住这些内容。
 
-### Out Of Memory and error handling
+### 内存溢出和错误处理
 
-With heap allocations Out Of Memory is always a possibility and can occur in
-any place where a collection may need to grow: for example, all
-`alloc::Vec.push` invocations can potentially generate an OOM condition. Thus
-some operations can *implicitly* fail. Some `alloc` collections expose
-`try_reserve` methods that let you check for potential OOM conditions when
-growing the collection but you need be proactive about using them.
+使用堆分配，内存溢出总是有可能出现的且会发生在任何一个集合需要增长的地方: 比如，所有的 `alloc::Vec.push` 调用会潜在地产生一个OOM(Out of Memory)条件。因此一些操作可能会*隐式地*失败。一些`alloc`集合暴露了`try_reserve`方法，可以当增加集合时让你检查潜在的OOM条件，但是你需要主动地使用它们。
+
+如果你排他地使用`heapless`集合且不为其它任何东西使用一个内存分配器，那么一个OOM条件不可能出现。相反，
+
 
 If you exclusively use `heapless` collections and you don't use a memory
 allocator for anything else then an OOM condition is impossible. Instead, you'll
