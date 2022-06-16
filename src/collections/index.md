@@ -157,14 +157,10 @@ fn main() -> ! {
 
 使用堆分配，内存溢出总是有可能出现的且会发生在任何一个集合需要增长的地方: 比如，所有的 `alloc::Vec.push` 调用会潜在地产生一个OOM(Out of Memory)条件。因此一些操作可能会*隐式地*失败。一些`alloc`集合暴露了`try_reserve`方法，可以当增加集合时让你检查潜在的OOM条件，但是你需要主动地使用它们。
 
-如果你排他地使用`heapless`集合且不为其它任何东西使用一个内存分配器，那么一个OOM条件不可能出现。相反，
+如果你只使用`heapless`集合，而不使用内存分配器，那么一个OOM条件不可能出现。反而，你必须逐个处理容量不足的集合。也就是你必须处理*所有*的`Result`，其由像是`Vec.push`这样的方法返回的。
 
+OOM失败会比
 
-If you exclusively use `heapless` collections and you don't use a memory
-allocator for anything else then an OOM condition is impossible. Instead, you'll
-have to deal with collections running out of capacity on a case by case basis.
-That is you'll have deal with *all* the `Result`s returned by methods like
-`Vec.push`.
 
 OOM failures can be harder to debug than say `unwrap`-ing on all `Result`s
 returned by `heapless::Vec.push` because the observed location of failure may
@@ -173,7 +169,10 @@ returned by `heapless::Vec.push` because the observed location of failure may
 some other collection was leaking memory (memory leaks are possible in safe
 Rust).
 
-### Memory usage
+### 内存使用
+
+推理堆分配集合的内存使用是很难的因为长期使用的集合的大小会在运行时改变。一些操作可能隐式地重分配
+
 
 Reasoning about memory usage of heap allocated collections is hard because the
 capacity of long lived collections can change at runtime. Some operations may
