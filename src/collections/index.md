@@ -220,10 +220,4 @@ constant time.
 
 `alloc`要求配置一个全局分配器而`heapless`不需要。然而，`heapless`要求你去选择你要实例化的每一个集合的容量。
 
-`alloc` API几乎为每一个Rust开发者所熟知。`heapless` API尝试模仿`alloc` API，但是它
-
-
-The `alloc` API will be familiar to virtually every Rust developer. The
-`heapless` API tries to closely mimic the `alloc` API but it will never be
-exactly the same due to its explicit error handling -- some developers may feel
-the explicit error handling is excessive or too cumbersome.
+`alloc` API几乎为每一个Rust开发者所熟知。`heapless` API尝试模仿`alloc` API，但是因为`heapless`的显式错误处理，它们不可能会一模一样 -- 一些开发者可能会觉得显式的错误处理过多或太麻烦。
