@@ -46,7 +46,7 @@ more information and coordination
         - [互用性](./design-patterns/hal/interoperability.md)
         - [可预见性](./design-patterns/hal/predictability.md)
         - [GPIO](./design-patterns/hal/gpio.md)
-- [给嵌入式C开发者的技巧](./c-tips/index.md)
+- [给嵌入式C开发者的贴士](./c-tips/index.md)
     <!-- TODO: Define Sections -->
 - [互用性](./interoperability/index.md)
     - [A little C with your Rust](./interoperability/c-with-rust.md)

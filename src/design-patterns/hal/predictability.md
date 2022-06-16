@@ -1,16 +1,15 @@
-# Predictability
+# 可预见性
 
 
 <a id="c-ctor"></a>
-## Constructors are used instead of extension traits (C-CTOR)
+## 使用构造函数而不是扩展traits
 
-All peripherals to which the HAL adds functionality should be wrapped in a new
-type, even if no additional fields are required for that functionality.
+所有由HAL添加功能的外设应该被封装进一个新类型，即使该功能不需要额外的字段。
 
-Extension traits implemented for the raw peripheral should be avoided.
+应该避免为原始外设扩展traits。
 
 <a id="c-inline"></a>
-## Methods are decorated with `#[inline]` where appropriate (C-INLINE)
+## 方法在适当的地方用`#[inline`修饰
 
 The Rust compiler does not by default perform full inlining across crate
 boundaries. As embedded applications are sensitive to unexpected code size

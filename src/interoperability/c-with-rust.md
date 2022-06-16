@@ -9,16 +9,16 @@
 
 ## 定义接口
 
-Before consuming C or C++ code from Rust, it is necessary to define (in Rust) what data types and function signatures exist in the linked code. In C or C++, you would include a header (`.h` or `.hpp`) file which defines this data. In Rust, it is necessary to either manually translate these definitions to Rust, or use a tool to generate these definitions.
+从Rust消费C或者C++代码之前，必须定义(在Rust中)在被链接的代码中存在什么数据类型和函数签名。在C或者C++中，你要包括一个头文件(`.h`或者`.hpp`)，其定义了这个数据。在Rsut中，必须手动地将这些定义翻译成Rust，或者使用一个工具去生成这些定义。
 
-First, we will cover manually translating these definitions from C/C++ to Rust.
+首先，我们将介绍如何将这些定义从C/C++手动转换为Rust。
 
-### Wrapping C functions and Datatypes
+### 封装C函数和数据类型
 
-Typically, libraries written in C or C++ will provide a header file defining all types and functions used in public interfaces. An example file may look like this:
+通常，用C或者C++写的库会提供一个头文件，头文件定义了所有的类型和用于公共接口的函数。一个示例文件可能如下所示:
 
 ```C
-/* File: cool.h */
+/* 文件: cool.h */
 typedef struct CoolStruct {
     int x;
     int y;
@@ -27,7 +27,7 @@ typedef struct CoolStruct {
 void cool_function(int i, char c, CoolStruct* cs);
 ```
 
-When translated to Rust, this interface would look as such:
+当翻译成Rust时，这个接口将看起来像是:
 
 ```rust,ignore
 /* File: cool_bindings.rs */
@@ -44,21 +44,21 @@ pub extern "C" fn cool_function(
 );
 ```
 
-Let's take a look at this definition one piece at a time, to explain each of the parts.
+让我们一次看一个定义，来解释每个部分。
 
 ```rust,ignore
 #[repr(C)]
 pub struct CoolStruct { ... }
 ```
 
-By default, Rust does not guarantee order, padding, or the size of data included in a `struct`. In order to guarantee compatibility with C code, we include the `#[repr(C)]` attribute, which instructs the Rust compiler to always use the same rules C does for organizing data within a struct.
+默认，Rust不会保证包含在一个`struct`中的数据的大小，padding，或者顺序。为了保证与C代码兼容，我们使用`#[repr(C)]`属性，它指示Rust编译器总是使用和C一样的规则去组织一个结构体中的数据。
 
 ```rust,ignore
 pub x: cty::c_int,
 pub y: cty::c_int,
 ```
 
-Due to the flexibility of how C or C++ defines an `int` or `char`, it is recommended to use primitive data types defined in `cty`, which will map types from C to types in Rust.
+由于C或者C++定义一个`int`或者`char`的方式很灵活，所以建议使用在`cty`中定义的基础类型，它将类型从C映射到Rust中的类型。
 
 ```rust,ignore
 pub extern "C" fn cool_function( ... );
@@ -114,7 +114,7 @@ While your crate may be targeting a `no_std` embedded platform, your `build.rs` 
 
 [`std::process::Command`]: https://doc.rust-lang.org/std/process/struct.Command.html
 
-### Building C/C++ code with the `cc` crate
+### 使用`cc` crate构建C/C++代码
 
 For projects with limited dependencies or complexity, or for projects where it is difficult to modify the build system to produce a static library (rather than a final binary or executable), it may be easier to instead utilize the [`cc` crate], which provides an idiomatic Rust interface to the compiler provided by the host.
 
