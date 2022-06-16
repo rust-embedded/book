@@ -159,61 +159,28 @@ fn main() -> ! {
 
 如果你只使用`heapless`集合，而不使用内存分配器，那么一个OOM条件不可能出现。反而，你必须逐个处理容量不足的集合。也就是你必须处理*所有*的`Result`，其由像是`Vec.push`这样的方法返回的。
 
-OOM失败会比
-
-
-OOM failures can be harder to debug than say `unwrap`-ing on all `Result`s
-returned by `heapless::Vec.push` because the observed location of failure may
-*not* match with the location of the cause of the problem. For example, even
-`vec.reserve(1)` can trigger an OOM if the allocator is nearly exhausted because
-some other collection was leaking memory (memory leaks are possible in safe
-Rust).
+与在所有由`heapless::Vec.push`返回的`Result`上调用`unwrap`相比，OOM错误更难调试，因为错误被发现的位置可能与导致问题的位置*不*一致。比如，甚至如果分配器接近消耗完`vec.reserve(1)`都能触发一个OOM，因为一些其它的集合正在泄露内存(内存泄露在安全的Rust是会发生的)。
 
 ### 内存使用
 
-推理堆分配集合的内存使用是很难的因为长期使用的集合的大小会在运行时改变。一些操作可能隐式地重分配
+推理堆分配集合的内存使用是很难的因为长期使用的集合的大小会在运行时改变。一些操作可能隐式地重分配集合，增加了它的内存使用，一些集合暴露的方法，像是`shrink_to_fit`，会潜在地减少集合使用的内存 -- 最终，它由分配器去决定是否确定减小内存的分配或者不。另外，分配器可能不得不处理内存碎片，它会*明显*增加内存的使用。
 
+另一方面，如果你只使用固定容量的集合，请把大多数的数据保存在`static`变量中，并为调用栈设置一个最大尺寸，随后如果你尝试使用大于可用的物理内存的内存大小连接器会发现它。
 
-Reasoning about memory usage of heap allocated collections is hard because the
-capacity of long lived collections can change at runtime. Some operations may
-implicitly reallocate the collection increasing its memory usage, and some
-collections expose methods like `shrink_to_fit` that can potentially reduce the
-memory used by the collection -- ultimately, it's up to the allocator to decide
-whether to actually shrink the memory allocation or not. Additionally, the
-allocator may have to deal with memory fragmentation which can increase the
-*apparent* memory usage.
-
-On the other hand if you exclusively use fixed capacity collections, store
-most of them in `static` variables and set a maximum size for the call stack
-then the linker will detect if you try to use more memory than what's physically
-available.
-
-Furthermore, fixed capacity collections allocated on the stack will be reported
-by [`-Z emit-stack-sizes`] flag which means that tools that analyze stack usage
-(like [`stack-sizes`]) will include them in their analysis.
+另外，在栈上分配的固定容量的集合可以通过[`-Z emit-stack-sizes`]标识来报告，其意味着用来分析栈使用的工具(像是[`stack-sizes`])将会把在栈上分配的集合包含进它们的分析中。
 
 [`-Z emit-stack-sizes`]: https://doc.rust-lang.org/beta/unstable-book/compiler-flags/emit-stack-sizes.html
 [`stack-sizes`]: https://crates.io/crates/stack-sizes
 
-However, fixed capacity collections can *not* be shrunk which can result in
-lower load factors (the ratio between the size of the collection and its
-capacity) than what relocatable collections can achieve.
+然而，固定容量的集合*不*能被减少，与可重定位集合所能达到的负载系数(集合的大小和它的容量之间的比值)相比，它能产生更低的负载系数。
 
-### Worst Case Execution Time (WCET)
+### 最坏执行时间 (WCET)
 
-If you are building time sensitive applications or hard real time applications
-then you care, maybe a lot, about the worst case execution time of the different
-parts of your program.
+如果你正在搭建时间敏感型应用或者硬实时应用，那么你可能更关心你程序的不同部分的最坏执行时间。
 
-The `alloc` collections can reallocate so the WCET of operations that may grow
-the collection will also include the time it takes to reallocate the collection,
-which itself depends on the *runtime* capacity of the collection. This makes it
-hard to determine the WCET of, for example, the `alloc::Vec.push` operation as
-it depends on both the allocator being used and its runtime capacity.
+`alloc`集合能重分配，所以操作的WCET可能会增加，集合也将包括它用来重分配集合所需的时间，它取决于集合的*运行时*容量。这使得它更难去决定操作，比如`alloc::Vec.push`，的WCET，因为它依赖被使用的分配器和它的运行时容量。
 
-On the other hand fixed capacity collections never reallocate so all operations
-have a predictable execution time. For example, `heapless::Vec.push` executes in
-constant time.
+另一方面固定容量的集合不会重分配，因此所有的操作有个可预期的执行时间。比如，`heapless::Vec.push`以固定时间执行。
 
 ### 易用性
 
