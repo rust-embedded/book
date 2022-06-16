@@ -8,19 +8,15 @@
 
 因为`core`的定义是没有内存分配的，所以这些实现在`core`中是没有的，但是我们可以在编译器附带的`alloc` crate中找到。
 
-If you need collections, a heap allocated implementation is not your only
-option. You can also use *fixed capacity* collections; one such implementation
-can be found in the [`heapless`] crate.
+如果你需要集合，一个堆分配的实现不是你唯一的选择。你也可以使用 *fixed capacity* 集合; 一个这样的实现可以在 [`heapless`] crate中被找到。
 
 [`heapless`]: https://crates.io/crates/heapless
 
-In this section, we'll explore and compare these two implementations.
+在这部分，我们将研究和比较这两个实现。
 
-## Using `alloc`
+## 使用 `alloc`
 
-The `alloc` crate is shipped with the standard Rust distribution. To import the
-crate you can directly `use` it *without* declaring it as a dependency in your
-`Cargo.toml` file.
+`alloc` crate与标准的Rust发行版在一起。为了导入这个crate，你可以直接 `use` 它而不需要在你的`Cargo.toml`文件中把它声明为一个依赖。
 
 ``` rust,ignore
 #![feature(alloc)]
@@ -30,19 +26,14 @@ extern crate alloc;
 use alloc::vec::Vec;
 ```
 
-To be able to use any collection you'll first need use the `global_allocator`
-attribute to declare the global allocator your program will use. It's required
-that the allocator you select implements the [`GlobalAlloc`] trait.
+为了能使用集合，你首先需要使用`global_allocator`属性去声明你程序将使用的全局的分配器。它要求你选择的分配器实现了[`GlobalAlloc`] trait 。
 
 [`GlobalAlloc`]: https://doc.rust-lang.org/core/alloc/trait.GlobalAlloc.html
 
-For completeness and to keep this section as self-contained as possible we'll
-implement a simple bump pointer allocator and use that as the global allocator.
-However, we *strongly* suggest you use a battle tested allocator from crates.io
-in your program instead of this allocator.
+为了完整性和尽可能保持本节的自包含性，我们将实现一个简单线性指针分配器且用它作为全局分配器。然而，我们 *强烈地* 建议你在你的程序中使用一个来自crates.io的久经战斗测试的分配器而不是这个分配器。
 
 ``` rust,ignore
-// Bump pointer allocator implementation
+// 线性指针分配器实现
 
 extern crate cortex_m;
 
@@ -51,7 +42,7 @@ use core::ptr;
 
 use cortex_m::interrupt;
 
-// Bump pointer allocator for *single* core systems
+// 用于单核系统的线性指针分配器
 struct BumpPointerAlloc {
     head: UnsafeCell<usize>,
     end: usize,
@@ -61,8 +52,7 @@ unsafe impl Sync for BumpPointerAlloc {}
 
 unsafe impl GlobalAlloc for BumpPointerAlloc {
     unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
-        // `interrupt::free` is a critical section that makes our allocator safe
-        // to use from within interrupts
+        // `interrupt::free`是一个临界区，临界区让我们的分配器在中断中用起来安全
         interrupt::free(|_| {
             let head = self.head.get();
             let size = layout.size();

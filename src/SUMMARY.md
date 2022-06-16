@@ -38,7 +38,7 @@ more information and coordination
     - [零成本抽象](./static-guarantees/zero-cost-abstractions.md)
 - [可移植性](./portability/index.md)
 - [并发](./concurrency/index.md)
-- [Collections](./collections/index.md)
+- [集合](./collections/index.md)
 - [设计模式](./design-patterns/index.md)
     - [HALs](./design-patterns/hal/index.md)
         - [Checklist](./design-patterns/hal/checklist.md)
