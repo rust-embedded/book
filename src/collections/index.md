@@ -139,27 +139,15 @@ fn main() -> ! {
 }
 ```
 
-You'll note two differences between these collections and the ones in `alloc`.
+你会注意到这些集合与`alloc`中的集合有两个不一样的地方。
 
-First, you have to declare upfront the capacity of the collection. `heapless`
-collections never reallocate and have fixed capacities; this capacity is part of
-the type signature of the collection. In this case we have declared that `xs`
-has a capacity of 8 elements that is the vector can, at most, hold 8 elements.
-This is indicated by the `U8` (see [`typenum`]) in the type signature.
+第一，你必须预先声明集合的容量。`heapless`集合从来不会发生重分配且具有固定的容量;这个容量是集合的类型签名的一部分。在这个例子里，我们已经声明了`xs`的容量为8个元素，也就是说，这个vector最多只能有八个元素。这是通过类型签名中的`U8` (看[`typenum`])来指定的。
 
 [`typenum`]: https://crates.io/crates/typenum
 
-Second, the `push` method, and many other methods, return a `Result`. Since the
-`heapless` collections have fixed capacity all operations that insert elements
-into the collection can potentially fail. The API reflects this problem by
-returning a `Result` indicating whether the operation succeeded or not. In
-contrast, `alloc` collections will reallocate themselves on the heap to increase
-their capacity.
+第二，`push`方法和许多其它方法返回的是一个`Result`。因为`heapless`集合有一个固定的容量，所以所有插入的操作可能会失败。通过返回一个`Result`，API反应了这个问题，指出操作是否成功还是失败。相反，`alloc`集合自己将会在堆上重新分配去增加它的容量。
 
-As of version v0.4.x all `heapless` collections store all their elements inline.
-This means that an operation like `let x = heapless::Vec::new();` will allocate
-the collection on the stack, but it's also possible to allocate the collection
-on a `static` variable, or even on the heap (`Box<Vec<_, _>>`).
+自v0.4.x版本起，所有的`heapless`集合将它们所有的元素内联地存储起来了。这意味着像是`let x = heapless::Vec::new()`这样的一个操作将会在栈上分配集合，但是它也能够在一个`static`变量上分配集合，或者甚至在堆上(`Box<Vec<_, _>>`)。
 
 ## Trade-offs
 
@@ -231,11 +219,12 @@ On the other hand fixed capacity collections never reallocate so all operations
 have a predictable execution time. For example, `heapless::Vec.push` executes in
 constant time.
 
-### Ease of use
+### 易用性
 
-`alloc` requires setting up a global allocator whereas `heapless` does not.
-However, `heapless` requires you to pick the capacity of each collection that
-you instantiate.
+`alloc`要求配置一个全局分配器而`heapless`不需要。然而，`heapless`要求你去选择你要实例化的每一个集合的容量。
+
+`alloc` API几乎为每一个Rust开发者所熟知。`heapless` API尝试模仿`alloc` API，但是它
+
 
 The `alloc` API will be familiar to virtually every Rust developer. The
 `heapless` API tries to closely mimic the `alloc` API but it will never be
