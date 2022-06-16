@@ -59,11 +59,11 @@ unsafe impl GlobalAlloc for BumpPointerAlloc {
             let align = layout.align();
             let align_mask = !(align - 1);
 
-            // move start up to the next alignment boundary
+            // 将start移至下一个对齐边界。
             let start = (*head + align - 1) & align_mask;
 
             if start + size > self.end {
-                // a null pointer signal an Out Of Memory condition
+                // 一个空指针通知内存不足
                 ptr::null_mut()
             } else {
                 *head = start + size;
@@ -73,13 +73,13 @@ unsafe impl GlobalAlloc for BumpPointerAlloc {
     }
 
     unsafe fn dealloc(&self, _: *mut u8, _: Layout) {
-        // this allocator never deallocates memory
+        // 这个分配器从不释放内存
     }
 }
 
-// Declaration of the global memory allocator
-// NOTE the user must ensure that the memory region `[0x2000_0100, 0x2000_0200]`
-// is not used by other parts of the program
+// 全局内存分配器的声明
+// 注意 用户必须确保`[0x2000_0100, 0x2000_0200]`内存区域
+// 没有被程序的其它部分使用
 #[global_allocator]
 static HEAP: BumpPointerAlloc = BumpPointerAlloc {
     head: UnsafeCell::new(0x2000_0100),
@@ -87,9 +87,7 @@ static HEAP: BumpPointerAlloc = BumpPointerAlloc {
 };
 ```
 
-Apart from selecting a global allocator the user will also have to define how
-Out Of Memory (OOM) errors are handled using the *unstable*
-`alloc_error_handler` attribute.
+除了选择一个全局分配器，用户也将必须定义如何使用*不稳定的*`alloc_error_handler`属性来处理内存溢出错误。
 
 ``` rust,ignore
 #![feature(alloc_error_handler)]
@@ -104,7 +102,7 @@ fn on_oom(_layout: Layout) -> ! {
 }
 ```
 
-Once all that is in place, the user can finally use the collections in `alloc`.
+一旦一切都满足了，用户最终可以在`alloc`中使用集合。
 
 ```rust,ignore
 #[entry]
@@ -120,13 +118,11 @@ fn main() -> ! {
 }
 ```
 
-If you have used the collections in the `std` crate then these will be familiar
-as they are exact same implementation.
+如果你已经使用了`std` crate中的集合，那么这些对你来说将非常熟悉，因为他们的实现一样。
 
-## Using `heapless`
+## 使用 `heapless`
 
-`heapless` requires no setup as its collections don't depend on a global memory
-allocator. Just `use` its collections and proceed to instantiate them:
+`heapless`无需设置因为它的集合不依赖一个全局内存分配器。只是`use`它的集合然后实例化它们:
 
 ```rust,ignore
 extern crate heapless; // v0.4.x
