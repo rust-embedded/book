@@ -9,15 +9,8 @@
 应该避免为原始外设扩展traits。
 
 <a id="c-inline"></a>
-## 方法在适当的地方用`#[inline`修饰
+## 方法在适当的地方用`#[inline]`修饰
 
-The Rust compiler does not by default perform full inlining across crate
-boundaries. As embedded applications are sensitive to unexpected code size
-increases, `#[inline]` should be used to guide the compiler as follows:
-
-* All "small" functions should be marked `#[inline]`. What qualifies as "small"
-  is subjective, but generally all functions that are expected to compile down
-  to single-digit instruction sequences qualify as small.
-* Functions that are very likely to take constant values as parameters should be
-  marked as `#[inline]`. This enables the compiler to compute even complicated
-  initialization logic at compile time, provided the function inputs are known.
+Rust编译器默认不会越过crate边界执行完全内联。因为嵌入式应用对于不可预期的代码大小的增加很敏感，`#[inline]`应该如下所示用来指导编译器:
+* 所有的"小"函数应该被标记`#[inline]`。什么是"小"是主观的，但是通常所有有希望被编译成一位数的指令序列(single-digit instruction sequences)都可以被视为"小"。
+* 非常有可能把一个常量数值作为你参数的函数应该被标记为`#[inline]`。这让编译器在编译时就可以进行计算甚至是复杂的初始化逻辑，前提是函数输入是已知的。

@@ -1,16 +1,13 @@
-# Recommendations for GPIO Interfaces
+# 关于GPIO接口的建议
 
 <a id="c-zst-pin"></a>
-## Pin types are zero-sized by default (C-ZST-PIN)
+## Pin类型默认是零大小的(C-ZST-PIN)
 
-GPIO Interfaces exposed by the HAL should provide dedicated zero-sized types for
-each pin on every interface or port, resulting in a zero-cost GPIO abstraction
-when all pin assignments are statically known.
+由HAL暴露的GPIO接口应该为所有接口或者端口上的每一个管脚提供一个专用的零大小类型，从而当所有的管脚分配静态已知时，提供一个零开销抽象。
 
-Each GPIO Interface or Port should implement a `split` method returning a
-struct with every pin.
+每个GPIO接口或者端口应该实现一个`split`方法，它返回一个有所有管脚的结构体。
 
-Example:
+案例:
 
 ```rust
 pub struct PA0;
@@ -37,15 +34,14 @@ pub struct PortAPins {
 ```
 
 <a id="c-erased-pin"></a>
-## Pin types provide methods to erase pin and port (C-ERASED-PIN)
+## 管脚类型提供方法去擦除管脚和端口(C-ERASED-PIN)
 
-Pins should provide type erasure methods that move their properties from
-compile time to runtime, and allow more flexibility in applications.
+管脚应该提供类型擦除方法去将它们的属性从编译时移到运行时，允许在应用中有更多的灵活性。
 
-Example:
+案例:
 
 ```rust
-/// Port A, pin 0.
+/// 端口 A, 管脚 0。
 pub struct PA0;
 
 impl PA0 {
@@ -54,9 +50,9 @@ impl PA0 {
     }
 }
 
-/// A pin on port A.
+/// 端口A上的A管脚。
 pub struct PA {
-    /// The pin number.
+    /// 管脚号。
     pin: u8,
 }
 
@@ -72,7 +68,8 @@ impl PA {
 pub struct Pin {
     port: Port,
     pin: u8,
-    // (these fields can be packed to reduce the memory footprint)
+    /// (这些字段)
+    /// (这些字段可以打包以减少内存占用)
 }
 
 enum Port {
@@ -84,18 +81,15 @@ enum Port {
 ```
 
 <a id="c-pin-state"></a>
-## Pin state should be encoded as type parameters (C-PIN-STATE)
+## 管脚状态应该被编码成类型参数 (C-PIN-STATE)
 
-Pins may be configured as input or output with different characteristics
-depending on the chip or family. This state should be encoded in the type system
-to prevent use of pins in incorrect states.
+取决于芯片或者芯片家族，管家可能被配置为具有不同特性的输出或者输入。这个状态应该在类型系统中被编码去避免在错误的状态中使用管脚。
 
-Additional, chip-specific state (eg. drive strength) may also be encoded in this
-way, using additional type parameters.
+另外，芯片特定的状态(eg. 驱动强度)可能也用这个办法被编码，使用额外的类型参数。
 
-Methods for changing the pin state should be provided as `into_input` and
-`into_output` methods.
+用来改变管脚状态的方法应该被实现成`into_input`和`into_output`方法。
 
+另外，`with_{input,output}_state`方法应该
 Additionally, `with_{input,output}_state` methods should be provided that
 temporarily reconfigure a pin in a different state without moving it.
 
@@ -124,7 +118,7 @@ Pin state should be bounded by sealed traits. Users of the HAL should have no
 need to add their own state. The traits can provide HAL-specific methods
 required to implement the pin state API.
 
-Example:
+案例:
 
 ```rust
 # use std::marker::PhantomData;
