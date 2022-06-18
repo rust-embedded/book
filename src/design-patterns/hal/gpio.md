@@ -89,12 +89,9 @@ enum Port {
 
 用来改变管脚状态的方法应该被实现成`into_input`和`into_output`方法。
 
-另外，`with_{input,output}_state`方法应该
-Additionally, `with_{input,output}_state` methods should be provided that
-temporarily reconfigure a pin in a different state without moving it.
+另外，应该提供`with_{input,output}_state`方法，在一个不同的状态中临时配置一个管脚而不是移动它。
 
-The following methods should be provided for every pin type (that is, both
-erased and non-erased pin types should provide the same API):
+应该为每个的管脚类型提供下列的方法(也就是说，已擦除和未擦除的管脚类型应该提供一样的API):
 
 * `pub fn into_input<N: InputState>(self, input: N) -> Pin<N>`
 * `pub fn into_output<N: OutputState>(self, output: N) -> Pin<N>`
@@ -113,10 +110,7 @@ erased and non-erased pin types should provide the same API):
   ) -> R
   ```
 
-
-Pin state should be bounded by sealed traits. Users of the HAL should have no
-need to add their own state. The traits can provide HAL-specific methods
-required to implement the pin state API.
+管脚状态应该用sealed traits来绑定。HAL的用户应该不需要添加它们自己的状态。这个traits能提供HAL特定的方法，实现管脚状态API需要这些方法。
 
 案例:
 
@@ -195,5 +189,5 @@ impl<S: PinState> PA1<S> {
     }
 }
 
-// Same for `PA` and `Pin`, and other pin types.
+// 对于`PA`和`Pin`一样的，对于其它管脚类型来说也是。
 ```
