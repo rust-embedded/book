@@ -68,8 +68,8 @@ impl PA {
 pub struct Pin {
     port: Port,
     pin: u8,
-    /// (这些字段)
-    /// (这些字段可以打包以减少内存占用)
+    // (这些字段)
+    // (这些字段可以打包以减少内存占用)
 }
 
 enum Port {
