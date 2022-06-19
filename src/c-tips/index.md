@@ -1,37 +1,24 @@
-# Tips for embedded C developers
+# 给嵌入式C开发者的贴士
 
-This chapter collects a variety of tips that might be useful to experienced
-embedded C developers looking to start writing Rust. It will especially
-highlight how things you might already be used to in C are different in Rust.
+这个章节收集了可能对于正在寻求开始编写Rust有经验的嵌入式C开发者有用的各种各样的贴士。它将解释你在C中可能已经用到的那些东西与Rust中有多不同。
 
-## Preprocessor
+## 预处理器
 
-In embedded C it is very common to use the preprocessor for a variety of
-purposes, such as:
+在嵌入式C中，为了各种各样的目的使用预处理器是很常见的，比如:
 
-* Compile-time selection of code blocks with `#ifdef`
-* Compile-time array sizes and computations
-* Macros to simplify common patterns (to avoid function call overhead)
+* 使用`#ifdef`编译时选择代码块
+* 编译时的数组大小和计算
+* 用来简化常见模式的宏(避免函数调用的开销)
 
-In Rust there is no preprocessor, and so many of these use cases are addressed
-differently. In the rest of this section we cover various alternatives to
-using the preprocessor.
+在Rust中没有预处理器，所以许多用例有不同的处理方法。本章节剩下的部分，我们将介绍使用预处理器的各种替代方法。
 
-### Compile-Time Code Selection
+### 编译时的代码选择
 
-The closest match to `#ifdef ... #endif` in Rust are [Cargo features]. These
-are a little more formal than the C preprocessor: all possible features are
-explicitly listed per crate, and can only be either on or off. Features are
-turned on when you list a crate as a dependency, and are additive: if any crate
-in your dependency tree enables a feature for another crate, that feature will
-be enabled for all users of that crate.
+Rust中最接近`#ifdef ... #endif`的是[Cargo features]。这些比C预处理器更正式一点: 每个crate显式列举的所有可能的features只能是关了的或者打开了的。当你把一个crate列为依赖项时，Features被打开，且是可添加的: 如果你依赖树中的任何crate为另一个crate打开了一个feature，那么这个feature将为所有那个crate的用户而打开。
 
 [Cargo features]: https://doc.rust-lang.org/cargo/reference/manifest.html#the-features-section
 
-For example, you might have a crate which provides a library of signal
-processing primitives. Each one might take some extra time to compile or
-declare some large table of constants which you'd like to avoid. You could
-declare a Cargo feature for each component in your `Cargo.toml`:
+比如，你可能有一个crate，其提供一个信号处理的原语库(library of signal processing primitives)。每个原语可能带来一些额外的时间去编译大量的常量，你想要躲开这些常量。你可以为你的`Cargo.toml`中每个组件声明一个Cargo feature。
 
 ```toml
 [features]
@@ -39,11 +26,10 @@ FIR = []
 IIR = []
 ```
 
-Then, in your code, use `#[cfg(feature="FIR")]` to control what is included.
+然后，在你的代码中，使用`#[cfg(feature="FIR")]`去控制什么东西应该被包含。
 
 ```rust
-/// In your top-level lib.rs
-
+/// 在你的顶层的lib.rs中
 #[cfg(feature="FIR")]
 pub mod fir;
 
@@ -51,19 +37,16 @@ pub mod fir;
 pub mod iir;
 ```
 
-You can similarly include code blocks only if a feature is _not_ enabled, or if
-any combination of features are or are not enabled.
+同样地，你可以控制，只有当某个feature _没有_ 被打开时，包含代码块，或者某些features的组合被打开或者被关闭时。 
 
-Additionally, Rust provides a number of automatically-set conditions you can
-use, such as `target_arch` to select different code based on architecture. For
-full details of the conditional compilation support, refer to the
-[conditional compilation] chapter of the Rust reference.
+另外，Rust提供许多你可以使用的自动配置了的条件，比如`target_arch`用来选择不同的代码所基于的架构。对于条件编译的全部细节，可以参看the Rust reference的[conditional compilation]章节。
 
 [conditional compilation]: https://doc.rust-lang.org/reference/conditional-compilation.html
 
-The conditional compilation will only apply to the next statement or block. If
-a block can not be used in the current scope then the `cfg` attribute will
-need to be used multiple times.  It's worth noting that most of the time it is
+条件编译将只应用于下一条语句或者块。如果一个块不能在现在的作用域中被使用，那么`cfg`属性将需要被多次使用。值得注意的是
+
+
+  It's worth noting that most of the time it is
 better to simply include all the code and allow the compiler to remove dead
 code when optimising: it's simpler for you and your users, and in general the
 compiler will do a good job of removing unused code.

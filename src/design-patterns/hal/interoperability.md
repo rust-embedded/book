@@ -32,19 +32,15 @@ impl Timer {
 
 HALs能被编写在[svd2rust]生成的PACs之上，或在其它提供纯寄存器访问的crates之上。HALs应该总是能在它们的crate root中重新导出它们所基于的寄存器访问crate
 
-一个PAC应该
-A PAC should be reexported under the name `pac`, regardless of the actual name
-of the crate, as the name of the HAL should already make it clear what PAC is
-being accessed.
+一个PAC应该被重新导出在名字`pac`下，无论这个crate实际的名字是什么，因为HAL的名字应该已经明确了正被访问的是什么PAC 。
 
 [svd2rust]: https://github.com/rust-embedded/svd2rust
 
 <a id="c-hal-traits"></a>
-## Types implement the `embedded-hal` traits (C-HAL-TRAITS)
+## 类型实现`embedded-hal` traits (C-HAL-TRAITS)
 
-Types provided by the HAL should implement all applicable traits provided by the
-[`embedded-hal`] crate.
+HAL提供的类型应该实现所有的由[`embedded-hal`] crate提供的能用的traits。
 
-Multiple traits may be implemented for the same type.
+同个类型可能实现多个traits。
 
 [`embedded-hal`]: https://github.com/rust-embedded/embedded-hal
