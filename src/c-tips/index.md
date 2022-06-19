@@ -43,20 +43,12 @@ pub mod iir;
 
 [conditional compilation]: https://doc.rust-lang.org/reference/conditional-compilation.html
 
-条件编译将只应用于下一条语句或者块。如果一个块不能在现在的作用域中被使用，那么`cfg`属性将需要被多次使用。值得注意的是
-
-
-  It's worth noting that most of the time it is
-better to simply include all the code and allow the compiler to remove dead
-code when optimising: it's simpler for you and your users, and in general the
-compiler will do a good job of removing unused code.
+条件编译将只应用于下一条语句或者块。如果一个块不能在现在的作用域中被使用，那么`cfg`属性将需要被多次使用。值得注意的是大多数时间，仅是包含所有的代码，让编译器在优化时去删除死代码(dead code)更好，通常，在移除不使用的代码方面的工作，编译器做得很好。
 
 ### Compile-Time Sizes and Computation
+### 编译时大小和计算
 
-Rust supports `const fn`, functions which are guaranteed to be evaluable at
-compile-time and can therefore be used where constants are required, such as
-in the size of arrays. This can be used alongside features mentioned above,
-for example:
+Rust支持`const fn`，`const fn`是在编译时可以被计算的函数，因此可以被用在需要常量的地方，比如在数组的大小中。这个能与上述的features一起使用，比如:
 
 ```rust
 const fn array_size() -> usize {
@@ -69,12 +61,12 @@ const fn array_size() -> usize {
 static BUF: [u32; array_size()] = [0u32; array_size()];
 ```
 
-These are new to stable Rust as of 1.31, so documentation is still sparse. The
-functionality available to `const fn` is also very limited at the time of
-writing; in future Rust releases it is expected to expand on what is permitted
-in a `const fn`.
+这些对于stable版本的Rust来说是新的特性，从1.31开始引入，因此文档依然很少。在写这篇文章的时候`const fn`可用的功能也非常有限; 在未来的Rust release版本中，我们可以期望`const fn`将带来更多的功能。
 
-### Macros
+### 宏
+
+Rust提供一个极度强大的[宏系统]。虽然C预处理器
+
 
 Rust provides an extremely powerful [macro system]. While the C preprocessor
 operates almost directly on the text of your source code, the Rust macro system
@@ -85,7 +77,7 @@ item, or pattern. Procedural macros are more complex but permit extremely
 powerful additions to the Rust language: they can transform arbitrary Rust
 syntax into new Rust syntax.
 
-[macro system]: https://doc.rust-lang.org/book/ch19-06-macros.html
+[宏系统]: https://doc.rust-lang.org/book/ch19-06-macros.html
 
 In general, where you might have used a C preprocessor macro, you probably want
 to see if a macro-by-example can do the job instead. They can be defined in
@@ -385,9 +377,9 @@ Rust Reference.
 
 [type layout]: https://doc.rust-lang.org/reference/type-layout.html
 
-## Other Resources
+## 其它资源
 
-* In this book:
+* 在这本书中:
     * [A little C with your Rust](../interoperability/c-with-rust.md)
     * [A little Rust with your C](../interoperability/rust-with-c.md)
 * [The Rust Embedded FAQs](https://docs.rust-embedded.org/faq.html)

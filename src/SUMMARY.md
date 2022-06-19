@@ -52,8 +52,8 @@ more information and coordination
     - [A little C with your Rust](./interoperability/c-with-rust.md)
     - [A little Rust with your C](./interoperability/rust-with-c.md)
 - [没有排序的主题](./unsorted/index.md)
-  - [Optimizations: The speed size tradeoff](./unsorted/speed-vs-size.md)
-  - [Performing Math Functionality](./unsorted/math.md)
+  - [优化: 速度与大小间的均衡](./unsorted/speed-vs-size.md)
+  - [执行数学运算](./unsorted/math.md)
 
 ---
 

@@ -1,5 +1,5 @@
 # Optimizations: the speed size tradeoff
-
+# 优化: 速度与大小之间的均衡
 Everyone wants their program to be super fast and super small but it's usually
 not possible to have both characteristics. This section discusses the
 different optimization levels that `rustc` provides and how they affect the
