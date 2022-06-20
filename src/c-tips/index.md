@@ -65,7 +65,7 @@ static BUF: [u32; array_size()] = [0u32; array_size()];
 
 ### 宏
 
-Rust提供一个极度强大的[宏系统]。虽然C预处理器几乎直接在你的源代码之上进行操作，但是Rust宏系统可以在一个更高的级别上操作。存在两种C宏: _声明宏_ 和 _过程宏_ 。前者更简单也最常见; 它们看起来像是函数调用，且能扩展成一个完整的表达式，语句，项目，或者模式。过程宏更复杂但是却能让Rust更强大: 它们可以把任一条Rust语法变成一个新的Rust语法。
+Rust提供一个极度强大的[宏系统]。虽然C预处理器几乎直接在你的源代码之上进行操作，但是Rust宏系统可以在一个更高的级别上操作。存在两种Rust宏: _声明宏_ 和 _过程宏_ 。前者更简单也最常见; 它们看起来像是函数调用，且能扩展成一个完整的表达式，语句，项目，或者模式。过程宏更复杂但是却能让Rust更强大: 它们可以把任一条Rust语法变成一个新的Rust语法。
 
 [宏系统]: https://doc.rust-lang.org/book/ch19-06-macros.html
 
@@ -151,53 +151,55 @@ for element in arr.iter() {
 [`core::ptr::read_volatile`]: https://doc.rust-lang.org/core/ptr/fn.read_volatile.html
 [`core::ptr::write_volatile`]: https://doc.rust-lang.org/core/ptr/fn.write_volatile.html
 
-For example, in C you might write:
+比如，在C中你可能这样写:
 
 ```c
 volatile bool signalled = false;
 
 void ISR() {
-    // Signal that the interrupt has occurred
+    // 提醒中断已经发生了
     signalled = true;
 }
 
 void driver() {
     while(true) {
-        // Sleep until signalled
+        // 睡眠直到信号来了
         while(!signalled) { WFI(); }
-        // Reset signalled indicator
+        // 重置信号提示符
         signalled = false;
-        // Perform some task that was waiting for the interrupt
+        // 执行一些正在等待这个中断的任务
         run_task();
     }
 }
 ```
 
-The equivalent in Rust would use volatile methods on each access:
+在Rust中对每个访问使用volatile方法能达到相同的效果:
 
 ```rust,ignore
 static mut SIGNALLED: bool = false;
 
 #[interrupt]
 fn ISR() {
-    // Signal that the interrupt has occurred
-    // (In real code, you should consider a higher level primitive,
-    //  such as an atomic type).
+    // 提醒中断已经发生
+    // (在正在的代码中，你应该考虑一个更高级的基本类型,
+    // 比如一个原子类型)
     unsafe { core::ptr::write_volatile(&mut SIGNALLED, true) };
 }
 
 fn driver() {
     loop {
-        // Sleep until signalled
+        // 睡眠直到信号来了
         while unsafe { !core::ptr::read_volatile(&SIGNALLED) } {}
-        // Reset signalled indicator
+        // 重置信号指示符
         unsafe { core::ptr::write_volatile(&mut SIGNALLED, false) };
-        // Perform some task that was waiting for the interrupt
+        // 执行一些正在等待中断的任务
         run_task();
     }
 }
 ```
 
+在示例代码中有些事情值得注意:
+* 我们可以
 A few things are worth noting in the code sample:
   * We can pass `&mut SIGNALLED` into the function requiring `*mut T`, since
     `&mut T` automatically converts to a `*mut T` (and the same for `*const T`)
