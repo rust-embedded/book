@@ -4,16 +4,15 @@
 
 ### BSP
 
-A Board Support Crate provides a high level interface configured for a specific
-board. It usually depends on a [HAL](#hal) crate.
-There is a more detailed description on the [memory-mapped registers page](../start/registers.md)
-or for a broader overview see [this video](https://youtu.be/vLYit_HHPaY).
+一个板级支持Crate(Board Support Crate)提供一个为某个特定板子配置的高级接口。它通常依赖一个[HAL](#hal) crate 。在[存储映射的寄存器那页](../start/registers.md)有更多细节的描述或者看[这个视频](https://youtu.be/vLYit_HHPaY)来获取一个更广泛的概述。
 
 ### FPU
 
-Floating-point Unit. A 'math processor' running only operations on floating-point numbers.
+浮点单元(Floating-Point Unit)。一个只运行在浮点数上的'数学处理器'。
 
 ### HAL
+
+一个硬件抽象层(Hardware Abstraction Layer) crate提供了一个
 
 A Hardware Abstraction Layer crate provides a developer friendly interface to a microcontroller's
 features and peripherals. It is usually implemented on top of a [Peripheral Access Crate (PAC)](#pac).
@@ -23,8 +22,7 @@ or for a broader overview see [this video](https://youtu.be/vLYit_HHPaY).
 
 ### I2C
 
-Sometimes referred to as `I²C` or Inter-IC. It is a protocol meant for hardware communication
-within a single integrated circuit. See [here][i2c] for more details
+有时又被称为 `I²C` 或者 Intere-IC 。它是一种用于在单个集成电路中进行硬件通信的协议。看[这里][i2c]来获取更多细节。
 
 [i2c]: https://en.wikipedia.org/wiki/I2c
 
