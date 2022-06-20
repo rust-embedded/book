@@ -64,7 +64,7 @@ pub y: cty::c_int,
 pub extern "C" fn cool_function( ... );
 ```
 
-This statement defines the signature of a function that uses the C ABI, called `cool_function`. By defining the signature without defining the body of the function, the definition of this function will need to be provided elsewhere, or linked into the final library or binary from a static library.
+这个语句定义了一个使用C ABI的函数的签名，被叫做`cool_function`。通过定义签名而不定义函数的主体，这个函数的定义将需要在其它地方定义，或者从一个静态库链接进最终的库或者一个二进制文件中
 
 ```rust,ignore
     i: cty::c_int,
@@ -72,7 +72,8 @@ This statement defines the signature of a function that uses the C ABI, called `
     cs: *mut CoolStruct
 ```
 
-Similar to our datatype above, we define the datatypes of the function arguments using C-compatible definitions. We also retain the same argument names, for clarity.
+与我们上面的数据类型一样，我们使用C兼容的定义去定义函数参数的数据类型。为了清晰可见，我们还保留了相同的参数名。
+
 
 We have one new type here, `*mut CoolStruct`. As C does not have a concept of Rust's references, which would look like this: `&mut CoolStruct`, we instead have a raw pointer. As dereferencing this pointer is `unsafe`, and the pointer may in fact be a `null` pointer, care must be taken to ensure the guarantees typical of Rust when interacting with C or C++ code.
 

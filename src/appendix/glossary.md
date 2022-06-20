@@ -28,9 +28,9 @@ or for a broader overview see [this video](https://youtu.be/vLYit_HHPaY).
 
 ### PAC
 
-A Peripheral Access Crate provides access to a microcontroller's peripherals. It is one of
-the lower level crates and is usually generated directly from the provided [SVD](#svd), often
-using [svd2rust](https://github.com/rust-embedded/svd2rust/). The [Hardware Abstraction Layer](#hal)
+一个外设访问 Crate (Peripheral Access Crate)提供了对一个微控制器的外设的访问。它是一个底层的crates且通常从提供的[SVD](#svd)被直接生成，经常使用[svd2rust](https://github.com/rust-embedded/svd2rust/)。
+
+ The [Hardware Abstraction Layer](#hal)
 would usually depend on this crate.
 There is a more detailed description on the [memory-mapped registers page](../start/registers.md)
 or for a broader overview see [this video](https://youtu.be/vLYit_HHPaY).
