@@ -199,33 +199,18 @@ fn driver() {
 ```
 
 在示例代码中有些事情值得注意:
-* 我们可以
-A few things are worth noting in the code sample:
-  * We can pass `&mut SIGNALLED` into the function requiring `*mut T`, since
-    `&mut T` automatically converts to a `*mut T` (and the same for `*const T`)
-  * We need `unsafe` blocks for the `read_volatile`/`write_volatile` methods,
-    since they are `unsafe` functions. It is the programmer's responsibility
-    to ensure safe use: see the methods' documentation for further details.
+  * 我们可以把`&mut SIGNALLED`传递给要求`*mut T`的函数中，因为`&mut T`会自动转换成一个`*mut T` (对于`*const T`来说是一样的)
+  * 我们需要为`read_volatile`/`write_volatile`方法使用`unsafe`块，因为它们是`unsafe`的函数。确保操作安全变成了程序员的责任: 看方法的文档获得更多细节。
 
-It is rare to require these functions directly in your code, as they will
-usually be taken care of for you by higher-level libraries. For memory mapped
-peripherals, the peripheral access crates will implement volatile access
-automatically, while for concurrency primitives there are better abstractions
-available (see the [Concurrency chapter]).
+在你的代码中直接使用这些函数是很少见的，因为它们通常由更高级的库封装起来为你提供服务。对于存储映射的外设，提供外设访问的crates将自动实现volatile访问，而对于并发的基本类型，存在更好的抽象可用。(看[并发章节])
 
-[Concurrency chapter]: ../concurrency/index.md
+[并发章节]: ../concurrency/index.md
 
-## Packed and Aligned Types
+## 填充和对齐类型
 
-In embedded C it is common to tell the compiler a variable must have a certain
-alignment or a struct must be packed rather than aligned, usually to meet
-specific hardware or protocol requirements.
+在嵌入式C中，告诉编译器一个变量必须遵守某个对齐或者一个结构体必须被填充而不是对齐，是很常见的行为，通常是为了满足特定的硬件或者协议要求。
 
-In Rust this is controlled by the `repr` attribute on a struct or union. The
-default representation provides no guarantees of layout, so should not be used
-for code that interoperates with hardware or C. The compiler may re-order
-struct members or insert padding and the behaviour may change with future
-versions of Rust.
+在Rust中，这由一个结构体或者联合体上的`repr`属性来控制。默认的表示(representation)不保障布局，因此不应该被用于与硬件或者C互用的代码。编译器可能会对结构体成员重新排序或者插入填充，且这种行为可能在未来的Rust版本中改变。
 
 ```rust
 struct Foo {
@@ -240,10 +225,10 @@ fn main() {
 }
 
 // 0x7ffecb3511d0 0x7ffecb3511d4 0x7ffecb3511d2
-// Note ordering has been changed to x, z, y to improve packing.
+// 注意为了改进填充，顺序已经被变成了x, z, y
 ```
 
-To ensure layouts that are interoperable with C, use `repr(C)`:
+使用`repr(C)`可以确保布局可以与C互用。
 
 ```rust
 #[repr(C)]
@@ -259,8 +244,8 @@ fn main() {
 }
 
 // 0x7fffd0d84c60 0x7fffd0d84c62 0x7fffd0d84c64
-// Ordering is preserved and the layout will not change over time.
-// `z` is two-byte aligned so a byte of padding exists between `y` and `z`.
+// 顺序被保留了，布局将不会随着时间而改变
+// `z`是两个字节对齐，因此在`y`和`z`之间填充了一个字节。
 ```
 
 To ensure a packed representation, use `repr(packed)`:
@@ -280,13 +265,12 @@ fn main() {
 }
 
 // 0x7ffd33598490 0x7ffd33598492 0x7ffd33598493
-// No padding has been inserted between `y` and `z`, so now `z` is unaligned.
+// 在`y`和`z`没有填充被插入，因此现在`z`没有被对齐。
 ```
 
-Note that using `repr(packed)` also sets the alignment of the type to `1`.
+注意使用`repr(packed)`也会将类型的对齐设置成`1` 。
 
-Finally, to specify a specific alignment, use `repr(align(n))`, where `n` is
-the number of bytes to align to (and must be a power of two):
+最终，为了指定一个特定的对齐，使用`repr(align(n))`，`n`是要对齐的字节数(必须是2的幂):
 
 ```rust
 #[repr(C)]
@@ -306,17 +290,13 @@ fn main() {
 
 // 0x7ffec909a000 0x7ffec909a002 0x7ffec909a004
 // 0x7ffec909b000 0x7ffec909b002 0x7ffec909b004
-// The two instances `u` and `v` have been placed on 4096-byte alignments,
-// evidenced by the `000` at the end of their addresses.
+// `u`和`v`两个实例已经被放置在4096字节的对齐上。
+// 它们地址结尾处的`000`证明了这件事。
 ```
 
-Note we can combine `repr(C)` with `repr(align(n))` to obtain an aligned and
-C-compatible layout. It is not permissible to combine `repr(align(n))` with
-`repr(packed)`, since `repr(packed)` sets the alignment to `1`. It is also not
-permissible for a `repr(packed)` type to contain a `repr(align(n))` type.
+注意我们可以结合`repr(C)`和`repr(align(n))`来获取一个对齐的c兼容的布局。不允许将`repr(align(n))`和`repr(packed)`一起使用，因为`repr(packed)`将对齐设置为`1`。也不允许一个`repr(packed)`类型包含一个`repr(align(n))`类型。
 
-For further details on type layouts, refer to the [type layout] chapter of the
-Rust Reference.
+关于类型布局更多的细节，参考the Rust Reference的[type layout]章节。
 
 [type layout]: https://doc.rust-lang.org/reference/type-layout.html
 
