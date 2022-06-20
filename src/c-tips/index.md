@@ -90,25 +90,19 @@ Rust提供一个极度强大的[宏系统]。虽然C预处理器几乎直接在�
 * 改变Cargo的编译配置
 * 添加额外的静态链接库以进行链接
 
-At present there is no support for post-build scripts, which you might
-traditionally have used for tasks like automatic generation of binaries from
-the build objects or printing build information.
+现在还不支持post-build脚本，你通常将它用于像是从编译的对象自动生生成二进制文件或者打印编译信息这类任务。
 
 ### 交叉编译
 
-Using Cargo for your build system also simplifies cross-compiling. In most
-cases it suffices to tell Cargo `--target thumbv6m-none-eabi` and find a
-suitable executable in `target/thumbv6m-none-eabi/debug/myapp`.
+为你的编译系统使用Cargo也能简化交叉编译。在大多数例子里，告诉Cargo `--target thumbv6m-none-eabi`就行了，它会在`target/thumbv6m-none-eabi/debug/myapp`找到一个合适的可执行文件。
 
-For platforms not natively supported by Rust, you will need to build `libcore`
-for that target yourself. On such platforms, [Xargo] can be used as a stand-in
-for Cargo which automatically builds `libcore` for you.
+对于那些并不是Rust原生支持的平台，你将需要自己为那个目标平台编译`libcore`。遇到这样的平台，[Xargo]可以作为Cargo的替代来使用，它可以自动地为你编译`libcore`。
 
 [Xargo]: https://github.com/japaric/xargo
 
-## Iterators vs Array Access
+## 迭代器与数组访问
 
-In C you are probably used to accessing arrays directly by their index:
+在C中，你可能习惯于通过索引直接访问数组:
 
 ```c
 int16_t arr[16];
@@ -118,13 +112,9 @@ for(i=0; i<sizeof(arr)/sizeof(arr[0]); i++) {
 }
 ```
 
-In Rust this is an anti-pattern: indexed access can be slower (as it needs to
-be bounds checked) and may prevent various compiler optimisations. This is an
-important distinction and worth repeating: Rust will check for out-of-bounds
-access on manual array indexing to guarantee memory safety, while C will
-happily index outside the array.
+在Rust中，这是一个反模式(anti-pattern): 索引访问可能会更慢(因为它可能需要做边界检查)且可能会阻止编译器的各种优化。这是一个重要的区别，值得再重复一遍: Rust将在手动的数组索引上进行越界检查以保障内存安全性，而C将会很乐意在数组外进行索引。
 
-Instead, use iterators:
+可以使用迭代器来替代:
 
 ```rust,ignore
 let arr = [0u16; 16];
@@ -133,50 +123,30 @@ for element in arr.iter() {
 }
 ```
 
-Iterators provide a powerful array of functionality you would have to implement
-manually in C, such as chaining, zipping, enumerating, finding the min or max,
-summing, and more. Iterator methods can also be chained, giving very readable
-data processing code.
+迭代器提供了一个有强大功能的数组，在C中你不得不手动实现它，比如chaining，zipping，enumerating，找到最小或最大值，summing，等等。迭代器方法也能被链式调用，提供了可读性非常高的数据处理代码。
 
-See the [Iterators in the Book] and [Iterator documentation] for more details.
+阅读[Iterators in the Book]和[Iterator documentation]获取更多细节。
 
 [Iterators in the Book]: https://doc.rust-lang.org/book/ch13-02-iterators.html
 [Iterator documentation]: https://doc.rust-lang.org/core/iter/trait.Iterator.html
 
-## References vs Pointers
+## 引用和指针
 
-In Rust, pointers (called [_raw pointers_]) exist but are only used in specific
-circumstances, as dereferencing them is always considered `unsafe` -- Rust
-cannot provide its usual guarantees about what might be behind the pointer.
+在Rust中，存在指针(被叫做 [_裸指针_])但是只能在特殊的环境中被使用，因为解引用它们总是被认为是`unsafe`的 -- Rust通常不能保障指针背后有什么。
 
-[_raw pointers_]: https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html#dereferencing-a-raw-pointer
+[_裸指针_]: https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html#dereferencing-a-raw-pointer
 
-In most cases, we instead use _references_, indicated by the `&` symbol, or
-_mutable references_, indicated by `&mut`. References behave similarly to
-pointers, in that they can be dereferenced to access the underlying values, but
-they are a key part of Rust's ownership system: Rust will strictly enforce that
-you may only have one mutable reference _or_ multiple non-mutable references to
-the same value at any given time.
+在大多数例子里，我们使用 _引用_ 来替代，由`&`符号指出，或者 _可变引用_，由`&mut`指出。引用与指针相似，因为它能被解引用来访问底层的数据，但是它们是Rust的所有权系统的一个关键部分: Rust将严格强迫你在任何给定时间只有一个可变引用 _或者_ 对相同数据的多个不变引用。
 
-In practice this means you have to be more careful about whether you need
-mutable access to data: where in C the default is mutable and you must be
-explicit about `const`, in Rust the opposite is true.
+在实践中，这意味着你必须更加小心你是否需要对数据的可变访问: 在C中默认是可变的，你必须显式地使用`const`，在Rust中正好相反。
 
-One situation where you might still use raw pointers is interacting directly
-with hardware (for example, writing a pointer to a buffer into a DMA peripheral
-register), and they are also used under the hood for all peripheral access
-crates to allow you to read and write memory-mapped registers.
+有种情况，你可能仍然要使用裸指针直接与硬件进行交互(比如，写入一个指向DMA外设寄存器中的缓存的指针)，它们也被所有的外设访问crates在底层使用，让你可以读取和写入存储映射寄存器。
 
-## Volatile Access
+## Volatile访问
 
-In C, individual variables may be marked `volatile`, indicating to the compiler
-that the value in the variable may change between accesses. Volatile variables
-are commonly used in an embedded context for memory-mapped registers.
+在C中，某个变量可能被标记成`volatile`，向编译器指出，变量中的值在访问间可能改变。Volatile变量通常用于一个与存储映射寄存器有关的嵌入式上下文中。
 
-In Rust, instead of marking a variable as `volatile`, we use specific methods
-to perform volatile access: [`core::ptr::read_volatile`] and
-[`core::ptr::write_volatile`]. These methods take a `*const T` or a `*mut T`
-(_raw pointers_, as discussed above) and perform a volatile read or write.
+在Rsut中，并不使用`volatile`标记变量，我们使用特定的方法去执行volatile访问: [`core::ptr::read_volatile`] 和 [`core::ptr::write_volatile`]。这些方法使用一个 `*const T` 或者一个 `*mut T` (上面说的 _裸指针_ )，执行一个volatile读取或者写入。
 
 [`core::ptr::read_volatile`]: https://doc.rust-lang.org/core/ptr/fn.read_volatile.html
 [`core::ptr::write_volatile`]: https://doc.rust-lang.org/core/ptr/fn.write_volatile.html
