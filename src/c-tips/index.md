@@ -65,27 +65,13 @@ static BUF: [u32; array_size()] = [0u32; array_size()];
 
 ### 宏
 
-Rust提供一个极度强大的[宏系统]。虽然C预处理器
-
-
-Rust provides an extremely powerful [macro system]. While the C preprocessor
-operates almost directly on the text of your source code, the Rust macro system
-operates at a higher level. There are two varieties of Rust macro: _macros by
-example_ and _procedural macros_. The former are simpler and most common; they
-look like function calls and can expand to a complete expression, statement,
-item, or pattern. Procedural macros are more complex but permit extremely
-powerful additions to the Rust language: they can transform arbitrary Rust
-syntax into new Rust syntax.
+Rust提供一个极度强大的[宏系统]。虽然C预处理器几乎直接在你的源代码之上进行操作，但是Rust宏系统可以在一个更高的级别上操作。存在两种C宏: _声明宏_ 和 _过程宏_ 。前者更简单也最常见; 它们看起来像是函数调用，且能扩展成一个完整的表达式，语句，项目，或者模式。过程宏更复杂但是却能让Rust更强大: 它们可以把任一条Rust语法变成一个新的Rust语法。
 
 [宏系统]: https://doc.rust-lang.org/book/ch19-06-macros.html
 
-In general, where you might have used a C preprocessor macro, you probably want
-to see if a macro-by-example can do the job instead. They can be defined in
-your crate and easily used by your own crate or exported for other users. Be
-aware that since they must expand to complete expressions, statements, items,
-or patterns, some use cases of C preprocessor macros will not work, for example
-a macro that expands to part of a variable name or an incomplete set of items
-in a list.
+通常，你可能想知道在那些你可能使用一个C预处理器宏的地方，能否使用一个声明宏做同样的工作。你能在你的crate中定义它们，且在你的crate中轻松使用它们或者导出给其他人用。但是请注意，因为它们必须扩展成完整的表达式，语句，项或者模式，因此C预处理器的某些用例将无法工作，比如扩展成一个变量名的一部分或者一个列表中不完整的项目集。
+
+和Cargo features一样，值得考虑下你是否真的需要宏。在一些例子中一个常规的函数更容易去理解且将被内联成和一个宏一样的代码。`#[inline]`和`#[inline(always)]` [attributes] 能让你更深入控制这个过程，虽然这里也要小心 - 
 
 As with Cargo features, it is worth considering if you even need the macro. In
 many cases a regular function is easier to understand and will be inlined to
@@ -97,10 +83,9 @@ to decreased performance.
 
 [attributes]: https://doc.rust-lang.org/reference/attributes.html#inline-attribute
 
-Explaining the entire Rust macro system is out of scope for this tips page, so
-you are encouraged to consult the Rust documentation for full details.
+研究完整的Rust宏系统超出了本节内容，因此我们鼓励你去查阅Rust文档了解完整的细节。
 
-## Build System
+## 编译系统
 
 Most Rust crates are built using Cargo (although it is not required). This
 takes care of many difficult problems with traditional build systems. However,
