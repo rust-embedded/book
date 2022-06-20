@@ -1,28 +1,20 @@
-# Optimizations: the speed size tradeoff
 # 优化: 速度与大小之间的均衡
-Everyone wants their program to be super fast and super small but it's usually
-not possible to have both characteristics. This section discusses the
-different optimization levels that `rustc` provides and how they affect the
-execution time and binary size of a program.
 
-## No optimizations
+每个人都想要它们的程序变得超级快且超级小，但是同时满足这两个条件是不可能的。这部分讨论`rustc`提供的不同的优化等级，和它们是如何影响执行时间和一个程序的二进制文件大小。
 
-This is the default. When you call `cargo build` you use the development (AKA
-`dev`) profile. This profile is optimized for debugging so it enables debug
-information and does *not* enable any optimizations, i.e. it uses `-C opt-level
-= 0`.
+## 没有优化
 
-At least for bare metal development, debuginfo is zero cost in the sense that it
-won't occupy space in Flash / ROM so we actually recommend that you enable
-debuginfo in the release profile -- it is disabled by default. That will let you
-use breakpoints when debugging release builds.
+这是默认的。当你调用`cargo build`时，你使用的是development(又叫`dev`)配置。这个配置优化的目的是为了调试，因此它使能了调试信息且*关闭*了所有优化，i.e. 它使用 `-C opt-level = 0` 。
+
+至少对于裸机开发来说，调试信息不会占用Flash/ROM中的空间，意味着在这种情况下，调试信息是零开销的，因此实际上我们推荐你在release配置中使能调试信息 -- 默认它被关闭了。那可以让你调试release编译时，使用断点。
 
 ``` toml
 [profile.release]
-# symbols are nice and they don't increase the size on Flash
+# 符号很好且它们不会增加Flash上的大小
 debug = true
 ```
 
+没有优化对于调试来说是最好的，因为沿着代码单步调试
 No optimizations is great for debugging because stepping through the code feels
 like you are executing the program statement by statement, plus you can `print`
 stack variables and function arguments in GDB. When the code is optimized, trying
@@ -33,18 +25,15 @@ huge and slow. The size is usually more of a problem because unoptimized
 binaries can occupy dozens of KiB of Flash, which your target device may not
 have -- the result: your unoptimized binary doesn't fit in your device!
 
-Can we have smaller, debugger friendly binaries? Yes, there's a trick.
+我们可以有更小的，调试友好的二进制文件吗?是的，这里有一个技巧。
 
-### Optimizing dependencies
+### 优化依赖
 
-There's a Cargo feature named [`profile-overrides`] that lets you
-override the optimization level of dependencies. You can use that feature to
-optimize all dependencies for size while keeping the top crate unoptimized and
-debugger friendly.
+这里有个名为[`profile-overrides`]的Cargo feature，其可以让你覆盖依赖的优化等级。你能使用那个feature去优化所有依赖的大小，而保持顶层的crate没有被优化且调试起来友好。
 
 [`profile-overrides`]: https://doc.rust-lang.org/cargo/reference/profiles.html#overrides
 
-Here's an example:
+这是一个示例:
 
 ``` toml
 # Cargo.toml
@@ -56,7 +45,7 @@ name = "app"
 opt-level = "z" # +
 ```
 
-Without the override:
+没有覆盖:
 
 ``` text
 $ cargo size --bin app -- -A
@@ -69,7 +58,7 @@ section               size        addr
 .bss                     4  0x20000000
 ```
 
-With the override:
+有覆盖:
 
 ``` text
 $ cargo size --bin app -- -A
@@ -82,8 +71,10 @@ section               size        addr
 .bss                     4  0x20000000
 ```
 
-That's a 6 KiB reduction in Flash usage without any loss in the debuggability of
-the top crate. If you step into a dependency then you'll start seeing those
+在Flash的使用上减少了6KiB，而不会损害顶层crate的可调试性。如果你步进一个依赖，然后你将开始再次看到那些`<value optimized out>`信息但是
+
+
+、 If you step into a dependency then you'll start seeing those
 `<value optimized out>` messages again but it's usually the case that you want
 to debug the top crate and not the dependencies. And if you *do* need to debug a
 dependency then you can use the `profile-overrides` feature to exclude a
@@ -165,9 +156,9 @@ different optimization levels use][inline-threshold]:
 
 [inline-threshold]: https://github.com/rust-lang/rust/blob/1.29.0/src/librustc_codegen_llvm/back/write.rs#L2105-L2122
 
-- `opt-level = 3` uses 275
-- `opt-level = 2` uses 225
-- `opt-level = "s"` uses 75
-- `opt-level = "z"` uses 25
+- `opt-level = 3` 使用 275
+- `opt-level = 2` 使用 225
+- `opt-level = "s"` 使用 75
+- `opt-level = "z"` 使用 25
 
-You should try `225` and `275` when optimizing for size.
+当为了大小进行优化时，你应该尝试`225`和`275` 。
