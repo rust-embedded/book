@@ -1,8 +1,6 @@
-# Appendix A: Glossary
+# 附录A: 词汇表
 
-The embedded ecosystem is full of different protocols, hardware components and
-vendor-specific things that use their own terms and abbreviations. This Glossary
-attempts to list them with pointers for understanding them better.
+嵌入式生态系统充满了不同的协议，硬件组件，还有许多与生产商相关的东西，它们都使用自己的缩写和项目名。这个词汇表尝试列出它们以便更高理解它们。
 
 ### BSP
 
@@ -41,24 +39,22 @@ or for a broader overview see [this video](https://youtu.be/vLYit_HHPaY).
 
 ### SPI
 
-Serial Peripheral Interface. See [here][spi] for more information.
+串行外设接口。看[这里][spi]获取更多信息。
 
 [spi]: https://en.wikipedia.org/wiki/Serial_peripheral_interface
 
 ### SVD
 
-System View Description is an XML file format used to describe the programmers view of a
-microcontroller device. You can read more about it on
-[the ARM CMSIS documentation site](https://www.keil.com/pack/doc/CMSIS/SVD/html/index.html).
+系统视图描述文件(System View Description)是一个XML文件格式，被用来描述一个微控制器设备的程序员视角。你能在[the ARM CMSIS documentation site](https://www.keil.com/pack/doc/CMSIS/SVD/html/index.html)上获取更多信息。
 
 ### UART
 
-Universal asynchronous receiver-transmitter. See [here][uart] for more information.
+通用异步收发器。看[这里][uart]获取更多信息。
 
 [uart]: https://en.wikipedia.org/wiki/Universal_asynchronous_receiver-transmitter
 
 ### USART
 
-Universal synchronous and asynchronous receiver-transmitter. See [here][usart] for more information.
+通用同步异步收发器。看[这里][usart]获取更多信息。
 
 [usart]: https://en.wikipedia.org/wiki/Universal_synchronous_and_asynchronous_receiver-transmitter

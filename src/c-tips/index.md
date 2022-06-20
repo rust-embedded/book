@@ -79,7 +79,7 @@ Rust提供一个极度强大的[宏系统]。虽然C预处理器几乎直接在�
 
 ## 编译系统
 
-大多数Rust crates使用Cargo编译 (即使它不是必须的)。这解决了传统编译系统带来的许多难题。然而，你可能希望自定义编译过程。为了实现这个目的，Cargo提供了[`build.rs`脚本]。它们是可以根据需要与Cargo编译系统进行交互的Rust脚本。
+大多数Rust crates使用Cargo编译 (即使这不是必须的)。这解决了传统编译系统带来的许多难题。然而，你可能希望自定义编译过程。为了实现这个目的，Cargo提供了[`build.rs`脚本]。它们是可以根据需要与Cargo编译系统进行交互的Rust脚本。
 
 [`build.rs`脚本]: https://doc.rust-lang.org/cargo/reference/build-scripts.html
 

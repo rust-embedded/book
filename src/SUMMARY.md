@@ -57,4 +57,4 @@ more information and coordination
 
 ---
 
-[Appendix A: Glossary](./appendix/glossary.md)
+[附录A: 词汇表](./appendix/glossary.md)
