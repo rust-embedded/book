@@ -71,15 +71,7 @@ Rust提供一个极度强大的[宏系统]。虽然C预处理器几乎直接在�
 
 通常，你可能想知道在那些你可能使用一个C预处理器宏的地方，能否使用一个声明宏做同样的工作。你能在你的crate中定义它们，且在你的crate中轻松使用它们或者导出给其他人用。但是请注意，因为它们必须扩展成完整的表达式，语句，项或者模式，因此C预处理器的某些用例将无法工作，比如扩展成一个变量名的一部分或者一个列表中不完整的项目集。
 
-和Cargo features一样，值得考虑下你是否真的需要宏。在一些例子中一个常规的函数更容易去理解且将被内联成和一个宏一样的代码。`#[inline]`和`#[inline(always)]` [attributes] 能让你更深入控制这个过程，虽然这里也要小心 - 
-
-As with Cargo features, it is worth considering if you even need the macro. In
-many cases a regular function is easier to understand and will be inlined to
-the same code as a macro. The `#[inline]` and `#[inline(always)]` [attributes]
-give you further control over this process, although care should be taken here
-as well — the compiler will automatically inline functions from the same crate
-where appropriate, so forcing it to do so inappropriately might actually lead
-to decreased performance.
+和Cargo features一样，值得考虑下你是否真的需要宏。在一些例子中一个常规的函数更容易被理解，它也能被内联成和一个和宏一样的代码。`#[inline]`和`#[inline(always)]` [attributes] 能让你更深入控制这个过程，这里也要小心 - 编译器将自动地从同一个crate的合适的的地方内联函数，因此不恰当地强迫它内联函数实际可能会导致性能下降。
 
 [attributes]: https://doc.rust-lang.org/reference/attributes.html#inline-attribute
 
@@ -87,28 +79,22 @@ to decreased performance.
 
 ## 编译系统
 
-Most Rust crates are built using Cargo (although it is not required). This
-takes care of many difficult problems with traditional build systems. However,
-you may wish to customise the build process. Cargo provides [`build.rs`
-scripts] for this purpose. They are Rust scripts which can interact with the
-Cargo build system as required.
+大多数Rust crates使用Cargo编译 (即使它不是必须的)。这解决了传统编译系统带来的许多难题。然而，你可能希望自定义编译过程。为了实现这个目的，Cargo提供了[`build.rs`脚本]。它们是可以根据需要与Cargo编译系统进行交互的Rust脚本。
 
-[`build.rs` scripts]: https://doc.rust-lang.org/cargo/reference/build-scripts.html
+[`build.rs`脚本]: https://doc.rust-lang.org/cargo/reference/build-scripts.html
 
-Common use cases for build scripts include:
+与编译脚本有关的常见用例包括:
 
-* provide build-time information, for example statically embedding the build
-  date or Git commit hash into your executable
-* generate linker scripts at build time depending on selected features or other
-  logic
-* change the Cargo build configuration
-* add extra static libraries to link against
+* 提供编译时信息，比如静态嵌入编译日期或者Git commit hash进你的可执行文件中
+* 根据被选择的features或者其它逻辑在编译时生成链接脚本
+* 改变Cargo的编译配置
+* 添加额外的静态链接库以进行链接
 
 At present there is no support for post-build scripts, which you might
 traditionally have used for tasks like automatic generation of binaries from
 the build objects or printing build information.
 
-### Cross-Compiling
+### 交叉编译
 
 Using Cargo for your build system also simplifies cross-compiling. In most
 cases it suffices to tell Cargo `--target thumbv6m-none-eabi` and find a
