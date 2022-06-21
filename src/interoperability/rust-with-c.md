@@ -24,23 +24,17 @@ crate-type = ["cdylib"]      # 生成动态链接库
 
 ### `#[no_mangle]`
 
-The Rust compiler mangles symbol names differently than native code linkers expect.
-As such, any function that Rust exports to be used outside of Rust needs to be told
-not to be mangled by the compiler.
+Rust对符号名的修饰与本机的代码链接器所期望的不同。因此，需要告知任何被Rust导出到Rust外部去使用的函数不要被编译器修饰。
 
 ### `extern "C"`
 
-By default, any function you write in Rust will use the
-Rust ABI (which is also not stabilized).
-Instead, when building outwards facing FFI APIs we need to
-tell the compiler to use the system ABI.
+默认，任何用Rust写的函数将使用Rust ABI(这也不稳定)。相反，当编译面向外部的FFI APIs，我们需要告诉编译器去使用系统ABI 。 
 
-Depending on your platform, you might want to target a specific ABI version, which are
-documented [here](https://doc.rust-lang.org/reference/items/external-blocks.html).
+取决于你的平台，你可能需要针对一个特定的ABI版本，其记录在[这里](https://doc.rust-lang.org/reference/items/external-blocks.html)。
 
 ---
 
-Putting these parts together, you get a function that looks roughly like this.
+把这些部分放在一起，你得到一个函数，其粗略看起来像是这个。
 
 ```rust,ignore
 #[no_mangle]
