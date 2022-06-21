@@ -1,4 +1,4 @@
-# A little Rust with your C
+# 你的C配点Rust
 
 在C或者C++中使用Rust代码通常由两部分组成。
 
@@ -43,46 +43,40 @@ pub extern "C" fn rust_function() {
 }
 ```
 
-Just as when using `C` code in your Rust project you now need to transform data
-from and to a form that the rest of the application will understand.
+就像在你的Rust项目中使用`C`代码时那样，你现在将需要把数据转换为应用其它部分可以理解的形式。
 
-## Linking and greater project context.
+## 链接和更大的项目上下文
 
-So then, that's one half of the problem solved.
-How do you use this now?
+问题只解决了一半。
 
-**This very much depends on your project and/or build system**
+你现在要如何使用它?
 
-`cargo` will create a `my_lib.so`/`my_lib.dll` or `my_lib.a` file,
-depending on your platform and settings. This library can simply be linked
-by your build system.
+**这很大程度上取决于你的项目或者编译系统**
 
-However, calling a Rust function from C requires a header file to declare
-the function signatures.
+`cargo`将生成一个`my_lib.so`/`my_lib.dll`或者`my_lib.a`文件，取决于你的平台和配置。可以通过编译系统简单地链接这个库。
 
-Every function in your Rust-ffi API needs to have a corresponding header function.
+然而，从C调用一个Rust函数要求一个头文件去声明函数的签名。
+
+在你的Rust-ffi API中的每个函数需要有一个相关的头文件函数。
 
 ```rust,ignore
 #[no_mangle]
 pub extern "C" fn rust_function() {}
 ```
 
-would then become
+将会变成
 
 ```C
 void rust_function();
 ```
 
-etc.
+等等。
 
-There is a tool to automate this process,
-called [cbindgen] which analyses your Rust code
-and then generates headers for your C and C++ projects from it.
+这里有个工具可以自动化这个过程，被叫做[cbindgen]，其会分析你的Rust代码然后从它为你的C和C++项目生成头文件。
 
 [cbindgen]: https://github.com/eqrion/cbindgen
 
-At this point, using the Rust functions from C
-is as simple as including the header and calling them!
+此时从C中使用Rust函数非常简单，只需包含头文件和调用它们！
 
 ```C
 #include "my-rust-project.h"
