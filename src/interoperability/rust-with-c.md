@@ -20,11 +20,7 @@ crate-type = ["cdylib"]      # 生成动态链接库
 
 ## 构建一个`C` API
 
-因为C++没有稳定的ABI
-
-Because C++ has no stable ABI for the Rust compiler to target, we use `C` for
-any interoperability between different languages. This is no exception when using Rust
-inside of C and C++ code.
+因为对于Rust编译器来说，C++没有稳定的ABI，因此我们使用`C`表示不同语言间的互用性。在C和C++代码的内部使用Rust时也不例外。
 
 ### `#[no_mangle]`
 
