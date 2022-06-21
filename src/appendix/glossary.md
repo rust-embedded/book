@@ -12,13 +12,7 @@
 
 ### HAL
 
-一个硬件抽象层(Hardware Abstraction Layer) crate提供了一个
-
-A Hardware Abstraction Layer crate provides a developer friendly interface to a microcontroller's
-features and peripherals. It is usually implemented on top of a [Peripheral Access Crate (PAC)](#pac).
-It may also implement traits from the [`embedded-hal`](https://crates.io/crates/embedded-hal) crate.
-There is a more detailed description on the [memory-mapped registers page](../start/registers.md)
-or for a broader overview see [this video](https://youtu.be/vLYit_HHPaY).
+一个硬件抽象层(Hardware Abstraction Layer) crate为一个微控制器的功能和外设提供一个开发者友好的接口。它通常在[Peripheral Access Crate (PAC)](#pac)之上被实现。它可能也会实现来自[`embedded-hal`](https://crates.io/crates/embedded-hal) crate的traits 。在[存储映射的寄存器那页](../start/registers.md)上有更多的细节或者看[这个视频](https://youtu.be/vLYit_HHPaY)获取一个更广泛的概述。
 
 ### I2C
 
@@ -28,12 +22,7 @@ or for a broader overview see [this video](https://youtu.be/vLYit_HHPaY).
 
 ### PAC
 
-一个外设访问 Crate (Peripheral Access Crate)提供了对一个微控制器的外设的访问。它是一个底层的crates且通常从提供的[SVD](#svd)被直接生成，经常使用[svd2rust](https://github.com/rust-embedded/svd2rust/)。
-
- The [Hardware Abstraction Layer](#hal)
-would usually depend on this crate.
-There is a more detailed description on the [memory-mapped registers page](../start/registers.md)
-or for a broader overview see [this video](https://youtu.be/vLYit_HHPaY).
+一个外设访问 Crate (Peripheral Access Crate)提供了对一个微控制器的外设的访问。它是一个底层的crates且通常从提供的[SVD](#svd)被直接生成，经常使用[svd2rust](https://github.com/rust-embedded/svd2rust/)。[硬件抽象层](#hal)应该依赖这个crate。在[存储映射的寄存器那页](../start/registers.md)有更细节的描述或者看[这个视频](https://youtu.be/vLYit_HHPaY)获取一个更广泛的概述。
 
 ### SPI
 

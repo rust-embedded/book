@@ -49,8 +49,8 @@ more information and coordination
 - [给嵌入式C开发者的贴士](./c-tips/index.md)
     <!-- TODO: Define Sections -->
 - [互用性](./interoperability/index.md)
-    - [A little C with your Rust](./interoperability/c-with-rust.md)
-    - [A little Rust with your C](./interoperability/rust-with-c.md)
+    - [你的Rust配上一点C](./interoperability/c-with-rust.md)
+    - [你的C配上一点Rust](./interoperability/rust-with-c.md)
 - [没有排序的主题](./unsorted/index.md)
   - [优化: 速度与大小间的均衡](./unsorted/speed-vs-size.md)
   - [执行数学运算](./unsorted/math.md)

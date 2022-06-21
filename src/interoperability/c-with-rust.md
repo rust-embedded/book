@@ -74,6 +74,8 @@ pub extern "C" fn cool_function( ... );
 
 与我们上面的数据类型一样，我们使用C兼容的定义去定义函数参数的数据类型。为了清晰可见，我们还保留了相同的参数名。
 
+这里我们有个新类型，`*mut CoolStruct` 。
+
 
 We have one new type here, `*mut CoolStruct`. As C does not have a concept of Rust's references, which would look like this: `&mut CoolStruct`, we instead have a raw pointer. As dereferencing this pointer is `unsafe`, and the pointer may in fact be a `null` pointer, care must be taken to ensure the guarantees typical of Rust when interacting with C or C++ code.
 
@@ -91,7 +93,7 @@ Rather than manually generating these interfaces, which may be tedious and error
 [bindgen]: https://github.com/rust-lang/rust-bindgen
 [bindgen user's manual]: https://rust-lang.github.io/rust-bindgen/
 
-## Building your C/C++ code
+## 编译你的 C/C++ 代码
 
 As the Rust compiler does not directly know how to compile C or C++ code (or code from any other language, which presents a C interface), it is necessary to compile your non-Rust code ahead of time.
 
@@ -101,13 +103,16 @@ If the library you would like to use is already distributed as a static archive,
 
 If your code exists as a source project, it will be necessary to compile your C/C++ code to a static library, either by triggering your existing build system (such as `make`, `CMake`, etc.), or by porting the necessary compilation steps to use a tool called the `cc` crate. For both of these steps, it is necessary to use a `build.rs` script.
 
-### Rust `build.rs` build scripts
+### Rust的 `build.rs` 编译脚本
+
+一个 `build.rs` 脚本是一个用Rust语法编写的文件，它被运行在你的编译机器上，
+
 
 A `build.rs` script is a file written in Rust syntax, that is executed on your compilation machine, AFTER dependencies of your project have been built, but BEFORE your project is built.
 
 The full reference may be found [here](https://doc.rust-lang.org/cargo/reference/build-scripts.html). `build.rs` scripts are useful for generating code (such as via [bindgen]), calling out to external build systems such as `Make`, or directly compiling C/C++ through use of the `cc` crate.
 
-### Triggering external build systems
+### 使用外部编译系统
 
 For projects with complex external projects or build systems, it may be easiest to use [`std::process::Command`] to "shell out" to your other build systems by traversing relative paths, calling a fixed command (such as `make library`), and then copying the resulting static library to the proper location in the `target` build directory.
 
