@@ -95,7 +95,7 @@ opt-level = "z"
 
 Now the top crate and `cortex-m-rt` are debugger friendly!
 
-## Optimize for speed
+## 优化速度
 
 As of 2018-09-18 `rustc` supports three "optimize for speed" levels: `opt-level
 = 1`, `2` and `3`. When you run `cargo build --release` you are using the release
@@ -112,21 +112,20 @@ enough).
 Currently there's no way to disable loop unrolling in `opt-level = 2` and `3` so
 if you can't afford its cost you should optimize your program for size.
 
-## Optimize for size
+## 优化尺寸
 
-As of 2018-09-18 `rustc` supports two "optimize for size" levels: `opt-level =
-"s"` and `"z"`. These names were inherited from clang / LLVM and are not too
-descriptive but `"z"` is meant to give the idea that it produces smaller
-binaries than `"s"`.
+自2018-09-18开始`rustc`支持两个"优化尺寸"的等级: `opt-level = "s"` 和 `"z"` 。这些名字传承自 clang / LLVM 且不具有描述性，但是`"z"`意味着它产生的二进制文件比`"s"`更小。
 
-If you want your release binaries to be optimized for size then change the
-`profile.release.opt-level` setting in `Cargo.toml` as shown below.
+如果你想要发布一个优化了尺寸的二进制文件，那么改变下面展示的`Cargo.toml`中的`profile.release.opt-level`配置。
 
 ``` toml
 [profile.release]
 # or "z"
 opt-level = "s"
 ```
+
+这两个优化等级
+
 
 These two optimization levels greatly reduce LLVM's inline threshold, a metric
 used to decide whether to inline a function or not. One of Rust principles are
@@ -143,7 +142,7 @@ rustflags in `.cargo/config.toml`.
 
 ``` toml
 # .cargo/config.toml
-# this assumes that you are using the cortex-m-quickstart template
+# 这里假设你正在使用cortex-m-quickstart模板
 [target.'cfg(all(target_arch = "arm", target_os = "none"))']
 rustflags = [
   # ..
@@ -151,8 +150,7 @@ rustflags = [
 ]
 ```
 
-What value to use? [As of 1.29.0 these are the inline thresholds that the
-different optimization levels use][inline-threshold]:
+用什么值?[从1.29.0开始，这些是不同优化级别使用的内联阈值][inline-threshold]:
 
 [inline-threshold]: https://github.com/rust-lang/rust/blob/1.29.0/src/librustc_codegen_llvm/back/write.rs#L2105-L2122
 
@@ -161,4 +159,4 @@ different optimization levels use][inline-threshold]:
 - `opt-level = "s"` 使用 75
 - `opt-level = "z"` 使用 25
 
-当为了大小进行优化时，你应该尝试`225`和`275` 。
+当优化尺寸时，你应该尝试`225`和`275` 。
