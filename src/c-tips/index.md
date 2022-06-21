@@ -247,7 +247,7 @@ fn main() {
 // `z`是两个字节对齐，因此在`y`和`z`之间填充了一个字节。
 ```
 
-To ensure a packed representation, use `repr(packed)`:
+使用`repr(packed)`去确保表示(representation)被填充了:
 
 ```rust
 #[repr(packed)]
@@ -259,7 +259,7 @@ struct Foo {
 
 fn main() {
     let v = Foo { x: 0, y: 0, z: 0 };
-    // Unsafe is required to borrow a field of a packed struct.
+    // 借用一个被填充的结构体的一个字段要求Unsafe操作。
     unsafe { println!("{:p} {:p} {:p}", &v.x, &v.y, &v.z) };
 }
 
