@@ -64,7 +64,7 @@ pub y: cty::c_int,
 pub extern "C" fn cool_function( ... );
 ```
 
-这个语句定义了一个使用C ABI的函数的签名，被叫做`cool_function`。通过定义签名而不定义函数的主体，这个函数的定义将需要在其它地方定义，或者从一个静态库链接进最终的库或者一个二进制文件中
+这个语句定义了一个使用C ABI的函数的签名，被叫做`cool_function`。通过定义签名而不定义函数的主体，这个函数的定义将需要在其它地方定义，或者从一个静态库链接进最终的库或者一个二进制文件中。
 
 ```rust,ignore
     i: cty::c_int,
@@ -74,18 +74,16 @@ pub extern "C" fn cool_function( ... );
 
 与我们上面的数据类型一样，我们使用C兼容的定义去定义函数参数的数据类型。为了清晰可见，我们还保留了相同的参数名。
 
-这里我们有个新类型，`*mut CoolStruct` 。
+这里我们有个新类型，`*mut CoolStruct` 。因为C没有Rust中的引用的概念，其看起来像是这个: `&mut CoolStruct`，所以我们使用一个裸指针。因为解引用这个指针是`unsafe`的，且实际上指针可能是一个`null`指针，因此当与C或者C++代码交互时必须要小心对待那些Rust做出的安全保证。
 
+### 自动产生接口
 
-We have one new type here, `*mut CoolStruct`. As C does not have a concept of Rust's references, which would look like this: `&mut CoolStruct`, we instead have a raw pointer. As dereferencing this pointer is `unsafe`, and the pointer may in fact be a `null` pointer, care must be taken to ensure the guarantees typical of Rust when interacting with C or C++ code.
+有一个叫做[bindgen]的工具，它可以自动执行这些转换，而不用手动生成这些接口那么繁琐且容易出错。关于[bindgen]使用的指令，请参考[bindgen user's manual]，然而经典的过程有下面几步:
 
-### Automatically generating the interface
-
-Rather than manually generating these interfaces, which may be tedious and error prone, there is a tool called [bindgen] which will perform these conversions automatically. For instructions of the usage of [bindgen], please refer to the [bindgen user's manual], however the typical process consists of the following:
-
-1. Gather all C or C++ headers defining interfaces or datatypes you would like to use with Rust.
-2. Write a `bindings.h` file, which `#include "..."`'s each of the files you gathered in step one.
-3. Feed this `bindings.h` file, along with any compilation flags used to compile
+1. 收集所有定义了你可能在Rust中用到的数据类型或者接口的C或者C++头文件。
+2. 写一个`bindings.h`文件，其`#include "..."`每一个你在步骤一中收集的文件。
+3. 
+4. Feed this `bindings.h` file, along with any compilation flags used to compile
   your code into `bindgen`. Tip: use `Builder.ctypes_prefix("cty")` /
   `--ctypes-prefix=cty` and `Builder.use_core()` / `--use-core` to make the generated code `#![no_std]` compatible.
 4. `bindgen` will produce the generated Rust code to the output of the terminal window. This file may be piped to a file in your project, such as `bindings.rs`. You may use this file in your Rust project to interact with C/C++ code compiled and linked as an external library. Tip: don't forget to use the [`cty`](https://crates.io/crates/cty) crate if your types in the generated bindings are prefixed with `cty`.
@@ -122,11 +120,11 @@ While your crate may be targeting a `no_std` embedded platform, your `build.rs` 
 
 ### 使用`cc` crate构建C/C++代码
 
-For projects with limited dependencies or complexity, or for projects where it is difficult to modify the build system to produce a static library (rather than a final binary or executable), it may be easier to instead utilize the [`cc` crate], which provides an idiomatic Rust interface to the compiler provided by the host.
+对于具有有限的依赖项或者复杂度的项目，或者对于那些难以修改编译系统去生成一个静态库(而不是一个二进制文件或者可执行文件)的项目，使用[`cc` crate]可能更容易，它提供了一个符合Rust语法的接口，这个接口是关于主机提供的编译器的。
 
 [`cc` crate]: https://github.com/alexcrichton/cc-rs
 
-In the simplest case of compiling a single C file as a dependency to a static library, an example `build.rs` script using the [`cc` crate] would look like this:
+在把一个C文件编译成一个静态库的依赖项的最简单的场景下，可以使用[`cc` crate]，示例`build.rs`脚本看起来像这样:
 
 ```rust,ignore
 extern crate cc;
