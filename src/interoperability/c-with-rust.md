@@ -82,39 +82,33 @@ pub extern "C" fn cool_function( ... );
 
 1. 收集所有定义了你可能在Rust中用到的数据类型或者接口的C或者C++头文件。
 2. 写一个`bindings.h`文件，其`#include "..."`每一个你在步骤一中收集的文件。
-3. 
-4. Feed this `bindings.h` file, along with any compilation flags used to compile
-  your code into `bindgen`. Tip: use `Builder.ctypes_prefix("cty")` /
-  `--ctypes-prefix=cty` and `Builder.use_core()` / `--use-core` to make the generated code `#![no_std]` compatible.
-4. `bindgen` will produce the generated Rust code to the output of the terminal window. This file may be piped to a file in your project, such as `bindings.rs`. You may use this file in your Rust project to interact with C/C++ code compiled and linked as an external library. Tip: don't forget to use the [`cty`](https://crates.io/crates/cty) crate if your types in the generated bindings are prefixed with `cty`.
+3. 将这个`bindings.h`文件和任何用来编译你代码的编译标识发给`bindgen`。贴士: 使用`Builder.ctypes_prefix("cty")` / `--ctypes-prefix=cty` 和 `Builder.use_core()` / `--use-core` 去使生成的代码兼容`#![no_std]`
+4. `bindgen`将会在终端窗口输出生成的Rust代码。这个文件可能会被通过管道发送给你项目中的一个文件，比如`bindings.rs` 。你可能要在你的Rust项目中使用这个文件来与被编译和链接成一个外部库的C/C++代码交互。贴士: 如果你的类型在生成的绑定中被前缀了`cty`，不要忘记使用[`cty`](https://crates.io/crates/cty) crate 。
 
 [bindgen]: https://github.com/rust-lang/rust-bindgen
 [bindgen user's manual]: https://rust-lang.github.io/rust-bindgen/
 
 ## 编译你的 C/C++ 代码
 
-As the Rust compiler does not directly know how to compile C or C++ code (or code from any other language, which presents a C interface), it is necessary to compile your non-Rust code ahead of time.
+因为Rust编译器并不直接知道如何编译C或者C++代码(或者从其它语言来的代码，其提供了一个C接口)，所以必须要静态编译你的非Rust代码。
 
-For embedded projects, this most commonly means compiling the C/C++ code to a static archive (such as `cool-library.a`), which can then be combined with your Rust code at the final linking step.
+对于嵌入式项目，这通常意味着把C/C++代码编译成一个静态库文档(比如 `cool-library.a`)，然后其能在最后链接阶段与你的Rust代码组合起来。
 
-If the library you would like to use is already distributed as a static archive, it is not necessary to rebuild your code. Just convert the provided interface header file as described above, and include the static archive at compile/link time.
+如果你要使用的库已经作为一个静态库文档被发布，那就没必要重新编译你的代码。只需按照上面所述转换提供的接口头文件，且在编译/链接时包含静态库文档。
 
-If your code exists as a source project, it will be necessary to compile your C/C++ code to a static library, either by triggering your existing build system (such as `make`, `CMake`, etc.), or by porting the necessary compilation steps to use a tool called the `cc` crate. For both of these steps, it is necessary to use a `build.rs` script.
+如果你的代码作为一个源项目存在，将你的C/C++代码编译成一个静态库将是必须的，要么通过使用你现存的编译系统(比如 `make`，`CMake`，等等)，要么通过使用一个被叫做`cc` crate的工具移植必要的编译步骤。关于这两个，都必须使用一个`build.rs`脚本。
 
 ### Rust的 `build.rs` 编译脚本
 
-一个 `build.rs` 脚本是一个用Rust语法编写的文件，它被运行在你的编译机器上，
+一个 `build.rs` 脚本是一个用Rust语法编写的文件，它被运行在你的编译机器上，发生在你项目的依赖项被编译**之后**，但是在你的项目被编译**之前** 。
 
-
-A `build.rs` script is a file written in Rust syntax, that is executed on your compilation machine, AFTER dependencies of your project have been built, but BEFORE your project is built.
-
-The full reference may be found [here](https://doc.rust-lang.org/cargo/reference/build-scripts.html). `build.rs` scripts are useful for generating code (such as via [bindgen]), calling out to external build systems such as `Make`, or directly compiling C/C++ through use of the `cc` crate.
+可能能在[这里](https://doc.rust-lang.org/cargo/reference/build-scripts.html)发现完整的参考。`build.rs` 脚本能用来生成代码(比如通过[bindgen])，调用外部编译系统，比如`Make`，或者直接通过使用`cc` crate直接编译C/C++ 。
 
 ### 使用外部编译系统
 
-For projects with complex external projects or build systems, it may be easiest to use [`std::process::Command`] to "shell out" to your other build systems by traversing relative paths, calling a fixed command (such as `make library`), and then copying the resulting static library to the proper location in the `target` build directory.
+对于有复杂的外部项或者编译系统的项目，使用[`std::process::Command`]通过遍历相对路径来向其它编译系统"输出"，调用一个固定的命令(比如 `make library`)，然后拷贝最终的静态库到`target`编译文件夹中恰当的位置，可能是最简单的方法。
 
-While your crate may be targeting a `no_std` embedded platform, your `build.rs` executes only on machines compiling your crate. This means you may use any Rust crates which will run on your compilation host.
+虽然你的crate目标可能是一个`no_std`嵌入式平台，但你的`build.rs`只运行在负责编译你的crate的机器上。这意味着你能使用任何Rust crates，其将运行在你的编译主机上。
 
 [`std::process::Command`]: https://doc.rust-lang.org/std/process/struct.Command.html
 
