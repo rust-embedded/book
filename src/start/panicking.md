@@ -6,7 +6,7 @@
 
 然而在没有标准库的程序中，运行时恐慌的行为是未被定义了的。通过声明一个 `#[painc_handler]` 函数可以选择一个运行时恐慌的行为。
 
-这个函数必须在一个程序的依赖图中只出现一次，且必须有这样的签名: `fn(&PanicInfo) -> !`，`PanicInfo`是一个包含关于运行时恐慌位置的信息的结构体。
+这个函数必须在一个程序的依赖图中只出现一次，且必须有这样的签名: `fn(&PanicInfo) -> !`，`PanicInfo`是一个包含关于运行时恐慌发生位置的信息的结构体。
 
 [`PanicInfo`]: https://doc.rust-lang.org/core/panic/struct.PanicInfo.html
 
@@ -45,7 +45,7 @@ use panic_abort as _;
 
 在这个例子里，当使用dev配置编译的时候(`cargo build`)，crate链接到 `panic-halt` crate上，但是当使用release配置编译时(`cargo build --release`)，crate链接到`panic-abort` crate上。
 
-> `use panic_abort as _` 形式的 `use` 语句被用来确保 `panic_abort` 运行时恐慌函数被包含进我们最终的可执行程序里，同时让编译器清除地知道我们不会从这个crate显式地使用任何东西。没有 `_` 重命名，编译器将会警告我们有一个未使用的导入。反而，有时候你可能看到的是 `extern crate panic_abort`，这是Rust 2018之前的版本使用的更旧的写法，现在应该只被用于 "sysroot" crates (与Rust一起发布的crates)，比如 `proc_macro`，`alloc`，`std` 和 `test` 。
+> `use panic_abort as _` 形式的 `use` 语句被用来确保 `panic_abort` 运行时恐慌函数被包含进我们最终的可执行程序里，同时让编译器清楚地知道我们不会从这个crate显式地使用任何东西。没有 `_` 重命名，编译器将会警告我们有一个未使用的导入。有时候你可能会看到 `extern crate panic_abort`，这是Rust 2018之前的版本使用的更旧的写法，现在应该只被用于 "sysroot" crates (与Rust一起发布的crates)，比如 `proc_macro`，`alloc`，`std` 和 `test` 。
 
 ## 一个例子
 
@@ -77,4 +77,4 @@ $ cargo run
 panicked at 'index out of bounds: the len is 3 but the index is 4', src/main.rs:12:13
 ```
 
-你可以尝试将行为改成`panic-halt`，确定在这个案例里没有信息被打印。
+你可以尝试将行为改成`panic-halt`，确保在这个案例里没有信息被打印。
