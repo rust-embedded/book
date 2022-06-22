@@ -21,7 +21,7 @@ fn main() {
 }
 ```
 
-但是这个带来了一些问题。它是一个可变的全局变量，在Rust，与这些变量交互总是不安全的。这些变量在你的整个程序间也是可见的，意味着借用检查器不能帮你跟踪引用和这些变量的所有者。
+但是这个带来了一些问题。它是一个可变的全局变量，在Rust，与这些变量交互总是unsafe的。这些变量在你的整个程序间也是可见的，意味着借用检查器不能帮你跟踪这些变量的引用和所有者。
 
 ## 我们在Rust中要怎么做?
 
@@ -42,7 +42,7 @@ static mut PERIPHERALS: Peripherals = Peripherals {
 };
 ```
 
-这个结构体允许我们获得我们外设的一个实例。如果我们尝试调用`take_serial()`获得多个实例，我们的代码将会抛出运行时恐慌(panic)！
+这个结构体允许我们获得外设的一个实例。如果我们尝试调用`take_serial()`获得多个实例，我们的代码将会抛出运行时恐慌(panic)！
 
 ```rust,ignore
 fn main() {
@@ -56,7 +56,7 @@ fn main() {
 
 这个带来了少量的运行时消耗，因为我们必须打包 `SerialPort` 结构体进一个option中，且我们将需要调用一次 `take_serial()`，但是这种少量的前期成本，能使我们在接下来的程序中使用借用检查器(borrow checker) 。
 
-## 已存的库支持
+## 已存在的库支持
 
 虽然我们在上面创造了我们自己的 `Peripherals` 结构体，但这并不是必须的。`cortex_m` crate 包含一个被叫做 `singleton!()` 的宏，其将为你执行这个任务。
 
@@ -73,7 +73,7 @@ fn main() {
 
 [cortex_m docs](https://docs.rs/cortex-m/latest/cortex_m/macro.singleton.html)
 
-另外，如果你使用 [`cortex-m-rtic`](https://github.com/rtic-rs/cortex-m-rtic)，获取和定义这些外设的整个过程为你做了抽象，你获得了一个`Peripherals`结构体，其包含一个所有你定义了的项的非 `Option<T>` 的版本。
+另外，如果你使用 [`cortex-m-rtic`](https://github.com/rtic-rs/cortex-m-rtic)，其为你抽象了获取和定义这些外设的整个过程，你获得了一个`Peripherals`结构体，其包含了一个所有你定义了的项的非 `Option<T>` 的版本。
 
 ```rust,ignore
 // cortex-m-rtic v0.5.x
@@ -83,10 +83,10 @@ const APP: () = {
     fn init(cx: init::Context) {
         static mut X: u32 = 0;
          
-        // Cortex-M peripherals
+        // Cortex-M外设
         let core: cortex_m::Peripherals = cx.core;
         
-        // Device specific peripherals
+        // 设备特定的外设
         let device: lm3s6965::Peripherals = cx.device;
     }
 }
@@ -153,5 +153,5 @@ fn read_button(gpio: &GpioPin) -> bool {
 }
 ```
 
-这允许我们强制代码是否应该或者不应该在**编译时**而不是运行时对硬件进行改变，这通常在只有一个应用的情况下起作用，但是对于裸机系统来说，我们的软件将被编译进一个单一应用中，因此它通常是不受限的。
+这允许我们在**编译时**而不是运行时强制代码是否应该或者不应该对硬件进行改变，这通常在只有一个应用的情况下起作用，但是对于裸机系统来说，我们的软件将被编译进一个单一应用中，因此它通常是不受限的。
 
