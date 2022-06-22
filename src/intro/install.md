@@ -1,5 +1,5 @@
 # 安装工具
-这一页包含那些与操作系统无关的工具安装指令：
+这一页包含的工具安装指令与操作系统无关：
 
 ### Rust 工具链
 跟着[https://rustup.rs](https://rustup.rs)的指令安装rustup。
@@ -64,7 +64,8 @@ cargo install cargo-generate
 ```
 注意:在某些Linux发行版上(e.g. Ubuntu) 在安装cargo-generate之前，你可能需要安装`libssl-dev`和`pkg-config`
 
-### 操作系统特定指令
+### 特定于操作系统的指令
+
 现在根据你使用的操作系统，来执行对应的指令:
 
 - [Linux](install/linux.md)

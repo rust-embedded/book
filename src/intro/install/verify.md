@@ -2,7 +2,7 @@
 
 在这个章节中我们将检查工具和驱动是否已经被正确地安装和配置了。
 
-使用一个micro USB线缆将你的笔记本/个人电脑连接到discovery开发板上。discovery开发板有两个USB连接器;使用标记着"USB ST-LINK"的那个，它位于开发板边缘的中间位置。
+使用一个micro USB线缆将你的笔记本/个人电脑连接到discovery开发板上。discovery开发板有两个USB连接器；使用标记着"USB ST-LINK"的那个，它位于开发板边缘的中间位置。
 
 也要检查下ST-LINK的短路帽被安装了。看下面的图；ST-LINK短路帽用红色圈起来了。
 
@@ -54,7 +54,7 @@ openocd -f interface/stlink-v2.cfg -f target/stm32f3x.cfg
 openocd -f interface/stlink-v2-1.cfg -f target/stm32f3x.cfg
 ```
 
-如果这些命令的某条起作用了，那意味着你使用的discovery开发板是一个旧的版本。那也不成问题，但是你要记住这件事，因为随后你可能需要有点不同的配置。你可以移到[下个章节]了。
+如果这些命令的某条起作用了，那意味着你使用的discovery开发板是一个旧的版本。那也不成问题，但是你要记住这件事，因为随后你可能需要点不同的配置。你可以移到[下个章节]了。
 
 如果这些命令在normal user模式下都没用，尝试下使用root模式运行它们(e.g. `sudo openocd ..`)。如果命令在root模式下起作用，要检查下[udev rules]是否被正确地设置了。
 
