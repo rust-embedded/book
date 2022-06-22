@@ -4,9 +4,9 @@
 
 ## 认识你的硬件
 
-在我们开始之前，你需要认识你的目标设备的一些特性，因为它们将被用于配置项目:
-- ARM 核心。e.g. Cortex-M3 。
-- ARM 核心包括一个FPU吗?Cortex-M4**F**和Cortex-M7**F**有。
+在我们开始之前，你需要了解下你的目标设备的一些特性，因为它们将被用于配置项目:
+- ARM 内核。e.g. Cortex-M3 。
+- ARM 内核包括一个FPU吗?Cortex-M4**F**和Cortex-M7**F**有。
 - 目标设备有多少Flash和RAM？e.g. 256KiB的Flash和32KiB的RAM。
 - Flash和RAM映射在地址空间什么位置?e.g. RAM通常位于 `0x2000_0000` 地址处。
 
@@ -15,7 +15,7 @@
 这部分，我们会用我们的参考硬件，STM32F3DISCOVERY。这个板子包含一个STM32F303VCT6微控制器。这个微控制器拥有:
 - 一个Cortex-M4F核心，它包含一个单精度FPU。
 - 位于 0x0800_0000 地址的256KiB的Flash。
-- 位于 0x2000_0000 地址的40KiB的RAM。(这里还有其它的RAM区域，但是为了简便，我们将忽略它)。
+- 位于 0x2000_0000 地址的40KiB的RAM。(这里还有其它的RAM区域，但是为了方便起见，我们将忽略它)。
 
 ## 配置
 
@@ -60,11 +60,11 @@ MEMORY
   RAM : ORIGIN = 0x20000000, LENGTH = 40K
 }
 ```
-> **注意**：如果你因为一些理由，在对一个特定构建目标第一次构建后，改变了`memory.x`文件，需要在`cargo build`之前执行`cargo clean`。因为`cargo build`可能不会跟踪`memory.x`的更新。
+> **注意**：如果你因为一些理由，在对某个编译目标第一次编译后，改变了`memory.x`文件，需要在`cargo build`之前执行`cargo clean`。因为`cargo build`可能不会追踪`memory.x`的更新。
 
 我们将使用hello示例再次开始，但是首先我们必须做一个小改变。
 
-在`examples/hello.rs`中，确保`debug::exit()`调用被注释掉了或者移除。它只能用于在QEMU中运行时。
+在`examples/hello.rs`中，确保`debug::exit()`调用被注释掉了或者移除。它只能用于在QEMU中运行的情况。
 
 ```rust,ignore
 #[entry]
@@ -79,7 +79,7 @@ fn main() -> ! {
 }
 ```
 
-你能像你之前做的一样，使用`cargo build`检查编译程序，使用`cargo-binutils`观察二进制文件。`cortex-m-rt`库可以处理所有运行芯片所需的魔法，同样有用的是，几乎所有的Cortex-M CPUs都按同样的方式启动。
+你能像你之前做的一样，使用`cargo build`检查编译程序，使用`cargo-binutils`观察二进制文件。`cortex-m-rt`库可以处理所有运行芯片所需的魔法，几乎所有的Cortex-M CPUs都按同样的方式启动，这同样有用。
 
 ``` console
 cargo build --example hello
@@ -87,7 +87,7 @@ cargo build --example hello
 
 ## 调试
 
-调试将看起来有点不同。事实上，取决于不同的目标设备，第一步可能看起来不一样。在这个章节里，我们将展示，调试一个在STM32F3DISCOVERY上运行的程序，所需要的步骤。这作为一个参考。对于设备，关于调试的，特定的信息，可以看[the Debugonomicon](https://github.com/rust-embedded/debugonomicon)。
+调试将看起来有点不同。事实上，取决于不同的目标设备第一步可能看起来不一样。在这个章节里，我们将展示，调试一个在STM32F3DISCOVERY上运行的程序，所需要的步骤。这作为一个参考。对于设备，关于调试的特定的信息，可以看[the Debugonomicon](https://github.com/rust-embedded/debugonomicon)。
 
 像之前一样，我们将进行远程调试，客户端将是一个GDB进程。不同的是，OpenOCD将是服务器。
 
@@ -95,7 +95,7 @@ cargo build --example hello
 
 [安装验证]: ../intro/install/verify.md
 
-在一个终端上运行 `openocd` 连接到你开发板上的 ST-LINK 。从模板的根目录运行这个命令；`openocd` 将会选择 `openocd.cfg` 文件，它指出了所使用的接口文件(interface file)和目标文件(target file)。
+在一个终端上运行 `openocd` 连接到你的开发板上的 ST-LINK 。从模板的根目录运行这个命令；`openocd` 将会选择 `openocd.cfg` 文件，它指出了所使用的接口文件(interface file)和目标文件(target file)。
 
 ``` console
 cat openocd.cfg
@@ -186,7 +186,7 @@ Breakpoint 1, main () at examples/hello.rs:15
 15          let mut stdout = hio::hstdout().unwrap();
 ```
 
-> **注意** 如果在你使用了上面的`continue`命令后，GDB阻塞住了终端而不是停在了断点处，你可能需要检查下`memory.x`文件中的存储分区的信息，对于你的设备来说是否被正确的设置了 (both the starts *and* lengths) 。
+> **注意** 如果在你使用了上面的`continue`命令后，GDB阻塞住了终端而不是停在了断点处，你可能需要检查下`memory.x`文件中的存储分区的信息，对于你的设备来说是否被正确的设置了起始位置**和**大小 。
 
 使用 `next` 让程序继续，应该像之前一样，产生一样的结果。
 

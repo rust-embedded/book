@@ -2,22 +2,22 @@
 
 嵌入式系统只能通过执行普通的Rust代码和在RAM间移动数据来运行下去。如果我们想要获取或者发出信息(点亮一个LED，发现一个按钮按下或者在总线上与芯片外设通信)，我们不得不深入了解外设和它们的"存储映射的寄存器"。
 
-你可能发现，访问你的微控制器外设所需要的代码已经写进了下面某个抽象层中。
+你可能发现，访问你的微控制器外设所需要的代码，已经被写进了下面的某个抽象层中。
 
 <p align="center">
 <img title="Common crates" src="../assets/crates.png">
 </p>
 
-* Micro-architecture Crate(微架构Crate) - 这种Crate提供对你正在使用的微控制器的处理器核心，和任何使用这个特定类型处理器核心的微控制器的常见外设来说，有用的程序。比如 [cortex-m] crate提供你可以使能和关闭中断的函数，其对于所有的Cortex-M微控制器都是一样的。它也提供你访问'SysTick'外设的能力，在所有的Cortex-M微控制器中都包括了这个能力。
-* Peripheral Access Crate(PAC)(外设访问Crate) - 这种crate是在不同存储器封装的寄存器上再进行的一次封装，其由你正在使用的微控制器的产品号定义的。比如，[tm4c123x]针对TI的Tiva-C TM4C123系列，[stm32f30x]针对ST的STM32F30x系列。这块，你将根据你的微控制器的技术手册写的每个外设操作指令，直接和寄存器交互。
-* HAL Crate - 这些crates为你的处理器提供了一个更友好的API，通常是通过实现在[embedded-hal]中定义的一些常用的traits来实现的。比如，这个crate可能提供一个`Serial`结构体，它的构造函数获取一组合适的GPIO口和一个波特率，它为了发送数据提供一些 `write_byte` 函数。查看 [Portability] 可以看到更多关于 [embedded-hal] 的信息。
+* Micro-architecture Crate(微架构Crate) - 这个Crate提供那些对你正在使用的微控制器的处理器内核和任何使用这个处理器内核的微控制器的那些常见外设，有用的程序。比如 [cortex-m] crate提供给你可以使能和关闭中断的函数，其对于所有的Cortex-M微控制器都是一样的。它也提供你访问'SysTick'外设的能力，在所有的Cortex-M微控制器中都包括了这个能力。
+* Peripheral Access Crate(PAC)(外设访问Crate) - 这种crate是在被不同存储器封装的寄存器上再进行的一次封装，其由你正在使用的微控制器的产品号定义的。比如，[tm4c123x]针对TI的Tiva-C TM4C123系列，[stm32f30x]针对ST的STM32F30x系列。这块，你将根据你的微控制器的技术手册写的每个外设操作指令，直接和寄存器交互。
+* HAL Crate - 这些crates为你的处理器提供了一个更友好的API，通常是通过实现在[embedded-hal]中定义的一些常用的traits来实现的。比如，这个crate可能提供一个`Serial`结构体，它的构造函数需要一组合适的GPIO端口和一个波特率，它为了发送数据提供一些 `write_byte` 函数。查看 [可移植性] 可以看到更多关于 [embedded-hal] 的信息。
 * Board Crate(开发板crate) - 这个通过预先配置的不同的外设和GPIO管脚再进行了一层抽象去适配你正在使用的特定的开发者工具或者开发板，比如对于STM32F3DISCOVERY开发板来说，是[stm32f3-discovery]
 
 [cortex-m]: https://crates.io/crates/cortex-m
 [tm4c123x]: https://crates.io/crates/tm4c123x
 [stm32f30x]: https://crates.io/crates/stm32f30x
 [embedded-hal]: https://crates.io/crates/embedded-hal
-[Portability]: ../portability/index.md
+[可移植性]: ../portability/index.md
 [stm32f3-discovery]: https://crates.io/crates/stm32f3-discovery
 [Discovery]: https://rust-embedded.github.io/discovery/
 
@@ -25,9 +25,9 @@
 
 如果你是嵌入式Rust新手，board crate是一个完美的起点。它们很好地抽象出了，在开始学习这个项目时，需要耗费心力了解的硬件细节，使得标准工作变得简单，像是打开或者关闭LED。不同的板子间，它们提供的功能变化很大。因为这本书是不假设我们使用的是何种板子，所以board crate不会被这本书涉及。
 
-如果你想要用STM32F3DISCOVERY开发板做实验，强烈建议看一下[stm32f3-discovery]开发板crate，它提供了功能点亮LEDs，访问它的指南针，蓝牙和其它的。[Discovery]书对于一个board crate的用法提供一个很好介绍。
+如果你想要用STM32F3DISCOVERY开发板做实验，强烈建议看一下[stm32f3-discovery]开发板crate，它提供了点亮LEDs，访问它的指南针，蓝牙和其它的功能。[Discovery]书对于一个board crate的用法提供一个很好的介绍。
 
-但是如果你正在使用一个还没有提供专用的board crate的系统，或者你需要一些功能现存的crates不提供，那我们需要从底层的微架构crates开始。
+但是如果你正在使用一个还没有提供专用的board crate的系统，或者你需要的一些功能，现存的crates不提供，那我们需要从底层的微架构crates开始。
 
 ## Micro-architecture crate
 
@@ -90,7 +90,7 @@ pub fn init() -> (Delay, Leds) {
 
 ```
 
-我们访问 `PWM0` 外设的方法和我们之前访问 `SYST` 的方法一样，除了我们调用的是 `tm4c123x::Peripherals::take()` 之外。因为这个crate是使用[svd2rust]自动生成的，对我们寄存器位域的访问函数的参数是一个闭包，而不是一个数值参数。虽然这看起来像是很多代码，但是Rust编译器能使用它为我们执行一批检查，且产生的机器码十分接近手写的汇编码！如果自动生成的代码不能确保一个特定的访问器函数的所有可能的参数是否有效(比如，如果寄存器被SVD定义为32位，但是没有说明某些32位值是否有特殊含义)，则该函数被标记为 `unsafe` 。当使用 `bits()` 函数设置 `load` 和 `compa` 子域的时候，我们能在上面看到这个例子。
+我们访问 `PWM0` 外设的方法和我们之前访问 `SYST` 的方法一样，除了我们调用的是 `tm4c123x::Peripherals::take()` 之外。因为这个crate是使用[svd2rust]自动生成的，访问我们寄存器位域的函数的参数是一个闭包，而不是一个数值参数。虽然这看起来像是很多代码，但是Rust编译器能使用它为我们执行一批检查，且产生的机器码十分接近手写的汇编码！如果自动生成的代码不能确保一个特定的访问器函数的所有可能的参数是否有效(比如，如果寄存器被SVD定义为32位，但是没有说明某些32位值是否有特殊含义)，则该函数被标记为 `unsafe` 。当使用 `bits()` 函数设置 `load` 和 `compa` 子域的时候，我们能在上面看到这个例子。
 
 ### 读取
 

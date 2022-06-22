@@ -1,13 +1,13 @@
 # QEMU
-我们将开始为[LM3S6965]编写程序，一个Cortex-M3微控制器。我们选择这个作为我们的第一个目标办，因为他能使用[QEMU仿真](https://wiki.qemu.org/Documentation/Platforms/ARM#Supported_in_qemu-system-arm)，因此本节中，你不需要摆弄硬件，我们注意力可以集中在工具和开发过程上。
+我们将开始为[LM3S6965]编写程序，一个Cortex-M3微控制器。我们选择这个作为我们的第一个目标，因为它能使用[QEMU仿真](https://wiki.qemu.org/Documentation/Platforms/ARM#Supported_in_qemu-system-arm)，因此本节中，你不需要摆弄硬件，我们注意力可以集中在工具和开发过程上。
 
 [LM3S6965]: http://www.ti.com/product/LM3S6965
 
 **重要**
-在这个引导里，我们将使用"app"这个名字来代指项目名。无论何时你看到单词"app"你应该用你选择的项目名来替代它。或者你也能命名你的项目为"app"，避免替代。
+在这个引导里，我们将使用"app"这个名字来代指项目名。无论何时你看到单词"app"，你应该用你选择的项目名来替代"app"。或者你也可以选择把你的项目命名为"app"，避免替代。
 
 ## 生成一个非标准的 Rust program
-我们将使用[`cortex-m-quickstart`]项目模板来生成一个新项目。生成的项目将包含一个最基本的应用:对于一个新的嵌入式rust应用来说，是一个很好的起点。另外，项目将包含一个`example`文件夹，文件夹中有许多独立的应用，突出一些关键的嵌入式rust功能。
+我们将使用[`cortex-m-quickstart`]项目模板来生成一个新项目。生成的项目将包含一个最基本的应用:对于一个新的嵌入式rust应用来说，是一个很好的起点。另外，项目将包含一个`example`文件夹，文件夹中有许多独立的应用，突出了一些关键的嵌入式rust的功能。
 
 [`cortex-m-quickstart`]: https://github.com/rust-embedded/cortex-m-quickstart
 
@@ -70,7 +70,7 @@ cd app
 
 或者你可以浏览[`cortex-m-quickstart`]，点击绿色的 "Clone or download" 按钮，然后点击 "Download ZIP" 。
 
-然后像在 “使用 `git`” 那里的第二部分那样填充 `Cargo.toml` 。
+然后像在 “使用 `git`” 那里的第二部分写的那样填充 `Cargo.toml` 。
 
 ## 项目概览
 
@@ -92,11 +92,11 @@ fn main() -> ! {
 }
 ```
 
-这个程序与标准Rust程序有一点不同，因此让我们走进点看看。
+这个程序与标准Rust程序有一点不同，因此让我们走近点看看。
 
-`#![no_std]`指出这个程序将*不会*链接标准crate`std`。反而它将会链接到它的子集: `core`crate。
+`#![no_std]`指出这个程序将 *不会* 链接标准crate`std`。反而它将会链接到它的子集: `core` crate。
 
-`#![no_main]`指出这个程序将不会使用标准的大多数Rust程序使用的`main`接口。使用`no_main`的主要理由是在`no_std`上下文中使用`main`接口要求nightly(译者注：原文是`requires nightly`，不知道有什么合适的翻译，主要的理由是`main`接口对程序的运行环境有要求，比如，它假设命令行参数存在，这不适合`no_std`环境)。
+`#![no_main]`指出这个程序将不会使用标准的且被大多数Rust程序使用的`main`接口。使用`no_main`的主要理由是，因为在`no_std`上下文中使用`main`接口要求nightly rust(译者注：`main`接口对程序的运行环境有要求，比如，它假设命令行参数存在，这不适合`no_std`环境)。
 
 `use panic_halt as _;`。这个crate提供了一个`panic_handler`，它定义了程序陷入`panic`时的行为。我们将会在这本书的[运行时恐慌(Panicking)](panicking.md)章节中覆盖更多的细节。
 
@@ -105,10 +105,11 @@ fn main() -> ! {
 [entry]: https://docs.rs/cortex-m-rt-macros/latest/cortex_m_rt_macros/attr.entry.html
 [`cortex-m-rt`]: https://crates.io/crates/cortex-m-rt
 
-`fn main() -> !`。我们的程序将会是运行在目标板子上的*唯一*的进程，因此我们不想要它结束！我们使用一个[divergent function](https://doc.rust-lang.org/rust-by-example/fn/diverging.html) (函数签名中的 `-> !` 位)确保在编译时就是这么回事儿。
+`fn main() -> !`。我们的程序将会是运行在目标板子上的 *唯一* 的进程，因此我们不想要它结束！我们使用一个[divergent function](https://doc.rust-lang.org/rust-by-example/fn/diverging.html) (函数签名中的 `-> !` )来确保在编译时就是这么回事儿。
 
 ## 交叉编译
-下一步是位Cortex-M3架构*交叉*编译程序。如果你知道编译目标(`$TRIPLE`)应该是什么，那就和运行`cargo build --target $TRIPLE`一样简单。幸运地，模板中的`.cargo/config.toml`有这个答案:
+
+下一步是为Cortex-M3架构*交叉*编译程序。如果你知道编译目标(`$TRIPLE`)应该是什么，那就和运行`cargo build --target $TRIPLE`一样简单。幸运地，模板中的`.cargo/config.toml`有这个答案:
 ```console
 tail -n6 .cargo/config.toml
 ```
@@ -120,7 +121,7 @@ target = "thumbv7m-none-eabi"    # Cortex-M3
 # target = "thumbv7em-none-eabi"   # Cortex-M4 and Cortex-M7 (no FPU)
 # target = "thumbv7em-none-eabihf" # Cortex-M4F and Cortex-M7F (with FPU)
 ```
-为了交叉编译Cortex-M3架构我们不得不使用`thumbv7m-none-eabi`。当安装Rust工具时，target不会自动被安装，如果你还没有做，现在是个好时机添加那个target到工具链上。
+为了交叉编译Cortex-M3架构我们不得不使用`thumbv7m-none-eabi`。当安装Rust工具时，target不会自动被安装，如果你还没有做，现在是个好时机，去添加那个target到工具链上。
 ``` console
 rustup target add thumbv7m-none-eabi
 ```
@@ -132,7 +133,7 @@ cargo build
 
 ## 检查
 
-现在我们在`target/thumbv7m-none-eabi/debug/app`中有一个非原生的ELF二进制文件。我们能使用`cargo-binutils`检查它。
+现在我们在`target/thumbv7m-none-eabi/debug/app`中有一个非主机环境的ELF二进制文件。我们能使用`cargo-binutils`检查它。
 
 使用`cargo-readobj`我们能打印ELF头，确认这是一个ARM二进制。
 
@@ -204,9 +205,9 @@ Total              14570
 > - `.data` 包含静态分配的初始值*非*零的变量
 > - `.bss` 也包含静态分配的初始值*是*零的变量
 > - `.vector_table` 是一个我们用来存储向量(中断)表的*非*标准的section
-> - `.ARM.attributes` 和 `.debug_*` sections包含元数据，当烧录二进制文件时，其将不会被加载到目标上的。
+> - `.ARM.attributes` 和 `.debug_*` sections包含元数据，当烧录二进制文件时，它们不会被加载到目标上的。
 
-**重要**: ELF文件包含像是调试信息这样的元数据，因此它们在*硬盘上的尺寸*不是正确地反应了程序当被烧录到设备上时将占据的空间的大小。*总是*使用`cargo-size`检查一个二进制文件有多大。
+**重要**: ELF文件包含像是调试信息这样的元数据，因此它们在*硬盘上的尺寸*没有正确地反应了程序被烧录到设备上时将占据的空间的大小。*一直*使用`cargo-size`检查一个二进制文件有多大。
 
 `cargo-objdump` 能用来反编译二进制文件。
 
@@ -216,7 +217,7 @@ cargo objdump --bin app --release -- --disassemble --no-show-raw-insn --print-im
 
 > **注意** 如果上面的命令抱怨 `Unknown command line argument` 看下面的bug报告:https://github.com/rust-embedded/book/issues/269
 
-> **注意** 这个输出可能在你的系统上不同。rustc, LLVM 和库的新版本能产出不同的汇编。我们截取了一些指令
+> **注意** 在你的系统上这个输出可能不一样。rustc, LLVM 和库的新版本能产出不同的汇编。我们截取了一些指令
 
 ```text
 app:  file format ELF32-arm-little
@@ -259,7 +260,7 @@ HardFault:
 
 ## 运行
 
-接下来，让我们看一个嵌入式程序是如何在QEMU上运行！这时我们将使用 `hello` 例子，来做些真正的事。
+接下来，让我们看一个嵌入式程序是如何在QEMU上运行的！此刻我们将使用 `hello` 示例，来做些真正的事。
 
 为了方便起见，这是`examples/hello.rs`的源码:
 
@@ -286,9 +287,9 @@ fn main() -> ! {
 }
 ```
 
-这个程序使用一些被叫做semihosting的东西去打印文本到主机调试台上。当使用真实的硬件时，这要求一个调试对话但是当使用QEMU时它可以工作。
+这个程序使用一些被叫做semihosting的东西去打印文本到主机调试台上。当使用真实的硬件时，这要求一个调试对话，但是当使用QEMU时这样就可以工作了。
 
-通过编译例子，让我们开始
+通过编译示例，让我们开始
 
 ```console
 cargo build --example hello
@@ -311,7 +312,8 @@ qemu-system-arm \
 Hello, world!
 ```
 
-这个命令应该打印文本之后成功地退出 (exit code = 0)。你能使用下列的指令检查这个:
+这个命令应该打印文本之后成功地退出 (exit code = 0)。你能使用下列的指令检查下:
+
 ```console
 echo $?
 ```
@@ -322,7 +324,7 @@ echo $?
 
 让我们看看QEMU命令:
 
-+ `qemu-system-arm`。这是QEMU仿真器。这些QEMU二进制有一些变种；因为名字这个仿真器能做ARM机器的全系统仿真。
++ `qemu-system-arm`。这是QEMU仿真器。这些QEMU有一些改良版的二进制文件；这个仿真器能做ARM机器的全系统仿真。
 
 + `-cpu cortex-m3`。这告诉QEMU去仿真一个Cortex-M3 CPU。指定CPU模型会让我们捕捉到一些误编译错误:比如，运行一个为Cortex-M4F编译的程序，它具有一个硬件FPU，在执行时将会使QEMU报错。
 + `-machine lm3s6965evb`。这告诉QEMU去仿真 LM3S6965EVB，一个包含LM3S6965微控制器的评估板。
@@ -353,7 +355,7 @@ Hello, world!
 ## 调试
 对于嵌入式开发来说，调试非常重要。让我们来看下如何完成它。
 
-因为我们想要调试的程序运行的机器上，并没有运行一个调试器程序(GDB或者LLDB)，所以调试一个嵌入式设备就涉及到了*远程*调试
+因为我们想要调试的程序所运行的机器上并没有运行一个调试器程序(GDB或者LLDB)，所以调试一个嵌入式设备就涉及到了 *远程* 调试
 
 远程调试涉及一个客户端和一个服务器。在QEMU的情况中，客户端将是一个GDB(或者LLDM)进程且服务器将会是运行着嵌入式程序的QEMU进程。
 
@@ -394,21 +396,21 @@ Reset () at $REGISTRY/cortex-m-rt-0.6.1/src/lib.rs:473
 473     pub unsafe extern "C" fn Reset() -> ! {
 ```
 
-你将看到，进程被挂起了，程序计数器正指向一个名为 `Reset` 的函数。那是 reset 句柄：Cortex-M核在启动时执行的中断函数。
+你将看到，进程被挂起了，程序计数器正指向一个名为 `Reset` 的函数。那是 reset 句柄：Cortex-M 内核在启动时执行的中断函数。
 
-> 注意在一些配置中，可能不会像上面一样，展示那行`Reset() at $REGISTRY/cortex-m-rt-0.6.1/src/lib.rs:473`，gdb可能打印一些警告，比如:
+> 注意在一些配置中，可能不会像上面一样，显示`Reset() at $REGISTRY/cortex-m-rt-0.6.1/src/lib.rs:473`，gdb可能打印一些警告，比如:
 >
 >`core::num::bignum::Big32x40::mul_small () at src/libcore/num/bignum.rs:254`
 > `    src/libcore/num/bignum.rs: No such file or directory.`
 >
-> 那是一个已知的小bug，你可以安全地忽略这些警告，you're most likely at Reset()。
+> 那是一个已知的小bug，你可以安全地忽略这些警告，你非常大可能已经Reset()了。
 
 这个reset句柄最终将调用我们的主函数，让我们使用一个断点和`continue`命令跳过所有的步骤。为了设置断点，让我们首先看下我们想要在我们代码哪里打断点，使用`list`指令
 
 ```console
 list main
 ```
-这将从examples/hello.rs文件显示源代码。
+这将显示从examples/hello.rs文件来的源代码。
 ```text
 6       use panic_halt as _;
 7
@@ -467,7 +469,7 @@ next
 [Inferior 1 (Remote target) exited normally]
 ```
 
-你现在能退出GDB对话了。
+你现在能退出GDB的会话了。
 
 ``` console
 quit
