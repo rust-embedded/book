@@ -90,11 +90,11 @@ pub fn init() -> (Delay, Leds) {
 
 ```
 
-我们访问 `PWM0` 外设的方法和我们之前访问 `SYST` 的方法一样，除了我们调用的是 `tm4c123x::Peripherals::take()` 之外。因为这个crate是使用[svd2rust]自动生成的，访问我们寄存器位域的函数的参数是一个闭包，而不是一个数值参数。虽然这看起来像是很多代码，但是Rust编译器能使用它为我们执行一批检查，且产生的机器码十分接近手写的汇编码！如果自动生成的代码不能确保一个特定的访问器函数的所有可能的参数是否有效(比如，如果寄存器被SVD定义为32位，但是没有说明某些32位值是否有特殊含义)，则该函数被标记为 `unsafe` 。当使用 `bits()` 函数设置 `load` 和 `compa` 子域的时候，我们能在上面看到这个例子。
+我们访问 `PWM0` 外设的方法和我们之前访问 `SYST` 的方法一样，除了我们调用的是 `tm4c123x::Peripherals::take()` 之外。因为这个crate是使用[svd2rust]自动生成的，访问我们寄存器位域的函数的参数是一个闭包，而不是一个数值参数。虽然这看起来像是更多代码了，但是Rust编译器能使用这个闭包为我们执行一系列检查，且产生的机器码十分接近手写的汇编码！如果自动生成的代码不能确保某个访问函数，其所有可能的参数都有效(比如，如果寄存器被SVD定义为32位，但是没有说明某些32位值是否有特殊含义)，则该函数被标记为 `unsafe` 。我们能在上面看到这样的例子，我们使用 `bits()` 函数设置 `load` 和 `compa` 子域。
 
 ### 读取
 
-`read()` 函数返回一个对象，这个对象提供了这个寄存器中不同子域的只读访问，由制造商的关于这个芯片的SVD文件定义。在 [tm4c123x documentation][tm4c123x documentation R] 中你能找到所有，与这个特定芯片上，特定外设中，这个特定寄存器相关的特别 `R` 返回类型上所有可用的函数。
+`read()` 函数返回一个对象，这个对象提供了对这个寄存器中不同子域的只读访问，由厂商提供的这个芯片的SVD文件定义。在 [tm4c123x documentation][tm4c123x documentation R] 中你能找到在这个特别的返回类型 `R` 上所有可用的函数，其与特定芯片中的特定外设的特定寄存器有关。
 
 ```rust,ignore
 if pwm.ctl.read().globalsync0().is_set() {
@@ -104,7 +104,7 @@ if pwm.ctl.read().globalsync0().is_set() {
 
 ### 写入
 
-`write()`函数使用一个只有一个参数的闭包。通常我们把这个参数叫做 `w`。这个参数然后提供对这个寄存器中不同的子域的读写访问，由制造商关于这个芯片的SVD文件提供。再一次，在 [tm4c123x documentation][tm4c123x documentation W] 中你能找到所有，与这个特定芯片上，特定外设中，这个特定寄存器相关的 `w` 上所有可用的函数。注意所有我们没有设置的子域将会被设置一个默认值 - 任何在这个寄存器中现存的内容将会丢失。
+`write()`函数使用一个只有一个参数的闭包。通常我们把这个参数叫做 `w`。然后这个参数提供对这个寄存器中不同的子域的读写访问，由厂商关于这个芯片的SVD文件提供。再一次，在 [tm4c123x documentation][tm4c123x documentation W] 中你能找到 `W` 所有可用的函数，其与特定芯片中的特定外设的特定寄存器有关。注意所有我们没有设置的子域将会被设置一个默认值 - 任何在这个寄存器中的现存的内容将会丢失。
 
 
 ```rust,ignore
@@ -113,13 +113,13 @@ pwm.ctl.write(|w| w.globalsync0().clear_bit());
 
 ### 修改
 
-如果我们希望只改变这个寄存器中某个特定子域且让其它子域不改变，我们能使用`modify`函数。这个函数使用一个具有两个参数的闭包 - 一个用来读取，一个用来写入。通常我们分别称它们为 `r` 和 `w` 。 `r` 参数能被用来查看这个寄存器现在的内容，`w` 参数能被用来修改寄存器的内容。
+如果我们希望只改变这个寄存器中某个特定的子域而让其它子域不变，我们能使用`modify`函数。这个函数使用一个具有两个参数的闭包 - 一个用来读取，一个用来写入。通常我们分别称它们为 `r` 和 `w` 。 `r` 参数能被用来查看这个寄存器现在的内容，`w` 参数能被用来修改寄存器的内容。
 
 ```rust,ignore
 pwm.ctl.modify(|r, w| w.globalsync0().clear_bit());
 ```
 
-`modify` 函数在这里真正展示了闭包的能量。在C中，我们不得不读取一些临时值，修改成正确的位，然后把值写回。这意味着出现错误的范围非常大。
+`modify` 函数在这里真正展示了闭包的能量。在C中，我们不得不读取一些临时值，修改成正确的比特，然后再把值写回。这意味着出现错误的范围非常大。
 
 ```C
 uint32_t temp = pwm0.ctl.read();
@@ -127,7 +127,7 @@ temp |= PWM0_CTL_GLOBALSYNC0;
 pwm0.ctl.write(temp);
 uint32_t temp2 = pwm0.enable.read();
 temp2 |= PWM0_ENABLE_PWM4EN;
-pwm0.enable.write(temp); // Uh oh! Wrong variable!
+pwm0.enable.write(temp); // 哦 不! 错误的变量!
 ```
 
 [svd2rust]: https://crates.io/crates/svd2rust
@@ -136,7 +136,7 @@ pwm0.enable.write(temp); // Uh oh! Wrong variable!
 
 ## 使用一个HAL crate
 
-一个芯片的HAL crate通常通过为PAC暴露的原始结构体们实现一个自定义Trait来发挥作用。经常这个trait将会为某个外设定义一个被称作 `constrain()` 的函数或者为像是有多个管脚的GPIO端口定义一个`split()`函数。这个函数将会使用原始外设结构体，然后返回一个具有更高抽象的API的新对象。这个API还可以做一些事，像是让Serial port的 `new` 函数变成需要某些`Clock`结构体的函数，这个结构体只能通过调用配置PLLs和设置所有的时钟频率的函数来生成。在这时，生成一个Serial port对象而不先配置时钟速率是不可能的，对于Serial port对象来说错误地将波特率转换为时钟滴答数也是不可能发生的。一些crates甚至为每个GPIO管脚的状态定义了特定的 traits，在把管脚传递进外设前，要求用户去把一个管脚设置成正确的状态(通过选择Alternate Function模式) 。所有这些都没有运行时消耗！
+一个芯片的HAL crate通常通过为PAC暴露的基础结构体们实现一个自定义Trait来发挥作用。经常这个trait将会为某个外设定义一个被称作 `constrain()` 的函数或者为像是有多个管脚的GPIO端口定义一个`split()`函数。这个函数将会使用基础外设结构体，然后返回一个具有更高抽象的API的新对象。这个API还可以做一些事，像是让Serial port的 `new` 函数变成需要某些`Clock`结构体的函数，这个结构体只能通过调用配置PLLs和设置所有的时钟频率的函数来生成。在这时，生成一个Serial port对象而不先配置时钟速率是不可能的，对于Serial port对象来说错误地将波特率转换为时钟滴答数也是不可能发生的。一些crates甚至为每个GPIO管脚的状态定义了特定的 traits，在把管脚传递进外设前，要求用户去把一个管脚设置成正确的状态(通过选择Alternate Function模式) 。所有这些都没有运行时开销的！
 
 让我们看一个例子:
 
@@ -164,7 +164,7 @@ fn main() -> ! {
         sysctl::CrystalFrequency::_16mhz,
         sysctl::SystemClock::UsePll(sysctl::PllOutputFrequency::_80_00mhz),
     );
-    // 把PLL设置成那些配置
+    // 设置PLL
     let clocks = sc.clock_setup.freeze();
 
     // 把GPIO_PORTA结构体封装成一个有更高抽象API的对象
