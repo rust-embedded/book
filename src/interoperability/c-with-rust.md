@@ -44,14 +44,14 @@ pub extern "C" fn cool_function(
 );
 ```
 
-让我们一次看一个定义，来解释每个部分。
+让我们一次看一个语句，来解释每个部分。
 
 ```rust,ignore
 #[repr(C)]
 pub struct CoolStruct { ... }
 ```
 
-默认，Rust不会保证包含在一个`struct`中的数据的大小，padding，或者顺序。为了保证与C代码兼容，我们使用`#[repr(C)]`属性，它指示Rust编译器总是使用和C一样的规则去组织一个结构体中的数据。
+默认，Rust不会保证包含在一个`struct`中的数据的大小，填充，或者顺序。为了保证与C代码兼容，我们使用`#[repr(C)]`属性，它指示Rust编译器总是使用和C一样的规则去组织一个结构体中的数据。
 
 ```rust,ignore
 pub x: cty::c_int,
@@ -96,13 +96,13 @@ pub extern "C" fn cool_function( ... );
 
 如果你要使用的库已经作为一个静态库文档被发布，那就没必要重新编译你的代码。只需按照上面所述转换提供的接口头文件，且在编译/链接时包含静态库文档。
 
-如果你的代码作为一个源项目存在，将你的C/C++代码编译成一个静态库将是必须的，要么通过使用你现存的编译系统(比如 `make`，`CMake`，等等)，要么通过使用一个被叫做`cc` crate的工具移植必要的编译步骤。关于这两个，都必须使用一个`build.rs`脚本。
+如果你的代码作为一个源项目(source project)存在，将你的C/C++代码编译成一个静态库将是必须的，要么通过使用你现存的编译系统(比如 `make`，`CMake`，等等)，要么通过使用一个被叫做`cc` crate的工具移植必要的编译步骤。关于这两个，都必须使用一个`build.rs`脚本。
 
 ### Rust的 `build.rs` 编译脚本
 
 一个 `build.rs` 脚本是一个用Rust语法编写的文件，它被运行在你的编译机器上，发生在你项目的依赖项被编译**之后**，但是在你的项目被编译**之前** 。
 
-可能能在[这里](https://doc.rust-lang.org/cargo/reference/build-scripts.html)发现完整的参考。`build.rs` 脚本能用来生成代码(比如通过[bindgen])，调用外部编译系统，比如`Make`，或者直接通过使用`cc` crate直接编译C/C++ 。
+可能能在[这里](https://doc.rust-lang.org/cargo/reference/build-scripts.html)发现完整的参考。`build.rs` 脚本能用来生成代码(比如通过[bindgen])，调用外部编译系统，比如`Make`，或者直接通过使用`cc` crate来直接编译C/C++ 。
 
 ### 使用外部编译系统
 

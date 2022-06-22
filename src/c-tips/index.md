@@ -8,7 +8,7 @@
 
 * 使用`#ifdef`编译时选择代码块
 * 编译时的数组大小和计算
-* 用来简化常见模式的宏(避免函数调用的开销)
+* 用来简化常见的模式的宏(避免函数调用的开销)
 
 在Rust中没有预处理器，所以许多用例有不同的处理方法。本章节剩下的部分，我们将介绍使用预处理器的各种替代方法。
 
@@ -18,7 +18,7 @@ Rust中最接近`#ifdef ... #endif`的是[Cargo features]。这些比C预处理�
 
 [Cargo features]: https://doc.rust-lang.org/cargo/reference/manifest.html#the-features-section
 
-比如，你可能有一个crate，其提供一个信号处理的原语库(library of signal processing primitives)。每个原语可能带来一些额外的时间去编译大量的常量，你想要躲开这些常量。你可以为你的`Cargo.toml`中每个组件声明一个Cargo feature。
+比如，你可能有一个crate，其提供一个信号处理的基本类型库(library of signal processing primitives)。每个基本类型可能带来一些额外的时间去编译大量的常量，你想要躲开这些常量。你可以为你的`Cargo.toml`中每个组件声明一个Cargo feature。
 
 ```toml
 [features]
@@ -43,7 +43,7 @@ pub mod iir;
 
 [conditional compilation]: https://doc.rust-lang.org/reference/conditional-compilation.html
 
-条件编译将只应用于下一条语句或者块。如果一个块不能在现在的作用域中被使用，那么`cfg`属性将需要被多次使用。值得注意的是大多数时间，仅是包含所有的代码，让编译器在优化时去删除死代码(dead code)更好，通常，在移除不使用的代码方面的工作，编译器做得很好。
+条件编译将只应用于下一条语句或者块。如果一个块不能在现在的作用域中被使用，那么`cfg`属性将需要被多次使用。值得注意的是大多数时间，仅是包含所有的代码而让编译器在优化时去删除死代码(dead code)更好，通常，在移除不使用的代码方面的工作，编译器做得很好。
 
 ### 编译时大小和计算
 
@@ -143,7 +143,7 @@ for element in arr.iter() {
 
 ## Volatile访问
 
-在C中，某个变量可能被标记成`volatile`，向编译器指出，变量中的值在访问间可能改变。Volatile变量通常用于一个与存储映射寄存器有关的嵌入式上下文中。
+在C中，某个变量可能被标记成`volatile`，向编译器指出，变量中的值在访问间可能改变。Volatile变量通常用于一个与存储映射的寄存器有关的嵌入式上下文中。
 
 在Rsut中，并不使用`volatile`标记变量，我们使用特定的方法去执行volatile访问: [`core::ptr::read_volatile`] 和 [`core::ptr::write_volatile`]。这些方法使用一个 `*const T` 或者一个 `*mut T` (上面说的 _裸指针_ )，执行一个volatile读取或者写入。
 
@@ -301,7 +301,7 @@ fn main() {
 
 ## 其它资源
 
-* 在这本书中:
+* 这本书中:
     * [给Rust配点C](../interoperability/c-with-rust.md)
     * [给C配点Rust](../interoperability/rust-with-c.md)
 * [The Rust Embedded FAQs](https://docs.rust-embedded.org/faq.html)

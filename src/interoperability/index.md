@@ -6,7 +6,7 @@ Rust和C代码间的互用性始终取决于两种语言间的数据转换。为
 
 `std::ffi`提供了一些工具去转换更复杂的类型，比如Strings，将`&str`和`String`映射成更容易和安全处理的C类型。
 
-这两个模块在`core`中都没有，但是你可以在[`cstr_core`] crate中，找到一个`std::ffi::{CStr,CString}` 的 `#![no_std]`兼容版本，大多数的`std::os::raw`类型在[`cty`] crate中。
+这两个模块在`core`中都没有，但是你可以在[`cstr_core`] crate中找到一个`std::ffi::{CStr,CString}` 的 `#![no_std]`兼容版本，大多数的`std::os::raw`类型在[`cty`] crate中。
 
 [`cstr_core`]: https://crates.io/crates/cstr_core
 [`cty`]: https://crates.io/crates/cty
@@ -19,7 +19,7 @@ Rust和C代码间的互用性始终取决于两种语言间的数据转换。为
 | u32 or u64 | c_uint       | unsigned int |
 | etc        | ...          | ...          |
 
-像上面提到的，基本类型能被编译器隐式地转换。
+像上面提到的基本类型能被编译器隐式地转换。
 
 ```rust,ignore
 unsafe fn foo(num: u32) {

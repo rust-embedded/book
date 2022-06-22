@@ -28,7 +28,7 @@ Rust对符号名的修饰与本机的代码链接器所期望的不同。因此�
 
 ### `extern "C"`
 
-默认，任何用Rust写的函数将使用Rust ABI(这也不稳定)。相反，当编译面向外部的FFI APIs，我们需要告诉编译器去使用系统ABI 。 
+默认，任何用Rust写的函数将使用Rust ABI(这也不稳定)。相反，当编译面向外部的FFI APIs时，我们需要告诉编译器去使用系统ABI 。 
 
 取决于你的平台，你可能需要针对一个特定的ABI版本，其记录在[这里](https://doc.rust-lang.org/reference/items/external-blocks.html)。
 
