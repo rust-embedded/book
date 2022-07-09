@@ -1,6 +1,6 @@
 # Semihosting
 
-Semihosting is a mechanism that lets embedded devices do I/O on the host and is
+Semihosting is a mechanism that lets embedded devices do I/O on the target and is
 mainly used to log messages to the host console. Semihosting requires a debug
 session and pretty much nothing else (no extra wires!) so it's super convenient
 to use. The downside is that it's super slow: each write operation can take
