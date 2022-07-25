@@ -176,8 +176,12 @@ Info : stm32f3x.cpu: hardware has 6 breakpoints, 4 watchpoints
 On another terminal run GDB, also from the root of the template.
 
 ``` text
-$ <gdb> -q target/thumbv7em-none-eabihf/debug/examples/hello
+gdb-multiarch -q target/thumbv7em-none-eabihf/debug/examples/hello
 ```
+
+**NOTE**: like before you might need another version of gdb instead of `gdb-multiarch` depending
+on which one you installed in the installation chapter. This could also be
+`arm-none-eabi-gdb` or just `gdb`.
 
 Next connect GDB to OpenOCD, which is waiting for a TCP connection on port 3333.
 
