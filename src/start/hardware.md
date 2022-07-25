@@ -197,10 +197,10 @@ Now proceed to *flash* (load) the program onto the microcontroller using the
 ``` console
 (gdb) load
 Loading section .vector_table, size 0x400 lma 0x8000000
-Loading section .text, size 0x1e70 lma 0x8000400
-Loading section .rodata, size 0x61c lma 0x8002270
-Start address 0x800144e, load size 10380
-Transfer rate: 17 KB/sec, 3460 bytes/write.
+Loading section .text, size 0x1518 lma 0x8000400
+Loading section .rodata, size 0x414 lma 0x8001918
+Start address 0x08000400, load size 7468
+Transfer rate: 13 KB/sec, 2489 bytes/write.
 ```
 
 The program is now loaded. This program uses semihosting so before we do any
@@ -219,14 +219,14 @@ Like before we can skip all the way to `main` using a breakpoint and the
 
 ``` console
 (gdb) break main
-Breakpoint 1 at 0x8000d18: file examples/hello.rs, line 15.
+Breakpoint 1 at 0x8000490: file examples/hello.rs, line 11.
+Note: automatically using hardware breakpoints for read-only addresses.
 
 (gdb) continue
 Continuing.
-Note: automatically using hardware breakpoints for read-only addresses.
 
-Breakpoint 1, main () at examples/hello.rs:15
-15          let mut stdout = hio::hstdout().unwrap();
+Breakpoint 1, hello::__cortex_m_rt_main_trampoline () at examples/hello.rs:11
+11      #[entry]
 ```
 
 > **NOTE** If GDB blocks the terminal instead of hitting the breakpoint after
@@ -234,63 +234,41 @@ Breakpoint 1, main () at examples/hello.rs:15
 > the memory region information in the `memory.x` file is correctly set up
 > for your device (both the starts *and* lengths). 
 
-Advancing the program with `next` should produce the same results as before.
+Step into the main function with `step`.
 
 ``` console
-(gdb) next
-16          writeln!(stdout, "Hello, world!").unwrap();
-
-(gdb) next
-19          debug::exit(debug::EXIT_SUCCESS);
+(gdb) step
+halted: PC: 0x08000496
+hello::__cortex_m_rt_main () at examples/hello.rs:13
+13          hprintln!("Hello, world!").unwrap();
 ```
 
-At this point you should see "Hello, world!" printed on the OpenOCD console,
+After advancing the program with `next` you should see "Hello, world!" printed on the OpenOCD console,
 among other stuff.
 
-``` text
-$ openocd
-(..)
-Info : halted: PC: 0x08000e6c
-Hello, world!
-Info : halted: PC: 0x08000d62
-Info : halted: PC: 0x08000d64
-Info : halted: PC: 0x08000d66
-Info : halted: PC: 0x08000d6a
-Info : halted: PC: 0x08000a0c
-Info : halted: PC: 0x08000d70
-Info : halted: PC: 0x08000d72
-```
-
-Issuing another `next` will make the processor execute `debug::exit`. This acts
-as a breakpoint and halts the process:
-
 ``` console
-(gdb) next
-
-Program received signal SIGTRAP, Trace/breakpoint trap.
-0x0800141a in __syscall ()
-```
-
-It also causes this to be printed to the OpenOCD console:
-
-``` text
 $ openocd
 (..)
-Info : halted: PC: 0x08001188
-semihosting: *** application exited ***
-Warn : target not halted
-Warn : target not halted
-target halted due to breakpoint, current mode: Thread
-xPSR: 0x21000000 pc: 0x08000d76 msp: 0x20009fc0, semihosting
+Info : halted: PC: 0x08000502
+Hello, world!
+Info : halted: PC: 0x080004ac
+Info : halted: PC: 0x080004ae
+Info : halted: PC: 0x080004b0
+Info : halted: PC: 0x080004b4
+Info : halted: PC: 0x080004b8
+Info : halted: PC: 0x080004bc
 ```
-
-However, the process running on the microcontroller has not terminated and you
-can resume it using `continue` or a similar command.
+The message is only displayed once as the program is about to enter the infinite loop defined in line 19: `loop {}`
 
 You can now exit GDB using the `quit` command.
 
 ``` console
 (gdb) quit
+A debugging session is active.
+
+        Inferior 1 [Remote target] will be detached.
+
+Quit anyway? (y or n)
 ```
 
 Debugging now requires a few more steps so we have packed all those steps into a
