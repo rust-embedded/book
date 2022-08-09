@@ -96,7 +96,7 @@ fn main() -> ! {
 
 `#![no_std]`指出这个程序将 *不会* 链接标准crate`std`。反而它将会链接到它的子集: `core` crate。
 
-`#![no_main]`指出这个程序将不会使用标准的且被大多数Rust程序使用的`main`接口。使用`no_main`的主要理由是，因为在`no_std`上下文中使用`main`接口要求nightly rust(译者注：`main`接口对程序的运行环境有要求，比如，它假设命令行参数存在，这不适合`no_std`环境)。
+`#![no_main]`指出这个程序将不会使用标准的且被大多数Rust程序使用的`main`接口。使用`no_main`的主要理由是，因为在`no_std`上下文中使用`main`接口要求rust nightly(译者注：`main`接口对程序的运行环境有要求，比如，它假设命令行参数存在，这不适合`no_std`环境)。
 
 `use panic_halt as _;`。这个crate提供了一个`panic_handler`，它定义了程序陷入`panic`时的行为。我们将会在这本书的[运行时恐慌(Panicking)](panicking.md)章节中覆盖更多的细节。
 
