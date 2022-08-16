@@ -2,7 +2,7 @@
 欢迎阅读The Embedded Rust Book:一本介绍如何在裸机(比如，微处理器)上使用Rust编程语言的书籍。
 
 ## Embedded Rust 是为谁准备的
-Embedded Rust是为了那些即想要进行嵌入式编程，又想使用Rust语言提供的高级语言概念和安全保障的人们准备的(也可以看 [Who Rust Is For](https://doc.rust-lang.org/book/ch00-00-introduction.html))
+Embedded Rust是为了那些即想要进行嵌入式编程，又想要使用Rust语言所提供的高级语言概念和安全保障的人们而准备的(也可以看 [Who Rust Is For](https://doc.rust-lang.org/book/ch00-00-introduction.html))
 
 ## 本书范围
 这本书的目的是：
@@ -21,7 +21,7 @@ Embedded Rust是为了那些即想要进行嵌入式编程，又想使用Rust语
 + 你可以轻松地使用Rust编程语言，且在一个桌面环境上写过，运行过，调试过Rust应用。你也应该要熟悉[2018 edition]的术语，因为这本书是面向Rust 2018的。
 
 [2018 edition]: https://doc.rust-lang.org/edition-guide/
-+ 你可以轻松地使用其它语言，比如C，C++或者Ada开发和调试嵌入式系统，且熟悉如下的概念：
++ 你可以轻松地使用其它语言，比如C，C++或者Ada，开发和调试嵌入式系统，且熟悉如下的概念：
   + 交叉编译
   + 存储映射的外设（Memory Mapped Peripherals）
   + 中断
@@ -29,7 +29,7 @@ Embedded Rust是为了那些即想要进行嵌入式编程，又想使用Rust语
 
 ### 其它资源
 
-如果你不熟悉上面提到的东西或者你对这本书中提到的某个特定主题感兴趣，你可能可以从这些资源中找到有用的信息。
+如果你不熟悉上面提到的东西或者你对这本书中提到的某个特定主题感兴趣，你也许能从这些资源中找到有用的信息。
 
 | Topic        | Resource | Description |
 |--------------|----------|-------------|
