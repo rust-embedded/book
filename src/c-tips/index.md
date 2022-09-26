@@ -259,8 +259,12 @@ struct Foo {
 
 fn main() {
     let v = Foo { x: 0, y: 0, z: 0 };
-    // 借用一个被填充的结构体的一个字段要求Unsafe操作。
-    unsafe { println!("{:p} {:p} {:p}", &v.x, &v.y, &v.z) };
+    // 引用必须总是对齐的，因此为了检查结构体字段的地址，我们使用
+    // `std::ptr::addr_of!()`去获取一个裸指针而不仅是打印`&v.x`
+    let px = std::ptr::addr_of!(v.x);
+    let py = std::ptr::addr_of!(v.y);
+    let pz = std::ptr::addr_of!(v.z);
+    println!("{:p} {:p} {:p}", px, py, pz);
 }
 
 // 0x7ffd33598490 0x7ffd33598492 0x7ffd33598493

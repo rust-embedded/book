@@ -37,11 +37,13 @@ pub struct CoolStruct {
     pub y: cty::c_int,
 }
 
-pub extern "C" fn cool_function(
-    i: cty::c_int,
-    c: cty::c_char,
-    cs: *mut CoolStruct
-);
+extern "C" {
+    pub fn cool_function(
+        i: cty::c_int,
+        c: cty::c_char,
+        cs: *mut CoolStruct
+    );
+}
 ```
 
 让我们一次看一个语句，来解释每个部分。
@@ -61,7 +63,7 @@ pub y: cty::c_int,
 由于C或者C++定义一个`int`或者`char`的方式很灵活，所以建议使用在`cty`中定义的基础类型，它将类型从C映射到Rust中的类型。
 
 ```rust,ignore
-pub extern "C" fn cool_function( ... );
+extern "C" { pub fn cool_function( ... ); }
 ```
 
 这个语句定义了一个使用C ABI的函数的签名，被叫做`cool_function`。通过定义签名而不定义函数的主体，这个函数的定义将需要在其它地方定义，或者从一个静态库链接进最终的库或者一个二进制文件中。

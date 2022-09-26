@@ -55,7 +55,7 @@ cargo install cargo-binutils
 
 rustup component add llvm-tools-preview
 ```
-
+WINDOWS: prerequisite C++ Build Tools for Visual Studio 2019 is installed. https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools&rel=16 
 ### `cargo-generate`
 我们随后将使用这个来从模板生成一个项目。
 

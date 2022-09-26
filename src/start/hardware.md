@@ -141,10 +141,12 @@ Info : stm32f3x.cpu: hardware has 6 breakpoints, 4 watchpoints
 在另一个终端，也是从模板的根目录，运行GDB。
 
 ``` text
-$ <gdb> -q target/thumbv7em-none-eabihf/debug/examples/hello
+gdb-multiarch -q target/thumbv7em-none-eabihf/debug/examples/hello
 ```
 
-接下来连接GDB和OpenOCD，OpenOCD在3333端口上正在等待一个TCP连接。
+**注意**: 像之前一样，你可能需要另一个版本的gdb而不是`gdb-multiarch`，取决于你在之前的章节安装了什么工具。这也可能使用的是`arm-none-eabi-gdb`或者只是`gdb` 。
+
+接下来把GDB连接到OpenOCD，它正在等待一个在端口3333上的TCP链接。
 
 ``` console
 (gdb) target remote :3333
@@ -157,10 +159,10 @@ Remote debugging using :3333
 ``` console
 (gdb) load
 Loading section .vector_table, size 0x400 lma 0x8000000
-Loading section .text, size 0x1e70 lma 0x8000400
-Loading section .rodata, size 0x61c lma 0x8002270
-Start address 0x800144e, load size 10380
-Transfer rate: 17 KB/sec, 3460 bytes/write.
+Loading section .text, size 0x1518 lma 0x8000400
+Loading section .rodata, size 0x414 lma 0x8001918
+Start address 0x08000400, load size 7468
+Transfer rate: 13 KB/sec, 2489 bytes/write.
 ```
 
 程序现在被加载了。这个程序使用半主机模式，因此在我们调用半主机模式之前，我们必须告诉OpenOCD使能半主机。你可以使用 `monitor` 命令，发送命令给OpenOCD 。
@@ -176,26 +178,25 @@ semihosting is enabled
 
 ``` console
 (gdb) break main
-Breakpoint 1 at 0x8000d18: file examples/hello.rs, line 15.
+Breakpoint 1 at 0x8000490: file examples/hello.rs, line 11.
+Note: automatically using hardware breakpoints for read-only addresses.
 
 (gdb) continue
 Continuing.
-Note: automatically using hardware breakpoints for read-only addresses.
 
-Breakpoint 1, main () at examples/hello.rs:15
-15          let mut stdout = hio::hstdout().unwrap();
+Breakpoint 1, hello::__cortex_m_rt_main_trampoline () at examples/hello.rs:11
+11      #[entry]
 ```
 
 > **注意** 如果在你使用了上面的`continue`命令后，GDB阻塞住了终端而不是停在了断点处，你可能需要检查下`memory.x`文件中的存储分区的信息，对于你的设备来说是否被正确的设置了起始位置**和**大小 。
 
-使用 `next` 让程序继续，应该像之前一样，产生一样的结果。
+使用`step`步进main函数里。
 
 ``` console
-(gdb) next
-16          writeln!(stdout, "Hello, world!").unwrap();
-
-(gdb) next
-19          debug::exit(debug::EXIT_SUCCESS);
+(gdb) step
+halted: PC: 0x08000496
+hello::__cortex_m_rt_main () at examples/hello.rs:13
+13          hprintln!("Hello, world!").unwrap();
 ```
 
 这时，你应该看到 "Hello, world!" 被打印到了OpenOCD控制台上。
@@ -228,12 +229,14 @@ Program received signal SIGTRAP, Trace/breakpoint trap.
 ``` text
 $ openocd
 (..)
-Info : halted: PC: 0x08001188
-semihosting: *** application exited ***
-Warn : target not halted
-Warn : target not halted
-target halted due to breakpoint, current mode: Thread
-xPSR: 0x21000000 pc: 0x08000d76 msp: 0x20009fc0, semihosting
+Info : halted: PC: 0x08000502
+Hello, world!
+Info : halted: PC: 0x080004ac
+Info : halted: PC: 0x080004ae
+Info : halted: PC: 0x080004b0
+Info : halted: PC: 0x080004b4
+Info : halted: PC: 0x080004b8
+Info : halted: PC: 0x080004bc
 ```
 
 然而，运行在微控制器上的进程还没有被终止，使用 `continue` 或者一个相同的命令，你能重新启动它。
@@ -242,6 +245,11 @@ xPSR: 0x21000000 pc: 0x08000d76 msp: 0x20009fc0, semihosting
 
 ``` console
 (gdb) quit
+A debugging session is active.
+
+        Inferior 1 [Remote target] will be detached.
+
+Quit anyway? (y or n)
 ```
 
 现在调试比之前多了点步骤，因此我们已经把所有步骤打包进一个名为 `openocd.gdb` 的GDB脚本中。这个文件在 `cargo generate` 步骤中被生成，因此不需要任何修改了。让我们看一下:
