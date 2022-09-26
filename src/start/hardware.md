@@ -199,7 +199,7 @@ hello::__cortex_m_rt_main () at examples/hello.rs:13
 13          hprintln!("Hello, world!").unwrap();
 ```
 
-这时，你应该看到 "Hello, world!" 被打印到了OpenOCD控制台上。
+在使用了`next`让函数继续执行之后，你应该看到 "Hello, world!" 被打印到了OpenOCD控制台上。
 
 ``` text
 $ openocd
@@ -214,32 +214,7 @@ Info : halted: PC: 0x08000a0c
 Info : halted: PC: 0x08000d70
 Info : halted: PC: 0x08000d72
 ```
-
-使用另一个 `next` 将会让处理器执行 `debug::exit`。这个函数和断点的作用一样，会悬挂其进程。
-
-``` console
-(gdb) next
-
-Program received signal SIGTRAP, Trace/breakpoint trap.
-0x0800141a in __syscall ()
-```
-
-它也会导致这个东西被打印到OpenOCD控制台：
-
-``` text
-$ openocd
-(..)
-Info : halted: PC: 0x08000502
-Hello, world!
-Info : halted: PC: 0x080004ac
-Info : halted: PC: 0x080004ae
-Info : halted: PC: 0x080004b0
-Info : halted: PC: 0x080004b4
-Info : halted: PC: 0x080004b8
-Info : halted: PC: 0x080004bc
-```
-
-然而，运行在微控制器上的进程还没有被终止，使用 `continue` 或者一个相同的命令，你能重新启动它。
+消息只打印一次，然后进入定义在19行的无限循环中: `loop {}`
 
 使用 `quit` 命令，你现在可以退出 GDB 了。
 
