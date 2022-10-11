@@ -170,7 +170,7 @@ cargo build
 
 > **NOTE**: If you encounter an error during this build step, you may need to switch
 > to the GNU linker. This is achieved by commenting out the LLD linker and
-> uncommenting the GNU linker in `.cargo/config` likebelow.
+> uncommenting the GNU linker in `.cargo/config` like below.
 > ```toml
 > # LLD (shipped with the Rust toolchain) is used as the default linker
 > # "-C", "link-arg=-Tlink.x",
