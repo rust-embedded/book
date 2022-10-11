@@ -168,6 +168,26 @@ cargo build --target thumbv7m-none-eabi
 cargo build
 ```
 
+> **NOTE**: If you encounter an error during this build step, you may need to switch
+> to the GNU linker. This is achieved by commenting out the LLD linker and
+> uncommenting the GNU linker in `.cargo/config` likebelow.
+> ```toml
+> # LLD (shipped with the Rust toolchain) is used as the default linker
+> # "-C", "link-arg=-Tlink.x",
+> 
+> # if you run into problems with LLD switch to the GNU linker by commenting out
+> # this line
+> "-C", "linker=arm-none-eabi-ld",
+> ```
+> At this point you should
+> ```console
+> cargo clean
+> cargo build
+> ```
+> If you encounter ``error: linker `arm-none-eabi-ld` not found`` you will need to
+> install `libnewlib-arm-none-eabi` (`sudo apt install libnewlib-arm-none-eabi` in
+> Ubuntu/Debian). You may also need to `clean` before building again like above.
+
 ## Inspecting
 
 Now we have a non-native ELF binary in `target/thumbv7m-none-eabi/debug/app`. We
