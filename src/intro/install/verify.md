@@ -4,7 +4,7 @@
 
 使用一个micro USB线缆将你的笔记本/个人电脑连接到discovery开发板上。discovery开发板有两个USB连接器；使用标记着"USB ST-LINK"的那个，它位于开发板边缘的中间位置。
 
-也要检查下ST-LINK的短路帽被安装了。看下面的图；ST-LINK短路帽用红色圈起来了。
+也要检查下ST-LINK的短路帽是否被安装了。看下面的图；ST-LINK短路帽用红色圈起来了。
 
 <p align="center">
 <img title="Connected discovery board" src="../../assets/verify.jpeg">
@@ -19,7 +19,7 @@ openocd -f interface/stlink.cfg -f target/stm32f3x.cfg
 > **注意**: 旧版的openocd, 包括从2017发布的0.10.0, 不包含新的(且更适合的)`interface/stlink.cfg`文件； 你需要使用`interface/stlink-v2.cfg` 或者 `interface/stlink-v2-1.cfg`。
  
 
-你应该看到下列的输出，且程序应该阻塞住了控制台:
+你应该看到了下面的输出，且程序应该阻塞住了控制台:
 
 ``` text
 Open On-Chip Debugger 0.10.0
@@ -44,7 +44,7 @@ Info : stm32f3x.cpu: hardware has 6 breakpoints, 4 watchpoints
 
 [下个章节]: ../../start/index.md
 
-如果你没看到"breakpoints"这行，尝试下下列命令中的某一个。
+如果你没看到"breakpoints"这行，尝试下下列命令中的某一个命令。
 
 ``` console
 openocd -f interface/stlink-v2.cfg -f target/stm32f3x.cfg
@@ -54,9 +54,9 @@ openocd -f interface/stlink-v2.cfg -f target/stm32f3x.cfg
 openocd -f interface/stlink-v2-1.cfg -f target/stm32f3x.cfg
 ```
 
-如果这些命令的某条起作用了，那意味着你使用的discovery开发板是一个旧的版本。那也不成问题，但是你要记住这件事，因为随后你可能需要点不同的配置。你可以移到[下个章节]了。
+如果这些命令的某条起作用了，那意味着你使用的discovery开发板是一个旧的版本。那也不成问题，但是你要记住这件事，因为随后你的配置可能有点不同。你可以移到[下个章节]了。
 
-如果这些命令在normal user模式下都没用，尝试下使用root模式运行它们(e.g. `sudo openocd ..`)。如果命令在root模式下起作用，要检查下[udev rules]是否被正确地设置了。
+如果这些命令在normal user模式下都没用，尝试下使用root模式运行它们(e.g. `sudo openocd ..`)。如果命令在root模式下起作用，需要检查下[udev rules]是否被正确地设置了。
 
 [udev rules]: linux.md#udev-rules
 

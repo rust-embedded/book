@@ -1,14 +1,14 @@
 # 硬件
 
-现在你应该有点熟悉工具和开发过程了。这部分我们将转换到真正的硬件上；步骤非常相似。让我们深入进去。
+现在你应该有点熟悉工具和开发过程了。在这部分我们将切换到真正的硬件上；步骤非常相似。让我们深入进去。
 
 ## 认识你的硬件
 
-在我们开始之前，你需要了解下你的目标设备的一些特性，因为它们将被用于配置项目:
-- ARM 内核。e.g. Cortex-M3 。
+在我们开始之前，你需要了解下你的目标设备的一些特性，因为你将用它们来配置项目:
+- ARM 内核。比如 Cortex-M3 。
 - ARM 内核包括一个FPU吗?Cortex-M4**F**和Cortex-M7**F**有。
-- 目标设备有多少Flash和RAM？e.g. 256KiB的Flash和32KiB的RAM。
-- Flash和RAM映射在地址空间什么位置?e.g. RAM通常位于 `0x2000_0000` 地址处。
+- 目标设备有多少Flash和RAM？比如 256KiB的Flash和32KiB的RAM。
+- Flash和RAM映射在地址空间的什么位置?比如 RAM通常位于 `0x2000_0000` 地址处。
 
 你可以在你的设备的数据手册和参考手册上找到这些信息。
 
@@ -46,7 +46,7 @@ tail -n5 .cargo/config.toml
 target = "thumbv7em-none-eabihf" # Cortex-M4F and Cortex-M7F (with FPU)
 ```
 
-我们将使用`thumbv7em-none-eabihf`，因为它覆盖Cortex-M4F核。
+我们将使用`thumbv7em-none-eabihf`，因为它涉及到Cortex-M4F核。
 
 第二步是将存储区域信息(memory region information)输入`memory.x`。
 
@@ -60,7 +60,7 @@ MEMORY
   RAM : ORIGIN = 0x20000000, LENGTH = 40K
 }
 ```
-> **注意**：如果你因为一些理由，在对某个编译目标第一次编译后，改变了`memory.x`文件，需要在`cargo build`之前执行`cargo clean`。因为`cargo build`可能不会追踪`memory.x`的更新。
+> **注意**：如果你因为一些理由，在对某个编译目标首次编译后，改变了`memory.x`文件，需要在`cargo build`之前执行`cargo clean`。因为`cargo build`可能不会追踪`memory.x`的更新。
 
 我们将使用hello示例再次开始，但是首先我们必须做一个小改变。
 
@@ -71,15 +71,15 @@ MEMORY
 fn main() -> ! {
     hprintln!("Hello, world!").unwrap();
 
-    // exit QEMU
-    // NOTE do not run this on hardware; it can corrupt OpenOCD state
+    // 退出 QEMU
+    // 注意 不要在硬件上运行这个；它会打破OpenOCD的状态
     // debug::exit(debug::EXIT_SUCCESS);
 
     loop {}
 }
 ```
 
-你能像你之前做的一样，使用`cargo build`检查编译程序，使用`cargo-binutils`观察二进制文件。`cortex-m-rt`库可以处理所有运行芯片所需的魔法，几乎所有的Cortex-M CPUs都按同样的方式启动，这同样有用。
+你可以像你之前做的一样，使用`cargo build`检查编译程序，使用`cargo-binutils`观察二进制项。`cortex-m-rt`库可以处理所有运行芯片所需的魔法，几乎所有的Cortex-M CPUs都按同样的方式启动，这同样有用。
 
 ``` console
 cargo build --example hello
@@ -87,7 +87,7 @@ cargo build --example hello
 
 ## 调试
 
-调试将看起来有点不同。事实上，取决于不同的目标设备第一步可能看起来不一样。在这个章节里，我们将展示，调试一个在STM32F3DISCOVERY上运行的程序，所需要的步骤。这作为一个参考。对于设备，关于调试的特定的信息，可以看[the Debugonomicon](https://github.com/rust-embedded/debugonomicon)。
+调试将看起来有点不同。事实上，取决于不同的目标设备，第一步可能看起来不一样。在这个章节里，我们将展示，调试一个在STM32F3DISCOVERY上运行的程序，所需要的步骤。这作为一个参考。对于设备，关于调试有关的信息，可以看[the Debugonomicon](https://github.com/rust-embedded/debugonomicon)。
 
 像之前一样，我们将进行远程调试，客户端将是一个GDB进程。不同的是，OpenOCD将是服务器。
 

@@ -2,7 +2,7 @@
 
 这部分是在某些Linux发行版下的安装指令。
 
-## Packages
+## 依赖包
 
 - Ubuntu 18.04 或者更新的版本 / Debian stretch 或者更新的版本
 
@@ -59,7 +59,7 @@ sudo pacman -S arm-none-eabi-gdb qemu-arch-extra openocd
 
 ## udev 规则
 
-这个规则可以让你在不需要超级用户权限的情况下，使用OpenOCD和Discovery开发板。
+这个规则可以让你在不使用超级用户权限的情况下，使用OpenOCD和Discovery开发板。
 
 生成包含下列内容的 `/etc/udev/rules.d/70-st-link.rules` 文件
 
@@ -77,7 +77,7 @@ ATTRS{idVendor}=="0483", ATTRS{idProduct}=="374b", TAG+="uaccess"
 sudo udevadm control --reload-rules
 ```
 
-如果开发板已经被插入了你的笔记本，拔下它然后再插上它。
+如果开发板已经被插入了你的笔记本中，拔下它然后再插上它。
 
 你可以通过运行这个命令检查权限:
 
@@ -93,7 +93,7 @@ Bus 001 Device 018: ID 0483:374b STMicroelectronics ST-LINK/V2.1
 (..)
 ```
 
-记住bus和device号，使用这些数字创造一个像是 `/dev/bus/usb/<bus>/<device>` 这样的路径。然后像这样使用这个路径:
+记住bus和device号，使用这些数字组合成一个像是 `/dev/bus/usb/<bus>/<device>` 这样的路径。然后像这样使用这个路径:
 
 ``` console
 ls -l /dev/bus/usb/001/018
