@@ -30,9 +30,9 @@
 | libcore available                                         |   ✓    |  ✓  |
 | writing firmware, kernel, or bootloader code              |   ✓    |  ✘  |
 
-\* 只有在你使用了 `alloc` crate 和一个适合的分配器，比如[alloc-cortex-m]时有效。
+\* 只有在你使用了 `alloc` crate 和设置了一个适合的分配器，比如[alloc-cortex-m]后有效。
 
-\** 只有在你使用了 `collections` crate 和配置了一个全局默认的分配器时有效。
+\** 只有在你使用了 `collections` crate 并配置了一个全局默认的分配器后有效。
 
 [alloc-cortex-m]: https://github.com/rust-embedded/alloc-cortex-m
 

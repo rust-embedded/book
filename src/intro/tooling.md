@@ -1,5 +1,5 @@
 # 工具
-与微控制器打交道需要使用几种不同的工具，因为我们要处理的架构与笔记本电脑不同，我们必须在 *远程* 设备上运行和调试程序。我们将使用下面列举出来的工具。当没有指定一个最小版本时，最新的版本应该可以工作，但是我们已经列出了我们已经测过的那些版本。
+与微控制器打交道需要使用几种不同的工具，因为我们要处理的架构与笔记本电脑不同，我们必须在 *远程* 设备上运行和调试程序。我们将使用下面列举出来的工具。当没有指定一个最小版本时，最新的版本应该也可以用，但是我们还是列出了我们已经测过的那些版本。
 - Rust 1.31, 1.31-beta, 或者一个更新的，支持ARM Cortex-M编译的工具链。
 - [`cargo-binutils`](https://github.com/rust-embedded/cargo-binutils) ~0.1.4
 - [`qemu-system-arm`](https://www.qemu.org/). 测试的版本: 3.0.0
@@ -27,7 +27,7 @@ QEMU是一个仿真器。在这个例子里，我们使用能完全仿真ARM系�
 
 ## OpenOCD
 GDB不能直接和你的STM32F3DISCOVERY开发板上的ST-Link调试硬件通信。它需要一个转译者，the Open On-Chip Debugger，OpenOCD就是这样的转译者。OpenOCD是一个运行在你的笔记本/个人电脑上的程序，它在基于远程调试的TCP/IP协议和ST-Link的USB协议间进行转译。
-OpenOCD也执行其它一些转译中的重要的工作，用于调试你的STM32FDISCOVERY开发板上的ARM Cortex-M微控制器:
+OpenOCD也执行其它一些转译中的重要的工作，这些工作用于调试你的STM32FDISCOVERY开发板上的ARM Cortex-M微控制器:
 * 它知道如何与ARM CoreSight调试外设使用的内存映射的寄存器进行交互。这些CoreSight寄存器的功能有:
   * 断点操作
   * 读取和写入CPU寄存器
