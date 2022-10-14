@@ -1,4 +1,4 @@
-# 首次尝试
+# Rust的首次尝试
 
 ## 寄存器
 
@@ -8,10 +8,10 @@
 
 | Offset | Name        | Description                 | Width  |
 |--------|-------------|-----------------------------|--------|
-| 0x00   | SYST_CSR    | Control and Status Register | 32 bits|
-| 0x04   | SYST_RVR    | Reload Value Register       | 32 bits|
-| 0x08   | SYST_CVR    | Current Value Register      | 32 bits|
-| 0x0C   | SYST_CALIB  | Calibration Value Register  | 32 bits|
+| 0x00   | SYST_CSR    | 控制和状态寄存器               | 32 bits|
+| 0x04   | SYST_RVR    | 重装载值寄存器                | 32 bits|
+| 0x08   | SYST_CVR    | 当前值寄存器                  | 32 bits|
+| 0x0C   | SYST_CALIB  | 校准值寄存器                  | 32 bits|
 
 ## C语言风格的方法(The C Approach)
 
@@ -26,14 +26,14 @@ struct SysTick {
     pub calib: u32,
 }
 ```
-限定符 `#[repr(C)]` 告诉Rust编译器像C编译器一样去布局这个结构体。那是非常重要的，因为Rust允许结构体字段被重新排序，而C语言不允许。你可以想象下如果这些字段被编译器悄悄地重新排序，在调试时会给我们带来什么麻烦！有了这个限定符，我们就有了与上表对应的四个32位的字段。但当然，这个 `struct` 本身没什么用处 - 我们需要一个变量。
+限定符 `#[repr(C)]` 告诉Rust编译器像C编译器一样去布局这个结构体。那是非常重要的，因为Rust允许结构体字段被重新排序，而C语言不允许。你可以想象下如果这些字段被编译器悄悄地重新排了序，在调试时会给我们带来多大的麻烦！有了这个限定符，我们就有了与上表对应的四个32位的字段。但当然，这个 `struct` 本身没什么用处 - 我们需要一个变量。
 
 ```rust,ignore
 let systick = 0xE000_E010 as *mut SysTick;
 let time = unsafe { (*systick).cvr };
 ```
 
-## 易变的访问(Volatile Accesses)
+## volatile访问(Volatile Accesses)
 
 现在，上面的方法有一堆问题。
 
@@ -42,7 +42,7 @@ let time = unsafe { (*systick).cvr };
 3. 你程序中任何地方的任何一段代码都可以通过这个结构体访问硬件。
 4. 最重要的是，实际上它并不能工作。
 
-现在的问题是编译器很聪明。如果你往RAM同个地方写两次，一个接着一个，编译器会注意到这个行为，且完全跳过第一个写入操作。在C语言中，我们能标记变量为`volatile`去确保每个读或写操作按预期发生。在Rust中，我们将*访问* 标记为易变的(volatile)，而不是将变量标记为volatile。
+现在的问题是编译器很聪明。如果你往RAM同个地方写两次，一个接着一个，编译器会注意到这个行为，且完全跳过第一个写入操作。在C语言中，我们能标记变量为`volatile`去确保每个读或写操作按预期发生。在Rust中，我们将*访问*操作标记为易变的(volatile)，而不是将变量标记为volatile。
 
 ```rust,ignore
 let systick = unsafe { &mut *(0xE000_E010 as *mut SysTick) };
@@ -77,7 +77,7 @@ fn get_time() -> u32 {
 
 ## Rust风格的封装
 
-我们需要把这个`struct`封装进一个更高抽象的API中，这个API对于我们用户来说，可以安全地被调用。作为驱动的作者，我们手动地验证不安全的代码是否正确，然后为我们的用户提供一个safe的API，因此他们不必担心它(让他们相信我们做对了!)。
+我们需要把这个`struct`封装进一个更高抽象的API中，这个API对于我们用户来说，可以安全地被调用。作为驱动的作者，我们亲手验证不安全的代码是否正确，然后为我们的用户提供一个safe的API，因此用户们不必担心它(让他们相信我们不会出错!)。
 
 有可能有这样的例子:
 
@@ -133,4 +133,4 @@ fn thread2() {
 }
 ```
 
-虽然 `set_reload` 函数的 `&mut self` 参数保证了对某个`SystemTimer`结构体的引用只有一个，但是他们不能阻止用户去创造第二个`SystemTimer`，其指向同个外设！如果作者足够尽力，能发现所有这些'重复的'驱动实例，那么按这种方式写的代码将可以工作，但是一旦代码被散播几天，散播到多个模块，驱动，开发者，它会越来越容易犯此类错误。
+虽然 `set_reload` 函数的 `&mut self` 参数保证了对某个`SystemTimer`结构体的引用只有一个，但是他们不能阻止用户去创造第二个`SystemTimer`，其指向同个外设！如果作者足够尽力，他能发现所有这些'重复的'驱动实例，那么按这种方式写的代码将可以工作，但是一旦代码被散播几天，散播到多个模块，驱动，开发者，它会越来越容易犯此类错误。

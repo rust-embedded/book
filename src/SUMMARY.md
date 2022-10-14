@@ -28,7 +28,7 @@ more information and coordination
   - [中断](./start/interrupts.md)
   - [IO](./start/io.md)
 - [外设](./peripherals/index.md)
-    - [首次尝试](./peripherals/a-first-attempt.md)
+    - [Rust的首次尝试](./peripherals/a-first-attempt.md)
     - [借用检查器](./peripherals/borrowck.md)
     - [单例](./peripherals/singletons.md)
 - [静态保障(static guarantees)](./static-guarantees/index.md)

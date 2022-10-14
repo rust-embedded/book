@@ -1,6 +1,6 @@
 # 异常
 
-异常和中断，是处理器用来处理异步事件和致命错误(e.g. 执行一个无效的指令)的一种硬件机制。异常意味着抢占且涉及到异常处理程序，即响应触发事件的信号的子例程。
+异常和中断，是处理器用来处理异步事件和致命错误(e.g. 执行一个无效的指令)的一种硬件机制。异常意味着抢占并涉及到异常处理程序，即响应触发事件的信号的子程序。
 
 `cortex-m-rt` crate提供了一个 [`exception`] 属性去声明异常处理程序。
 
@@ -16,7 +16,7 @@ fn SysTick() {
 
 除了 `exception` 属性，异常处理函数看起来和普通函数一样，但是有一个很大的不同: `exception` 处理函数 *不能* 被软件调用。在先前的例子中，语句 `SysTick();` 将会导致一个编译错误。
 
-这么做是有目的的，因为异常处理函数必须具有一个特性: 在异常处理函数中被声明`static mut`的变量能被安全(safe)地使用。
+这么做是故意的，因为异常处理函数必须具有一个特性: 在异常处理函数中被声明为`static mut`的变量能被安全(safe)地使用。
 
 ``` rust,ignore
 #[exception]
@@ -28,7 +28,7 @@ fn SysTick() {
 }
 ```
 
-就像你可能已经知道的那样，在一个函数里使用`static mut`变量，会让函数变成[*非可重入函数(non-reentrancy)*](https://en.wikipedia.org/wiki/Reentrancy_(computing))。从多个异常/中断处理函数，或者从`main`函数同多个异常/中断处理函数中，直接或者间接地调用一个非可重入(non-reentrancy)函数是未定义的行为。
+就像你可能已经知道的那样，在一个函数里使用`static mut`变量，会让函数变成[*非可重入函数(non-reentrancy)*](https://en.wikipedia.org/wiki/Reentrancy_(computing))。从多个异常/中断处理函数，或者从`main`函数和多个异常/中断处理函数中，直接或者间接地调用一个非可重入(non-reentrancy)函数是未定义的行为。
 
 安全的Rust不能导致未定义的行为出现，所以非可重入函数必须被标记为 `unsafe`。然而，我刚说了`exception`处理函数能安全地使用`static mut`变量。这怎么可能？因为`exception`处理函数 *不* 能被软件调用因此重入(reentrancy)不会发生，所以这才变得可能。
 
@@ -127,7 +127,7 @@ fn DefaultHandler() {
 }
 ```
 
-这个函数是 `cortex-m-rt` crate提供的，且被标记为 `#[no_mangle]` 因此你能在 "DefaultHandler" 上放置一个断点和捕获 *unhandled* 异常。 
+这个函数是 `cortex-m-rt` crate提供的，且被标记为 `#[no_mangle]` 因此你能在 "DefaultHandler" 上放置一个断点并捕获 *unhandled* 异常。 
 
 可以使用 `exception` 属性覆盖这个 `DefaultHandler`:
 
