@@ -8,7 +8,7 @@
 <img title="F3" src="../assets/f3.jpg">
 </p>
 
-这个板子包含什么？
+这个板子有什么？
 
 + 一个[STM32F303VCT6](https://www.st.com/en/microcontrollers/stm32f303vc.html)微控制器。这个微控制器包含
   + 一个单核的ARM Cortex-M4F 处理器，支持单精度浮点运算，72MHz的最大时钟频率。

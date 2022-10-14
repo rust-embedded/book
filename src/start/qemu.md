@@ -7,7 +7,7 @@
 在这个引导里，我们将使用"app"这个名字来代指项目名。无论何时你看到单词"app"，你应该用你选择的项目名来替代"app"。或者你也可以选择把你的项目命名为"app"，避免替代。
 
 ## 生成一个非标准的 Rust program
-我们将使用[`cortex-m-quickstart`]项目模板来生成一个新项目。生成的项目将包含一个最基本的应用:对于一个新的嵌入式rust应用来说，是一个很好的起点。另外，项目将包含一个`example`文件夹，文件夹中有许多独立的应用，突出了一些关键的嵌入式rust的功能。
+我们将使用[`cortex-m-quickstart`]项目模板来生成一个新项目。生成的项目将包含一个最基本的应用:对于一个新的嵌入式rust应用来说，是一个很好的开始。另外，项目将包含一个`example`文件夹，文件夹中有许多独立的应用，突出了一些关键的嵌入式rust的功能。
 
 [`cortex-m-quickstart`]: https://github.com/rust-embedded/cortex-m-quickstart
 
@@ -96,7 +96,7 @@ fn main() -> ! {
 
 `#![no_std]`指出这个程序将 *不会* 链接标准crate`std`。反而它将会链接到它的子集: `core` crate。
 
-`#![no_main]`指出这个程序将不会使用标准的且被大多数Rust程序使用的`main`接口。使用`no_main`的主要理由是，因为在`no_std`上下文中使用`main`接口要求rust nightly(译者注：`main`接口对程序的运行环境有要求，比如，它假设命令行参数存在，这不适合`no_std`环境)。
+`#![no_main]`指出这个程序将不会使用标准的且被大多数Rust程序使用的`main`接口。使用`no_main`的主要理由是，因为在`no_std`上下文中使用`main`接口要求开发版的rust 。
 
 `use panic_halt as _;`。这个crate提供了一个`panic_handler`，它定义了程序陷入`panic`时的行为。我们将会在这本书的[运行时恐慌(Panicking)](panicking.md)章节中覆盖更多的细节。
 
@@ -121,7 +121,7 @@ target = "thumbv7m-none-eabi"    # Cortex-M3
 # target = "thumbv7em-none-eabi"   # Cortex-M4 and Cortex-M7 (no FPU)
 # target = "thumbv7em-none-eabihf" # Cortex-M4F and Cortex-M7F (with FPU)
 ```
-为了交叉编译Cortex-M3架构我们不得不使用`thumbv7m-none-eabi`。当安装Rust工具时，target不会自动被安装，如果你还没有做，现在是个好时机，去添加那个target到工具链上。
+为了交叉编译Cortex-M3架构我们不得不使用`thumbv7m-none-eabi`。当安装Rust工具时，target不会自动被安装，如果你还没有做，现在可以去添加那个target到工具链上。
 ``` console
 rustup target add thumbv7m-none-eabi
 ```
@@ -143,7 +143,7 @@ cargo readobj --bin app -- --file-headers
 
 注意:
 * `--bin app` 是一个用来检查`target/$TRIPLE/debug/app`的语法糖
-* `--bin app` 如果需要，将也会重新编译二进制。
+* `--bin app` 如果有需要，也会重新编译二进制项。
 
 ``` text
 ELF Header:
@@ -168,7 +168,7 @@ ELF Header:
   Section header string table index: 18
 ```
 
-`cargo-size` 能打印二进制文件的linker部分的大小。
+`cargo-size` 能打印二进制项的linker部分的大小。
 
 ```console
 cargo size --bin app --release -- -A
@@ -207,9 +207,9 @@ Total              14570
 > - `.vector_table` 是一个我们用来存储向量(中断)表的*非*标准的section
 > - `.ARM.attributes` 和 `.debug_*` sections包含元数据，当烧录二进制文件时，它们不会被加载到目标上的。
 
-**重要**: ELF文件包含像是调试信息这样的元数据，因此它们在*硬盘上的尺寸*没有正确地反应了程序被烧录到设备上时将占据的空间的大小。*一直*使用`cargo-size`检查一个二进制文件有多大。
+**重要**: ELF文件包含像是调试信息这样的元数据，因此它们在*硬盘上的尺寸*没有正确地反应了程序被烧录到设备上时将占据的空间的大小。要*一直*使用`cargo-size`检查一个二进制项的大小。
 
-`cargo-objdump` 能用来反编译二进制文件。
+`cargo-objdump` 能用来反编译二进制项。
 
 ```console
 cargo objdump --bin app --release -- --disassemble --no-show-raw-insn --print-imm-hex
@@ -280,14 +280,14 @@ fn main() -> ! {
     hprintln!("Hello, world!").unwrap();
 
     // 退出 QEMU
-    // NOTE 不要在硬件上运行这个;它会打破OpenOCD状态
+    // NOTE 不要在硬件上运行这个;它会打破OpenOCD的状态
     debug::exit(debug::EXIT_SUCCESS);
 
     loop {}
 }
 ```
 
-这个程序使用一些被叫做semihosting的东西去打印文本到主机调试台上。当使用真实的硬件时，这要求一个调试对话，但是当使用QEMU时这样就可以工作了。
+这个程序使用一些被叫做semihosting的东西去打印文本到主机调试台上。当使用的是真实的硬件时，这需要一个调试对话，但是当使用的是QEMU时这就可以工作了。
 
 通过编译示例，让我们开始
 
@@ -295,9 +295,9 @@ fn main() -> ! {
 cargo build --example hello
 ```
 
-输出的二进制文件将位于`target/thumbv7m-none-eabi/debug/examples/hello`。
+输出的二进制项将位于`target/thumbv7m-none-eabi/debug/examples/hello`。
 
-为了在QEMU上运行这个二进制文件，执行下列的命令:
+为了在QEMU上运行这个二进制项，执行下列的命令:
 
 ```console
 qemu-system-arm \
@@ -312,7 +312,7 @@ qemu-system-arm \
 Hello, world!
 ```
 
-这个命令应该打印文本之后成功地退出 (exit code = 0)。你能使用下列的指令检查下:
+这个命令应该在打印文本之后成功地退出 (exit code = 0)。你可以使用下列的指令检查下:
 
 ```console
 echo $?
@@ -324,13 +324,13 @@ echo $?
 
 让我们看看QEMU命令:
 
-+ `qemu-system-arm`。这是QEMU仿真器。这些QEMU有一些改良版的二进制文件；这个仿真器能做ARM机器的全系统仿真。
++ `qemu-system-arm`。这是QEMU仿真器。这些QEMU有一些改良版的二进制项；这个仿真器能做ARM机器的全系统仿真。
 
 + `-cpu cortex-m3`。这告诉QEMU去仿真一个Cortex-M3 CPU。指定CPU模型会让我们捕捉到一些误编译错误:比如，运行一个为Cortex-M4F编译的程序，它具有一个硬件FPU，在执行时将会使QEMU报错。
 + `-machine lm3s6965evb`。这告诉QEMU去仿真 LM3S6965EVB，一个包含LM3S6965微控制器的评估板。
 + `-nographic`。这告诉QEMU不要启动它的GUI。
 + `-semihosting-config (..)`。这告诉QEMU使能半主机模式。半主机模式允许被仿真的设备，使用主机的stdout，stderr，和stdin，并在主机上创建文件。
-+ `-kernel $file`。这告诉QEMU在仿真机器上加载和运行哪个二进制文件。
++ `-kernel $file`。这告诉QEMU在仿真机器上加载和运行哪个二进制项。
 
 输入这么长的QEMU命令太费功夫了！我们可以设置一个自定义运行器(runner)简化步骤。`.cargo/config.toml` 有一个被注释掉的，可以调用QEMU的运行器。让我们去掉注释。
 ```console
@@ -376,7 +376,7 @@ qemu-system-arm \
 
 这个命令将不打印任何东西到调试台上，且将会阻塞住终端。此刻我们还传递了两个额外的标志。
 + `-gdb tcp::3333`。这告诉QEMU在3333的TCP端口上等待一个GDB连接。
-+ `-S`。这告诉QEMU在启动时，冻结机器。没有这个，在我们有机会启动调试器之前，程序可能已经到达了主程序的底部了!
++ `-S`。这告诉QEMU在启动时，冻结机器。没有这个，在我们有机会启动调试器之前，程序有可能已经到达了主程序的底部了!
 
 接下来我们在另一个终端启动GDB，且告诉它去加载示例的调试符号。
 ```console

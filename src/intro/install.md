@@ -10,7 +10,7 @@
 $ rustc -V
 rustc 1.31.1 (b6c32da9b 2018-12-18)
 ```
-考虑到带宽和磁盘的使用量，默认安装只支持本地环境的编译。为了添加对ARM Cortex-M架构交叉编译的支持，从下列编译目标选择一个。对于这本书里使用的STM32F3DISCOVERY板子，使用`thumbv7em-none-eabihf`目标。
+考虑到带宽和磁盘的使用量，默认的安装只支持主机环境的编译。为了添加对ARM Cortex-M架构交叉编译的支持，从下列编译目标中选择一个。对于这本书里使用的STM32F3DISCOVERY板子，使用`thumbv7em-none-eabihf`作为目标。
 
 Cortex-M0, M0+, and M1 (ARMv6-M 架构):
 ``` console
