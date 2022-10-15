@@ -1,6 +1,6 @@
 # 类型状态编程(Typestate Programming)
 
-[typestates]的概念描述了将有关对象当前状态的信息编码进该对象的类型中。虽然这听起来有点神秘，如果你在Rust中使用了[建造者模式]，你就已经开始使用类型状态编程了！
+[typestates]的概念是指将有关对象当前状态的信息编码进该对象的类型中。虽然这听起来有点神秘，如果你在Rust中使用了[建造者模式]，你就已经开始使用类型状态编程了！
 
 [typestates]: https://en.wikipedia.org/wiki/Typestate_analysis
 [建造者模式]: https://doc.rust-lang.org/1.0.0/style/ownership/builders.html
@@ -49,7 +49,7 @@ fn main() {
 }
 ```
 
-在这个例子里，不能直接生成一个`Foo`对象。我们必须创造一个`FooBuilder`，在我们获取我们需要的`Foo`对象之前恰当地初始化`FooBuilder`。
+在这个例子里，不能直接生成一个`Foo`对象。我们必须创造一个`FooBuilder`，且我们恰当地初始化`FooBuilder`后才能获取到我们需要的`Foo`对象。
 
 这个最小的例子编码了两个状态:
 
@@ -58,7 +58,7 @@ fn main() {
 
 ## 强类型
 
-因为Rust有一个[强类型系统]，没有方法简单的，魔法般地创造一个`Foo`实例或者不用调用`into_foo()`方法把一个`FooBuilder`变成一个`Foo`。另外，调用`into_foo()`方法消费了最初的`FooBuilder`结构体，意味着不创造一个新的实例它就不能被再次使用。
+因为Rust有一个[强类型系统]，没有简单的方法可以奇迹般地创造一个`Foo`实例或者不用调用`into_foo()`方法把一个`FooBuilder`变成一个`Foo`。另外，调用`into_foo()`方法消费了最初的`FooBuilder`结构体，意味着不创造一个新的实例它就不能被再次使用。
 
 [强类型系统]: https://en.wikipedia.org/wiki/Strong_and_weak_typing
 
