@@ -1,11 +1,11 @@
 # 一个 `no_std` Rust环境
 
-嵌入式编程这个词被广泛用于许多不同的编程场景中。小到RAM和ROM只有KB的8位机(像是[ST72325xx](https://www.st.com/resource/en/datasheet/st72325j6.pdf))，大到一个具有32/64位4核Cortex-A53和1GB的RAM的系统，比如树莓派([Model B 3+](https://en.wikipedia.org/wiki/Raspberry_Pi#Specifications))。当编写代码时，取决于你的目标环境和用例，将会有不同的限制和局限。<br>
+嵌入式编程这个词被广泛用于许多不同的编程场景中。小到RAM和ROM只有KB的8位机(像是[ST72325xx](https://www.st.com/resource/en/datasheet/st72325j6.pdf))，大到一个具有32/64位4核Cortex-A53和1GB RAM的系统，比如树莓派([Model B 3+](https://en.wikipedia.org/wiki/Raspberry_Pi#Specifications))。当编写代码时，取决于你的目标环境和用例，将会有不同的限制和局限。<br>
 通常嵌入式编程有两类:
 
 ## 主机环境
 
-这类环境类似一个常见的PC环境。意味着向你提供了一个系统接口[E.G. POSIX](https://en.wikipedia.org/wiki/POSIX)，使你能和不同的系统进行交互，比如文件系统，网络，内存管理，进程，等等。标准库相应地依赖这些接口去实现它们的功能。sysroot可能限制你使用RAM/ROM，可能还有一些特别的硬件或者I/O。总之感觉像是在专用的PC环境上编程一样。
+这类环境与一个常见的PC环境类似。意味着向你提供了一个系统接口[E.G. POSIX](https://en.wikipedia.org/wiki/POSIX)，使你能和不同的系统进行交互，比如文件系统，网络，内存管理，进程，等等。标准库相应地依赖这些接口去实现它们的功能。sysroot可能限制你使用RAM/ROM，可能还有一些特别的硬件或者I/O。总之感觉像是在专用的PC环境上编程一样。
 
 ## 裸机环境
 

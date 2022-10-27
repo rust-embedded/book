@@ -1,6 +1,6 @@
 # 在`#[no_std]`下执行数学运算
 
-如果你想要执行数学相关的功能，像是计算平方根或者一个数的指数且你有完整的标准库支持，你的代码可能看起来像这个:
+如果你想要执行数学相关的函数，像是计算平方根或者一个数的指数且你有完整的标准库支持，你的代码可能看起来像这个:
 
 ```rs
 //! 可用一些标准支持的数学函数
@@ -24,7 +24,7 @@ fn main() {
 }
 ```
 
-没有标准库支持的时候，这些函数不可用。反而像是[`libm`](https://crates.io/crates/libm)这样一个外部库可以被使用。示例的代码将会看起来像这个:
+没有标准库支持的时候，这些函数不可用。反而可以使用像是[`libm`](https://crates.io/crates/libm)这样一个外部库。示例的代码将会看起来像这样:
 
 ```rs
 #![no_main]
@@ -62,7 +62,7 @@ fn main() -> ! {
 }
 ```
 
-如果你需要在你的MCU上执行更复杂的操作，像是DSP信号处理或者更高级的线性代数，下列的crates可能可以帮助你
+如果你需要在你的MCU上执行更复杂的操作，像是DSP信号处理或者更高级的线性代数，下列的crates可能可以帮到你
 
 - [CMSIS DSP library binding](https://github.com/jacobrosenthal/cmsis-dsp-sys)
 - [`micromath`](https://github.com/tarcieri/micromath)

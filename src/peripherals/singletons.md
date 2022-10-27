@@ -58,7 +58,7 @@ fn main() {
 
 ## 已存在的库支持
 
-虽然我们在上面创造了我们自己的 `Peripherals` 结构体，但这并不是必须的。`cortex_m` crate 包含一个被叫做 `singleton!()` 的宏，其将为你执行这个任务。
+虽然我们在上面创造了我们自己的 `Peripherals` 结构体，但这并不是必须的。`cortex_m` crate 包含一个被叫做 `singleton!()` 的宏，其将为你完成这个任务。
 
 ```rust,ignore
 #[macro_use(singleton)]
@@ -73,7 +73,7 @@ fn main() {
 
 [cortex_m docs](https://docs.rs/cortex-m/latest/cortex_m/macro.singleton.html)
 
-另外，如果你使用 [`cortex-m-rtic`](https://github.com/rtic-rs/cortex-m-rtic)，其为你抽象了获取和定义这些外设的整个过程，你获得了一个`Peripherals`结构体，其包含了一个所有你定义了的项的非 `Option<T>` 的版本。
+另外，如果你使用 [`cortex-m-rtic`](https://github.com/rtic-rs/cortex-m-rtic)，它将获取和定义这些外设的整个过程抽象了出来，你将获得一个`Peripherals`结构体，其包含了一个所有你定义了的项的非 `Option<T>` 的版本。
 
 ```rust,ignore
 // cortex-m-rtic v0.5.x

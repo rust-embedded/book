@@ -10,7 +10,7 @@ Embedded Rust是为了那些即想要进行嵌入式编程，又想要使用Rust
 + 分享那些关于使用Rust进行嵌入式开发的，现存的，最好的实践经验，比如，如何最大程度上地利用好Rust语言的特性去写更正确的嵌入式软件
 + 某种程度下作为工具书，比如，如何在一个项目里将C和Rust混合在一起使用
 
-虽然这本书尝试尽可能地可以适用于大多数场景，但是为了使读者和作者更容易理解，在所有的案例中它都使用了ARM Cortex-M架构。然而，这本书并不需要读者熟悉这个架构，书中会在需要时对这个架构的特定细节进行解释。
+虽然尽可能地尝试让这本书可以用于大多数场景，但是为了使读者和作者更容易理解，在所有的示例中这本书都使用了ARM Cortex-M架构。然而，这本书并不需要读者熟悉这个架构，书中会在需要时对这个架构的特定细节进行解释。
 
 ## 这本书是为谁准备的
 
@@ -44,7 +44,7 @@ Embedded Rust是为了那些即想要进行嵌入式编程，又想要使用Rust
 
 ### 翻译
 
-这本书是已经被一些慷慨的志愿者翻译了。如果你想要将你的翻译列在这里，请打开一个PR去添加它。
+这本书是已经被一些慷慨的志愿者们翻译了。如果你想要将你的翻译列在这里，请打开一个PR去添加它。
 
 * [Japanese](https://tomoyuki-nakabayashi.github.io/book/)
   ([repository](https://github.com/tomoyuki-nakabayashi/book))
@@ -53,9 +53,9 @@ Embedded Rust是为了那些即想要进行嵌入式编程，又想要使用Rust
   ([repository](https://github.com/xxchang/book))
 
 ## 如何使用这本书
-这本书通常假设你是前后阅读的。之后章节是建立在先前章节中提到的概念之上的，先前章节可能不会深入一个主题的细节，因为在随后的章节将会再次重温这个主题。
-在大多数案例中这本书将使用[STM32F3DISCOVERY]开发板。这个板子是基于ARM Cortex-M架构的，且基本功能与大多数基于这个架构的CPUs功能相似。微处理器的外设和其它实现细节在不同的厂家之间是不同的，甚至来自同一个厂家，不同处理器系列之间也是不同的。
-因此我们建议购买[STM32F3DISCOVERY]开发板来尝试这本书中的例子。(译者注：我使用[renode](https://renode.io/about/)来测试大多数例子)
+这本书通常假设你是前后阅读的。之后的章节是建立在先前的章节中提到的概念之上的，先前章节可能不会深入一个主题的细节，因为在随后的章节将会再次重温这个主题。
+在大多数示例中这本书将使用[STM32F3DISCOVERY]开发板。这个板子是基于ARM Cortex-M架构的，且基本功能与大多数基于这个架构的CPUs功能相似。微处理器的外设和其它实现细节在不同的厂家之间是不同的，甚至来自同一个厂家，不同处理器系列之间也是不同的。
+因此我们建议购买[STM32F3DISCOVERY]开发板来尝试这本书中的例子。
 
 [STM32F3DISCOVERY]: http://www.st.com/en/evaluation-tools/stm32f3discovery.html
 
@@ -66,7 +66,7 @@ Embedded Rust是为了那些即想要进行嵌入式编程，又想要使用Rust
 [这个仓库]: https://github.com/rust-embedded/book
 [resouces team]: https://github.com/rust-embedded/wg#the-resources-team
 
-如果你按着这本书的操作遇到了什么麻烦，或者这本书的一些部分不够清楚，或者很难进行下去，那这本书就是有个bug，它应该被报道给这本书的[the issue tracker] 。
+如果你按着这本书的操作遇到了什么麻烦，或者这本书的一些部分不够清楚，或者很难进行下去，那这本书就是有个bug，这个bug应该被报道给这本书的[the issue tracker] 。
 
 [the issue tracker]: https://github.com/rust-embedded/book/issues/
 

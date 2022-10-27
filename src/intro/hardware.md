@@ -15,7 +15,7 @@
   + 256 KiB的"Flash"存储。
   + 48 KiB的RAM
   + 多种多样的外设，比如计时器，I2C，SPI和USART
-  + 通用GPIO和板子两侧的其它类型引脚
+  + 通用GPIO和在板子两侧的其它类型的引脚
   + 一个写着“USB USER”的USB接口
 + 一个位于[LSM303DLHC](https://www.st.com/en/mems-and-sensors/lsm303dlhc.html)芯片上的[加速度计](https://en.wikipedia.org/wiki/Accelerometer)。
 
@@ -23,7 +23,7 @@
 
 + 一个位于[L3GD20](https://www.pololu.com/file/0J563/L3GD20.pdf)芯片上的[陀螺仪](https://en.wikipedia.org/wiki/Gyroscope).
 
-+ 8个摆得像一个指南针形状的用户LEDs。
++ 8个摆得像一个指南针形状的user LEDs。
 
 + 一个二级微控制器: [STM32F103](https://www.st.com/en/microcontrollers/stm32f103cb.html)。这个微控制器实际上是一个板载编程器/调试器的一部分，与名为“USB ST-LINK”的USB端口相连。
 
