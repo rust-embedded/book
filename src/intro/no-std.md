@@ -47,7 +47,7 @@ bootstrapping (stage 0) code like bootloaders, firmware or kernels.
 | feature                                                   | no\_std | std |
 |-----------------------------------------------------------|--------|-----|
 | heap (dynamic memory)                                     |   *    |  ✓  |
-| collections (Vec, HashMap, etc)                           |  **    |  ✓  |
+| collections (Vec, BTreeMap, etc)                          |  **    |  ✓  |
 | stack overflow protection                                 |   ✘    |  ✓  |
 | runs init code before main                                |   ✘    |  ✓  |
 | libstd available                                          |   ✘    |  ✓  |
@@ -57,6 +57,8 @@ bootstrapping (stage 0) code like bootloaders, firmware or kernels.
 \* Only if you use the `alloc` crate and use a suitable allocator like [alloc-cortex-m].
 
 \** Only if you use the `collections` crate and configure a global default allocator.
+
+\** HashMap and HashSet are not available due to a lack of a secure random number generator.
 
 [alloc-cortex-m]: https://github.com/rust-embedded/alloc-cortex-m
 
