@@ -25,7 +25,7 @@ But this has a few problems. It is a mutable global variable, and in Rust, these
 
 ## How do we do this in Rust?
 
-Instead of just making our peripheral a global variable, we might instead decide to make a global variable, in this case called `PERIPHERALS`, which contains an `Option<T>` for each of our peripherals.
+Instead of just making our peripheral a global variable, we might instead decide to make a structure, in this case called `PERIPHERALS`, which contains an `Option<T>` for each of our peripherals.
 
 ```rust,ignore
 struct Peripherals {
