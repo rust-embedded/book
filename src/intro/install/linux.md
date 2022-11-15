@@ -39,16 +39,13 @@ sudo apt install gdb-arm-none-eabi openocd qemu-system-arm
 
 - Fedora 27 or newer
 
-> **NOTE** `arm-none-eabi-gdb` is the GDB command you'll use to debug your ARM
-> Cortex-M programs
-
 <!-- Fedora 27 -->
 <!-- GDB 7.6 (!) -->
 <!-- OpenOCD 0.10.0 -->
 <!-- QEMU 2.10.2 -->
 
 ``` console
-sudo dnf install arm-none-eabi-gdb openocd qemu-system-arm
+sudo dnf install gdb openocd qemu-system-arm
 ```
 
 - Arch Linux
