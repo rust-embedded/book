@@ -272,7 +272,7 @@ Quit anyway? (y or n)
 ```
 
 Debugging now requires a few more steps so we have packed all those steps into a
-single GDB script named `openocd.gdb`. The file was created during the `cargo generate` step, and should work without any modifications. Let's have a peak:
+single GDB script named `openocd.gdb`. The file was created during the `cargo generate` step, and should work without any modifications. Let's have a peek:
 
 ``` console
 cat openocd.gdb
