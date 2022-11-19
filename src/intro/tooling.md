@@ -5,29 +5,29 @@
 - [`qemu-system-arm`](https://www.qemu.org/). 测试的版本: 3.0.0
 - OpenOCD >=0.8. 测试的版本: v0.9.0 and v0.10.0
 - 有ARM支持的GDB。强烈建议7.12或者更新的版本。测试版本: 7.10, 7.11 和 8.1
-- [`cargo-generate`](https://github.com/ashleygwilliams/cargo-generate) 或者 `git`
-
-这些工具都是可选的，但是跟着书一起来使用它们，会更容易。下面的文档将解释我们为什么使用这些工具。安装指令可以在下一页找到。
+- [`cargo-generate`](https://github.com/ashleygwilliams/cargo-generate) 或者 `git`。这些工具都是可选的，但是跟着这本书来使用它们，会更容易。
+- 
+- 下面的文档将解释我们为什么使用这些工具。安装指令可以在下一页找到。
 
 ## `cargo-generate` 或者 `git`
-裸机编程是非标准 Rust 编程，为了得到正确的程序的内存布局，需要对链接过程进行一些调整，这要求添加一些额外的文件(比如linker scripts)和配置(比如linker flags)。我们已经为你把这些打包进了一个模板里，你只需要补充缺失的信息(比如项目名和你的目标硬件的特性)。<br>
+裸机编程是非标准Rust编程，为了得到正确的程序的内存布局，需要对链接过程进行一些调整，这要求添加一些额外的文件(比如linker scripts)和配置(比如linker flags)。我们已经为你把这些打包进了一个模板里了，你只需要补充缺失的信息(比如项目名和目标硬件的特性)。<br>
 我们的模板兼容`cargo-generate`:一个用来从模板生成新的Cargo项目的Cargo子命令。你也能使用`git`,`curl`,`wget`,或者你的网页浏览器下载模板。
 
 ## `cargo-binutils`
 `cargo-binutils`是一个Cargo命令的子集，它让我们能轻松使用Rust工具链带来的LLVM工具。这些工具包括LLVM版本的`objdump`，`nm`和`size`，用来查看二进制文件。<br>
-在GNU binutils之上使用这些工具的好处是，(a)无论你的操作系统是什么，安装这些LLVM工具是相同的一条命令(`rustup component add llvm-tools-preview`)。(b)像是`objdump`这样的工具，支持所有`rustc`支持的架构--从ARM到x86_64--因为它们都有一样的LLVM后端。
+在GNU binutils之上使用这些工具的好处是，(a)无论你的操作系统是什么，安装这些LLVM工都可以用同一条命令(`rustup component add llvm-tools-preview`)。(b)像是`objdump`这样的工具，支持所有`rustc`支持的架构--从ARM到x86_64--因为它们都有一样的LLVM后端。
 
 ## `qemu-system-arm`
 
 QEMU是一个仿真器。在这个例子里，我们使用能完全仿真ARM系统的改良版QEMU。我们使用QEMU在主机上运行嵌入式程序。多亏了它，你可以在没有任何硬件的情况下，尝试这本书的部分示例。
 
 ## GDB
-调试器是嵌入式开发的一个非常重要的组件，你不可能总是可以将内容记录到主机控制台上。在某些情况里，你甚至可能都没法用LEDs去点亮你的硬件！<br>
-通常，提到调试，LLDB和GDB的功能一样，但是我们还没找到与GDB的`load`命令对应的LLDB命令，这条命令负责将程序上传到目标硬件，因此我们现在推荐你使用GDB。
+调试器是嵌入式开发的一个非常重要的组件，你不可能总是可以将内容打印到主机控制台上。在某些情况里，你甚至可能都没法用LEDs去点亮你的硬件！<br>
+通常，提到调试，LLDB和GDB的功能一样，但是我们还没找到与GDB的`load`命令对应的LLDB命令，这条命令负责将程序上传到目标硬件，因此目前我们推荐使用GDB。
 
 ## OpenOCD
-GDB不能直接和你的STM32F3DISCOVERY开发板上的ST-Link调试硬件通信。它需要一个转译者，the Open On-Chip Debugger，OpenOCD就是这样的转译者。OpenOCD是一个运行在你的笔记本/个人电脑上的程序，它在基于远程调试的TCP/IP协议和ST-Link的USB协议间进行转译。
-OpenOCD也执行其它一些转译中的重要的工作，这些工作用于调试你的STM32FDISCOVERY开发板上的ARM Cortex-M微控制器:
+GDB不能直接和你的STM32F3DISCOVERY开发板上的ST-Link调试硬件通信。它需要一个转译者，the Open On-Chip Debugger，OpenOCD就是这样的转译者。OpenOCD是一个运行在笔记本/个人电脑上的程序，它在基于远程调试的TCP/IP协议和ST-Link的USB协议间进行转译。
+OpenOCD也负责转译中一些其它的重要的工作，这些工作用于调试你的STM32FDISCOVERY开发板上的ARM Cortex-M微控制器:
 * 它知道如何与ARM CoreSight调试外设使用的内存映射的寄存器进行交互。这些CoreSight寄存器的功能有:
   * 断点操作
   * 读取和写入CPU寄存器

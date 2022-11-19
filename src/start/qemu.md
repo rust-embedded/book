@@ -1,10 +1,10 @@
 # QEMU
-我们将开始为[LM3S6965]编写程序，一个Cortex-M3微控制器。我们选择这个作为我们的第一个目标，因为它能使用[QEMU仿真](https://wiki.qemu.org/Documentation/Platforms/ARM#Supported_in_qemu-system-arm)，因此本节中，你不需要摆弄硬件，我们注意力可以集中在工具和开发过程上。
+我们将开始为[LM3S6965]编写程序，一个Cortex-M3微控制器。因为它能使用[QEMU仿真](https://wiki.qemu.org/Documentation/Platforms/ARM#Supported_in_qemu-system-arm)，所以我们选择它作为我们的第一个目标，本节中，不需要使用硬件，我们注意力可以集中在工具和开发过程上。
 
 [LM3S6965]: http://www.ti.com/product/LM3S6965
 
 **重要**
-在这个引导里，我们将使用"app"这个名字来代指项目名。无论何时你看到单词"app"，你应该用你选择的项目名来替代"app"。或者你也可以选择把你的项目命名为"app"，避免替代。
+在这个引导里，我们将使用"app"这个名字来代指项目名。无论何时你看到单词"app"，你应该用你选择的项目名来替代"app"。或者你也可以选择把你的项目命名为"app"，避免要替换掉。
 
 ## 生成一个非标准的 Rust program
 我们将使用[`cortex-m-quickstart`]项目模板来生成一个新项目。生成的项目将包含一个最基本的应用:对于一个新的嵌入式rust应用来说，是一个很好的开始。另外，项目将包含一个`example`文件夹，文件夹中有许多独立的应用，突出了一些关键的嵌入式rust的功能。
@@ -74,7 +74,7 @@ cd app
 
 ## 项目概览
 
-为了便利，这是`src/main.rs`中源码最重要的部分。
+这是`src/main.rs`中源码最重要的部分。
 
 ```rust,ignore
 #![no_std]
@@ -92,7 +92,7 @@ fn main() -> ! {
 }
 ```
 
-这个程序与标准Rust程序有一点不同，因此让我们走近点看看。
+这个程序与标准Rust程序有一点不同，让我们走近点看看。
 
 `#![no_std]`指出这个程序将 *不会* 链接标准crate`std`。反而它将会链接到它的子集: `core` crate。
 
@@ -109,7 +109,7 @@ fn main() -> ! {
 
 ## 交叉编译
 
-下一步是为Cortex-M3架构*交叉*编译程序。如果你知道编译目标(`$TRIPLE`)应该是什么，那就和运行`cargo build --target $TRIPLE`一样简单。幸运地，模板中的`.cargo/config.toml`有这个答案:
+下一步是为Cortex-M3架构*交叉*编译程序。如果你知道编译目标(`$TRIPLE`)应该是什么，运行`cargo build --target $TRIPLE`就可以了。幸运地，模板中的`.cargo/config.toml`有这个答案:
 ```console
 tail -n6 .cargo/config.toml
 ```
@@ -121,7 +121,7 @@ target = "thumbv7m-none-eabi"    # Cortex-M3
 # target = "thumbv7em-none-eabi"   # Cortex-M4 and Cortex-M7 (no FPU)
 # target = "thumbv7em-none-eabihf" # Cortex-M4F and Cortex-M7F (with FPU)
 ```
-为了交叉编译Cortex-M3架构我们不得不使用`thumbv7m-none-eabi`。当安装Rust工具时，target不会自动被安装，如果你还没有做，现在可以去添加那个target到工具链上。
+为了交叉编译Cortex-M3架构我们不得不使用`thumbv7m-none-eabi`。当安装Rust工具时，target不会自动被安装，如果还没有添加，现在可以去添加那个target到工具链上。
 ``` console
 rustup target add thumbv7m-none-eabi
 ```
@@ -133,7 +133,7 @@ cargo build
 
 ## 检查
 
-现在我们在`target/thumbv7m-none-eabi/debug/app`中有一个非主机环境的ELF二进制文件。我们能使用`cargo-binutils`检查它。
+现在在`target/thumbv7m-none-eabi/debug/app`中有一个非主机环境的ELF二进制文件。我们能使用`cargo-binutils`检查它。
 
 使用`cargo-readobj`我们能打印ELF头，确认这是一个ARM二进制。
 
@@ -142,8 +142,8 @@ cargo readobj --bin app -- --file-headers
 ```
 
 注意:
-* `--bin app` 是一个用来检查`target/$TRIPLE/debug/app`的语法糖
-* `--bin app` 如果有需要，也会重新编译二进制项。
+* `--bin app` 是一个用来查看二进制项`target/$TRIPLE/debug/app`的语法糖
+* `--bin app` 需要时也会重新编译二进制项。
 
 ``` text
 ELF Header:
@@ -174,7 +174,7 @@ ELF Header:
 cargo size --bin app --release -- -A
 ```
 
-我们使用`--release`检查优化的版本
+我们使用`--release`查看优化后的版本
 
 ``` text
 app  :
@@ -207,7 +207,7 @@ Total              14570
 > - `.vector_table` 是一个我们用来存储向量(中断)表的*非*标准的section
 > - `.ARM.attributes` 和 `.debug_*` sections包含元数据，当烧录二进制文件时，它们不会被加载到目标上的。
 
-**重要**: ELF文件包含像是调试信息这样的元数据，因此它们在*硬盘上的尺寸*没有正确地反应了程序被烧录到设备上时将占据的空间的大小。要*一直*使用`cargo-size`检查一个二进制项的大小。
+**重要**: ELF文件包含像是调试信息这样的元数据，因此它们在*硬盘上的尺寸*没有正确地反应处程序被烧录到设备上时将占据的空间的大小。要*一直*使用`cargo-size`检查一个二进制项的大小。
 
 `cargo-objdump` 能用来反编译二进制项。
 
@@ -287,9 +287,9 @@ fn main() -> ! {
 }
 ```
 
-这个程序使用一些被叫做semihosting的东西去打印文本到主机调试台上。当使用的是真实的硬件时，这需要一个调试对话，但是当使用的是QEMU时这就可以工作了。
+这个程序使用被叫做semihosting的东西去打印文本到主机调试台上。当使用的是真实的硬件时，需要一个调试对话这个程序才能工作，但是当使用的是QEMU时这就可以工作了。
 
-通过编译示例，让我们开始
+让我们开始编译示例
 
 ```console
 cargo build --example hello
@@ -353,13 +353,13 @@ Hello, world!
 ```
 
 ## 调试
-对于嵌入式开发来说，调试非常重要。让我们来看下如何完成它。
+对于嵌入式开发来说，调试非常重要。让我们来看下如何调试它。
 
 因为我们想要调试的程序所运行的机器上并没有运行一个调试器程序(GDB或者LLDB)，所以调试一个嵌入式设备就涉及到了 *远程* 调试
 
 远程调试涉及一个客户端和一个服务器。在QEMU的情况中，客户端将是一个GDB(或者LLDM)进程且服务器将会是运行着嵌入式程序的QEMU进程。
 
-在这部分，我们将使用我们已经编译的 `hello` 示例。
+在这部分，我们要使用我们已经编译的 `hello` 示例。
 
 调试的第一步是在调试模式中启动QEMU：
 
@@ -403,7 +403,7 @@ Reset () at $REGISTRY/cortex-m-rt-0.6.1/src/lib.rs:473
 >`core::num::bignum::Big32x40::mul_small () at src/libcore/num/bignum.rs:254`
 > `    src/libcore/num/bignum.rs: No such file or directory.`
 >
-> 那是一个已知的小bug，你可以安全地忽略这些警告，你非常大可能已经Reset()了。
+> 那是一个已知的小bug，你可以安全地忽略这些警告，你非常大可能已经进入Reset()了。
 
 这个reset句柄最终将调用我们的主函数，让我们使用一个断点和`continue`命令跳过所有的步骤。为了设置断点，让我们首先看下我们想要在我们代码哪里打断点，使用`list`指令
 

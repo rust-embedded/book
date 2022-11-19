@@ -1,6 +1,6 @@
 # 熟悉你的硬件
 
-让我们来熟悉下我们将使用的硬件。
+先来熟悉下我们要用的硬件。
 
 ## STM32F3DISCOVERY (the "F3")
 
@@ -27,6 +27,6 @@
 
 + 一个二级微控制器: [STM32F103](https://www.st.com/en/microcontrollers/stm32f103cb.html)。这个微控制器实际上是一个板载编程器/调试器的一部分，与名为“USB ST-LINK”的USB端口相连。
 
-关于所列举的功能的更多细节和开发板的更多规格请看向[STMicroelectronics](https://www.st.com/en/evaluation-tools/stm32f3discovery.html)网站。
+关于所列举的功能的更多细节和开发板的更多规格请查阅[STMicroelectronics](https://www.st.com/en/evaluation-tools/stm32f3discovery.html)网站。
 
-提醒一句: 如果你想要为板子提供外部信号，请小心。微控制器STM32F303VCT6管脚的标称电压是3.3伏。更多信息请查看[6.2 Absolute maximum ratings section in the manual](https://www.st.com/resource/en/datasheet/stm32f303vc.pdf)。
+提醒一句: 如果想要为板子提供外部信号，请小心。微控制器STM32F303VCT6管脚的标称电压是3.3伏。更多信息请查看[6.2 Absolute maximum ratings section in the manual](https://www.st.com/resource/en/datasheet/stm32f303vc.pdf)。

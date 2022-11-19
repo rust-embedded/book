@@ -1,31 +1,31 @@
 # 引言
-欢迎阅读The Embedded Rust Book:一本介绍如何在裸机(比如，微处理器)上使用Rust编程语言的书籍。
+欢迎阅读嵌入式Rust:一本关于如何在裸机(比如，微处理器)上使用Rust编程语言的入门书籍。
 
-## Embedded Rust 是为谁准备的
-Embedded Rust是为了那些即想要进行嵌入式编程，又想要使用Rust语言所提供的高级语言概念和安全保障的人们而准备的(也可以看 [Who Rust Is For](https://doc.rust-lang.org/book/ch00-00-introduction.html))
+## 嵌入式Rust是为谁准备的
+嵌入式Rust是为了那些即想要进行嵌入式编程，又想要使用Rust语言所提供的高级概念和安全保障的人们而准备的(参见[Who Rust Is For](https://doc.rust-lang.org/book/ch00-00-introduction.html))
 
-## 范围
+## 本书范围
 这本书的目的是：
 + 让开发者快速上手Rust嵌入式开发，比如，如何设置一个开发环境。
 + 分享那些关于使用Rust进行嵌入式开发的，现存的，最好的实践经验，比如，如何最大程度上地利用好Rust语言的特性去写更正确的嵌入式软件
 + 某种程度下作为工具书，比如，如何在一个项目里将C和Rust混合在一起使用
 
-虽然尽可能地尝试让这本书可以用于大多数场景，但是为了使读者和作者更容易理解，在所有的示例中这本书都使用了ARM Cortex-M架构。然而，这本书并不需要读者熟悉这个架构，书中会在需要时对这个架构的特定细节进行解释。
+虽然尽可能地尝试让这本书可以用于大多数场景，但是为了使读者和作者更容易理解，在所有的示例中，这本书都使用了ARM Cortex-M架构。然而，这本书并不需要读者熟悉这个架构，书中会在需要时对这个架构的特定细节进行解释。
 
 ## 这本书是为谁准备的
 
-这本书适合那些有一些嵌入式背景或者有Rust背景的人，然而我相信每一个对Rust嵌入式编程好奇的人都能从这本书中得到某些收获。对于那些先前没有任何经验的人，我们建议你读一下“要求和预备知识”部分。从其它资料中获取、补充缺失的知识，这样能提高你的阅读体验。你可以看看“其它资源”部分，以找到你感兴趣的那些主题的资源。
+这本书适合那些有一些嵌入式背景或者有Rust背景的人，然而我相信每一个对Rust嵌入式编程好奇的人都能从这本书中获得某些收获。对于那些先前没有任何经验的人，我们建议你读一下“要求和预备知识”部分。从其它资料中获取、补充缺失的知识，这样能提高你的阅读体验。你可以看看“其它资源”部分，以找到你感兴趣的那些主题的资源。
 
 ### 要求和预备知识
 
-+ 你可以轻松地使用Rust编程语言，且在一个桌面环境上写过，运行过，调试过Rust应用。你也应该要熟悉[2018 edition]的术语，因为这本书是面向Rust 2018的。
++ 你可以轻松地使用Rust编程语言，且在一个桌面环境上写过，运行过，调试过Rust应用。你应该也要熟悉[2018 edition]的术语，因为这本书是面向Rust 2018的。
 
 [2018 edition]: https://doc.rust-lang.org/edition-guide/
 + 你可以轻松地使用其它语言，比如C，C++或者Ada，开发和调试嵌入式系统，且熟悉如下的概念：
   + 交叉编译
   + 存储映射的外设（Memory Mapped Peripherals）
   + 中断
-  + I2C，SPI，串口等等常见接口
+  + I2C，SPI，串口等等常见的接口
 
 ### 其它资源
 
@@ -46,10 +46,10 @@ Embedded Rust是为了那些即想要进行嵌入式编程，又想要使用Rust
 
 这本书是已经被一些慷慨的志愿者们翻译了。如果你想要将你的翻译列在这里，请打开一个PR去添加它。
 
-* [Japanese](https://tomoyuki-nakabayashi.github.io/book/)
+* [日文](https://tomoyuki-nakabayashi.github.io/book/)
   ([repository](https://github.com/tomoyuki-nakabayashi/book))
 
-* [Chinese](https://xxchang.github.io/book/)
+* [中文](https://xxchang.github.io/book/)
   ([repository](https://github.com/xxchang/book))
 
 ## 如何使用这本书

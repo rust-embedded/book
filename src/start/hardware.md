@@ -1,6 +1,6 @@
 # 硬件
 
-现在你应该有点熟悉工具和开发过程了。在这部分我们将切换到真正的硬件上；步骤非常相似。让我们深入进去。
+现在你应该有点熟悉工具和开发过程了。在这部分我们将切换到真正的硬件上；步骤非常相似。让我们深入下去。
 
 ## 认识你的硬件
 
@@ -12,14 +12,14 @@
 
 你可以在你的设备的数据手册和参考手册上找到这些信息。
 
-这部分，我们会用我们的参考硬件，STM32F3DISCOVERY。这个板子包含一个STM32F303VCT6微控制器。这个微控制器拥有:
+这部分，我们将使用我们的参考硬件，STM32F3DISCOVERY。这个板子包含一个STM32F303VCT6微控制器。这个微控制器拥有:
 - 一个Cortex-M4F核心，它包含一个单精度FPU。
 - 位于 0x0800_0000 地址的256KiB的Flash。
 - 位于 0x2000_0000 地址的40KiB的RAM。(这里还有其它的RAM区域，但是为了方便起见，我们将忽略它)。
 
 ## 配置
 
-我们将从一个新的模板实例开始。参考[先前的QEMU]章节，了解如何在没有`cargo-generate`的情况下完成它。
+我们将使用一个新的模板实例从零开始。对于新手参考[先前的QEMU]章节，了解如何在没有`cargo-generate`的情况下完成它。
 
 [先前的QEMU]: qemu.md
 
@@ -60,11 +60,11 @@ MEMORY
   RAM : ORIGIN = 0x20000000, LENGTH = 40K
 }
 ```
-> **注意**：如果你因为一些理由，在对某个编译目标首次编译后，改变了`memory.x`文件，需要在`cargo build`之前执行`cargo clean`。因为`cargo build`可能不会追踪`memory.x`的更新。
+> **注意**：如果你因为某些理由，在对某个编译目标首次编译后，改变了`memory.x`文件，需要在`cargo build`之前执行`cargo clean`。因为`cargo build`可能不会跟踪`memory.x`的更新。
 
-我们将使用hello示例再次开始，但是首先我们必须做一个小改变。
+我们将再次使用hello示例作为开始，但是首先我们必须做一个小改变。
 
-在`examples/hello.rs`中，确保`debug::exit()`调用被注释掉了或者移除。它只能用于在QEMU中运行的情况。
+在`examples/hello.rs`中，确保`debug::exit()`调用被注释掉了或者移除掉了。它只能用于在QEMU中运行的情况。
 
 ```rust,ignore
 #[entry]
@@ -79,7 +79,7 @@ fn main() -> ! {
 }
 ```
 
-你可以像你之前做的一样，使用`cargo build`检查编译程序，使用`cargo-binutils`观察二进制项。`cortex-m-rt`库可以处理所有运行芯片所需的魔法，几乎所有的Cortex-M CPUs都按同样的方式启动，这同样有用。
+你可以像你之前做的一样，使用`cargo build`检查编译程序，使用`cargo-binutils`观察二进制项。`cortex-m-rt`库可以处理所有让芯片运行起来所需的魔法，几乎所有的Cortex-M CPUs都按同样的方式启动。
 
 ``` console
 cargo build --example hello
@@ -87,7 +87,7 @@ cargo build --example hello
 
 ## 调试
 
-调试将看起来有点不同。事实上，取决于不同的目标设备，第一步可能看起来不一样。在这个章节里，我们将展示，调试一个在STM32F3DISCOVERY上运行的程序，所需要的步骤。这作为一个参考。对于设备，关于调试有关的信息，可以看[the Debugonomicon](https://github.com/rust-embedded/debugonomicon)。
+调试会看起来有点不一样。事实上，取决于不同的目标设备，第一步可能看起来不一样。在这个章节里，我们将展示，调试一个在STM32F3DISCOVERY上运行的程序，所需要的步骤。这作为一个参考。关于调试有关的设备特定的信息，可以看[the Debugonomicon](https://github.com/rust-embedded/debugonomicon)。
 
 像之前一样，我们将进行远程调试，客户端将是一个GDB进程。不同的是，OpenOCD将是服务器。
 
@@ -116,7 +116,7 @@ source [find interface/stlink.cfg]
 source [find target/stm32f3x.cfg]
 ```
 
-> **注意** 如果你在[安装验证]章节中，发现你的discovery开发板是一个更旧的版本，那么你应该修改你的 `openocd.cfg` 文件，让它去使用 `interface/stlink-v2.cfg` 。注释掉 `interface/stlink.cfg`
+> **注意** 如果你在[安装验证]章节中，发现你的discovery开发板是一个更旧的版本，那么你应该修改你的 `openocd.cfg` 文件，注释掉 `interface/stlink.cfg`，让它去使用 `interface/stlink-v2.cfg` 。
 
 ``` text
 $ openocd
