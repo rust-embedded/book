@@ -47,7 +47,7 @@ $ cargo run
 Hello, world!
 ```
 
-`exit`半主机操作也能被用于终止QEMU进程。重要：**不要**在硬件上使用`debug::exit`；这个函数会关闭你的OpenOCD对话，这样你将不能执行其它程序调试操作，除了重启它。
+`exit`半主机操作也能被用于终止QEMU进程。重要：**不要**在硬件上使用`debug::exit`；这个函数会关闭你的OpenOCD对话，这样你就不能执行其它的程序调试操作了，除了重启它。
 
 ```rust,ignore
 #![no_main]
@@ -80,7 +80,7 @@ $ echo $?
 1
 ```
 
-最后一个提示：你可以将运行时恐慌(panicking)的行为设置成 `exit(EXIT_FAILURE)`。这将允许你编写可以在QEMU上运行通过的 `no_std` 测试。
+最后一个提示：你可以将运行时恐慌(panicking)的行为设置成 `exit(EXIT_FAILURE)`。这会允许你编写可以在QEMU上运行通过的 `no_std` 测试。
 
 为了方便，`panic-semihosting` crate有一个 "exit" 特性。当它使能的时候，在主机stderr上打印恐慌(painc)信息后会调用 `exit(EXIT_FAILURE)` 。
 

@@ -2,7 +2,7 @@
 
 运行时恐慌是Rust语言的一个核心部分。像是索引这样的內建的操作为了存储安全性是运行时检查的。当尝试越界索引时，这会导致运行时恐慌(panic)。
 
-在标准库中，运行时恐慌的行为被定义了:它展开(unwinds)恐慌的线程的栈，除非用户选择在恐慌时终止程序。
+在标准库中，运行时恐慌的行为被定义成:展开(unwinds)恐慌的线程的栈，除非用户选择在恐慌时终止程序。
 
 然而在没有标准库的程序中，运行时恐慌的行为是未被定义了的。通过声明一个 `#[painc_handler]` 函数可以选择一个运行时恐慌的行为。
 
@@ -22,11 +22,11 @@
 [`panic-itm`]: https://crates.io/crates/panic-itm
 [`panic-semihosting`]: https://crates.io/crates/panic-semihosting
 
-在 crates.io 上搜索 [`panic-handler`]，你甚至能找到更多的crates。
+在crates.io上搜索 [`panic-handler`]，你甚至可以找到更多的crates。
 
 [`panic-handler`]: https://crates.io/keywords/panic-handler
 
-仅仅通过链接到相关的crate中，一个程序就可以从这些行为中选择一个运行时恐慌行为。将运行时恐慌的行为作为一行代码放进一个应用的源码中，不仅仅是可以作为文档使用，而且能根据编译配置改变运行时恐慌的行为。比如:
+仅仅通过链接到相关的crate中，一个程序就可以简单地从这些行为中选择一个运行时恐慌行为。将运行时恐慌的行为作为一行代码放进一个应用的源码中，不仅仅是因为可以作为文档使用，而且能根据编译配置改变运行时恐慌的行为。比如:
 
 ``` rust,ignore
 #![no_main]
@@ -45,7 +45,7 @@ use panic_abort as _;
 
 在这个例子里，当使用dev配置编译的时候(`cargo build`)，crate链接到 `panic-halt` crate上，但是当使用release配置编译时(`cargo build --release`)，crate链接到`panic-abort` crate上。
 
-> `use panic_abort as _` 形式的 `use` 语句被用来确保 `panic_abort` 运行时恐慌函数被包含进我们最终的可执行程序里，同时让编译器清楚地知道我们不会从这个crate显式地使用任何东西。没有 `_` 重命名，编译器将会警告我们有一个未使用的导入。有时候你可能会看到 `extern crate panic_abort`，这是Rust 2018之前的版本使用的更旧的写法，现在应该只被用于 "sysroot" crates (与Rust一起发布的crates)，比如 `proc_macro`，`alloc`，`std` 和 `test` 。
+> `use panic_abort as _` 形式的 `use` 语句，被用来确保 `panic_abort` 运行时恐慌函数被包含进我们最终的可执行程序里，同时让编译器清楚地知道我们不会从这个crate显式地使用任何东西。没有 `_` 重命名，编译器将会警告我们有一个未使用的导入。有时候你可能会看到 `extern crate panic_abort`，这是Rust 2018之前的版本使用的更旧的写法，现在应该只被用于 "sysroot" crates (与Rust一起发布的crates)，比如 `proc_macro`，`alloc`，`std` 和 `test` 。
 
 ## 一个例子
 
