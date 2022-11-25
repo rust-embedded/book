@@ -1,15 +1,15 @@
-# 你的C配点Rust
+# 使用Rust的C
 
 在C或者C++中使用Rust代码通常由两部分组成。
 
-- 用Rust创造一个C友好的API
+- 用Rust生成一个C友好的API
 - 将你的Rust项目嵌入一个外部的编译系统
 
 除了`cargo`和`meson`，大多数编译系统没有原生Rust支持。因此你最好只用`cargo`编译你的crate和依赖。
 
 ## 设置一个项目
 
-像往常一样创建一个新的`cargo`项目。有一些标志可以告诉`cargo`去生成一个系统库，而不是常规的rust目标文件。如果你想要它与你的crate的其它部分不一样，这也允许你为你的库设置一个不同的输出名。
+像往常一样创建一个新的`cargo`项目。有一些标志可以告诉`cargo`去生成一个系统库，而不是常规的rust目标文件。如果你想要它与crate的其它部分不一样，你也可以为你的库设置一个不同的输出名。
 
 ```toml
 [lib]
@@ -20,17 +20,17 @@ crate-type = ["cdylib"]      # 生成动态链接库
 
 ## 构建一个`C` API
 
-因为对于Rust编译器来说，C++没有稳定的ABI，因此我们使用`C`表示不同语言间的互用性。在C和C++代码的内部使用Rust时也不例外。
+因为对于Rust编译器来说，C++没有稳定的ABI，因此对于不同语言间的互操性我们使用`C`。在C和C++代码的内部使用Rust时也不例外。
 
 ### `#[no_mangle]`
 
-Rust对符号名的修饰与本机的代码链接器所期望的不同。因此，需要告知任何被Rust导出到Rust外部去使用的函数不要被编译器修饰。
+Rust对符号名的修饰与主机的代码链接器所期望的不同。因此，需要告知任何被Rust导出到Rust外部去使用的函数不要被编译器修饰。
 
 ### `extern "C"`
 
-默认，任何用Rust写的函数将使用Rust ABI(这也不稳定)。相反，当编译面向外部的FFI APIs时，我们需要告诉编译器去使用系统ABI 。 
+默认，任何用Rust写的函数将使用Rust ABI(这也不稳定)。当编译面向外部的FFI APIs时，我们需要告诉编译器去使用系统ABI 。 
 
-取决于你的平台，你可能需要针对一个特定的ABI版本，其记录在[这里](https://doc.rust-lang.org/reference/items/external-blocks.html)。
+取决于你的平台，你可能想要针对一个特定的ABI版本，其记录在[这里](https://doc.rust-lang.org/reference/items/external-blocks.html)。
 
 ---
 
@@ -43,7 +43,7 @@ pub extern "C" fn rust_function() {
 }
 ```
 
-就像在你的Rust项目中使用`C`代码时那样，你现在将需要把数据转换为应用其它部分可以理解的形式。
+就像在Rust项目中使用`C`代码时那样，现在需要把数据转换为应用中其它部分可以理解的形式。
 
 ## 链接和更大的项目上下文
 
@@ -57,7 +57,7 @@ pub extern "C" fn rust_function() {
 
 然而，从C调用一个Rust函数要求一个头文件去声明函数的签名。
 
-在你的Rust-ffi API中的每个函数需要有一个相关的头文件函数。
+在Rust-ffi API中的每个函数需要有一个相关的头文件函数。
 
 ```rust,ignore
 #[no_mangle]
@@ -72,7 +72,7 @@ void rust_function();
 
 等等。
 
-这里有个工具可以自动化这个过程，被叫做[cbindgen]，其会分析你的Rust代码然后从它为你的C和C++项目生成头文件。
+这里有个工具可以自动化这个过程，被叫做[cbindgen]，其会分析你的Rust代码然后从它为C和C++项目生成头文件。
 
 [cbindgen]: https://github.com/eqrion/cbindgen
 

@@ -1,10 +1,10 @@
 # 附录A: 词汇表
 
-嵌入式生态系统充满了不同的协议，硬件组件，还有许多与生产商相关的东西，它们都使用自己的缩写和项目名。这个词汇表尝试列出它们以便更高理解它们。
+嵌入式生态系统中充满了不同的协议，硬件组件，还有许多与生产商相关的东西，它们都使用自己的缩写和项目名。这个词汇表尝试列出它们以便更好理解它们。
 
 ### BSP
 
-一个板级支持Crate(Board Support Crate)提供一个为某个特定板子配置的高级接口。它通常依赖一个[HAL](#hal) crate 。在[存储映射的寄存器那页](../start/registers.md)有更多细节的描述或者看[这个视频](https://youtu.be/vLYit_HHPaY)来获取一个更广泛的概述。
+板级支持的Crate(Board Support Crate)提供为某个特定板子配置的高级接口。它通常依赖一个[HAL](#hal) crate 。在[存储映射的寄存器那页](../start/registers.md)有更多细节的描述或者看[这个视频](https://youtu.be/vLYit_HHPaY)来获取一个更广泛的概述。
 
 ### FPU
 
@@ -12,7 +12,7 @@
 
 ### HAL
 
-一个硬件抽象层(Hardware Abstraction Layer) crate为一个微控制器的功能和外设提供一个开发者友好的接口。它通常在[Peripheral Access Crate (PAC)](#pac)之上被实现。它可能也会实现来自[`embedded-hal`](https://crates.io/crates/embedded-hal) crate的traits 。在[存储映射的寄存器那页](../start/registers.md)上有更多的细节或者看[这个视频](https://youtu.be/vLYit_HHPaY)获取一个更广泛的概述。
+硬件抽象层(Hardware Abstraction Layer) crate为微控制器的功能和外设提供一个开发者友好的接口。它通常在[Peripheral Access Crate (PAC)](#pac)之上被实现。它可能也会实现来自[`embedded-hal`](https://crates.io/crates/embedded-hal) crate的traits 。在[存储映射的寄存器那页](../start/registers.md)上有更多的细节或者看[这个视频](https://youtu.be/vLYit_HHPaY)获取一个更广泛的概述。
 
 ### I2C
 
@@ -32,7 +32,7 @@
 
 ### SVD
 
-系统视图描述文件(System View Description)是一个XML文件格式，被用来描述一个微控制器设备的程序员视角。你能在[the ARM CMSIS documentation site](https://www.keil.com/pack/doc/CMSIS/SVD/html/index.html)上获取更多信息。
+系统视图描述文件(System View Description)是一个XML文件格式，以程序员视角来描述一个微控制器设备。你能在[the ARM CMSIS documentation site](https://www.keil.com/pack/doc/CMSIS/SVD/html/index.html)上获取更多信息。
 
 ### UART
 

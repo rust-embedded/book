@@ -1,6 +1,6 @@
 # 在`#[no_std]`下执行数学运算
 
-如果你想要执行数学相关的函数，像是计算平方根或者一个数的指数且你有完整的标准库支持，你的代码可能看起来像这个:
+如果你想要执行数学相关的函数，像是计算平方根或者一个数的指数并有完整的标准库支持，代码可能看起来像这样:
 
 ```rs
 //! 可用一些标准支持的数学函数
@@ -55,14 +55,14 @@ fn main() -> ! {
     )
     .unwrap();
     // 退出QEMU
-    // 注意不要在硬件上允许这个; 它能破坏OpenOCD的状态
+    // 注意不要在硬件上使用这个; 它能破坏OpenOCD的状态
     // debug::exit(debug::EXIT_SUCCESS);
 
     loop {}
 }
 ```
 
-如果你需要在你的MCU上执行更复杂的操作，像是DSP信号处理或者更高级的线性代数，下列的crates可能可以帮到你
+如果需要在MCU上执行更复杂的操作，像是DSP信号处理或者更高级的线性代数，下列的crates可能可以帮到你
 
 - [CMSIS DSP library binding](https://github.com/jacobrosenthal/cmsis-dsp-sys)
 - [`micromath`](https://github.com/tarcieri/micromath)
