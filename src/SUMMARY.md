@@ -34,7 +34,7 @@ more information and coordination
 - [静态保障(static guarantees)](./static-guarantees/index.md)
     - [类型状态编程](./static-guarantees/typestate-programming.md)
     - [作为状态机的外设](./static-guarantees/state-machines.md)
-    - [设计协约](./static-guarantees/design-contracts.md)
+    - [设计约定](./static-guarantees/design-contracts.md)
     - [零成本抽象](./static-guarantees/zero-cost-abstractions.md)
 - [可移植性](./portability/index.md)
 - [并发](./concurrency/index.md)
