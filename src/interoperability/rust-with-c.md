@@ -72,7 +72,7 @@ void rust_function();
 
 等等。
 
-这里有个工具可以自动化这个过程，被叫做[cbindgen]，其会分析你的Rust代码然后从它为C和C++项目生成头文件。
+这里有个工具可以自动化这个过程，叫做[cbindgen]，其会分析你的Rust代码然后为C和C++项目生成头文件。
 
 [cbindgen]: https://github.com/eqrion/cbindgen
 
