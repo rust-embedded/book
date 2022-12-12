@@ -1,14 +1,14 @@
 # 集合
 
-最后，你还希望在你的程序里使用动态数据结构(也称为集合)。`std` 提供了一组常见的集合: [`Vec`]，[`String`]，[`HashMap`]，等等。所有这些在`std`中被实现的集合都使用一个全局动态分配器(也称为堆)。
+最后，还希望在程序里使用动态数据结构(也称为集合)。`std` 提供了一组常见的集合: [`Vec`]，[`String`]，[`HashMap`]，等等。所有这些在`std`中被实现的集合都使用一个全局动态分配器(也称为堆)。
  
 [`Vec`]: https://doc.rust-lang.org/std/vec/struct.Vec.html
 [`String`]: https://doc.rust-lang.org/std/string/struct.String.html
 [`HashMap`]: https://doc.rust-lang.org/std/collections/struct.HashMap.html
 
-因为`core`的定义是没有内存分配的，所以这些实现在`core`中是没有的，但是我们可以在编译器附带的`alloc` crate中找到。
+因为`core`的定义中是没有内存分配的，所以这些实现在`core`中是没有的，但是我们可以在编译器附带的`alloc` crate中找到。
 
-如果你需要集合，一个堆分配的实现不是你唯一的选择。你也可以使用 *fixed capacity* 集合; 一个这样的实现可以在 [`heapless`] crate中被找到。
+如果需要集合，一个基于堆分配的实现不是唯一的选择。也可以使用 *fixed capacity* 集合; 其实现可以在 [`heapless`] crate中被找到。
 
 [`heapless`]: https://crates.io/crates/heapless
 
@@ -16,7 +16,7 @@
 
 ## 使用 `alloc`
 
-`alloc` crate与标准的Rust发行版在一起。为了导入这个crate，你可以直接 `use` 它而不需要在你的`Cargo.toml`文件中把它声明为一个依赖。
+`alloc` crate与标准的Rust发行版在一起。你可以直接 `use` 导入这个crate，而不需要在`Cargo.toml`文件中把它声明为一个依赖。
 
 ``` rust,ignore
 #![feature(alloc)]
@@ -26,7 +26,7 @@ extern crate alloc;
 use alloc::vec::Vec;
 ```
 
-为了能使用集合，你首先需要使用`global_allocator`属性去声明你程序将使用的全局的分配器。它要求你选择的分配器实现了[`GlobalAlloc`] trait 。
+为了能使用集合，首先需要使用`global_allocator`属性去声明程序将使用的全局分配器。它要求选择的分配器实现了[`GlobalAlloc`] trait 。
 
 [`GlobalAlloc`]: https://doc.rust-lang.org/core/alloc/trait.GlobalAlloc.html
 
@@ -87,7 +87,7 @@ static HEAP: BumpPointerAlloc = BumpPointerAlloc {
 };
 ```
 
-除了选择一个全局分配器，用户也将必须定义如何使用*不稳定的*`alloc_error_handler`属性来处理内存溢出错误。
+除了选择一个全局分配器，用户也必须要定义如何使用*不稳定的*`alloc_error_handler`属性来处理内存溢出错误。
 
 ``` rust,ignore
 #![feature(alloc_error_handler)]
@@ -102,7 +102,7 @@ fn on_oom(_layout: Layout) -> ! {
 }
 ```
 
-一旦一切都满足了，用户最终可以在`alloc`中使用集合。
+一旦一切都完成了，用户最后就可以在`alloc`中使用集合。
 
 ```rust,ignore
 #[entry]
@@ -122,7 +122,7 @@ fn main() -> ! {
 
 ## 使用 `heapless`
 
-`heapless`无需设置因为它的集合不依赖一个全局内存分配器。只是`use`它的集合然后实例化它们:
+`heapless`无需设置，因为它的集合不依赖一个全局内存分配器。只是`use`它的集合然后实例化它们:
 
 ```rust,ignore
 extern crate heapless; // v0.4.x
@@ -145,9 +145,9 @@ fn main() -> ! {
 
 [`typenum`]: https://crates.io/crates/typenum
 
-第二，`push`方法和许多其它方法返回的是一个`Result`。因为`heapless`集合有一个固定的容量，所以所有插入的操作都可能会失败。通过返回一个`Result`，API反应了这个问题，指出操作是否成功还是失败。相反，`alloc`集合自己将会在堆上重新分配去增加它的容量。
+第二，`push`方法和另外一些方法返回的是一个`Result`。因为`heapless`集合有一个固定的容量，所以所有插入的操作都可能会失败。通过返回一个`Result`，API反应了这个问题，指出操作是否成功还是失败。相反，`alloc`集合自己将会在堆上重新分配去增加它的容量。
 
-自v0.4.x版本起，所有的`heapless`集合将它们所有的元素内联地存储起来了。这意味着像是`let x = heapless::Vec::new()`这样的一个操作将会在栈上分配集合，但是它也能够在一个`static`变量上分配集合，或者甚至在堆上(`Box<Vec<_, _>>`)。
+自v0.4.x版本起，所有的`heapless`集合将所有的元素内联地存储起来了。这意味着像是`let x = heapless::Vec::new()`这样的一个操作将会在栈上分配集合，但是它也能够在一个`static`变量上分配集合，或者甚至在堆上(`Box<Vec<_, _>>`)。
 
 ## 取舍
 
@@ -157,7 +157,7 @@ fn main() -> ! {
 
 使用堆分配，内存溢出总是有可能出现的且会发生在任何一个集合需要增长的地方: 比如，所有的 `alloc::Vec.push` 调用会潜在地产生一个OOM(Out of Memory)条件。因此一些操作可能会*隐式地*失败。一些`alloc`集合暴露了`try_reserve`方法，可以当增加集合时让你检查潜在的OOM条件，但是你需要主动地使用它们。
 
-如果你只使用`heapless`集合，而不使用内存分配器，那么一个OOM条件不可能出现。反而，你必须逐个处理容量不足的集合。也就是你必须处理*所有*的`Result`，其由像是`Vec.push`这样的方法返回的。
+如果你只使用`heapless`集合，而不使用内存分配器，那么一个OOM条件不可能出现。反而，你必须逐个处理容量不足的集合。也就是必须处理*所有*的`Result`，`Result`由像是`Vec.push`这样的方法返回的。
 
 与在所有由`heapless::Vec.push`返回的`Result`上调用`unwrap`相比，OOM错误更难调试，因为错误被发现的位置可能与导致问题的位置*不*一致。比如，甚至如果分配器接近消耗完`vec.reserve(1)`都能触发一个OOM，因为一些其它的集合正在泄露内存(内存泄露在安全的Rust是会发生的)。
 

@@ -1,14 +1,14 @@
-# HAL设计模式清单
+# HAL设计检查清单
 
-- **命名** *(crate符合Rust命名规则)*
+- **命名** *(crate要符合Rust命名规则)*
   - [ ] crate被恰当地命名 ([C-CRATE-NAME])
-- **互用性** *(crate很好地与其它的库功能交互)*
+- **互用性** *(crate要很好地与其它的库功能交互)*
   - [ ] 封装类型提供一种析构方法 ([C-FREE])
   - [ ] HALs重新导出了它们的寄存器访问crate ([C-REEXPORT-PAC])
   - [ ] 类型实现了 `embedded-hal` traits ([C-HAL-TRAITS])
-- **可预见性** *(crate使清晰的代码工作起来像它们看起来一样)*
+- **可预见性** *(crate的代码清晰可读，行为和看起来的一样)*
   - [ ] 使用构造函数而不是扩展traits ([C-CTOR])
-- **GPIO接口** *(GPIO接口遵循一个常见的模式)*
+- **GPIO接口** *(GPIO接口要遵循一个公共的模式)*
   - [ ] Pin类型默认是零大小类型 ([C-ZST-PIN])
   - [ ] Pin类型提供擦除管脚和端口的方法 ([C-ERASED-PIN])
   - [ ] Pin状态应该被编码为类型参数 ([C-PIN-STATE])
