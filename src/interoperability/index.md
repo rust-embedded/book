@@ -1,6 +1,6 @@
 # 互用性
 
-Rust和C代码间的互用性始终取决于两种语言间的数据转换。为了实现互操性，在`stdlib`中，有两个专用模块，叫做[`std::ffi`](https://doc.rust-lang.org/std/ffi/index.html)和[`std::os::raw`](https://doc.rust-lang.org/std/os/raw/index.html) 。
+Rust和C代码间的互用性始终取决于两种语言间的数据转换。为了实现互用性，在`stdlib`中，有两个专用模块，叫做[`std::ffi`](https://doc.rust-lang.org/std/ffi/index.html)和[`std::os::raw`](https://doc.rust-lang.org/std/os/raw/index.html) 。
 
 `std::os::raw`处理底层的基本类型，这些类型可以被编译器隐式地转换，因为Rust和C之间的内存布局足够相似或相同。
 

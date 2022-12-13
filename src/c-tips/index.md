@@ -1,6 +1,6 @@
 # 给嵌入式C开发者的贴士
 
-这个章节收集了可能对于正在寻求开始编写Rust有经验的嵌入式C开发者有用的各种各样的贴士。它将解释你在C中可能已经用到的那些东西与Rust中有多不同。
+这个章节收集了可能对于刚开始编写Rust的，有经验的嵌入式C开发者来说，有用的各种各样的贴士。它将解释你在C中可能已经用到的那些东西与Rust中的有何不同。
 
 ## 预处理器
 
@@ -8,17 +8,17 @@
 
 * 使用`#ifdef`编译时选择代码块
 * 编译时的数组大小和计算
-* 用来简化常见的模式的宏(避免函数调用的开销)
+* 用来简化常见的模式的宏(避免调用函数的开销)
 
-在Rust中没有预处理器，所以许多用例有不同的处理方法。本章节剩下的部分，我们将介绍使用预处理器的各种替代方法。
+在Rust中没有预处理器，所以许多案例有不同的处理方法。本章节剩下的部分，我们将介绍各种替代预处理器的方法。
 
 ### 编译时的代码选择
 
-Rust中最接近`#ifdef ... #endif`的是[Cargo features]。这些比C预处理器更正式一点: 每个crate显式列举的所有可能的features只能是关了的或者打开了的。当你把一个crate列为依赖项时，Features被打开，且是可添加的: 如果你依赖树中的任何crate为另一个crate打开了一个feature，那么这个feature将为所有那个crate的用户而打开。
+Rust中最接近`#ifdef ... #endif`的是[Cargo features]。这些比C预处理器更正式一点: 每个crate显式列举的，所有可能的features只能是关了的或者打开了的。当你把一个crate列为依赖项时，Features被打开，且是可添加的：如果你依赖树中的任何crate为另一个crate打开了一个feature，那么这个feature将为所有使用那个crate的用户而打开。
 
 [Cargo features]: https://doc.rust-lang.org/cargo/reference/manifest.html#the-features-section
 
-比如，你可能有一个crate，其提供一个信号处理的基本类型库(library of signal processing primitives)。每个基本类型可能带来一些额外的时间去编译大量的常量，你想要躲开这些常量。你可以为你的`Cargo.toml`中每个组件声明一个Cargo feature。
+比如，你可能有一个crate，其提供一个信号处理的基本类型库(library of signal processing primitives)。每个基本类型可能带来一些额外的时间去编译大量的常量，你想要避开这些常量。你可以为你的`Cargo.toml`中每个组件声明一个Cargo feature。
 
 ```toml
 [features]
@@ -26,7 +26,7 @@ FIR = []
 IIR = []
 ```
 
-然后，在你的代码中，使用`#[cfg(feature="FIR")]`去控制什么东西应该被包含。
+然后，在你的代码中，使用`#[cfg(feature="FIR")]`去控制要包含什么东西。
 
 ```rust
 /// 在你的顶层的lib.rs中
@@ -39,7 +39,7 @@ pub mod iir;
 
 同样地，你可以控制，只有当某个feature _没有_ 被打开时，包含代码块，或者某些features的组合被打开或者被关闭时。 
 
-另外，Rust提供许多你可以使用的自动配置了的条件，比如`target_arch`用来选择不同的代码所基于的架构。对于条件编译的全部细节，可以参看the Rust reference的[conditional compilation]章节。
+另外，Rust提供了许多可以使用的自动配置了的条件，比如`target_arch`用来选择不同的代码所基于的架构。对于条件编译的全部细节，可以参看the Rust reference的[conditional compilation]章节。
 
 [conditional compilation]: https://doc.rust-lang.org/reference/conditional-compilation.html
 
@@ -64,13 +64,13 @@ static BUF: [u32; array_size()] = [0u32; array_size()];
 
 ### 宏
 
-Rust提供一个极度强大的[宏系统]。虽然C预处理器几乎直接在你的源代码之上进行操作，但是Rust宏系统可以在一个更高的级别上操作。存在两种Rust宏: _声明宏_ 和 _过程宏_ 。前者更简单也最常见; 它们看起来像是函数调用，且能扩展成一个完整的表达式，语句，项目，或者模式。过程宏更复杂但是却能让Rust更强大: 它们可以把任一条Rust语法变成一个新的Rust语法。
+Rust提供一个极度强大的[宏系统]。虽然C预处理器几乎直接在你的源代码之上进行操作，但是Rust宏系统可以在一个更高的级别上操作。存在两种Rust宏: _声明宏_ 和 _过程宏_ 。前者更简单也最常见; 它们看起来像是函数调用，且能扩展成一个完整的表达式，语句，项，或者模式。过程宏更复杂但是却能让Rust更强大: 它们可以把任一条Rust语法变成一个新的Rust语法。
 
 [宏系统]: https://doc.rust-lang.org/book/ch19-06-macros.html
 
-通常，你可能想知道在那些你可能使用一个C预处理器宏的地方，能否使用一个声明宏做同样的工作。你能在你的crate中定义它们，且在你的crate中轻松使用它们或者导出给其他人用。但是请注意，因为它们必须扩展成完整的表达式，语句，项或者模式，因此C预处理器的某些用例将无法工作，比如扩展成一个变量名的一部分或者一个列表中不完整的项目集。
+通常，你可能想知道在那些使用一个C预处理器宏的地方，能否使用一个声明宏做同样的工作。你可以在crate中定义它们，且在你的crate中轻松使用它们或者导出给其他人用。但是请注意，因为它们必须扩展成完整的表达式，语句，项或者模式，因此C预处理器宏的某些用例没法用，比如可以扩展成一个变量名的一部分的宏或者可以把列表中的项扩展成不完整的集合的宏。
 
-和Cargo features一样，值得考虑下你是否真的需要宏。在一些例子中一个常规的函数更容易被理解，它也能被内联成和一个和宏一样的代码。`#[inline]`和`#[inline(always)]` [attributes] 能让你更深入控制这个过程，这里也要小心 - 编译器将自动地从同一个crate的合适的的地方内联函数，因此不恰当地强迫它内联函数实际可能会导致性能下降。
+和Cargo features一样，值得考虑下你是否真的需要宏。在一些例子中一个常规的函数更容易被理解，它也能被内联成和一个和宏一样的代码。`#[inline]`和`#[inline(always)]` [attributes] 能让你更深入控制这个过程，这里也要小心 - 编译器会从同一个crate的恰当的地方自动地内联函数，因此不恰当地强迫它内联函数实际可能会导致性能下降。
 
 [attributes]: https://doc.rust-lang.org/reference/attributes.html#inline-attribute
 
@@ -89,13 +89,13 @@ Rust提供一个极度强大的[宏系统]。虽然C预处理器几乎直接在�
 * 改变Cargo的编译配置
 * 添加额外的静态链接库以进行链接
 
-现在还不支持post-build脚本，你通常将它用于像是从编译的对象自动生生成二进制文件或者打印编译信息这类任务。
+现在还不支持post-build脚本，通常将它用于像是从编译的对象自动生生成二进制文件或者打印编译信息这类任务中。
 
 ### 交叉编译
 
-为你的编译系统使用Cargo也能简化交叉编译。在大多数例子里，告诉Cargo `--target thumbv6m-none-eabi`就行了，它会在`target/thumbv6m-none-eabi/debug/myapp`找到一个合适的可执行文件。
+为你的编译系统使用Cargo也能简化交叉编译。在大多数例子里，告诉Cargo `--target thumbv6m-none-eabi`就行了，可以在`target/thumbv6m-none-eabi/debug/myapp`中找到一个合适的可执行文件。
 
-对于那些并不是Rust原生支持的平台，你将需要自己为那个目标平台编译`libcore`。遇到这样的平台，[Xargo]可以作为Cargo的替代来使用，它可以自动地为你编译`libcore`。
+对于那些并不是Rust原生支持的平台，将需要自己为那个目标平台编译`libcore`。遇到这样的平台，[Xargo]可以作为Cargo的替代来使用，它可以自动地为你编译`libcore`。
 
 [Xargo]: https://github.com/japaric/xargo
 
@@ -111,7 +111,7 @@ for(i=0; i<sizeof(arr)/sizeof(arr[0]); i++) {
 }
 ```
 
-在Rust中，这是一个反模式(anti-pattern): 索引访问可能会更慢(因为它可能需要做边界检查)且可能会阻止编译器的各种优化。这是一个重要的区别，值得再重复一遍: Rust将在手动的数组索引上进行越界检查以保障内存安全性，而C将会很乐意在数组外进行索引。
+在Rust中，这是一个反模式(anti-pattern)：索引访问可能会更慢(因为它可能需要做边界检查)且可能会阻止编译器的各种优化。这是一个重要的区别，值得再重复一遍: Rust会在手动的数组索引上进行越界检查以保障内存安全性，而C允许索引数组外的内容。
 
 可以使用迭代器来替代:
 
@@ -131,15 +131,15 @@ for element in arr.iter() {
 
 ## 引用和指针
 
-在Rust中，存在指针(被叫做 [_裸指针_])但是只能在特殊的环境中被使用，因为解引用它们总是被认为是`unsafe`的 -- Rust通常不能保障指针背后有什么。
+在Rust中，存在指针(被叫做 [_裸指针_])但是只能在特殊的环境中被使用，因为解引用裸指针总是被认为是`unsafe`的 -- Rust通常不能保障指针背后有什么。
 
 [_裸指针_]: https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html#dereferencing-a-raw-pointer
 
 在大多数例子里，我们使用 _引用_ 来替代，由`&`符号指出，或者 _可变引用_，由`&mut`指出。引用与指针相似，因为它能被解引用来访问底层的数据，但是它们是Rust的所有权系统的一个关键部分: Rust将严格强迫你在任何给定时间只有一个可变引用 _或者_ 对相同数据的多个不变引用。
 
-在实践中，这意味着你必须更加小心你是否需要对数据的可变访问: 在C中默认是可变的，你必须显式地使用`const`，在Rust中正好相反。
+在实践中，这意味着你必须要更加小心你是否需要对数据的可变访问：在C中默认是可变的，你必须显式地使用`const`，在Rust中正好相反。
 
-有种情况，你可能仍然要使用裸指针直接与硬件进行交互(比如，写入一个指向DMA外设寄存器中的缓存的指针)，它们也被所有的外设访问crates在底层使用，让你可以读取和写入存储映射寄存器。
+某个情况下，你可能仍然要使用裸指针直接与硬件进行交互(比如，写入一个指向DMA外设寄存器中的缓存的指针)，它们也被所有的外设访问crates在底层使用，让你可以读取和写入存储映射寄存器。
 
 ## Volatile访问
 
@@ -199,7 +199,7 @@ fn driver() {
 
 在示例代码中有些事情值得注意:
   * 我们可以把`&mut SIGNALLED`传递给要求`*mut T`的函数中，因为`&mut T`会自动转换成一个`*mut T` (对于`*const T`来说是一样的)
-  * 我们需要为`read_volatile`/`write_volatile`方法使用`unsafe`块，因为它们是`unsafe`的函数。确保操作安全变成了程序员的责任: 看方法的文档获得更多细节。
+  * 我们需要为`read_volatile`/`write_volatile`方法使用`unsafe`块，因为它们是`unsafe`的函数。确保操作安全变成了程序员的责任：看方法的文档获得更多细节。
 
 在你的代码中直接使用这些函数是很少见的，因为它们通常由更高级的库封装起来为你提供服务。对于存储映射的外设，提供外设访问的crates将自动实现volatile访问，而对于并发的基本类型，存在更好的抽象可用。(看[并发章节])
 
@@ -273,7 +273,7 @@ fn main() {
 
 注意使用`repr(packed)`也会将类型的对齐设置成`1` 。
 
-最终，为了指定一个特定的对齐，使用`repr(align(n))`，`n`是要对齐的字节数(必须是2的幂):
+最后，为了指定一个特定的对齐，可以使用`repr(align(n))`，`n`是要对齐的字节数(必须是2的幂):
 
 ```rust
 #[repr(C)]
@@ -306,8 +306,8 @@ fn main() {
 ## 其它资源
 
 * 这本书中:
-    * [给Rust配点C](../interoperability/c-with-rust.md)
-    * [给C配点Rust](../interoperability/rust-with-c.md)
+    * [使用C的Rust](../interoperability/c-with-rust.md)
+    * [使用Rust的C](../interoperability/rust-with-c.md)
 * [The Rust Embedded FAQs](https://docs.rust-embedded.org/faq.html)
 * [Rust Pointers for C Programmers](http://blahg.josefsipek.net/?p=580)
 * [I used to use pointers - now what?](https://github.com/diwic/reffers-rs/blob/master/docs/Pointers.md)
