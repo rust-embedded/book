@@ -1,7 +1,7 @@
 # The Embedded Rust Book
-> 如何使用Rust编程语言在裸板上开发固件的中文文档
+> 一本关于如何使用Rust编程语言在裸板上开发固件的中文文档
 
-This project is developed and maintained by the [Resources team][team].
+这个项目由 [Resources team][team] 开发和维护。
 
 See [the issue tracker] for more details. This book is a living document, and is updated continuously.
 
@@ -9,7 +9,7 @@ See [the issue tracker] for more details. This book is a living document, and is
 
 ## Online Copies of this Book
 
-This book is located at https://docs.rust-embedded.org/book/
+This book is located at https://xxchang.github.io/book/
 
 ## License
 
