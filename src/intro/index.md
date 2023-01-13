@@ -2,7 +2,7 @@
 欢迎阅读嵌入式Rust:一本关于如何在裸机(比如，微处理器)上使用Rust编程语言的入门书籍。
 
 ## 嵌入式Rust是为谁准备的
-嵌入式Rust是为了那些即想要进行嵌入式编程，又想要使用Rust语言所提供的高级概念和安全保障的人们而准备的(参见[Who Rust Is For](https://doc.rust-lang.org/book/ch00-00-introduction.html))
+嵌入式Rust是为了那些既想要进行嵌入式编程，又想要使用Rust语言所提供的高级概念和安全保障的人们而准备的(参见[Who Rust Is For](https://doc.rust-lang.org/book/ch00-00-introduction.html))
 
 ## 本书范围
 这本书的目的是：
@@ -31,15 +31,15 @@
 
 如果你不熟悉上面提到的东西或者你对这本书中提到的某个特定主题感兴趣，你也许能从这些资源中找到有用的信息。
 
-| Topic        | Resource | Description |
+|  主题        |   资源    |     描述     |
 |--------------|----------|-------------|
 | Rust         | [Rust Book](https://doc.rust-lang.org/book/) | 如果你还不能轻松地使用Rust，我们强烈地建议读这本书。|
-| Rust, Embedded | [Discovery Book](https://docs.rust-embedded.org/discovery/) | 如果你从来没有做过嵌入式编程，这本书可能是个更好的开始。 |
-| Rust, Embedded | [Embedded Rust Bookshelf](https://docs.rust-embedded.org) | 这里你能找到许多Rust's Embedded Working Group提供的额外资源。|
-| Rust, Embedded | [Embedonomicon](https://docs.rust-embedded.org/embedonomicon/) | 在Rust中进行嵌入式编程的细节。 |
-| Rust, Embedded | [embedded FAQ](https://docs.rust-embedded.org/faq.html) | 关于嵌入式环境下的Rust会遇到的常见问题。|
-| Interrupts | [Interrupt](https://en.wikipedia.org/wiki/Interrupt) | - |
-| Memory-mapped IO/Peripherals | [Memory-mapped I/O](https://en.wikipedia.org/wiki/Memory-mapped_I/O) | - |
+| Rust, 嵌入式 | [Discovery Book](https://docs.rust-embedded.org/discovery/) | 如果你从来没有做过嵌入式编程，这本书可能是个更好的开始。 |
+| Rust, 嵌入式 | [Embedded Rust Bookshelf](https://docs.rust-embedded.org) | 这里你能找到许多Rust's Embedded Working Group提供的额外资源。|
+| Rust, 嵌入式 | [Embedonomicon](https://docs.rust-embedded.org/embedonomicon/) | 在Rust中进行嵌入式编程的细节。 |
+| Rust, 嵌入式 | [embedded FAQ](https://docs.rust-embedded.org/faq.html) | 关于嵌入式环境下的Rust会遇到的常见问题。|
+| 中断 | [Interrupt](https://en.wikipedia.org/wiki/Interrupt) | - |
+| 存储映射的IO/外设 | [Memory-mapped I/O](https://en.wikipedia.org/wiki/Memory-mapped_I/O) | - |
 | SPI, UART, RS232, USB, I2C, TTL | [Stack Exchange about SPI, UART, and other interfaces](https://electronics.stackexchange.com/questions/37814/usart-uart-rs232-usb-spi-i2c-ttl-etc-what-are-all-of-these-and-how-do-th) | - |
 
 ### 翻译
@@ -53,7 +53,7 @@
   ([repository](https://github.com/xxchang/book))
 
 ## 如何使用这本书
-这本书通常假设你是前后阅读的。之后的章节是建立在先前的章节中提到的概念之上的，先前章节可能不会深入一个主题的细节，因为在随后的章节将会再次重温这个主题。
+这本书通常假设你是按顺序阅读的。之后的章节是建立在先前的章节中提到的概念之上的，先前章节可能不会深入一个主题的细节，因为在随后的章节将会再次重温这个主题。
 在大多数示例中这本书将使用[STM32F3DISCOVERY]开发板。这个板子是基于ARM Cortex-M架构的，且基本功能与大多数基于这个架构的CPUs功能相似。微处理器的外设和其它实现细节在不同的厂家之间是不同的，甚至来自同一个厂家，不同处理器系列之间也是不同的。
 因此我们建议购买[STM32F3DISCOVERY]开发板来尝试这本书中的例子。
 

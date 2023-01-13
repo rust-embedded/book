@@ -6,8 +6,8 @@
 - OpenOCD >=0.8. 测试的版本: v0.9.0 and v0.10.0
 - 有ARM支持的GDB。强烈建议7.12或者更新的版本。测试版本: 7.10, 7.11 和 8.1
 - [`cargo-generate`](https://github.com/ashleygwilliams/cargo-generate) 或者 `git`。这些工具都是可选的，但是跟着这本书来使用它们，会更容易。
-- 
-- 下面的文档将解释我们为什么使用这些工具。安装指令可以在下一页找到。
+
+下面的文档将解释我们为什么使用这些工具。安装指令可以在下一页找到。
 
 ## `cargo-generate` 或者 `git`
 裸机编程是非标准Rust编程，为了得到正确的程序的内存布局，需要对链接过程进行一些调整，这要求添加一些额外的文件(比如linker scripts)和配置(比如linker flags)。我们已经为你把这些打包进了一个模板里了，你只需要补充缺失的信息(比如项目名和目标硬件的特性)。<br>
@@ -15,7 +15,7 @@
 
 ## `cargo-binutils`
 `cargo-binutils`是一个Cargo命令的子集，它让我们能轻松使用Rust工具链带来的LLVM工具。这些工具包括LLVM版本的`objdump`，`nm`和`size`，用来查看二进制文件。<br>
-在GNU binutils之上使用这些工具的好处是，(a)无论你的操作系统是什么，安装这些LLVM工都可以用同一条命令(`rustup component add llvm-tools-preview`)。(b)像是`objdump`这样的工具，支持所有`rustc`支持的架构--从ARM到x86_64--因为它们都有一样的LLVM后端。
+在GNU binutils之上使用这些工具的好处是，(a)无论你的操作系统是什么，安装这些LLVM工具都可以用同一条命令(`rustup component add llvm-tools-preview`)。(b)像是`objdump`这样的工具，支持所有`rustc`支持的架构--从ARM到x86_64--因为它们都有一样的LLVM后端。
 
 ## `qemu-system-arm`
 
