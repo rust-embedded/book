@@ -125,8 +125,6 @@ For projects with limited dependencies or complexity, or for projects where it i
 In the simplest case of compiling a single C file as a dependency to a static library, an example `build.rs` script using the [`cc` crate] would look like this:
 
 ```rust,ignore
-extern crate cc;
-
 fn main() {
     cc::Build::new()
         .file("foo.c")
