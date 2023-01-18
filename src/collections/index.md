@@ -49,9 +49,8 @@ in your program instead of this allocator.
 ``` rust,ignore
 // Bump pointer allocator implementation
 
-extern crate cortex_m;
-
-use core::alloc::GlobalAlloc;
+use core::alloc::{GlobalAlloc, Layout};
+use core::cell::UnsafeCell;
 use core::ptr;
 
 use cortex_m::interrupt;
@@ -144,8 +143,7 @@ as they are exact same implementation.
 allocator. Just `use` its collections and proceed to instantiate them:
 
 ```rust,ignore
-extern crate heapless; // v0.4.x
-
+// heapless version: v0.4.x
 use heapless::Vec;
 use heapless::consts::*;
 
@@ -155,6 +153,7 @@ fn main() -> ! {
 
     xs.push(42).unwrap();
     assert_eq!(xs.pop(), Some(42));
+    loop {}
 }
 ```
 

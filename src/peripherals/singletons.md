@@ -61,8 +61,7 @@ This has a small runtime overhead because we must wrap the `SerialPort` structur
 Although we created our own `Peripherals` structure above, it is not necessary to do this for your code. the `cortex_m` crate contains a macro called `singleton!()` that will perform this action for you.
 
 ```rust,ignore
-#[macro_use(singleton)]
-extern crate cortex_m;
+use cortex_m::singleton;
 
 fn main() {
     // OK if `main` is executed only once
