@@ -41,6 +41,6 @@ Open On-Chip Debugger 0.10.0
 
 [USB驱动]: http://www.st.com/en/embedded-software/stsw-link009.html
 
-以上是全部内容！转到 [下一节]。
+以上是全部内容！转到 [下个章节]。
 
-[下一节]: verify.md
+[下个章节]: verify.md

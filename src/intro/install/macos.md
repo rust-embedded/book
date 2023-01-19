@@ -1,6 +1,6 @@
 # macOS
 
-All the tools can be install using [Homebrew]:
+所有的工具都可以用[Homebrew]来安装:
 
 [Homebrew]: http://brew.sh/
 
@@ -15,11 +15,11 @@ $ # QEMU
 $ brew install qemu
 ```
 
-> **NOTE** If OpenOCD crashes you may need to install the latest version using: 
+> **注意** 如果OpenOCD崩溃了，你可能需要用以下方法安装最新版本: 
 ```text
 $ brew install --HEAD openocd
 ```
 
-That's all! Go to the [next section].
+以上是全部内容！转到 [下个章节]。
 
-[next section]: verify.md
+[下个章节]: verify.md
