@@ -1,8 +1,11 @@
 # macOS
 
-All the tools can be install using [Homebrew]:
+All the tools can be installed using [Homebrew] or [MacPorts]:
 
 [Homebrew]: http://brew.sh/
+[MacPorts]: https://www.macports.org/
+
+## Install tools with [Homebrew]
 
 ``` text
 $ # GDB
@@ -19,6 +22,21 @@ $ brew install qemu
 ```text
 $ brew install --HEAD openocd
 ```
+
+## Install tools with [MacPorts]
+
+``` text
+$ # GDB
+$ sudo port install arm-none-eabi-gcc
+
+$ # OpenOCD
+$ sudo port install openocd
+
+$ # QEMU
+$ sudo port install qemu
+```
+
+
 
 That's all! Go to the [next section].
 
