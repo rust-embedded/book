@@ -16,6 +16,7 @@ $ brew install qemu
 ```
 
 > **注意** 如果OpenOCD崩溃了，你可能需要用以下方法安装最新版本: 
+
 ```text
 $ brew install --HEAD openocd
 ```
