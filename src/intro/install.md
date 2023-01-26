@@ -12,7 +12,7 @@ rustc 1.31.1 (b6c32da9b 2018-12-18)
 ```
 考虑到带宽和磁盘的使用量，默认的安装只支持主机环境的编译。为了添加对ARM Cortex-M架构交叉编译的支持，从下列编译目标中选择一个。对于这本书里使用的STM32F3DISCOVERY板子，使用`thumbv7em-none-eabihf`作为目标。
 
-Cortex-M0, M0+, and M1 (ARMv6-M 架构):
+Cortex-M0, M0+, 和 M1 (ARMv6-M 架构):
 ``` console
 rustup target add thumbv6m-none-eabi
 ```
@@ -55,7 +55,8 @@ cargo install cargo-binutils
 
 rustup component add llvm-tools-preview
 ```
-WINDOWS: prerequisite C++ Build Tools for Visual Studio 2019 is installed. https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools&rel=16 
+WINDOWS: 需要预先安装 C++ Build Tools for Visual Studio 2019。https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools&rel=16
+
 ### `cargo-generate`
 我们随后将使用这个来从模板生成一个项目。
 

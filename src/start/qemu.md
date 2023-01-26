@@ -96,7 +96,7 @@ fn main() -> ! {
 
 `#![no_std]`指出这个程序将 *不会* 链接标准crate`std`。反而它将会链接到它的子集: `core` crate。
 
-`#![no_main]`指出这个程序将不会使用标准的且被大多数Rust程序使用的`main`接口。使用`no_main`的主要理由是，因为在`no_std`上下文中使用`main`接口要求开发版的rust 。
+`#![no_main]`指出这个程序将不会使用标准的且被大多数Rust程序使用的`main`接口。使用`no_main`的主要理由是，在`no_std`上下文中使用`main`接口需要 nightly 版的 Rust。
 
 `use panic_halt as _;`。这个crate提供了一个`panic_handler`，它定义了程序陷入`panic`时的行为。我们将会在这本书的[运行时恐慌(Panicking)](panicking.md)章节中覆盖更多的细节。
 
@@ -105,7 +105,7 @@ fn main() -> ! {
 [entry]: https://docs.rs/cortex-m-rt-macros/latest/cortex_m_rt_macros/attr.entry.html
 [`cortex-m-rt`]: https://crates.io/crates/cortex-m-rt
 
-`fn main() -> !`。我们的程序将会是运行在目标板子上的 *唯一* 的进程，因此我们不想要它结束！我们使用一个[divergent function](https://doc.rust-lang.org/rust-by-example/fn/diverging.html) (函数签名中的 `-> !` )来确保在编译时就是这么回事儿。
+`fn main() -> !`。我们的程序将会是运行在目标板子上的 *唯一* 的进程，因此我们不想要它结束！我们使用一个[发散函数](https://doc.rust-lang.org/rust-by-example/fn/diverging.html) (函数签名中的 `-> !` )来确保在编译时就是这么回事儿。
 
 ## 交叉编译
 
@@ -168,7 +168,7 @@ ELF Header:
   Section header string table index: 18
 ```
 
-`cargo-size` 能打印二进制项的linker部分的大小。
+`cargo-size` 能打印二进制项的linker section的大小。
 
 ```console
 cargo size --bin app --release -- -A
@@ -198,14 +198,14 @@ section             size        addr
 Total              14570
 ```
 
-> ELF linker sections的新手
+> ELF linker sections的复习
 >
 > - `.text` 包含程序指令
 > - `.rodata` 包含像是字符串这样的常量
 > - `.data` 包含静态分配的初始值*非*零的变量
 > - `.bss` 也包含静态分配的初始值*是*零的变量
 > - `.vector_table` 是一个我们用来存储向量(中断)表的*非*标准的section
-> - `.ARM.attributes` 和 `.debug_*` sections包含元数据，当烧录二进制文件时，它们不会被加载到目标上的。
+> - `.ARM.attributes` 和 `.debug_*` sections包含元数据，当烧录二进制文件时，它们不会被加载到目标上。
 
 **重要**: ELF文件包含像是调试信息这样的元数据，因此它们在*硬盘上的尺寸*没有正确地反应处程序被烧录到设备上时将占据的空间的大小。要*一直*使用`cargo-size`检查一个二进制项的大小。
 
@@ -230,7 +230,7 @@ main:
 Reset:
      406: bl  #0x24e
      40a: movw  r0, #0x0
-     < .. truncated any more instructions .. >
+     < .. 截断了更多的指令 .. >
 
 DefaultHandler_:
      656: b #-0x4 <DefaultHandler_>
@@ -324,7 +324,7 @@ echo $?
 
 让我们看看QEMU命令:
 
-+ `qemu-system-arm`。这是QEMU仿真器。这些QEMU有一些改良版的二进制项；这个仿真器能做ARM机器的全系统仿真。
++ `qemu-system-arm`。这是QEMU仿真器。这些QEMU二进制项有一些变体，这个仿真器能做ARM机器的全系统仿真。
 
 + `-cpu cortex-m3`。这告诉QEMU去仿真一个Cortex-M3 CPU。指定CPU模型会让我们捕捉到一些误编译错误:比如，运行一个为Cortex-M4F编译的程序，它具有一个硬件FPU，在执行时将会使QEMU报错。
 + `-machine lm3s6965evb`。这告诉QEMU去仿真 LM3S6965EVB，一个包含LM3S6965微控制器的评估板。

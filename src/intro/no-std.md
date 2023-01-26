@@ -20,15 +20,15 @@
 
 ### 概述
 
-| feature                                                   | no\_std | std |
+| 特性                                                      | no\_std | std |
 |-----------------------------------------------------------|--------|-----|
-| heap (dynamic memory)                                     |   *    |  ✓  |
-| collections (Vec, HashMap, etc)                           |  **    |  ✓  |
-| stack overflow protection                                 |   ✘    |  ✓  |
-| runs init code before main                                |   ✘    |  ✓  |
-| libstd available                                          |   ✘    |  ✓  |
-| libcore available                                         |   ✓    |  ✓  |
-| writing firmware, kernel, or bootloader code              |   ✓    |  ✘  |
+| 堆 (动态内存)                                               |   *    |  ✓  |
+| collections (Vec, HashMap, 等)                             |  **    |  ✓  |
+| 堆栈溢出保护                                                |   ✘    |  ✓  |
+| 在 main 之前运行初始化代码                                   |   ✘    |  ✓  |
+| libstd 可用                                                |   ✘    |  ✓  |
+| libcore 可用                                               |   ✓    |  ✓  |
+| 编写固件、内核或 bootloader 代码                              |   ✓    |  ✘  |
 
 \* 只有在你使用了 `alloc` crate 并设置了一个适合的分配器后，比如[alloc-cortex-m]后有效。
 

@@ -9,13 +9,13 @@
 |              |               | 1     | 使能   | 使能GPIO |
 | 方向    | 1             | 0     | 输入     | 方向设置成输入 |
 |              |               | 1     | 输出    | 方向设置成输出 |
-| 输入模式   | 2..3          | 00    | hi-z      | 输入设置为高阻态 |
+| 输入模式   | 2..3          | 00    | 高阻态      | 输入设置为高阻态 |
 |              |               | 01    | 下拉  | 下拉输入管脚 |
 |              |               | 10    | 上拉 | 上拉输入管脚 |
 |              |               | 11    | n/a       | 无效状态。不要设置 |
 | 输出模式  | 4             | 0     | 拉低   | 把管脚设置成低电平 |
 |              |               | 1     | 拉高  | 把管脚设置成高电平 |
-| 输入状态 | 5             | x     | in-val    | 如果输入 < 1.5v 为0，如果输入 >= 1.5v 为1 |
+| 输入状态 | 5             | x     | 输入电平    | 如果输入 < 1.5v 为0，如果输入 >= 1.5v 为1 |
 
 
 如果在使用底层硬件之前检查硬件的状态，在运行时强制用户遵守设计约定，代码可能像这一样:
@@ -173,7 +173,7 @@ impl GpioConfig<Enabled, Output, DontCare> {
     }
 }
 
-/// 这些方法可能被用于使能一个输入GPIO
+/// 这些方法可能被用于任意一个使能的输入GPIO
 impl<IN_MODE> GpioConfig<Enabled, Input, IN_MODE> {
     pub fn bit_is_set(&self) -> bool {
         self.periph.read().input_status.bit_is_set()
@@ -215,14 +215,14 @@ impl<IN_MODE> GpioConfig<Enabled, Input, IN_MODE> {
 
 ```rust,ignore
 /*
- * 案例 1: Unconfigured to High-Z input
+ * 案例 1: 从未配置到高阻输入
  */
 let pin: GpioConfig<Disabled, _, _> = get_gpio();
 
 // 不能这么做，pin没有被使能
 // pin.into_input_pull_down();
 
-// 现在从unconfigured to a high-z input打开管脚
+// 现在把管脚从未配置变为高阻输入
 let input_pin = pin.into_enabled_input();
 
 // 从管脚读取
@@ -232,7 +232,7 @@ let pin_state = input_pin.bit_is_set();
 // input_pin.set_bit(true);
 
 /*
- * 案例 2: High-Z 输入到下拉输入
+ * 案例 2: 高阻输入到下拉输入
  */
 let pulled_low = input_pin.into_input_pull_down();
 let pin_state = pulled_low.bit_is_set();
