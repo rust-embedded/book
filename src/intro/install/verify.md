@@ -8,7 +8,7 @@ discovery board has two USB connectors; use the one labeled "USB ST-LINK" that
 sits on the center of the edge of the board.
 
 Also check that the ST-LINK header is populated. See the picture below; the
-ST-LINK header is circled in red.
+ST-LINK header is highlighted.
 
 <p align="center">
 <img title="Connected discovery board" src="../../assets/verify.jpeg">
