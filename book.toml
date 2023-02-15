@@ -1,5 +1,6 @@
 [book]
 authors = ["James Munns"]
+language = "zh-CN"
 multilingual = false
 src = "src"
 title = "The Embedded Rust Book"
