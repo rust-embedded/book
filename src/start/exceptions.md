@@ -50,7 +50,7 @@ possible.
 > Note that the `exception` attribute transforms definitions of static variables
 > inside the function by wrapping them into `unsafe` blocks and providing us
 > with new appropriate variables of type `&mut` of the same name.
-> Thus we can derefence the reference via `*` to access the values of the variables without
+> Thus we can dereference the reference via `*` to access the values of the variables without
 > needing to wrap them in an `unsafe` block.
 
 ## A complete example
@@ -258,7 +258,7 @@ ResetTrampoline:
  800094c:       b       #-0x4 <ResetTrampoline+0xa>
 ```
 
-You can lookup the value of the program counter `0x0800094a` in the dissassembly.
+You can lookup the value of the program counter `0x0800094a` in the disassembly.
 You'll see that a load operation (`ldr r0, [r0]` ) caused the exception.
 The `r0` field of `ExceptionFrame` will tell you the value of register `r0`
 was `0x3fff_fffe` at that time.
