@@ -34,7 +34,7 @@ A value of a C primitive type can be used
 as one of the corresponding Rust type and vice versa,
 since the former is simply a type alias of the latter.
 For example, the following code compiles on platforms
-where `unsigned int` is 32 bit long.
+where `unsigned int` is 32-bit long.
 
 ```rust,ignore
 fn foo(num: u32) {
