@@ -2,40 +2,42 @@
 
 Interoperability between Rust and C code is always dependent
 on transforming data between the two languages.
-For this purposes there are two dedicated modules
+For this purpose, there is a dedicated module
 in the `stdlib` called
-[`std::ffi`](https://doc.rust-lang.org/std/ffi/index.html) and
-[`std::os::raw`](https://doc.rust-lang.org/std/os/raw/index.html).
+[`std::ffi`](https://doc.rust-lang.org/std/ffi/index.html).
 
-`std::os::raw` deals with low-level primitive types that can
-be converted implicitly by the compiler
-because the memory layout between Rust and C
-is similar enough or the same.
+`std::ffi` provides type definitions for C primitive types,
+such as `char`, `int`, and `long`.
+It also provides some utility for converting more complex
+types such as strings, mapping both `&str` and `String`
+to C types that are easier and safer to handle.
 
-`std::ffi` provides some utility for converting more complex
-types such as Strings, mapping both `&str` and `String`
-to C-types that are easier and safer to handle.
-
-Neither of these modules are available in `core`, but you can find a `#![no_std]`
-compatible version of `std::ffi::{CStr,CString}` in the [`cstr_core`] crate, and
-most of the `std::os::raw` types in the [`cty`] crate.
+As of Rust 1.30,
+functionalities of `std::ffi` are available
+in either `core::ffi` or `alloc::ffi`
+depending on whether or not memory allocation is involved.
+The [`cty`] crate and the [`cstr_core`] crate
+also offer similar functionalities.
 
 [`cstr_core`]: https://crates.io/crates/cstr_core
 [`cty`]: https://crates.io/crates/cty
 
-| Rust type  | Intermediate | C type       |
-|------------|--------------|--------------|
-| String     | CString      | *char        |
-| &str       | CStr         | *const char  |
-| ()         | c_void       | void         |
-| u32 or u64 | c_uint       | unsigned int |
-| etc        | ...          | ...          |
+| Rust type      | Intermediate | C type         |
+|----------------|--------------|----------------|
+| `String`       | `CString`    | `char *`       |
+| `&str`         | `CStr`       | `const char *` |
+| `()`           | `c_void`     | `void`         |
+| `u32` or `u64` | `c_uint`     | `unsigned int` |
+| etc            | ...          | ...            |
 
-As mentioned above, primitive types can be converted
-by the compiler implicitly.
+A value of a C primitive type can be used
+as one of the corresponding Rust type and vice versa,
+since the former is simply a type alias of the latter.
+For example, the following code compiles on platforms
+where `unsigned int` is 32 bit long.
 
 ```rust,ignore
-unsafe fn foo(num: u32) {
+fn foo(num: u32) {
     let c_num: c_uint = num;
     let r_num: u32 = c_num;
 }
@@ -50,7 +52,6 @@ We are collecting examples and use cases for this on our issue tracker in
 [issue #61].
 
 [issue #61]: https://github.com/rust-embedded/book/issues/61
-
 
 ## Interoperability with RTOSs
 
