@@ -127,7 +127,9 @@ In the simplest case of compiling a single C file as a dependency to a static li
 ```rust,ignore
 fn main() {
     cc::Build::new()
-        .file("foo.c")
-        .compile("libfoo.a");
+        .file("src/foo.c")
+        .compile("foo");
 }
 ```
+
+The `build.rs` is placed at the root of the package. Then `cargo build` will compile and execute it before the build of the package. A static archive named `libfoo.a` is generated and placed in the `target` directory.
