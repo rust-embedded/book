@@ -70,6 +70,7 @@ If you need to perform more complex operations like DSP signal processing or adv
 algebra on your MCU, the following crates might help you
 
 - [CMSIS DSP library binding](https://github.com/jacobrosenthal/cmsis-dsp-sys)
+- [`constgebra`](https://crates.io/crates/constgebra)
 - [`micromath`](https://github.com/tarcieri/micromath)
 - [`microfft`](https://crates.io/crates/microfft)
 - [`nalgebra`](https://github.com/dimforge/nalgebra)
