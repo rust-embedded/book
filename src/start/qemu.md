@@ -388,7 +388,7 @@ Let's break down that QEMU command:
   program compiled for the Cortex-M4F, which has a hardware FPU, will make QEMU
   error during its execution.
 
-- `-machine lm3s6965evb`. This tells QEMU to emulate the LM3S6965EVB, a
+- `-machine lm3s6965evb`. This tells QEMU to emulate the LM3S6965EVB, an
   evaluation board that contains a LM3S6965 microcontroller.
 
 - `-nographic`. This tells QEMU to not launch its GUI.
