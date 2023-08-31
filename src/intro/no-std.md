@@ -26,13 +26,13 @@
 | collections (Vec, HashMap, 等)                             |  **    |  ✓  |
 | 堆栈溢出保护                                                |   ✘    |  ✓  |
 | 在 main 之前运行初始化代码                                   |   ✘    |  ✓  |
-| libstd 可用                                                |   ✘    |  ✓  |
-| libcore 可用                                               |   ✓    |  ✓  |
+| 能用 libstd                                                |   ✘    |  ✓  |
+| 能用 libcore                                                |   ✓    |  ✓  |
 | 编写固件、内核或 bootloader 代码                              |   ✓    |  ✘  |
 
-\* 只有在你使用了 `alloc` crate 并设置了一个适合的分配器后，比如[alloc-cortex-m]后有效。
+\* 只有在你使用了 `alloc` crate 并设置了一个适合的分配器后，比如[alloc-cortex-m]后可用。
 
-\** 只有在你使用了 `collections` crate 并配置了一个全局默认的分配器后有效。
+\** 只有在你使用了 `collections` crate 并配置了一个全局默认的分配器后可用。
 
 [alloc-cortex-m]: https://github.com/rust-embedded/alloc-cortex-m
 
