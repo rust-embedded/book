@@ -3,7 +3,7 @@
 In this section we check that some of the required tools / drivers have been
 correctly installed and configured.
 
-Connect your laptop / PC to the discovery board using a micro USB cable. The
+Connect your laptop / PC to the discovery board using a Mini-USB USB cable. The
 discovery board has two USB connectors; use the one labeled "USB ST-LINK" that
 sits on the center of the edge of the board.
 
