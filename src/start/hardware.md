@@ -64,6 +64,9 @@ target = "thumbv7em-none-eabihf" # Cortex-M4F and Cortex-M7F (with FPU)
 ```
 
 We'll use `thumbv7em-none-eabihf` as that covers the Cortex-M4F core.
+> **NOTE**: As you may remember from the previous chapter, we have to install
+> all targets and this is a new one. So don't forget to run the installation
+> process `rustup target add thumbv7em-none-eabihf` for this target.
 
 The second step is to enter the memory region information into the `memory.x`
 file.
