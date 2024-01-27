@@ -42,6 +42,12 @@ override the optimization level of dependencies. You can use that feature to
 optimize all dependencies for size while keeping the top crate unoptimized and
 debugger friendly.
 
+Beware that generic code can sometimes be optimized alongside the crate where it
+is instantiated, rather than the crate where it is defined. If you create an
+instance of a generic struct in your application and find that it pulls in code
+with a large footprint, it may be that increasing the optimisation level of the
+relevant dependencies has no effect.
+
 [`profile-overrides`]: https://doc.rust-lang.org/cargo/reference/profiles.html#overrides
 
 Here's an example:
