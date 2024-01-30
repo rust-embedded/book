@@ -4,5 +4,11 @@ multilingual = false
 src = "src"
 title = "The Embedded Rust Book"
 
+[build]
+extra-watch-dirs = ["po"]
+
+[preprocessor.gettext]
+after = ["links"]
+
 [output.html]
 git-repository-url = "https://github.com/rust-embedded/book"
