@@ -45,7 +45,12 @@ Safe Rust must never result in undefined behavior so non-reentrant functions
 must be marked as `unsafe`. Yet I just told that `exception` handlers can safely
 use `static mut` variables. How is this possible? This is possible because
 `exception` handlers can *not* be called by software thus reentrancy is not
-possible.
+possible. These handlers are called by the hardware itself which is assumed to be physically non-concurrent.
+
+As a result, in the context of exception handlers in embedded systems, the absence of concurrent invocations of the same handler ensures that there are no reentrancy issues, even if the handler uses static mutable variables.  
+
+In a multicore system, where multiple processor cores are executing code concurrently, the potential for reentrancy issues becomes relevant again, even within exception handlers. While each core may have its own set of exception handlers, there can still be scenarios where multiple cores attempt to execute the same exception handler simultaneously.  
+To address this concern in a multicore environment, proper synchronization mechanisms need to be employed within the exception handlers to ensure that access to shared resources is properly coordinated among the cores. This typically involves the use of techniques such as locks, semaphores, or atomic operations to prevent data races and maintain data integrity
 
 > Note that the `exception` attribute transforms definitions of static variables
 > inside the function by wrapping them into `unsafe` blocks and providing us
