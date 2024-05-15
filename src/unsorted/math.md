@@ -65,6 +65,7 @@ fn main() -> ! {
 如果需要在MCU上执行更复杂的操作，像是DSP信号处理或者更高级的线性代数，下列的crates可能可以帮到你
 
 - [CMSIS DSP library binding](https://github.com/jacobrosenthal/cmsis-dsp-sys)
+- [`constgebra`](https://crates.io/crates/constgebra)
 - [`micromath`](https://github.com/tarcieri/micromath)
 - [`microfft`](https://crates.io/crates/microfft)
 - [`nalgebra`](https://github.com/dimforge/nalgebra)

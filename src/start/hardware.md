@@ -46,7 +46,9 @@ tail -n5 .cargo/config.toml
 target = "thumbv7em-none-eabihf" # Cortex-M4F and Cortex-M7F (with FPU)
 ```
 
-我们将使用`thumbv7em-none-eabihf`，因为它涉及到Cortex-M4F核。
+我们将使用 `thumbv7em-none-eabihf`，因为它包括了Cortex-M4F内核．
+> **注意**：你可能还记得先前的章节，我们必须要安装所有的目标平台，这个平台是一个新的．
+> 所以，不要忘了为这个平台运行安装步骤 `rustup target add thumbv7em-none-eabihf` ．
 
 第二步是将存储区域信息(memory region information)输入`memory.x`。
 
@@ -227,7 +229,7 @@ A debugging session is active.
 Quit anyway? (y or n)
 ```
 
-现在调试比之前多了点步骤，因此我们已经把所有步骤打包进一个名为 `openocd.gdb` 的GDB脚本中。这个文件在 `cargo generate` 步骤中被生成，因此不需要任何修改了。让我们看一下:
+现在调试比之前多了点步骤，因此我们要把所有步骤打包进一个名为 `openocd.gdb` 的GDB脚本中。这个文件在 `cargo generate` 步骤中被生成，因此不需要任何修改了。让我们看一下:
 
 ``` console
 cat openocd.gdb

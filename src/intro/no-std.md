@@ -22,17 +22,19 @@
 
 | 特性                                                      | no\_std | std |
 |-----------------------------------------------------------|--------|-----|
-| 堆 (动态内存)                                               |   *    |  ✓  |
-| collections (Vec, HashMap, 等)                             |  **    |  ✓  |
-| 堆栈溢出保护                                                |   ✘    |  ✓  |
-| 在 main 之前运行初始化代码                                   |   ✘    |  ✓  |
-| 能用 libstd                                                |   ✘    |  ✓  |
-| 能用 libcore                                                |   ✓    |  ✓  |
-| 编写固件、内核或 bootloader 代码                              |   ✓    |  ✘  |
+| 堆 (dynamic memory)                                     |   *    |  ✓  |
+| 容器 (Vec, BTreeMap, etc)                          |  **    |  ✓  |
+| 栈溢出保护                                 |   ✘    |  ✓  |
+| 在进入main之前运行的初始化代码                                |   ✘    |  ✓  |
+| libstd available                                          |   ✘    |  ✓  |
+| libcore available                                         |   ✓    |  ✓  |
+| 编写固件，内核，或者引导程序              |   ✓    |  ✘  |
 
-\* 只有在你使用了 `alloc` crate 并设置了一个适合的分配器后，比如[alloc-cortex-m]后可用。
+\* 只有在你使用了 `alloc` crate 并设置了一个适合的分配器后，比如[alloc-cortex-m]后可用．
 
-\** 只有在你使用了 `collections` crate 并配置了一个全局默认的分配器后可用。
+\** 只有在你使用了 `collections` crate 并配置了一个全局默认的分配器后可用．
+
+\** 由于缺少安全的随机数产生器，所以无法使用HashMap和HashSet．
 
 [alloc-cortex-m]: https://github.com/rust-embedded/alloc-cortex-m
 

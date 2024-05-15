@@ -123,11 +123,11 @@ extern "C" { pub fn cool_function( ... ); }
 在把一个C文件编译成一个静态库的依赖项的最简单的场景下，可以使用[`cc` crate]，示例`build.rs`脚本看起来像这样:
 
 ```rust,ignore
-extern crate cc;
-
 fn main() {
     cc::Build::new()
-        .file("foo.c")
-        .compile("libfoo.a");
+        .file("src/foo.c")
+        .compile("foo");
 }
 ```
+
+要把`build.rs`放在包的根目录下．然后`cargo build`会在构建包之前编译和执行它．一个静态的名为`libfoo.a`的归档文件会生成并被放在`target`文件夹中．

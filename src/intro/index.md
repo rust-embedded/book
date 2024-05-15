@@ -29,17 +29,18 @@
 
 ### 其它资源
 
-如果你不熟悉上面提到的东西或者你对这本书中提到的某个特定主题感兴趣，你也许能从这些资源中找到有用的信息。
+如果你还不熟悉上面提到的东西或者你对这本书中提到的某个特定主题感兴趣，你也许能从这些资源中找到有用的信息。
 
 |  主题        |   资源    |     描述     |
 |--------------|----------|-------------|
-| Rust         | [Rust Book](https://doc.rust-lang.org/book/) | 如果你还不能轻松地使用Rust，我们强烈地建议读这本书。|
-| Rust, 嵌入式 | [Discovery Book](https://docs.rust-embedded.org/discovery/) | 如果你从来没有做过嵌入式编程，这本书可能是个更好的开始。 |
-| Rust, 嵌入式 | [Embedded Rust Bookshelf](https://docs.rust-embedded.org) | 这里你能找到许多Rust's Embedded Working Group提供的额外资源。|
-| Rust, 嵌入式 | [Embedonomicon](https://docs.rust-embedded.org/embedonomicon/) | 在Rust中进行嵌入式编程的细节。 |
-| Rust, 嵌入式 | [embedded FAQ](https://docs.rust-embedded.org/faq.html) | 关于嵌入式环境下的Rust会遇到的常见问题。|
-| 中断 | [Interrupt](https://en.wikipedia.org/wiki/Interrupt) | - |
-| 存储映射的IO/外设 | [Memory-mapped I/O](https://en.wikipedia.org/wiki/Memory-mapped_I/O) | - |
+| Rust         | [Rust Book](https://doc.rust-lang.org/book/) | 如果你还不熟悉Rust，我们强烈建议你读这本书．|
+| Rust, Embedded | [Discovery Book](https://docs.rust-embedded.org/discovery/) | 如果你从没做过嵌入式编程，这本书可能是个更好的开端．|
+| Rust, Embedded | [Embedded Rust Bookshelf](https://docs.rust-embedded.org) | 在这里，你可以找到由Rust的嵌入式工作组提供的许多其它资源．|
+| Rust, Embedded | [Embedonomicon](https://docs.rust-embedded.org/embedonomicon/) | 用Rust进行嵌入式编程的细节．|
+| Rust, Embedded | [embedded FAQ](https://docs.rust-embedded.org/faq.html) | Rust在嵌入式上下文中遇到的常见问题．|
+| Rust, Embedded | [Comprehensive Rust 🦀: Bare Metal](https://google.github.io/comprehensive-rust/bare-metal.html) | 用于一天课时的裸机Rust开发课程的教学资料．|
+| Interrupts | [Interrupt](https://en.wikipedia.org/wiki/Interrupt) | - |
+| Memory-mapped IO/Peripherals | [Memory-mapped I/O](https://en.wikipedia.org/wiki/Memory-mapped_I/O) | - |
 | SPI, UART, RS232, USB, I2C, TTL | [Stack Exchange about SPI, UART, and other interfaces](https://electronics.stackexchange.com/questions/37814/usart-uart-rs232-usb-spi-i2c-ttl-etc-what-are-all-of-these-and-how-do-th) | - |
 
 ### 翻译

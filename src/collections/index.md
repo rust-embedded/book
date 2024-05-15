@@ -35,9 +35,8 @@ use alloc::vec::Vec;
 ``` rust,ignore
 // 线性指针分配器实现
 
-extern crate cortex_m;
-
-use core::alloc::GlobalAlloc;
+use core::alloc::{GlobalAlloc, Layout};
+use core::cell::UnsafeCell;
 use core::ptr;
 
 use cortex_m::interrupt;
@@ -125,8 +124,7 @@ fn main() -> ! {
 `heapless`无需设置，因为它的集合不依赖一个全局内存分配器。只是`use`它的集合然后实例化它们:
 
 ```rust,ignore
-extern crate heapless; // v0.4.x
-
+// heapless version: v0.4.x
 use heapless::Vec;
 use heapless::consts::*;
 
@@ -136,6 +134,7 @@ fn main() -> ! {
 
     xs.push(42).unwrap();
     assert_eq!(xs.pop(), Some(42));
+    loop {}
 }
 ```
 

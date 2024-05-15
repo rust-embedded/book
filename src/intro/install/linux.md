@@ -38,15 +38,13 @@ sudo apt install gdb-arm-none-eabi openocd qemu-system-arm
 
 - Fedora 27 或者更新的版本
 
-> **注意** `arm-none-eabi-gdb` 是你将用来调试你的ARM Cortex-M程序的GDB命令
-
 <!-- Fedora 27 -->
 <!-- GDB 7.6 (!) -->
 <!-- OpenOCD 0.10.0 -->
 <!-- QEMU 2.10.2 -->
 
 ``` console
-sudo dnf install arm-none-eabi-gdb openocd qemu-system-arm
+sudo dnf install gdb openocd qemu-system-arm
 ```
 
 - Arch Linux
@@ -54,7 +52,7 @@ sudo dnf install arm-none-eabi-gdb openocd qemu-system-arm
 > **注意** `arm-none-eabi-gdb` 是你将用来调试你的ARM Cortex-M程序的GDB命令
 
 ``` console
-sudo pacman -S arm-none-eabi-gdb qemu-arch-extra openocd
+sudo pacman -S arm-none-eabi-gdb qemu-system-arm openocd
 ```
 
 ## udev 规则
@@ -77,7 +75,7 @@ ATTRS{idVendor}=="0483", ATTRS{idProduct}=="374b", TAG+="uaccess"
 sudo udevadm control --reload-rules
 ```
 
-如果开发板已经被插入了你的笔记本中，拔下它然后再插上它。
+如果你已经把开发板插入到笔记本中了，请拔下它然后再插上它。
 
 你可以通过运行这个命令检查权限:
 
@@ -85,7 +83,7 @@ sudo udevadm control --reload-rules
 lsusb
 ```
 
-终端显示的东西看起来像是
+终端可能有如下显示
 
 ```text
 (..)

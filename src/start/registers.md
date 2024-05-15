@@ -23,9 +23,15 @@
 
 ## 开发板Crate (Board Crate)
 
+<<<<<<< HEAD
 如果你是嵌入式Rust新手，board crate是一个完美的开始。它们很好地抽象出了，在开始学习这个项目时，需要耗费心力了解的硬件细节，使得标准工作，像是打开或者关闭LED，变得简单。不同的板子间，它们提供的功能变化很大。因为这本书是不假设我们使用的是何种板子，所以这本书不会提到board crate。
 
 如果你想要用STM32F3DISCOVERY开发板做实验，强烈建议看一下[stm32f3-discovery]开发板crate，它提供了点亮LEDs，访问它的指南针，蓝牙和其它的功能。[Discovery]书对于一个board crate的用法提供一个很好的介绍。
+=======
+A board crate is the perfect starting point, if you're new to embedded Rust. They nicely abstract the HW details that might be overwhelming when starting studying this subject, and makes standard tasks easy, like turning a LED on or off. The functionality it exposes varies a lot between boards. Since this book aims at staying hardware agnostic, the board crates won't be covered by this book.
+
+If you want to experiment with the STM32F3DISCOVERY board, it is highly recommended to take a look at the [stm32f3-discovery] board crate, which provides functionality to blink the board LEDs, access its compass, bluetooth and more. The [Discovery] book offers a great introduction to the use of a board crate.
+>>>>>>> 17842ebb050f62e40a4618edeb8e8ee86e758707
 
 但是如果你正在使用一个还没有提供专用的board crate的系统，或者你需要的一些功能，现存的crates不提供，那我们需要从底层的微架构crates开始。
 

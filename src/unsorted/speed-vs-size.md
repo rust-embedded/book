@@ -24,6 +24,9 @@ debug = true
 
 这里有个名为[`profile-overrides`]的Cargo feature，其可以让你覆盖依赖项的优化等级。你能使用这个feature去优化所有依赖的大小，而保持顶层的crate没有被优化以致调试起来友好。
 
+需要知道，泛型代码有时是在它被实例化的库中被优化的，而不是它被定义的地方．如果你在你的应用中生成了一个泛型结构体的实例，
+并且发现它让代码体积变得更大，那可能是因为相关的依赖的优化等级的增加没有造成影响．
+
 [`profile-overrides`]: https://doc.rust-lang.org/cargo/reference/profiles.html#overrides
 
 这是一个示例:

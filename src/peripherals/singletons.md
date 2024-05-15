@@ -25,7 +25,7 @@ fn main() {
 
 ## 在Rust中要怎么做?
 
-与其只是让我们的外设变成一个全局变量，我们不如生成一个全局变量，在这个例子里其被叫做 `PERIPHERALS`，这个全局变量对于我们的每个外设，它都有一个与之对应的 `Option<T>` 。
+与其只是让我们的外设变成一个全局变量，我们不如创造一个结构体，在这个例子里其被叫做 `PERIPHERALS`，这个全局变量对于我们的每个外设，它都有一个与之对应的 `Option<T>` ．
 
 ```rust,ignore
 struct Peripherals {
@@ -61,8 +61,7 @@ fn main() {
 虽然我们在上面生成了我们自己的 `Peripherals` 结构体，但这并不是必须的。`cortex_m` crate 包含一个被叫做 `singleton!()` 的宏，它可以为你完成这个任务。
 
 ```rust,ignore
-#[macro_use(singleton)]
-extern crate cortex_m;
+use cortex_m::singleton;
 
 fn main() {
     // OK 如果 `main` 只被执行一次
