@@ -43,7 +43,7 @@ binaries.
 
 The advantage of using these tools over GNU binutils is that (a) installing the
 LLVM tools is the same one-command installation (`rustup component add
-llvm-tools-preview`) regardless of your OS and (b) tools like `objdump` support
+llvm-tools`) regardless of your OS and (b) tools like `objdump` support
 all the architectures that `rustc` supports -- from ARM to x86_64 -- because
 they both share the same LLVM backend.
 

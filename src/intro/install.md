@@ -60,7 +60,7 @@ rustup target add thumbv8m.main-none-eabihf
 ``` text
 cargo install cargo-binutils
 
-rustup component add llvm-tools-preview
+rustup component add llvm-tools
 ```
 WINDOWS: prerequisite C++ Build Tools for Visual Studio 2019 is installed. https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools&rel=16 
 ### `cargo-generate`
