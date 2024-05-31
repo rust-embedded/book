@@ -54,7 +54,7 @@ sudo dnf install gdb openocd qemu-system-arm
 > Cortex-M programs
 
 ``` console
-sudo pacman -S arm-none-eabi-gdb qemu-arch-extra openocd
+sudo pacman -S arm-none-eabi-gdb qemu-system-arm openocd
 ```
 
 ## udev rules
