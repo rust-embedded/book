@@ -63,7 +63,7 @@ Debugging embedded systems in Rust requires specialized tools including software
 
 ### Probe-rs
 
-Probe-rs is a modern, Rust-focused software designed to work with debuggers in embedded systems. Unlike OpenOCD, Probe-rs is built with simplicity in mind and aims to reduce the configuration burden often found in other debugging solutions. It supports various probes and targets, providing a high-level interface for interacting with embedded hardware. Probe-rs integrates directly with Rust tooling,and integrates with Visual Studio Code through its extension, allowing developers to streamline their debugging workflow.
+Probe-rs is a modern, Rust-focused software designed to work with debuggers in embedded systems. Unlike OpenOCD, Probe-rs is built with simplicity in mind and aims to reduce the configuration burden often found in other debugging solutions. It supports various probes and targets, providing a high-level interface for interacting with embedded hardware. Probe-rs integrates directly with Rust tooling, and integrates with Visual Studio Code through its extension, allowing developers to streamline their debugging workflow.
 
 
 ### OpenOCD (Open On-Chip Debugger)
