@@ -1,0 +1,553 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Tips for embedded C developers - The Embedded Rust Book</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro/index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../intro/hardware.html"><strong aria-hidden="true">1.1.</strong> Hardware</a></li><li class="chapter-item expanded "><a href="../intro/no-std.html"><strong aria-hidden="true">1.2.</strong> no_std</a></li><li class="chapter-item expanded "><a href="../intro/tooling.html"><strong aria-hidden="true">1.3.</strong> Tooling</a></li><li class="chapter-item expanded "><a href="../intro/install.html"><strong aria-hidden="true">1.4.</strong> Installation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../intro/install/linux.html"><strong aria-hidden="true">1.4.1.</strong> Linux</a></li><li class="chapter-item expanded "><a href="../intro/install/macos.html"><strong aria-hidden="true">1.4.2.</strong> MacOS</a></li><li class="chapter-item expanded "><a href="../intro/install/windows.html"><strong aria-hidden="true">1.4.3.</strong> Windows</a></li><li class="chapter-item expanded "><a href="../intro/install/verify.html"><strong aria-hidden="true">1.4.4.</strong> Verify Installation</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../start/index.html"><strong aria-hidden="true">2.</strong> Getting started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../start/qemu.html"><strong aria-hidden="true">2.1.</strong> QEMU</a></li><li class="chapter-item expanded "><a href="../start/hardware.html"><strong aria-hidden="true">2.2.</strong> Hardware</a></li><li class="chapter-item expanded "><a href="../start/registers.html"><strong aria-hidden="true">2.3.</strong> Memory-mapped Registers</a></li><li class="chapter-item expanded "><a href="../start/semihosting.html"><strong aria-hidden="true">2.4.</strong> Semihosting</a></li><li class="chapter-item expanded "><a href="../start/panicking.html"><strong aria-hidden="true">2.5.</strong> Panicking</a></li><li class="chapter-item expanded "><a href="../start/exceptions.html"><strong aria-hidden="true">2.6.</strong> Exceptions</a></li><li class="chapter-item expanded "><a href="../start/interrupts.html"><strong aria-hidden="true">2.7.</strong> Interrupts</a></li><li class="chapter-item expanded "><a href="../start/io.html"><strong aria-hidden="true">2.8.</strong> IO</a></li></ol></li><li class="chapter-item expanded "><a href="../peripherals/index.html"><strong aria-hidden="true">3.</strong> Peripherals</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../peripherals/a-first-attempt.html"><strong aria-hidden="true">3.1.</strong> A first attempt in Rust</a></li><li class="chapter-item expanded "><a href="../peripherals/borrowck.html"><strong aria-hidden="true">3.2.</strong> The Borrow Checker</a></li><li class="chapter-item expanded "><a href="../peripherals/singletons.html"><strong aria-hidden="true">3.3.</strong> Singletons</a></li></ol></li><li class="chapter-item expanded "><a href="../static-guarantees/index.html"><strong aria-hidden="true">4.</strong> Static Guarantees</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../static-guarantees/typestate-programming.html"><strong aria-hidden="true">4.1.</strong> Typestate Programming</a></li><li class="chapter-item expanded "><a href="../static-guarantees/state-machines.html"><strong aria-hidden="true">4.2.</strong> Peripherals as State Machines</a></li><li class="chapter-item expanded "><a href="../static-guarantees/design-contracts.html"><strong aria-hidden="true">4.3.</strong> Design Contracts</a></li><li class="chapter-item expanded "><a href="../static-guarantees/zero-cost-abstractions.html"><strong aria-hidden="true">4.4.</strong> Zero Cost Abstractions</a></li></ol></li><li class="chapter-item expanded "><a href="../portability/index.html"><strong aria-hidden="true">5.</strong> Portability</a></li><li class="chapter-item expanded "><a href="../concurrency/index.html"><strong aria-hidden="true">6.</strong> Concurrency</a></li><li class="chapter-item expanded "><a href="../collections/index.html"><strong aria-hidden="true">7.</strong> Collections</a></li><li class="chapter-item expanded "><a href="../design-patterns/index.html"><strong aria-hidden="true">8.</strong> Design Patterns</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../design-patterns/hal/index.html"><strong aria-hidden="true">8.1.</strong> HALs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../design-patterns/hal/checklist.html"><strong aria-hidden="true">8.1.1.</strong> Checklist</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/naming.html"><strong aria-hidden="true">8.1.2.</strong> Naming</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/interoperability.html"><strong aria-hidden="true">8.1.3.</strong> Interoperability</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/predictability.html"><strong aria-hidden="true">8.1.4.</strong> Predictability</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/gpio.html"><strong aria-hidden="true">8.1.5.</strong> GPIO</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../c-tips/index.html" class="active"><strong aria-hidden="true">9.</strong> Tips for embedded C developers</a></li><li class="chapter-item expanded "><a href="../interoperability/index.html"><strong aria-hidden="true">10.</strong> Interoperability</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../interoperability/c-with-rust.html"><strong aria-hidden="true">10.1.</strong> A little C with your Rust</a></li><li class="chapter-item expanded "><a href="../interoperability/rust-with-c.html"><strong aria-hidden="true">10.2.</strong> A little Rust with your C</a></li></ol></li><li class="chapter-item expanded "><a href="../unsorted/index.html"><strong aria-hidden="true">11.</strong> Unsorted topics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../unsorted/speed-vs-size.html"><strong aria-hidden="true">11.1.</strong> Optimizations: The speed size tradeoff</a></li><li class="chapter-item expanded "><a href="../unsorted/math.html"><strong aria-hidden="true">11.2.</strong> Performing Math Functionality</a></li></ol></li><li class="chapter-item expanded "><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../appendix/glossary.html">Appendix A: Glossary</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Embedded Rust Book</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-embedded/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="tips-for-embedded-c-developers"><a class="header" href="#tips-for-embedded-c-developers">Tips for embedded C developers</a></h1>
+<p>This chapter collects a variety of tips that might be useful to experienced
+embedded C developers looking to start writing Rust. It will especially
+highlight how things you might already be used to in C are different in Rust.</p>
+<h2 id="preprocessor"><a class="header" href="#preprocessor">Preprocessor</a></h2>
+<p>In embedded C it is very common to use the preprocessor for a variety of
+purposes, such as:</p>
+<ul>
+<li>Compile-time selection of code blocks with <code>#ifdef</code></li>
+<li>Compile-time array sizes and computations</li>
+<li>Macros to simplify common patterns (to avoid function call overhead)</li>
+</ul>
+<p>In Rust there is no preprocessor, and so many of these use cases are addressed
+differently. In the rest of this section we cover various alternatives to
+using the preprocessor.</p>
+<h3 id="compile-time-code-selection"><a class="header" href="#compile-time-code-selection">Compile-Time Code Selection</a></h3>
+<p>The closest match to <code>#ifdef ... #endif</code> in Rust are <a href="https://doc.rust-lang.org/cargo/reference/manifest.html#the-features-section">Cargo features</a>. These
+are a little more formal than the C preprocessor: all possible features are
+explicitly listed per crate, and can only be either on or off. Features are
+turned on when you list a crate as a dependency, and are additive: if any crate
+in your dependency tree enables a feature for another crate, that feature will
+be enabled for all users of that crate.</p>
+<p>For example, you might have a crate which provides a library of signal
+processing primitives. Each one might take some extra time to compile or
+declare some large table of constants which you'd like to avoid. You could
+declare a Cargo feature for each component in your <code>Cargo.toml</code>:</p>
+<pre><code class="language-toml">[features]
+FIR = []
+IIR = []
+</code></pre>
+<p>Then, in your code, use <code>#[cfg(feature="FIR")]</code> to control what is included.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// In your top-level lib.rs
+
+#[cfg(feature="FIR")]
+pub mod fir;
+
+#[cfg(feature="IIR")]
+pub mod iir;
+<span class="boring">}</span></code></pre></pre>
+<p>You can similarly include code blocks only if a feature is <em>not</em> enabled, or if
+any combination of features are or are not enabled.</p>
+<p>Additionally, Rust provides a number of automatically-set conditions you can
+use, such as <code>target_arch</code> to select different code based on architecture. For
+full details of the conditional compilation support, refer to the
+<a href="https://doc.rust-lang.org/reference/conditional-compilation.html">conditional compilation</a> chapter of the Rust reference.</p>
+<p>The conditional compilation will only apply to the next statement or block. If
+a block can not be used in the current scope then the <code>cfg</code> attribute will
+need to be used multiple times.  It's worth noting that most of the time it is
+better to simply include all the code and allow the compiler to remove dead
+code when optimising: it's simpler for you and your users, and in general the
+compiler will do a good job of removing unused code.</p>
+<h3 id="compile-time-sizes-and-computation"><a class="header" href="#compile-time-sizes-and-computation">Compile-Time Sizes and Computation</a></h3>
+<p>Rust supports <code>const fn</code>, functions which are guaranteed to be evaluable at
+compile-time and can therefore be used where constants are required, such as
+in the size of arrays. This can be used alongside features mentioned above,
+for example:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>const fn array_size() -&gt; usize {
+    #[cfg(feature="use_more_ram")]
+    { 1024 }
+    #[cfg(not(feature="use_more_ram"))]
+    { 128 }
+}
+
+static BUF: [u32; array_size()] = [0u32; array_size()];
+<span class="boring">}</span></code></pre></pre>
+<p>These are new to stable Rust as of 1.31, so documentation is still sparse. The
+functionality available to <code>const fn</code> is also very limited at the time of
+writing; in future Rust releases it is expected to expand on what is permitted
+in a <code>const fn</code>.</p>
+<h3 id="macros"><a class="header" href="#macros">Macros</a></h3>
+<p>Rust provides an extremely powerful <a href="https://doc.rust-lang.org/book/ch19-06-macros.html">macro system</a>. While the C preprocessor
+operates almost directly on the text of your source code, the Rust macro system
+operates at a higher level. There are two varieties of Rust macro: <em>macros by
+example</em> and <em>procedural macros</em>. The former are simpler and most common; they
+look like function calls and can expand to a complete expression, statement,
+item, or pattern. Procedural macros are more complex but permit extremely
+powerful additions to the Rust language: they can transform arbitrary Rust
+syntax into new Rust syntax.</p>
+<p>In general, where you might have used a C preprocessor macro, you probably want
+to see if a macro-by-example can do the job instead. They can be defined in
+your crate and easily used by your own crate or exported for other users. Be
+aware that since they must expand to complete expressions, statements, items,
+or patterns, some use cases of C preprocessor macros will not work, for example
+a macro that expands to part of a variable name or an incomplete set of items
+in a list.</p>
+<p>As with Cargo features, it is worth considering if you even need the macro. In
+many cases a regular function is easier to understand and will be inlined to
+the same code as a macro. The <code>#[inline]</code> and <code>#[inline(always)]</code> <a href="https://doc.rust-lang.org/reference/attributes.html#inline-attribute">attributes</a>
+give you further control over this process, although care should be taken here
+as well — the compiler will automatically inline functions from the same crate
+where appropriate, so forcing it to do so inappropriately might actually lead
+to decreased performance.</p>
+<p>Explaining the entire Rust macro system is out of scope for this tips page, so
+you are encouraged to consult the Rust documentation for full details.</p>
+<h2 id="build-system"><a class="header" href="#build-system">Build System</a></h2>
+<p>Most Rust crates are built using Cargo (although it is not required). This
+takes care of many difficult problems with traditional build systems. However,
+you may wish to customise the build process. Cargo provides <a href="https://doc.rust-lang.org/cargo/reference/build-scripts.html"><code>build.rs</code>
+scripts</a> for this purpose. They are Rust scripts which can interact with the
+Cargo build system as required.</p>
+<p>Common use cases for build scripts include:</p>
+<ul>
+<li>provide build-time information, for example statically embedding the build
+date or Git commit hash into your executable</li>
+<li>generate linker scripts at build time depending on selected features or other
+logic</li>
+<li>change the Cargo build configuration</li>
+<li>add extra static libraries to link against</li>
+</ul>
+<p>At present there is no support for post-build scripts, which you might
+traditionally have used for tasks like automatic generation of binaries from
+the build objects or printing build information.</p>
+<h3 id="cross-compiling"><a class="header" href="#cross-compiling">Cross-Compiling</a></h3>
+<p>Using Cargo for your build system also simplifies cross-compiling. In most
+cases it suffices to tell Cargo <code>--target thumbv6m-none-eabi</code> and find a
+suitable executable in <code>target/thumbv6m-none-eabi/debug/myapp</code>.</p>
+<p>For platforms not natively supported by Rust, you will need to build <code>libcore</code>
+for that target yourself. On such platforms, <a href="https://github.com/japaric/xargo">Xargo</a> can be used as a stand-in
+for Cargo which automatically builds <code>libcore</code> for you.</p>
+<h2 id="iterators-vs-array-access"><a class="header" href="#iterators-vs-array-access">Iterators vs Array Access</a></h2>
+<p>In C you are probably used to accessing arrays directly by their index:</p>
+<pre><code class="language-c">int16_t arr[16];
+int i;
+for(i=0; i&lt;sizeof(arr)/sizeof(arr[0]); i++) {
+    process(arr[i]);
+}
+</code></pre>
+<p>In Rust this is an anti-pattern: indexed access can be slower (as it needs to
+be bounds checked) and may prevent various compiler optimisations. This is an
+important distinction and worth repeating: Rust will check for out-of-bounds
+access on manual array indexing to guarantee memory safety, while C will
+happily index outside the array.</p>
+<p>Instead, use iterators:</p>
+<pre><code class="language-rust ignore">let arr = [0u16; 16];
+for element in arr.iter() {
+    process(*element);
+}</code></pre>
+<p>Iterators provide a powerful array of functionality you would have to implement
+manually in C, such as chaining, zipping, enumerating, finding the min or max,
+summing, and more. Iterator methods can also be chained, giving very readable
+data processing code.</p>
+<p>See the <a href="https://doc.rust-lang.org/book/ch13-02-iterators.html">Iterators in the Book</a> and <a href="https://doc.rust-lang.org/core/iter/trait.Iterator.html">Iterator documentation</a> for more details.</p>
+<h2 id="references-vs-pointers"><a class="header" href="#references-vs-pointers">References vs Pointers</a></h2>
+<p>In Rust, pointers (called <a href="https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html#dereferencing-a-raw-pointer"><em>raw pointers</em></a>) exist but are only used in specific
+circumstances, as dereferencing them is always considered <code>unsafe</code> -- Rust
+cannot provide its usual guarantees about what might be behind the pointer.</p>
+<p>In most cases, we instead use <em>references</em>, indicated by the <code>&amp;</code> symbol, or
+<em>mutable references</em>, indicated by <code>&amp;mut</code>. References behave similarly to
+pointers, in that they can be dereferenced to access the underlying values, but
+they are a key part of Rust's ownership system: Rust will strictly enforce that
+you may only have one mutable reference <em>or</em> multiple non-mutable references to
+the same value at any given time.</p>
+<p>In practice this means you have to be more careful about whether you need
+mutable access to data: where in C the default is mutable and you must be
+explicit about <code>const</code>, in Rust the opposite is true.</p>
+<p>One situation where you might still use raw pointers is interacting directly
+with hardware (for example, writing a pointer to a buffer into a DMA peripheral
+register), and they are also used under the hood for all peripheral access
+crates to allow you to read and write memory-mapped registers.</p>
+<h2 id="volatile-access"><a class="header" href="#volatile-access">Volatile Access</a></h2>
+<p>In C, individual variables may be marked <code>volatile</code>, indicating to the compiler
+that the value in the variable may change between accesses. Volatile variables
+are commonly used in an embedded context for memory-mapped registers.</p>
+<p>In Rust, instead of marking a variable as <code>volatile</code>, we use specific methods
+to perform volatile access: <a href="https://doc.rust-lang.org/core/ptr/fn.read_volatile.html"><code>core::ptr::read_volatile</code></a> and
+<a href="https://doc.rust-lang.org/core/ptr/fn.write_volatile.html"><code>core::ptr::write_volatile</code></a>. These methods take a <code>*const T</code> or a <code>*mut T</code>
+(<em>raw pointers</em>, as discussed above) and perform a volatile read or write.</p>
+<p>For example, in C you might write:</p>
+<pre><code class="language-c">volatile bool signalled = false;
+
+void ISR() {
+    // Signal that the interrupt has occurred
+    signalled = true;
+}
+
+void driver() {
+    while(true) {
+        // Sleep until signalled
+        while(!signalled) { WFI(); }
+        // Reset signalled indicator
+        signalled = false;
+        // Perform some task that was waiting for the interrupt
+        run_task();
+    }
+}
+</code></pre>
+<p>The equivalent in Rust would use volatile methods on each access:</p>
+<pre><code class="language-rust ignore">static mut SIGNALLED: bool = false;
+
+#[interrupt]
+fn ISR() {
+    // Signal that the interrupt has occurred
+    // (In real code, you should consider a higher level primitive,
+    //  such as an atomic type).
+    unsafe { core::ptr::write_volatile(&amp;mut SIGNALLED, true) };
+}
+
+fn driver() {
+    loop {
+        // Sleep until signalled
+        while unsafe { !core::ptr::read_volatile(&amp;SIGNALLED) } {}
+        // Reset signalled indicator
+        unsafe { core::ptr::write_volatile(&amp;mut SIGNALLED, false) };
+        // Perform some task that was waiting for the interrupt
+        run_task();
+    }
+}</code></pre>
+<p>A few things are worth noting in the code sample:</p>
+<ul>
+<li>We can pass <code>&amp;mut SIGNALLED</code> into the function requiring <code>*mut T</code>, since
+<code>&amp;mut T</code> automatically converts to a <code>*mut T</code> (and the same for <code>*const T</code>)</li>
+<li>We need <code>unsafe</code> blocks for the <code>read_volatile</code>/<code>write_volatile</code> methods,
+since they are <code>unsafe</code> functions. It is the programmer's responsibility
+to ensure safe use: see the methods' documentation for further details.</li>
+</ul>
+<p>It is rare to require these functions directly in your code, as they will
+usually be taken care of for you by higher-level libraries. For memory mapped
+peripherals, the peripheral access crates will implement volatile access
+automatically, while for concurrency primitives there are better abstractions
+available (see the <a href="../concurrency/index.html">Concurrency chapter</a>).</p>
+<h2 id="packed-and-aligned-types"><a class="header" href="#packed-and-aligned-types">Packed and Aligned Types</a></h2>
+<p>In embedded C it is common to tell the compiler a variable must have a certain
+alignment or a struct must be packed rather than aligned, usually to meet
+specific hardware or protocol requirements.</p>
+<p>In Rust this is controlled by the <code>repr</code> attribute on a struct or union. The
+default representation provides no guarantees of layout, so should not be used
+for code that interoperates with hardware or C. The compiler may re-order
+struct members or insert padding and the behaviour may change with future
+versions of Rust.</p>
+<pre><pre class="playground"><code class="language-rust">struct Foo {
+    x: u16,
+    y: u8,
+    z: u16,
+}
+
+fn main() {
+    let v = Foo { x: 0, y: 0, z: 0 };
+    println!("{:p} {:p} {:p}", &amp;v.x, &amp;v.y, &amp;v.z);
+}
+
+// 0x7ffecb3511d0 0x7ffecb3511d4 0x7ffecb3511d2
+// Note ordering has been changed to x, z, y to improve packing.</code></pre></pre>
+<p>To ensure layouts that are interoperable with C, use <code>repr(C)</code>:</p>
+<pre><pre class="playground"><code class="language-rust">#[repr(C)]
+struct Foo {
+    x: u16,
+    y: u8,
+    z: u16,
+}
+
+fn main() {
+    let v = Foo { x: 0, y: 0, z: 0 };
+    println!("{:p} {:p} {:p}", &amp;v.x, &amp;v.y, &amp;v.z);
+}
+
+// 0x7fffd0d84c60 0x7fffd0d84c62 0x7fffd0d84c64
+// Ordering is preserved and the layout will not change over time.
+// `z` is two-byte aligned so a byte of padding exists between `y` and `z`.</code></pre></pre>
+<p>To ensure a packed representation, use <code>repr(packed)</code>:</p>
+<pre><pre class="playground"><code class="language-rust">#[repr(packed)]
+struct Foo {
+    x: u16,
+    y: u8,
+    z: u16,
+}
+
+fn main() {
+    let v = Foo { x: 0, y: 0, z: 0 };
+    // References must always be aligned, so to check the addresses of the
+    // struct's fields, we use `std::ptr::addr_of!()` to get a raw pointer
+    // instead of just printing `&amp;v.x`.
+    let px = std::ptr::addr_of!(v.x);
+    let py = std::ptr::addr_of!(v.y);
+    let pz = std::ptr::addr_of!(v.z);
+    println!("{:p} {:p} {:p}", px, py, pz);
+}
+
+// 0x7ffd33598490 0x7ffd33598492 0x7ffd33598493
+// No padding has been inserted between `y` and `z`, so now `z` is unaligned.</code></pre></pre>
+<p>Note that using <code>repr(packed)</code> also sets the alignment of the type to <code>1</code>.</p>
+<p>Finally, to specify a specific alignment, use <code>repr(align(n))</code>, where <code>n</code> is
+the number of bytes to align to (and must be a power of two):</p>
+<pre><pre class="playground"><code class="language-rust">#[repr(C)]
+#[repr(align(4096))]
+struct Foo {
+    x: u16,
+    y: u8,
+    z: u16,
+}
+
+fn main() {
+    let v = Foo { x: 0, y: 0, z: 0 };
+    let u = Foo { x: 0, y: 0, z: 0 };
+    println!("{:p} {:p} {:p}", &amp;v.x, &amp;v.y, &amp;v.z);
+    println!("{:p} {:p} {:p}", &amp;u.x, &amp;u.y, &amp;u.z);
+}
+
+// 0x7ffec909a000 0x7ffec909a002 0x7ffec909a004
+// 0x7ffec909b000 0x7ffec909b002 0x7ffec909b004
+// The two instances `u` and `v` have been placed on 4096-byte alignments,
+// evidenced by the `000` at the end of their addresses.</code></pre></pre>
+<p>Note we can combine <code>repr(C)</code> with <code>repr(align(n))</code> to obtain an aligned and
+C-compatible layout. It is not permissible to combine <code>repr(align(n))</code> with
+<code>repr(packed)</code>, since <code>repr(packed)</code> sets the alignment to <code>1</code>. It is also not
+permissible for a <code>repr(packed)</code> type to contain a <code>repr(align(n))</code> type.</p>
+<p>For further details on type layouts, refer to the <a href="https://doc.rust-lang.org/reference/type-layout.html">type layout</a> chapter of the
+Rust Reference.</p>
+<h2 id="other-resources"><a class="header" href="#other-resources">Other Resources</a></h2>
+<ul>
+<li>In this book:
+<ul>
+<li><a href="../interoperability/c-with-rust.html">A little C with your Rust</a></li>
+<li><a href="../interoperability/rust-with-c.html">A little Rust with your C</a></li>
+</ul>
+</li>
+<li><a href="https://docs.rust-embedded.org/faq.html">The Rust Embedded FAQs</a></li>
+<li><a href="http://blahg.josefsipek.net/?p=580">Rust Pointers for C Programmers</a></li>
+<li><a href="https://github.com/diwic/reffers-rs/blob/master/docs/Pointers.md">I used to use pointers - now what?</a></li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../design-patterns/hal/gpio.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../interoperability/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../design-patterns/hal/gpio.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../interoperability/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
