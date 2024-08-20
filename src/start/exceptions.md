@@ -213,7 +213,7 @@ use cortex_m_semihosting::hio;
 fn main() -> ! {
     // read a nonexistent memory location
     unsafe {
-        ptr::read_volatile(0x3FFF_FFFE as *const u32);
+        ptr::read_volatile(0x3FFF_0000 as *const u32);
     }
 
     loop {}
@@ -236,14 +236,14 @@ you'll see something like this on the OpenOCD console.
 $ openocd
 (..)
 ExceptionFrame {
-    r0: 0x3ffffffe,
-    r1: 0x00f00000,
-    r2: 0x20000000,
+    r0: 0x3fff0000,
+    r1: 0x00000003,
+    r2: 0x080032e8,
     r3: 0x00000000,
     r12: 0x00000000,
-    lr: 0x080008f7,
-    pc: 0x0800094a,
-    xpsr: 0x61000000
+    lr: 0x080016df,
+    pc: 0x080016e2,
+    xpsr: 0x61000000,
 }
 ```
 
