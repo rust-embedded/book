@@ -18,6 +18,7 @@ For bandwidth and disk usage concerns the default installation only supports
 native compilation. To add cross compilation support for the ARM Cortex-M
 architectures choose one of the following compilation targets. For the STM32F3DISCOVERY
 board used for the examples in this book, use the `thumbv7em-none-eabihf` target.
+[Find the best Cortex-M for you.](https://developer.arm.com/ip-products/processors/cortex-m#c-7d3b69ce-5b17-4c9e-8f06-59b605713133) 
 
 Cortex-M0, M0+, and M1 (ARMv6-M architecture):
 ``` console
