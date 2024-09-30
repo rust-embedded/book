@@ -1,0 +1,723 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Concurrency - The Embedded Rust Book</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro/index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../intro/hardware.html"><strong aria-hidden="true">1.1.</strong> Hardware</a></li><li class="chapter-item expanded "><a href="../intro/no-std.html"><strong aria-hidden="true">1.2.</strong> no_std</a></li><li class="chapter-item expanded "><a href="../intro/tooling.html"><strong aria-hidden="true">1.3.</strong> Tooling</a></li><li class="chapter-item expanded "><a href="../intro/install.html"><strong aria-hidden="true">1.4.</strong> Installation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../intro/install/linux.html"><strong aria-hidden="true">1.4.1.</strong> Linux</a></li><li class="chapter-item expanded "><a href="../intro/install/macos.html"><strong aria-hidden="true">1.4.2.</strong> MacOS</a></li><li class="chapter-item expanded "><a href="../intro/install/windows.html"><strong aria-hidden="true">1.4.3.</strong> Windows</a></li><li class="chapter-item expanded "><a href="../intro/install/verify.html"><strong aria-hidden="true">1.4.4.</strong> Verify Installation</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../start/index.html"><strong aria-hidden="true">2.</strong> Getting started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../start/qemu.html"><strong aria-hidden="true">2.1.</strong> QEMU</a></li><li class="chapter-item expanded "><a href="../start/hardware.html"><strong aria-hidden="true">2.2.</strong> Hardware</a></li><li class="chapter-item expanded "><a href="../start/registers.html"><strong aria-hidden="true">2.3.</strong> Memory-mapped Registers</a></li><li class="chapter-item expanded "><a href="../start/semihosting.html"><strong aria-hidden="true">2.4.</strong> Semihosting</a></li><li class="chapter-item expanded "><a href="../start/panicking.html"><strong aria-hidden="true">2.5.</strong> Panicking</a></li><li class="chapter-item expanded "><a href="../start/exceptions.html"><strong aria-hidden="true">2.6.</strong> Exceptions</a></li><li class="chapter-item expanded "><a href="../start/interrupts.html"><strong aria-hidden="true">2.7.</strong> Interrupts</a></li><li class="chapter-item expanded "><a href="../start/io.html"><strong aria-hidden="true">2.8.</strong> IO</a></li></ol></li><li class="chapter-item expanded "><a href="../peripherals/index.html"><strong aria-hidden="true">3.</strong> Peripherals</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../peripherals/a-first-attempt.html"><strong aria-hidden="true">3.1.</strong> A first attempt in Rust</a></li><li class="chapter-item expanded "><a href="../peripherals/borrowck.html"><strong aria-hidden="true">3.2.</strong> The Borrow Checker</a></li><li class="chapter-item expanded "><a href="../peripherals/singletons.html"><strong aria-hidden="true">3.3.</strong> Singletons</a></li></ol></li><li class="chapter-item expanded "><a href="../static-guarantees/index.html"><strong aria-hidden="true">4.</strong> Static Guarantees</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../static-guarantees/typestate-programming.html"><strong aria-hidden="true">4.1.</strong> Typestate Programming</a></li><li class="chapter-item expanded "><a href="../static-guarantees/state-machines.html"><strong aria-hidden="true">4.2.</strong> Peripherals as State Machines</a></li><li class="chapter-item expanded "><a href="../static-guarantees/design-contracts.html"><strong aria-hidden="true">4.3.</strong> Design Contracts</a></li><li class="chapter-item expanded "><a href="../static-guarantees/zero-cost-abstractions.html"><strong aria-hidden="true">4.4.</strong> Zero Cost Abstractions</a></li></ol></li><li class="chapter-item expanded "><a href="../portability/index.html"><strong aria-hidden="true">5.</strong> Portability</a></li><li class="chapter-item expanded "><a href="../concurrency/index.html" class="active"><strong aria-hidden="true">6.</strong> Concurrency</a></li><li class="chapter-item expanded "><a href="../collections/index.html"><strong aria-hidden="true">7.</strong> Collections</a></li><li class="chapter-item expanded "><a href="../design-patterns/index.html"><strong aria-hidden="true">8.</strong> Design Patterns</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../design-patterns/hal/index.html"><strong aria-hidden="true">8.1.</strong> HALs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../design-patterns/hal/checklist.html"><strong aria-hidden="true">8.1.1.</strong> Checklist</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/naming.html"><strong aria-hidden="true">8.1.2.</strong> Naming</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/interoperability.html"><strong aria-hidden="true">8.1.3.</strong> Interoperability</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/predictability.html"><strong aria-hidden="true">8.1.4.</strong> Predictability</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/gpio.html"><strong aria-hidden="true">8.1.5.</strong> GPIO</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../c-tips/index.html"><strong aria-hidden="true">9.</strong> Tips for embedded C developers</a></li><li class="chapter-item expanded "><a href="../interoperability/index.html"><strong aria-hidden="true">10.</strong> Interoperability</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../interoperability/c-with-rust.html"><strong aria-hidden="true">10.1.</strong> A little C with your Rust</a></li><li class="chapter-item expanded "><a href="../interoperability/rust-with-c.html"><strong aria-hidden="true">10.2.</strong> A little Rust with your C</a></li></ol></li><li class="chapter-item expanded "><a href="../unsorted/index.html"><strong aria-hidden="true">11.</strong> Unsorted topics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../unsorted/speed-vs-size.html"><strong aria-hidden="true">11.1.</strong> Optimizations: The speed size tradeoff</a></li><li class="chapter-item expanded "><a href="../unsorted/math.html"><strong aria-hidden="true">11.2.</strong> Performing Math Functionality</a></li></ol></li><li class="chapter-item expanded "><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../appendix/glossary.html">Appendix A: Glossary</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Embedded Rust Book</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-embedded/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="concurrency"><a class="header" href="#concurrency">Concurrency</a></h1>
+<p>Concurrency happens whenever different parts of your program might execute
+at different times or out of order. In an embedded context, this includes:</p>
+<ul>
+<li>interrupt handlers, which run whenever the associated interrupt happens,</li>
+<li>various forms of multithreading, where your microprocessor regularly swaps
+between parts of your program,</li>
+<li>and in some systems, multiple-core microprocessors, where each core can be
+independently running a different part of your program at the same time.</li>
+</ul>
+<p>Since many embedded programs need to deal with interrupts, concurrency will
+usually come up sooner or later, and it's also where many subtle and difficult
+bugs can occur. Luckily, Rust provides a number of abstractions and safety
+guarantees to help us write correct code.</p>
+<h2 id="no-concurrency"><a class="header" href="#no-concurrency">No Concurrency</a></h2>
+<p>The simplest concurrency for an embedded program is no concurrency: your
+software consists of a single main loop which just keeps running, and there
+are no interrupts at all. Sometimes this is perfectly suited to the problem
+at hand! Typically your loop will read some inputs, perform some processing,
+and write some outputs.</p>
+<pre><code class="language-rust ignore">#[entry]
+fn main() {
+    let peripherals = setup_peripherals();
+    loop {
+        let inputs = read_inputs(&amp;peripherals);
+        let outputs = process(inputs);
+        write_outputs(&amp;peripherals, outputs);
+    }
+}</code></pre>
+<p>Since there's no concurrency, there's no need to worry about sharing data
+between parts of your program or synchronising access to peripherals. If
+you can get away with such a simple approach this can be a great solution.</p>
+<h2 id="global-mutable-data"><a class="header" href="#global-mutable-data">Global Mutable Data</a></h2>
+<p>Unlike non-embedded Rust, we will not usually have the luxury of creating
+heap allocations and passing references to that data into a newly-created
+thread. Instead, our interrupt handlers might be called at any time and must
+know how to access whatever shared memory we are using. At the lowest level,
+this means we must have <em>statically allocated</em> mutable memory, which
+both the interrupt handler and the main code can refer to.</p>
+<p>In Rust, such <a href="https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html#accessing-or-modifying-a-mutable-static-variable"><code>static mut</code></a> variables are always unsafe to read or write,
+because without taking special care, you might trigger a race condition,
+where your access to the variable is interrupted halfway through by an
+interrupt which also accesses that variable.</p>
+<p>For an example of how this behaviour can cause subtle errors in your code,
+consider an embedded program which counts rising edges of some input signal
+in each one-second period (a frequency counter):</p>
+<pre><code class="language-rust ignore">static mut COUNTER: u32 = 0;
+
+#[entry]
+fn main() -&gt; ! {
+    set_timer_1hz();
+    let mut last_state = false;
+    loop {
+        let state = read_signal_level();
+        if state &amp;&amp; !last_state {
+            // DANGER - Not actually safe! Could cause data races.
+            unsafe { COUNTER += 1 };
+        }
+        last_state = state;
+    }
+}
+
+#[interrupt]
+fn timer() {
+    unsafe { COUNTER = 0; }
+}</code></pre>
+<p>Each second, the timer interrupt sets the counter back to 0. Meanwhile, the
+main loop continually measures the signal, and incremements the counter when
+it sees a change from low to high. We've had to use <code>unsafe</code> to access
+<code>COUNTER</code>, as it's <code>static mut</code>, and that means we're promising the compiler
+we won't cause any undefined behaviour. Can you spot the race condition? The
+increment on <code>COUNTER</code> is <em>not</em> guaranteed to be atomic — in fact, on most
+embedded platforms, it will be split into a load, then the increment, then
+a store. If the interrupt fired after the load but before the store, the
+reset back to 0 would be ignored after the interrupt returns — and we would
+count twice as many transitions for that period.</p>
+<h2 id="critical-sections"><a class="header" href="#critical-sections">Critical Sections</a></h2>
+<p>So, what can we do about data races? A simple approach is to use <em>critical
+sections</em>, a context where interrupts are disabled. By wrapping the access to
+<code>COUNTER</code> in <code>main</code> in a critical section, we can be sure the timer interrupt
+will not fire until we're finished incrementing <code>COUNTER</code>:</p>
+<pre><code class="language-rust ignore">static mut COUNTER: u32 = 0;
+
+#[entry]
+fn main() -&gt; ! {
+    set_timer_1hz();
+    let mut last_state = false;
+    loop {
+        let state = read_signal_level();
+        if state &amp;&amp; !last_state {
+            // New critical section ensures synchronised access to COUNTER
+            cortex_m::interrupt::free(|_| {
+                unsafe { COUNTER += 1 };
+            });
+        }
+        last_state = state;
+    }
+}
+
+#[interrupt]
+fn timer() {
+    unsafe { COUNTER = 0; }
+}</code></pre>
+<p>In this example, we use <code>cortex_m::interrupt::free</code>, but other platforms will
+have similar mechanisms for executing code in a critical section. This is also
+the same as disabling interrupts, running some code, and then re-enabling
+interrupts.</p>
+<p>Note we didn't need to put a critical section inside the timer interrupt,
+for two reasons:</p>
+<ul>
+<li>Writing 0 to <code>COUNTER</code> can't be affected by a race since we don't read it</li>
+<li>It will never be interrupted by the <code>main</code> thread anyway</li>
+</ul>
+<p>If <code>COUNTER</code> was being shared by multiple interrupt handlers that might
+<em>preempt</em> each other, then each one might require a critical section as well.</p>
+<p>This solves our immediate problem, but we're still left writing a lot of unsafe code which we need to carefully reason about, and we might be using critical sections needlessly. Since each critical section temporarily pauses interrupt processing, there is an associated cost of some extra code size and higher interrupt latency and jitter (interrupts may take longer to be processed, and the time until they are processed will be more variable). Whether this is a problem depends on your system, but in general, we'd like to avoid it.</p>
+<p>It's worth noting that while a critical section guarantees no interrupts will
+fire, it does not provide an exclusivity guarantee on multi-core systems!  The
+other core could be happily accessing the same memory as your core, even
+without interrupts. You will need stronger synchronisation primitives if you
+are using multiple cores.</p>
+<h2 id="atomic-access"><a class="header" href="#atomic-access">Atomic Access</a></h2>
+<p>On some platforms, special atomic instructions are available, which provide
+guarantees about read-modify-write operations. Specifically for Cortex-M: <code>thumbv6</code>
+(Cortex-M0, Cortex-M0+) only provide atomic load and store instructions,
+while <code>thumbv7</code> (Cortex-M3 and above) provide full Compare and Swap (CAS)
+instructions. These CAS instructions give an alternative to the heavy-handed
+disabling of all interrupts: we can attempt the increment, it will succeed most
+of the time, but if it was interrupted it will automatically retry the entire
+increment operation. These atomic operations are safe even across multiple
+cores.</p>
+<pre><code class="language-rust ignore">use core::sync::atomic::{AtomicUsize, Ordering};
+
+static COUNTER: AtomicUsize = AtomicUsize::new(0);
+
+#[entry]
+fn main() -&gt; ! {
+    set_timer_1hz();
+    let mut last_state = false;
+    loop {
+        let state = read_signal_level();
+        if state &amp;&amp; !last_state {
+            // Use `fetch_add` to atomically add 1 to COUNTER
+            COUNTER.fetch_add(1, Ordering::Relaxed);
+        }
+        last_state = state;
+    }
+}
+
+#[interrupt]
+fn timer() {
+    // Use `store` to write 0 directly to COUNTER
+    COUNTER.store(0, Ordering::Relaxed)
+}</code></pre>
+<p>This time <code>COUNTER</code> is a safe <code>static</code> variable. Thanks to the <code>AtomicUsize</code>
+type <code>COUNTER</code> can be safely modified from both the interrupt handler and the
+main thread without disabling interrupts. When possible, this is a better
+solution — but it may not be supported on your platform.</p>
+<p>A note on <a href="https://doc.rust-lang.org/core/sync/atomic/enum.Ordering.html"><code>Ordering</code></a>: this affects how the compiler and hardware may reorder
+instructions, and also has consequences on cache visibility. Assuming that the
+target is a single core platform <code>Relaxed</code> is sufficient and the most efficient
+choice in this particular case. Stricter ordering will cause the compiler to
+emit memory barriers around the atomic operations; depending on what you're
+using atomics for you may or may not need this! The precise details of the
+atomic model are complicated and best described elsewhere.</p>
+<p>For more details on atomics and ordering, see the <a href="https://doc.rust-lang.org/nomicon/atomics.html">nomicon</a>.</p>
+<h2 id="abstractions-send-and-sync"><a class="header" href="#abstractions-send-and-sync">Abstractions, Send, and Sync</a></h2>
+<p>None of the above solutions are especially satisfactory. They require <code>unsafe</code>
+blocks which must be very carefully checked and are not ergonomic. Surely we
+can do better in Rust!</p>
+<p>We can abstract our counter into a safe interface which can be safely used
+anywhere else in our code. For this example, we'll use the critical-section
+counter, but you could do something very similar with atomics.</p>
+<pre><code class="language-rust ignore">use core::cell::UnsafeCell;
+use cortex_m::interrupt;
+
+// Our counter is just a wrapper around UnsafeCell&lt;u32&gt;, which is the heart
+// of interior mutability in Rust. By using interior mutability, we can have
+// COUNTER be `static` instead of `static mut`, but still able to mutate
+// its counter value.
+struct CSCounter(UnsafeCell&lt;u32&gt;);
+
+const CS_COUNTER_INIT: CSCounter = CSCounter(UnsafeCell::new(0));
+
+impl CSCounter {
+    pub fn reset(&amp;self, _cs: &amp;interrupt::CriticalSection) {
+        // By requiring a CriticalSection be passed in, we know we must
+        // be operating inside a CriticalSection, and so can confidently
+        // use this unsafe block (required to call UnsafeCell::get).
+        unsafe { *self.0.get() = 0 };
+    }
+
+    pub fn increment(&amp;self, _cs: &amp;interrupt::CriticalSection) {
+        unsafe { *self.0.get() += 1 };
+    }
+}
+
+// Required to allow static CSCounter. See explanation below.
+unsafe impl Sync for CSCounter {}
+
+// COUNTER is no longer `mut` as it uses interior mutability;
+// therefore it also no longer requires unsafe blocks to access.
+static COUNTER: CSCounter = CS_COUNTER_INIT;
+
+#[entry]
+fn main() -&gt; ! {
+    set_timer_1hz();
+    let mut last_state = false;
+    loop {
+        let state = read_signal_level();
+        if state &amp;&amp; !last_state {
+            // No unsafe here!
+            interrupt::free(|cs| COUNTER.increment(cs));
+        }
+        last_state = state;
+    }
+}
+
+#[interrupt]
+fn timer() {
+    // We do need to enter a critical section here just to obtain a valid
+    // cs token, even though we know no other interrupt could pre-empt
+    // this one.
+    interrupt::free(|cs| COUNTER.reset(cs));
+
+    // We could use unsafe code to generate a fake CriticalSection if we
+    // really wanted to, avoiding the overhead:
+    // let cs = unsafe { interrupt::CriticalSection::new() };
+}</code></pre>
+<p>We've moved our <code>unsafe</code> code to inside our carefully-planned abstraction,
+and now our application code does not contain any <code>unsafe</code> blocks.</p>
+<p>This design requires that the application pass a <code>CriticalSection</code> token in:
+these tokens are only safely generated by <code>interrupt::free</code>, so by requiring
+one be passed in, we ensure we are operating inside a critical section, without
+having to actually do the lock ourselves. This guarantee is provided statically
+by the compiler: there won't be any runtime overhead associated with <code>cs</code>.
+If we had multiple counters, they could all be given the same <code>cs</code>, without
+requiring multiple nested critical sections.</p>
+<p>This also brings up an important topic for concurrency in Rust: the
+<a href="https://doc.rust-lang.org/nomicon/send-and-sync.html"><code>Send</code> and <code>Sync</code></a> traits. To summarise the Rust book, a type is Send
+when it can safely be moved to another thread, while it is Sync when
+it can be safely shared between multiple threads. In an embedded context,
+we consider interrupts to be executing in a separate thread to the application
+code, so variables accessed by both an interrupt and the main code must be
+Sync.</p>
+<p>For most types in Rust, both of these traits are automatically derived for you
+by the compiler. However, because <code>CSCounter</code> contains an <a href="https://doc.rust-lang.org/core/cell/struct.UnsafeCell.html"><code>UnsafeCell</code></a>, it is
+not Sync, and therefore we could not make a <code>static CSCounter</code>: <code>static</code>
+variables <em>must</em> be Sync, since they can be accessed by multiple threads.</p>
+<p>To tell the compiler we have taken care that the <code>CSCounter</code> is in fact safe
+to share between threads, we implement the Sync trait explicitly. As with the
+previous use of critical sections, this is only safe on single-core platforms:
+with multiple cores, you would need to go to greater lengths to ensure safety.</p>
+<h2 id="mutexes"><a class="header" href="#mutexes">Mutexes</a></h2>
+<p>We've created a useful abstraction specific to our counter problem, but
+there are many common abstractions used for concurrency.</p>
+<p>One such <em>synchronisation primitive</em> is a mutex, short for mutual exclusion.
+These constructs ensure exclusive access to a variable, such as our counter. A
+thread can attempt to <em>lock</em> (or <em>acquire</em>) the mutex, and either succeeds
+immediately, or blocks waiting for the lock to be acquired, or returns an error
+that the mutex could not be locked. While that thread holds the lock, it is
+granted access to the protected data. When the thread is done, it <em>unlocks</em> (or
+<em>releases</em>) the mutex, allowing another thread to lock it. In Rust, we would
+usually implement the unlock using the <a href="https://doc.rust-lang.org/core/ops/trait.Drop.html"><code>Drop</code></a> trait to ensure it is always
+released when the mutex goes out of scope.</p>
+<p>Using a mutex with interrupt handlers can be tricky: it is not normally
+acceptable for the interrupt handler to block, and it would be especially
+disastrous for it to block waiting for the main thread to release a lock,
+since we would then <em>deadlock</em> (the main thread will never release the lock
+because execution stays in the interrupt handler). Deadlocking is not
+considered unsafe: it is possible even in safe Rust.</p>
+<p>To avoid this behaviour entirely, we could implement a mutex which requires
+a critical section to lock, just like our counter example. So long as the
+critical section must last as long as the lock, we can be sure we have
+exclusive access to the wrapped variable without even needing to track
+the lock/unlock state of the mutex.</p>
+<p>This is in fact done for us in the <code>cortex_m</code> crate! We could have written
+our counter using it:</p>
+<pre><code class="language-rust ignore">use core::cell::Cell;
+use cortex_m::interrupt::Mutex;
+
+static COUNTER: Mutex&lt;Cell&lt;u32&gt;&gt; = Mutex::new(Cell::new(0));
+
+#[entry]
+fn main() -&gt; ! {
+    set_timer_1hz();
+    let mut last_state = false;
+    loop {
+        let state = read_signal_level();
+        if state &amp;&amp; !last_state {
+            interrupt::free(|cs|
+                COUNTER.borrow(cs).set(COUNTER.borrow(cs).get() + 1));
+        }
+        last_state = state;
+    }
+}
+
+#[interrupt]
+fn timer() {
+    // We still need to enter a critical section here to satisfy the Mutex.
+    interrupt::free(|cs| COUNTER.borrow(cs).set(0));
+}</code></pre>
+<p>We're now using <a href="https://doc.rust-lang.org/core/cell/struct.Cell.html"><code>Cell</code></a>, which along with its sibling <code>RefCell</code> is used to
+provide safe interior mutability. We've already seen <code>UnsafeCell</code> which is
+the bottom layer of interior mutability in Rust: it allows you to obtain
+multiple mutable references to its value, but only with unsafe code. A <code>Cell</code>
+is like an <code>UnsafeCell</code> but it provides a safe interface: it only permits
+taking a copy of the current value or replacing it, not taking a reference,
+and since it is not Sync, it cannot be shared between threads. These
+constraints mean it's safe to use, but we couldn't use it directly in a
+<code>static</code> variable as a <code>static</code> must be Sync.</p>
+<p>So why does the example above work? The <code>Mutex&lt;T&gt;</code> implements Sync for any
+<code>T</code> which is Send — such as a <code>Cell</code>. It can do this safely because it only
+gives access to its contents during a critical section. We're therefore able
+to get a safe counter with no unsafe code at all!</p>
+<p>This is great for simple types like the <code>u32</code> of our counter, but what about
+more complex types which are not Copy? An extremely common example in an
+embedded context is a peripheral struct, which generally is not Copy.
+For that, we can turn to <code>RefCell</code>.</p>
+<h2 id="sharing-peripherals"><a class="header" href="#sharing-peripherals">Sharing Peripherals</a></h2>
+<p>Device crates generated using <code>svd2rust</code> and similar abstractions provide
+safe access to peripherals by enforcing that only one instance of the
+peripheral struct can exist at a time. This ensures safety, but makes it
+difficult to access a peripheral from both the main thread and an interrupt
+handler.</p>
+<p>To safely share peripheral access, we can use the <code>Mutex</code> we saw before. We'll
+also need to use <a href="https://doc.rust-lang.org/core/cell/struct.RefCell.html"><code>RefCell</code></a>, which uses a runtime check to ensure only one
+reference to a peripheral is given out at a time. This has more overhead than
+the plain <code>Cell</code>, but since we are giving out references rather than copies,
+we must be sure only one exists at a time.</p>
+<p>Finally, we'll also have to account for somehow moving the peripheral into
+the shared variable after it has been initialised in the main code. To do
+this we can use the <code>Option</code> type, initialised to <code>None</code> and later set to
+the instance of the peripheral.</p>
+<pre><code class="language-rust ignore">use core::cell::RefCell;
+use cortex_m::interrupt::{self, Mutex};
+use stm32f4::stm32f405;
+
+static MY_GPIO: Mutex&lt;RefCell&lt;Option&lt;stm32f405::GPIOA&gt;&gt;&gt; =
+    Mutex::new(RefCell::new(None));
+
+#[entry]
+fn main() -&gt; ! {
+    // Obtain the peripheral singletons and configure it.
+    // This example is from an svd2rust-generated crate, but
+    // most embedded device crates will be similar.
+    let dp = stm32f405::Peripherals::take().unwrap();
+    let gpioa = &amp;dp.GPIOA;
+
+    // Some sort of configuration function.
+    // Assume it sets PA0 to an input and PA1 to an output.
+    configure_gpio(gpioa);
+
+    // Store the GPIOA in the mutex, moving it.
+    interrupt::free(|cs| MY_GPIO.borrow(cs).replace(Some(dp.GPIOA)));
+    // We can no longer use `gpioa` or `dp.GPIOA`, and instead have to
+    // access it via the mutex.
+
+    // Be careful to enable the interrupt only after setting MY_GPIO:
+    // otherwise the interrupt might fire while it still contains None,
+    // and as-written (with `unwrap()`), it would panic.
+    set_timer_1hz();
+    let mut last_state = false;
+    loop {
+        // We'll now read state as a digital input, via the mutex
+        let state = interrupt::free(|cs| {
+            let gpioa = MY_GPIO.borrow(cs).borrow();
+            gpioa.as_ref().unwrap().idr.read().idr0().bit_is_set()
+        });
+
+        if state &amp;&amp; !last_state {
+            // Set PA1 high if we've seen a rising edge on PA0.
+            interrupt::free(|cs| {
+                let gpioa = MY_GPIO.borrow(cs).borrow();
+                gpioa.as_ref().unwrap().odr.modify(|_, w| w.odr1().set_bit());
+            });
+        }
+        last_state = state;
+    }
+}
+
+#[interrupt]
+fn timer() {
+    // This time in the interrupt we'll just clear PA0.
+    interrupt::free(|cs| {
+        // We can use `unwrap()` because we know the interrupt wasn't enabled
+        // until after MY_GPIO was set; otherwise we should handle the potential
+        // for a None value.
+        let gpioa = MY_GPIO.borrow(cs).borrow();
+        gpioa.as_ref().unwrap().odr.modify(|_, w| w.odr1().clear_bit());
+    });
+}</code></pre>
+<p>That's quite a lot to take in, so let's break down the important lines.</p>
+<pre><code class="language-rust ignore">static MY_GPIO: Mutex&lt;RefCell&lt;Option&lt;stm32f405::GPIOA&gt;&gt;&gt; =
+    Mutex::new(RefCell::new(None));</code></pre>
+<p>Our shared variable is now a <code>Mutex</code> around a <code>RefCell</code> which contains an
+<code>Option</code>. The <code>Mutex</code> ensures we only have access during a critical section,
+and therefore makes the variable Sync, even though a plain <code>RefCell</code> would not
+be Sync. The <code>RefCell</code> gives us interior mutability with references, which
+we'll need to use our <code>GPIOA</code>. The <code>Option</code> lets us initialise this variable
+to something empty, and only later actually move the variable in. We cannot
+access the peripheral singleton statically, only at runtime, so this is
+required.</p>
+<pre><code class="language-rust ignore">interrupt::free(|cs| MY_GPIO.borrow(cs).replace(Some(dp.GPIOA)));</code></pre>
+<p>Inside a critical section we can call <code>borrow()</code> on the mutex, which gives us
+a reference to the <code>RefCell</code>. We then call <code>replace()</code> to move our new value
+into the <code>RefCell</code>.</p>
+<pre><code class="language-rust ignore">interrupt::free(|cs| {
+    let gpioa = MY_GPIO.borrow(cs).borrow();
+    gpioa.as_ref().unwrap().odr.modify(|_, w| w.odr1().set_bit());
+});</code></pre>
+<p>Finally, we use <code>MY_GPIO</code> in a safe and concurrent fashion. The critical section
+prevents the interrupt firing as usual, and lets us borrow the mutex.  The
+<code>RefCell</code> then gives us an <code>&amp;Option&lt;GPIOA&gt;</code>, and tracks how long it remains
+borrowed - once that reference goes out of scope, the <code>RefCell</code> will be updated
+to indicate it is no longer borrowed.</p>
+<p>Since we can't move the <code>GPIOA</code> out of the <code>&amp;Option</code>, we need to convert it to
+an <code>&amp;Option&lt;&amp;GPIOA&gt;</code> with <code>as_ref()</code>, which we can finally <code>unwrap()</code> to obtain
+the <code>&amp;GPIOA</code> which lets us modify the peripheral.</p>
+<p>If we need a mutable reference to a shared resource, then <code>borrow_mut</code> and <code>deref_mut</code>
+should be used instead. The following code shows an example using the TIM2 timer.</p>
+<pre><code class="language-rust ignore">use core::cell::RefCell;
+use core::ops::DerefMut;
+use cortex_m::interrupt::{self, Mutex};
+use cortex_m::asm::wfi;
+use stm32f4::stm32f405;
+
+static G_TIM: Mutex&lt;RefCell&lt;Option&lt;Timer&lt;stm32::TIM2&gt;&gt;&gt;&gt; =
+	Mutex::new(RefCell::new(None));
+
+#[entry]
+fn main() -&gt; ! {
+    let mut cp = cm::Peripherals::take().unwrap();
+    let dp = stm32f405::Peripherals::take().unwrap();
+
+    // Some sort of timer configuration function.
+    // Assume it configures the TIM2 timer, its NVIC interrupt,
+    // and finally starts the timer.
+    let tim = configure_timer_interrupt(&amp;mut cp, dp);
+
+    interrupt::free(|cs| {
+        G_TIM.borrow(cs).replace(Some(tim));
+    });
+
+    loop {
+        wfi();
+    }
+}
+
+#[interrupt]
+fn timer() {
+    interrupt::free(|cs| {
+        if let Some(ref mut tim)) =  G_TIM.borrow(cs).borrow_mut().deref_mut() {
+            tim.start(1.hz());
+        }
+    });
+}
+</code></pre>
+<p>Whew! This is safe, but it is also a little unwieldy. Is there anything else
+we can do?</p>
+<h2 id="rtic"><a class="header" href="#rtic">RTIC</a></h2>
+<p>One alternative is the <a href="https://github.com/rtic-rs/cortex-m-rtic">RTIC framework</a>, short for Real Time Interrupt-driven Concurrency. It
+enforces static priorities and tracks accesses to <code>static mut</code> variables
+("resources") to statically ensure that shared resources are always accessed
+safely, without requiring the overhead of always entering critical sections and
+using reference counting (as in <code>RefCell</code>). This has a number of advantages such
+as guaranteeing no deadlocks and giving extremely low time and memory overhead.</p>
+<p>The framework also includes other features like message passing, which reduces
+the need for explicit shared state, and the ability to schedule tasks to run at
+a given time, which can be used to implement periodic tasks. Check out <a href="https://rtic.rs">the
+documentation</a> for more information!</p>
+<h2 id="real-time-operating-systems"><a class="header" href="#real-time-operating-systems">Real Time Operating Systems</a></h2>
+<p>Another common model for embedded concurrency is the real-time operating system
+(RTOS). While currently less well explored in Rust, they are widely used in
+traditional embedded development. Open source examples include <a href="https://freertos.org/">FreeRTOS</a> and
+<a href="http://chibios.org/">ChibiOS</a>. These RTOSs provide support for running multiple application threads
+which the CPU swaps between, either when the threads yield control (called
+cooperative multitasking) or based on a regular timer or interrupts (preemptive
+multitasking). The RTOS typically provide mutexes and other synchronisation
+primitives, and often interoperate with hardware features such as DMA engines.</p>
+<p>At the time of writing, there are not many Rust RTOS examples to point to,
+but it's an interesting area so watch this space!</p>
+<h2 id="multiple-cores"><a class="header" href="#multiple-cores">Multiple Cores</a></h2>
+<p>It is becoming more common to have two or more cores in embedded processors,
+which adds an extra layer of complexity to concurrency. All the examples using
+a critical section (including the <code>cortex_m::interrupt::Mutex</code>) assume the only
+other execution thread is the interrupt thread, but on a multi-core system
+that's no longer true. Instead, we'll need synchronisation primitives designed
+for multiple cores (also called SMP, for symmetric multi-processing).</p>
+<p>These typically use the atomic instructions we saw earlier, since the
+processing system will ensure that atomicity is maintained over all cores.</p>
+<p>Covering these topics in detail is currently beyond the scope of this book,
+but the general patterns are the same as for the single-core case.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../portability/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../collections/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../portability/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../collections/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

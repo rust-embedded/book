@@ -1,0 +1,377 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Memory-mapped Registers - The Embedded Rust Book</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro/index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../intro/hardware.html"><strong aria-hidden="true">1.1.</strong> Hardware</a></li><li class="chapter-item expanded "><a href="../intro/no-std.html"><strong aria-hidden="true">1.2.</strong> no_std</a></li><li class="chapter-item expanded "><a href="../intro/tooling.html"><strong aria-hidden="true">1.3.</strong> Tooling</a></li><li class="chapter-item expanded "><a href="../intro/install.html"><strong aria-hidden="true">1.4.</strong> Installation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../intro/install/linux.html"><strong aria-hidden="true">1.4.1.</strong> Linux</a></li><li class="chapter-item expanded "><a href="../intro/install/macos.html"><strong aria-hidden="true">1.4.2.</strong> MacOS</a></li><li class="chapter-item expanded "><a href="../intro/install/windows.html"><strong aria-hidden="true">1.4.3.</strong> Windows</a></li><li class="chapter-item expanded "><a href="../intro/install/verify.html"><strong aria-hidden="true">1.4.4.</strong> Verify Installation</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../start/index.html"><strong aria-hidden="true">2.</strong> Getting started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../start/qemu.html"><strong aria-hidden="true">2.1.</strong> QEMU</a></li><li class="chapter-item expanded "><a href="../start/hardware.html"><strong aria-hidden="true">2.2.</strong> Hardware</a></li><li class="chapter-item expanded "><a href="../start/registers.html" class="active"><strong aria-hidden="true">2.3.</strong> Memory-mapped Registers</a></li><li class="chapter-item expanded "><a href="../start/semihosting.html"><strong aria-hidden="true">2.4.</strong> Semihosting</a></li><li class="chapter-item expanded "><a href="../start/panicking.html"><strong aria-hidden="true">2.5.</strong> Panicking</a></li><li class="chapter-item expanded "><a href="../start/exceptions.html"><strong aria-hidden="true">2.6.</strong> Exceptions</a></li><li class="chapter-item expanded "><a href="../start/interrupts.html"><strong aria-hidden="true">2.7.</strong> Interrupts</a></li><li class="chapter-item expanded "><a href="../start/io.html"><strong aria-hidden="true">2.8.</strong> IO</a></li></ol></li><li class="chapter-item expanded "><a href="../peripherals/index.html"><strong aria-hidden="true">3.</strong> Peripherals</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../peripherals/a-first-attempt.html"><strong aria-hidden="true">3.1.</strong> A first attempt in Rust</a></li><li class="chapter-item expanded "><a href="../peripherals/borrowck.html"><strong aria-hidden="true">3.2.</strong> The Borrow Checker</a></li><li class="chapter-item expanded "><a href="../peripherals/singletons.html"><strong aria-hidden="true">3.3.</strong> Singletons</a></li></ol></li><li class="chapter-item expanded "><a href="../static-guarantees/index.html"><strong aria-hidden="true">4.</strong> Static Guarantees</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../static-guarantees/typestate-programming.html"><strong aria-hidden="true">4.1.</strong> Typestate Programming</a></li><li class="chapter-item expanded "><a href="../static-guarantees/state-machines.html"><strong aria-hidden="true">4.2.</strong> Peripherals as State Machines</a></li><li class="chapter-item expanded "><a href="../static-guarantees/design-contracts.html"><strong aria-hidden="true">4.3.</strong> Design Contracts</a></li><li class="chapter-item expanded "><a href="../static-guarantees/zero-cost-abstractions.html"><strong aria-hidden="true">4.4.</strong> Zero Cost Abstractions</a></li></ol></li><li class="chapter-item expanded "><a href="../portability/index.html"><strong aria-hidden="true">5.</strong> Portability</a></li><li class="chapter-item expanded "><a href="../concurrency/index.html"><strong aria-hidden="true">6.</strong> Concurrency</a></li><li class="chapter-item expanded "><a href="../collections/index.html"><strong aria-hidden="true">7.</strong> Collections</a></li><li class="chapter-item expanded "><a href="../design-patterns/index.html"><strong aria-hidden="true">8.</strong> Design Patterns</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../design-patterns/hal/index.html"><strong aria-hidden="true">8.1.</strong> HALs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../design-patterns/hal/checklist.html"><strong aria-hidden="true">8.1.1.</strong> Checklist</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/naming.html"><strong aria-hidden="true">8.1.2.</strong> Naming</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/interoperability.html"><strong aria-hidden="true">8.1.3.</strong> Interoperability</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/predictability.html"><strong aria-hidden="true">8.1.4.</strong> Predictability</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/gpio.html"><strong aria-hidden="true">8.1.5.</strong> GPIO</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../c-tips/index.html"><strong aria-hidden="true">9.</strong> Tips for embedded C developers</a></li><li class="chapter-item expanded "><a href="../interoperability/index.html"><strong aria-hidden="true">10.</strong> Interoperability</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../interoperability/c-with-rust.html"><strong aria-hidden="true">10.1.</strong> A little C with your Rust</a></li><li class="chapter-item expanded "><a href="../interoperability/rust-with-c.html"><strong aria-hidden="true">10.2.</strong> A little Rust with your C</a></li></ol></li><li class="chapter-item expanded "><a href="../unsorted/index.html"><strong aria-hidden="true">11.</strong> Unsorted topics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../unsorted/speed-vs-size.html"><strong aria-hidden="true">11.1.</strong> Optimizations: The speed size tradeoff</a></li><li class="chapter-item expanded "><a href="../unsorted/math.html"><strong aria-hidden="true">11.2.</strong> Performing Math Functionality</a></li></ol></li><li class="chapter-item expanded "><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../appendix/glossary.html">Appendix A: Glossary</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Embedded Rust Book</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-embedded/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="memory-mapped-registers"><a class="header" href="#memory-mapped-registers">Memory Mapped Registers</a></h1>
+<p>Embedded systems can only get so far by executing normal Rust code and moving data around in RAM. If we want to get any information into or out of our system (be that blinking an LED, detecting a button press or communicating with an off-chip peripheral on some sort of bus) we're going to have to dip into the world of Peripherals and their 'memory mapped registers'.</p>
+<p>You may well find that the code you need to access the peripherals in your micro-controller has already been written, at one of the following levels:</p>
+<p align="center">
+<img title="Common crates" src="../assets/crates.png">
+</p>
+<ul>
+<li>Micro-architecture Crate - This sort of crate handles any useful routines common to the processor core your microcontroller is using, as well as any peripherals that are common to all micro-controllers that use that particular type of processor core. For example the <a href="https://crates.io/crates/cortex-m">cortex-m</a> crate gives you functions to enable and disable interrupts, which are the same for all Cortex-M based micro-controllers. It also gives you access to the 'SysTick' peripheral included with all Cortex-M based micro-controllers.</li>
+<li>Peripheral Access Crate (PAC) - This sort of crate is a thin wrapper over the various memory-wrapper registers defined for your particular part-number of micro-controller you are using. For example, <a href="https://crates.io/crates/tm4c123x">tm4c123x</a> for the Texas Instruments Tiva-C TM4C123 series, or <a href="https://crates.io/crates/stm32f30x">stm32f30x</a> for the ST-Micro STM32F30x series. Here, you'll be interacting with the registers directly, following each peripheral's operating instructions given in your micro-controller's Technical Reference Manual.</li>
+<li>HAL Crate - These crates offer a more user-friendly API for your particular processor, often by implementing some common traits defined in <a href="https://crates.io/crates/embedded-hal">embedded-hal</a>. For example, this crate might offer a <code>Serial</code> struct, with a constructor that takes an appropriate set of GPIO pins and a baud rate, and offers some sort of <code>write_byte</code> function for sending data. See the chapter on <a href="../portability/index.html">Portability</a> for more information on <a href="https://crates.io/crates/embedded-hal">embedded-hal</a>.</li>
+<li>Board Crate - These crates go one step further than a HAL Crate by pre-configuring various peripherals and GPIO pins to suit the specific developer kit or board you are using, such as <a href="https://crates.io/crates/stm32f3-discovery">stm32f3-discovery</a> for the STM32F3DISCOVERY board.</li>
+</ul>
+<h2 id="board-crate"><a class="header" href="#board-crate">Board Crate</a></h2>
+<p>A board crate is the perfect starting point, if you're new to embedded Rust. They nicely abstract the HW details that might be overwhelming when starting studying this subject, and makes standard tasks easy, like turning a LED on or off. The functionality it exposes varies a lot between boards. Since this book aims at staying hardware agnostic, the board crates won't be covered by this book.</p>
+<p>If you want to experiment with the STM32F3DISCOVERY board, it is highly recommended to take a look at the <a href="https://crates.io/crates/stm32f3-discovery">stm32f3-discovery</a> board crate, which provides functionality to blink the board LEDs, access its compass, bluetooth and more. The <a href="https://rust-embedded.github.io/discovery/">Discovery</a> book offers a great introduction to the use of a board crate.</p>
+<p>But if you're working on a system that doesn't yet have dedicated board crate, or you need functionality not provided by existing crates, read on as we start from the bottom, with the micro-architecture crates.</p>
+<h2 id="micro-architecture-crate"><a class="header" href="#micro-architecture-crate">Micro-architecture crate</a></h2>
+<p>Let's look at the SysTick peripheral that's common to all Cortex-M based micro-controllers. We can find a pretty low-level API in the <a href="https://crates.io/crates/cortex-m">cortex-m</a> crate, and we can use it like this:</p>
+<pre><code class="language-rust ignore">#![no_std]
+#![no_main]
+use cortex_m::peripheral::{syst, Peripherals};
+use cortex_m_rt::entry;
+use panic_halt as _;
+
+#[entry]
+fn main() -&gt; ! {
+    let peripherals = Peripherals::take().unwrap();
+    let mut systick = peripherals.SYST;
+    systick.set_clock_source(syst::SystClkSource::Core);
+    systick.set_reload(1_000);
+    systick.clear_current();
+    systick.enable_counter();
+    while !systick.has_wrapped() {
+        // Loop
+    }
+
+    loop {}
+}</code></pre>
+<p>The functions on the <code>SYST</code> struct map pretty closely to the functionality defined by the ARM Technical Reference Manual for this peripheral. There's nothing in this API about 'delaying for X milliseconds' - we have to crudely implement that ourselves using a <code>while</code> loop. Note that we can't access our <code>SYST</code> struct until we have called <code>Peripherals::take()</code> - this is a special routine that guarantees that there is only one <code>SYST</code> structure in our entire program. For more on that, see the <a href="../peripherals/index.html">Peripherals</a> section.</p>
+<h2 id="using-a-peripheral-access-crate-pac"><a class="header" href="#using-a-peripheral-access-crate-pac">Using a Peripheral Access Crate (PAC)</a></h2>
+<p>We won't get very far with our embedded software development if we restrict ourselves to only the basic peripherals included with every Cortex-M. At some point, we're going to need to write some code that's specific to the particular micro-controller we're using. In this example, let's assume we have an Texas Instruments TM4C123 - a middling 80MHz Cortex-M4 with 256 KiB of Flash. We're going to pull in the <a href="https://crates.io/crates/tm4c123x">tm4c123x</a> crate to make use of this chip.</p>
+<pre><code class="language-rust ignore">#![no_std]
+#![no_main]
+
+use panic_halt as _; // panic handler
+
+use cortex_m_rt::entry;
+use tm4c123x;
+
+#[entry]
+pub fn init() -&gt; (Delay, Leds) {
+    let cp = cortex_m::Peripherals::take().unwrap();
+    let p = tm4c123x::Peripherals::take().unwrap();
+
+    let pwm = p.PWM0;
+    pwm.ctl.write(|w| w.globalsync0().clear_bit());
+    // Mode = 1 =&gt; Count up/down mode
+    pwm._2_ctl.write(|w| w.enable().set_bit().mode().set_bit());
+    pwm._2_gena.write(|w| w.actcmpau().zero().actcmpad().one());
+    // 528 cycles (264 up and down) = 4 loops per video line (2112 cycles)
+    pwm._2_load.write(|w| unsafe { w.load().bits(263) });
+    pwm._2_cmpa.write(|w| unsafe { w.compa().bits(64) });
+    pwm.enable.write(|w| w.pwm4en().set_bit());
+}
+</code></pre>
+<p>We've accessed the <code>PWM0</code> peripheral in exactly the same way as we accessed the <code>SYST</code> peripheral earlier, except we called <code>tm4c123x::Peripherals::take()</code>. As this crate was auto-generated using <a href="https://crates.io/crates/svd2rust">svd2rust</a>, the access functions for our register fields take a closure, rather than a numeric argument. While this looks like a lot of code, the Rust compiler can use it to perform a bunch of checks for us, but then generate machine-code which is pretty close to hand-written assembler! Where the auto-generated code isn't able to determine that all possible arguments to a particular accessor function are valid (for example, if the SVD defines the register as 32-bit but doesn't say if some of those 32-bit values have a special meaning), then the function is marked as <code>unsafe</code>. We can see this in the example above when setting the <code>load</code> and <code>compa</code> sub-fields using the <code>bits()</code> function.</p>
+<h3 id="reading"><a class="header" href="#reading">Reading</a></h3>
+<p>The <code>read()</code> function returns an object which gives read-only access to the various sub-fields within this register, as defined by the manufacturer's SVD file for this chip. You can find all the functions available on special <code>R</code> return type for this particular register, in this particular peripheral, on this particular chip, in the <a href="https://docs.rs/tm4c123x/0.7.0/tm4c123x/pwm0/ctl/struct.R.html">tm4c123x documentation</a>.</p>
+<pre><code class="language-rust ignore">if pwm.ctl.read().globalsync0().is_set() {
+    // Do a thing
+}</code></pre>
+<h3 id="writing"><a class="header" href="#writing">Writing</a></h3>
+<p>The <code>write()</code> function takes a closure with a single argument. Typically we call this <code>w</code>. This argument then gives read-write access to the various sub-fields within this register, as defined by the manufacturer's SVD file for this chip. Again, you can find all the functions available on the 'w' for this particular register, in this particular peripheral, on this particular chip, in the <a href="https://docs.rs/tm4c123x/0.7.0/tm4c123x/pwm0/ctl/struct.W.html">tm4c123x documentation</a>. Note that all of the sub-fields that we do not set will be set to a default value for us - any existing content in the register will be lost.</p>
+<pre><code class="language-rust ignore">pwm.ctl.write(|w| w.globalsync0().clear_bit());</code></pre>
+<h3 id="modifying"><a class="header" href="#modifying">Modifying</a></h3>
+<p>If we wish to change only one particular sub-field in this register and leave the other sub-fields unchanged, we can use the <code>modify</code> function. This function takes a closure with two arguments - one for reading and one for writing. Typically we call these <code>r</code> and <code>w</code> respectively. The <code>r</code> argument can be used to inspect the current contents of the register, and the <code>w</code> argument can be used to modify the register contents.</p>
+<pre><code class="language-rust ignore">pwm.ctl.modify(|r, w| w.globalsync0().clear_bit());</code></pre>
+<p>The <code>modify</code> function really shows the power of closures here. In C, we'd have to read into some temporary value, modify the correct bits and then write the value back. This means there's considerable scope for error:</p>
+<pre><code class="language-C">uint32_t temp = pwm0.ctl.read();
+temp |= PWM0_CTL_GLOBALSYNC0;
+pwm0.ctl.write(temp);
+uint32_t temp2 = pwm0.enable.read();
+temp2 |= PWM0_ENABLE_PWM4EN;
+pwm0.enable.write(temp); // Uh oh! Wrong variable!
+</code></pre>
+<h2 id="using-a-hal-crate"><a class="header" href="#using-a-hal-crate">Using a HAL crate</a></h2>
+<p>The HAL crate for a chip typically works by implementing a custom Trait for the raw structures exposed by the PAC. Often this trait will define a function called <code>constrain()</code> for single peripherals or <code>split()</code> for things like GPIO ports with multiple pins. This function will consume the underlying raw peripheral structure and return a new object with a higher-level API. This API may also do things like have the Serial port <code>new</code> function require a borrow on some <code>Clock</code> structure, which can only be generated by calling the function which configures the PLLs and sets up all the clock frequencies. In this way, it is statically impossible to create a Serial port object without first having configured the clock rates, or for the Serial port object to misconvert the baud rate into clock ticks. Some crates even define special traits for the states each GPIO pin can be in, requiring the user to put a pin into the correct state (say, by selecting the appropriate Alternate Function Mode) before passing the pin into Peripheral. All with no run-time cost!</p>
+<p>Let's see an example:</p>
+<pre><code class="language-rust ignore">#![no_std]
+#![no_main]
+
+use panic_halt as _; // panic handler
+
+use cortex_m_rt::entry;
+use tm4c123x_hal as hal;
+use tm4c123x_hal::prelude::*;
+use tm4c123x_hal::serial::{NewlineMode, Serial};
+use tm4c123x_hal::sysctl;
+
+#[entry]
+fn main() -&gt; ! {
+    let p = hal::Peripherals::take().unwrap();
+    let cp = hal::CorePeripherals::take().unwrap();
+
+    // Wrap up the SYSCTL struct into an object with a higher-layer API
+    let mut sc = p.SYSCTL.constrain();
+    // Pick our oscillation settings
+    sc.clock_setup.oscillator = sysctl::Oscillator::Main(
+        sysctl::CrystalFrequency::_16mhz,
+        sysctl::SystemClock::UsePll(sysctl::PllOutputFrequency::_80_00mhz),
+    );
+    // Configure the PLL with those settings
+    let clocks = sc.clock_setup.freeze();
+
+    // Wrap up the GPIO_PORTA struct into an object with a higher-layer API.
+    // Note it needs to borrow `sc.power_control` so it can power up the GPIO
+    // peripheral automatically.
+    let mut porta = p.GPIO_PORTA.split(&amp;sc.power_control);
+
+    // Activate the UART.
+    let uart = Serial::uart0(
+        p.UART0,
+        // The transmit pin
+        porta
+            .pa1
+            .into_af_push_pull::&lt;hal::gpio::AF1&gt;(&amp;mut porta.control),
+        // The receive pin
+        porta
+            .pa0
+            .into_af_push_pull::&lt;hal::gpio::AF1&gt;(&amp;mut porta.control),
+        // No RTS or CTS required
+        (),
+        (),
+        // The baud rate
+        115200_u32.bps(),
+        // Output handling
+        NewlineMode::SwapLFtoCRLF,
+        // We need the clock rates to calculate the baud rate divisors
+        &amp;clocks,
+        // We need this to power up the UART peripheral
+        &amp;sc.power_control,
+    );
+
+    loop {
+        writeln!(uart, "Hello, World!\r\n").unwrap();
+    }
+}</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../start/hardware.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../start/semihosting.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../start/hardware.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../start/semihosting.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,671 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>QEMU - The Embedded Rust Book</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro/index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../intro/hardware.html"><strong aria-hidden="true">1.1.</strong> Hardware</a></li><li class="chapter-item expanded "><a href="../intro/no-std.html"><strong aria-hidden="true">1.2.</strong> no_std</a></li><li class="chapter-item expanded "><a href="../intro/tooling.html"><strong aria-hidden="true">1.3.</strong> Tooling</a></li><li class="chapter-item expanded "><a href="../intro/install.html"><strong aria-hidden="true">1.4.</strong> Installation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../intro/install/linux.html"><strong aria-hidden="true">1.4.1.</strong> Linux</a></li><li class="chapter-item expanded "><a href="../intro/install/macos.html"><strong aria-hidden="true">1.4.2.</strong> MacOS</a></li><li class="chapter-item expanded "><a href="../intro/install/windows.html"><strong aria-hidden="true">1.4.3.</strong> Windows</a></li><li class="chapter-item expanded "><a href="../intro/install/verify.html"><strong aria-hidden="true">1.4.4.</strong> Verify Installation</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../start/index.html"><strong aria-hidden="true">2.</strong> Getting started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../start/qemu.html" class="active"><strong aria-hidden="true">2.1.</strong> QEMU</a></li><li class="chapter-item expanded "><a href="../start/hardware.html"><strong aria-hidden="true">2.2.</strong> Hardware</a></li><li class="chapter-item expanded "><a href="../start/registers.html"><strong aria-hidden="true">2.3.</strong> Memory-mapped Registers</a></li><li class="chapter-item expanded "><a href="../start/semihosting.html"><strong aria-hidden="true">2.4.</strong> Semihosting</a></li><li class="chapter-item expanded "><a href="../start/panicking.html"><strong aria-hidden="true">2.5.</strong> Panicking</a></li><li class="chapter-item expanded "><a href="../start/exceptions.html"><strong aria-hidden="true">2.6.</strong> Exceptions</a></li><li class="chapter-item expanded "><a href="../start/interrupts.html"><strong aria-hidden="true">2.7.</strong> Interrupts</a></li><li class="chapter-item expanded "><a href="../start/io.html"><strong aria-hidden="true">2.8.</strong> IO</a></li></ol></li><li class="chapter-item expanded "><a href="../peripherals/index.html"><strong aria-hidden="true">3.</strong> Peripherals</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../peripherals/a-first-attempt.html"><strong aria-hidden="true">3.1.</strong> A first attempt in Rust</a></li><li class="chapter-item expanded "><a href="../peripherals/borrowck.html"><strong aria-hidden="true">3.2.</strong> The Borrow Checker</a></li><li class="chapter-item expanded "><a href="../peripherals/singletons.html"><strong aria-hidden="true">3.3.</strong> Singletons</a></li></ol></li><li class="chapter-item expanded "><a href="../static-guarantees/index.html"><strong aria-hidden="true">4.</strong> Static Guarantees</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../static-guarantees/typestate-programming.html"><strong aria-hidden="true">4.1.</strong> Typestate Programming</a></li><li class="chapter-item expanded "><a href="../static-guarantees/state-machines.html"><strong aria-hidden="true">4.2.</strong> Peripherals as State Machines</a></li><li class="chapter-item expanded "><a href="../static-guarantees/design-contracts.html"><strong aria-hidden="true">4.3.</strong> Design Contracts</a></li><li class="chapter-item expanded "><a href="../static-guarantees/zero-cost-abstractions.html"><strong aria-hidden="true">4.4.</strong> Zero Cost Abstractions</a></li></ol></li><li class="chapter-item expanded "><a href="../portability/index.html"><strong aria-hidden="true">5.</strong> Portability</a></li><li class="chapter-item expanded "><a href="../concurrency/index.html"><strong aria-hidden="true">6.</strong> Concurrency</a></li><li class="chapter-item expanded "><a href="../collections/index.html"><strong aria-hidden="true">7.</strong> Collections</a></li><li class="chapter-item expanded "><a href="../design-patterns/index.html"><strong aria-hidden="true">8.</strong> Design Patterns</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../design-patterns/hal/index.html"><strong aria-hidden="true">8.1.</strong> HALs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../design-patterns/hal/checklist.html"><strong aria-hidden="true">8.1.1.</strong> Checklist</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/naming.html"><strong aria-hidden="true">8.1.2.</strong> Naming</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/interoperability.html"><strong aria-hidden="true">8.1.3.</strong> Interoperability</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/predictability.html"><strong aria-hidden="true">8.1.4.</strong> Predictability</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/gpio.html"><strong aria-hidden="true">8.1.5.</strong> GPIO</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../c-tips/index.html"><strong aria-hidden="true">9.</strong> Tips for embedded C developers</a></li><li class="chapter-item expanded "><a href="../interoperability/index.html"><strong aria-hidden="true">10.</strong> Interoperability</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../interoperability/c-with-rust.html"><strong aria-hidden="true">10.1.</strong> A little C with your Rust</a></li><li class="chapter-item expanded "><a href="../interoperability/rust-with-c.html"><strong aria-hidden="true">10.2.</strong> A little Rust with your C</a></li></ol></li><li class="chapter-item expanded "><a href="../unsorted/index.html"><strong aria-hidden="true">11.</strong> Unsorted topics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../unsorted/speed-vs-size.html"><strong aria-hidden="true">11.1.</strong> Optimizations: The speed size tradeoff</a></li><li class="chapter-item expanded "><a href="../unsorted/math.html"><strong aria-hidden="true">11.2.</strong> Performing Math Functionality</a></li></ol></li><li class="chapter-item expanded "><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../appendix/glossary.html">Appendix A: Glossary</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Embedded Rust Book</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-embedded/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="qemu"><a class="header" href="#qemu">QEMU</a></h1>
+<p>We'll start writing a program for the <a href="http://www.ti.com/product/LM3S6965">LM3S6965</a>, a Cortex-M3 microcontroller.
+We have chosen this as our initial target because it <a href="https://wiki.qemu.org/Documentation/Platforms/ARM#Supported_in_qemu-system-arm">can be emulated</a> using QEMU
+so you don't need to fiddle with hardware in this section and we can focus on
+the tooling and the development process.</p>
+<p><strong>IMPORTANT</strong>
+We'll use the name "app" for the project name in this tutorial.
+Whenever you see the word "app" you should replace it with the name you selected
+for your project. Or, you could also name your project "app" and avoid the
+substitutions.</p>
+<h2 id="creating-a-non-standard-rust-program"><a class="header" href="#creating-a-non-standard-rust-program">Creating a non standard Rust program</a></h2>
+<p>We'll use the <a href="https://github.com/rust-embedded/cortex-m-quickstart"><code>cortex-m-quickstart</code></a> project template to generate a new
+project from it. The created project will contain a barebone application: a good
+starting point for a new embedded rust application. In addition, the project will
+contain an <code>examples</code> directory, with several separate applications, highlighting
+some of the key embedded rust functionality.</p>
+<h3 id="using-cargo-generate"><a class="header" href="#using-cargo-generate">Using <code>cargo-generate</code></a></h3>
+<p>First install cargo-generate</p>
+<pre><code class="language-console">cargo install cargo-generate
+</code></pre>
+<p>Then generate a new project</p>
+<pre><code class="language-console">cargo generate --git https://github.com/rust-embedded/cortex-m-quickstart
+</code></pre>
+<pre><code class="language-text"> Project Name: app
+ Creating project called `app`...
+ Done! New project created /tmp/app
+</code></pre>
+<pre><code class="language-console">cd app
+</code></pre>
+<h3 id="using-git"><a class="header" href="#using-git">Using <code>git</code></a></h3>
+<p>Clone the repository</p>
+<pre><code class="language-console">git clone https://github.com/rust-embedded/cortex-m-quickstart app
+cd app
+</code></pre>
+<p>And then fill in the placeholders in the <code>Cargo.toml</code> file</p>
+<pre><code class="language-toml">[package]
+authors = ["{{authors}}"] # "{{authors}}" -&gt; "John Smith"
+edition = "2018"
+name = "{{project-name}}" # "{{project-name}}" -&gt; "app"
+version = "0.1.0"
+
+# ..
+
+[[bin]]
+name = "{{project-name}}" # "{{project-name}}" -&gt; "app"
+test = false
+bench = false
+</code></pre>
+<h3 id="using-neither"><a class="header" href="#using-neither">Using neither</a></h3>
+<p>Grab the latest snapshot of the <code>cortex-m-quickstart</code> template and extract it.</p>
+<pre><code class="language-console">curl -LO https://github.com/rust-embedded/cortex-m-quickstart/archive/master.zip
+unzip master.zip
+mv cortex-m-quickstart-master app
+cd app
+</code></pre>
+<p>Or you can browse to <a href="https://github.com/rust-embedded/cortex-m-quickstart"><code>cortex-m-quickstart</code></a>, click the green "Clone or
+download" button and then click "Download ZIP".</p>
+<p>Then fill in the placeholders in the <code>Cargo.toml</code> file as done in the second
+part of the "Using <code>git</code>" version.</p>
+<h2 id="program-overview"><a class="header" href="#program-overview">Program Overview</a></h2>
+<p>For convenience here are the most important parts of the source code in <code>src/main.rs</code>:</p>
+<pre><code class="language-rust ignore">#![no_std]
+#![no_main]
+
+use panic_halt as _;
+
+use cortex_m_rt::entry;
+
+#[entry]
+fn main() -&gt; ! {
+    loop {
+        // your code goes here
+    }
+}</code></pre>
+<p>This program is a bit different from a standard Rust program so let's take a
+closer look.</p>
+<p><code>#![no_std]</code> indicates that this program will <em>not</em> link to the standard crate,
+<code>std</code>. Instead it will link to its subset: the <code>core</code> crate.</p>
+<p><code>#![no_main]</code> indicates that this program won't use the standard <code>main</code>
+interface that most Rust programs use. The main (no pun intended) reason to go
+with <code>no_main</code> is that using the <code>main</code> interface in <code>no_std</code> context requires
+nightly.</p>
+<p><code>use panic_halt as _;</code>. This crate provides a <code>panic_handler</code> that defines
+the panicking behavior of the program. We will cover this in more detail in the
+<a href="panicking.html">Panicking</a> chapter of the book.</p>
+<p><a href="https://docs.rs/cortex-m-rt-macros/latest/cortex_m_rt_macros/attr.entry.html"><code>#[entry]</code></a> is an attribute provided by the <a href="https://crates.io/crates/cortex-m-rt"><code>cortex-m-rt</code></a> crate that's used
+to mark the entry point of the program. As we are not using the standard <code>main</code>
+interface we need another way to indicate the entry point of the program and
+that'd be <code>#[entry]</code>.</p>
+<p><code>fn main() -&gt; !</code>. Our program will be the <em>only</em> process running on the target
+hardware so we don't want it to end! We use a <a href="https://doc.rust-lang.org/rust-by-example/fn/diverging.html">divergent function</a> (the <code>-&gt; !</code>
+bit in the function signature) to ensure at compile time that'll be the case.</p>
+<h2 id="cross-compiling"><a class="header" href="#cross-compiling">Cross compiling</a></h2>
+<p>The next step is to <em>cross</em> compile the program for the Cortex-M3 architecture.
+That's as simple as running <code>cargo build --target $TRIPLE</code> if you know what the
+compilation target (<code>$TRIPLE</code>) should be. Luckily, the <code>.cargo/config.toml</code> in the
+template has the answer:</p>
+<pre><code class="language-console">tail -n6 .cargo/config.toml
+</code></pre>
+<pre><code class="language-toml">[build]
+# Pick ONE of these compilation targets
+# target = "thumbv6m-none-eabi"    # Cortex-M0 and Cortex-M0+
+target = "thumbv7m-none-eabi"    # Cortex-M3
+# target = "thumbv7em-none-eabi"   # Cortex-M4 and Cortex-M7 (no FPU)
+# target = "thumbv7em-none-eabihf" # Cortex-M4F and Cortex-M7F (with FPU)
+</code></pre>
+<p>To cross compile for the Cortex-M3 architecture we have to use
+<code>thumbv7m-none-eabi</code>. That target is not automatically installed when installing
+the Rust toolchain, it would now be a good time to add that target to the toolchain,
+if you haven't done it yet:</p>
+<pre><code class="language-console">rustup target add thumbv7m-none-eabi
+</code></pre>
+<p>Since the <code>thumbv7m-none-eabi</code> compilation target has been set as the default in
+your <code>.cargo/config.toml</code> file, the two commands below do the same:</p>
+<pre><code class="language-console">cargo build --target thumbv7m-none-eabi
+cargo build
+</code></pre>
+<h2 id="inspecting"><a class="header" href="#inspecting">Inspecting</a></h2>
+<p>Now we have a non-native ELF binary in <code>target/thumbv7m-none-eabi/debug/app</code>. We
+can inspect it using <code>cargo-binutils</code>.</p>
+<p>With <code>cargo-readobj</code> we can print the ELF headers to confirm that this is an ARM
+binary.</p>
+<pre><code class="language-console">cargo readobj --bin app -- --file-headers
+</code></pre>
+<p>Note that:</p>
+<ul>
+<li><code>--bin app</code> is sugar for inspect the binary at <code>target/$TRIPLE/debug/app</code></li>
+<li><code>--bin app</code> will also (re)compile the binary, if necessary</li>
+</ul>
+<pre><code class="language-text">ELF Header:
+  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00
+  Class:                             ELF32
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0x0
+  Type:                              EXEC (Executable file)
+  Machine:                           ARM
+  Version:                           0x1
+  Entry point address:               0x405
+  Start of program headers:          52 (bytes into file)
+  Start of section headers:          153204 (bytes into file)
+  Flags:                             0x5000200
+  Size of this header:               52 (bytes)
+  Size of program headers:           32 (bytes)
+  Number of program headers:         2
+  Size of section headers:           40 (bytes)
+  Number of section headers:         19
+  Section header string table index: 18
+</code></pre>
+<p><code>cargo-size</code> can print the size of the linker sections of the binary.</p>
+<pre><code class="language-console">cargo size --bin app --release -- -A
+</code></pre>
+<p>we use <code>--release</code> to inspect the optimized version</p>
+<pre><code class="language-text">app  :
+section             size        addr
+.vector_table       1024         0x0
+.text                 92       0x400
+.rodata                0       0x45c
+.data                  0  0x20000000
+.bss                   0  0x20000000
+.debug_str          2958         0x0
+.debug_loc            19         0x0
+.debug_abbrev        567         0x0
+.debug_info         4929         0x0
+.debug_ranges         40         0x0
+.debug_macinfo         1         0x0
+.debug_pubnames     2035         0x0
+.debug_pubtypes     1892         0x0
+.ARM.attributes       46         0x0
+.debug_frame         100         0x0
+.debug_line          867         0x0
+Total              14570
+</code></pre>
+<blockquote>
+<p>A refresher on ELF linker sections</p>
+<ul>
+<li><code>.text</code> contains the program instructions</li>
+<li><code>.rodata</code> contains constant values like strings</li>
+<li><code>.data</code> contains statically allocated variables whose initial values are
+<em>not</em> zero</li>
+<li><code>.bss</code> also contains statically allocated variables whose initial values
+<em>are</em> zero</li>
+<li><code>.vector_table</code> is a <em>non</em>-standard section that we use to store the vector
+(interrupt) table</li>
+<li><code>.ARM.attributes</code> and the <code>.debug_*</code> sections contain metadata and will
+<em>not</em> be loaded onto the target when flashing the binary.</li>
+</ul>
+</blockquote>
+<p><strong>IMPORTANT</strong>: ELF files contain metadata like debug information so their <em>size
+on disk</em> does <em>not</em> accurately reflect the space the program will occupy when
+flashed on a device. <em>Always</em> use <code>cargo-size</code> to check how big a binary really
+is.</p>
+<p><code>cargo-objdump</code> can be used to disassemble the binary.</p>
+<pre><code class="language-console">cargo objdump --bin app --release -- --disassemble --no-show-raw-insn --print-imm-hex
+</code></pre>
+<blockquote>
+<p><strong>NOTE</strong> if the above command complains about <code>Unknown command line argument</code> see
+the following bug report: https://github.com/rust-embedded/book/issues/269</p>
+</blockquote>
+<blockquote>
+<p><strong>NOTE</strong> this output can differ on your system. New versions of rustc, LLVM
+and libraries can generate different assembly. We truncated some of the instructions
+to keep the snippet small.</p>
+</blockquote>
+<pre><code class="language-text">app:  file format ELF32-arm-little
+
+Disassembly of section .text:
+main:
+     400: bl  #0x256
+     404: b #-0x4 &lt;main+0x4&gt;
+
+Reset:
+     406: bl  #0x24e
+     40a: movw  r0, #0x0
+     &lt; .. truncated any more instructions .. &gt;
+
+DefaultHandler_:
+     656: b #-0x4 &lt;DefaultHandler_&gt;
+
+UsageFault:
+     657: strb  r7, [r4, #0x3]
+
+DefaultPreInit:
+     658: bx  lr
+
+__pre_init:
+     659: strb  r7, [r0, #0x1]
+
+__nop:
+     65a: bx  lr
+
+HardFaultTrampoline:
+     65c: mrs r0, msp
+     660: b #-0x2 &lt;HardFault_&gt;
+
+HardFault_:
+     662: b #-0x4 &lt;HardFault_&gt;
+
+HardFault:
+     663: &lt;unknown&gt;
+</code></pre>
+<h2 id="running"><a class="header" href="#running">Running</a></h2>
+<p>Next, let's see how to run an embedded program on QEMU! This time we'll use the
+<code>hello</code> example which actually does something.</p>
+<p>For convenience here's the source code of <code>examples/hello.rs</code>:</p>
+<pre><code class="language-rust ignore">//! Prints "Hello, world!" on the host console using semihosting
+
+#![no_main]
+#![no_std]
+
+use panic_halt as _;
+
+use cortex_m_rt::entry;
+use cortex_m_semihosting::{debug, hprintln};
+
+#[entry]
+fn main() -&gt; ! {
+    hprintln!("Hello, world!").unwrap();
+
+    // exit QEMU
+    // NOTE do not run this on hardware; it can corrupt OpenOCD state
+    debug::exit(debug::EXIT_SUCCESS);
+
+    loop {}
+}</code></pre>
+<p>This program uses something called semihosting to print text to the <em>host</em>
+console. When using real hardware this requires a debug session but when using
+QEMU this Just Works.</p>
+<p>Let's start by compiling the example:</p>
+<pre><code class="language-console">cargo build --example hello
+</code></pre>
+<p>The output binary will be located at
+<code>target/thumbv7m-none-eabi/debug/examples/hello</code>.</p>
+<p>To run this binary on QEMU run the following command:</p>
+<pre><code class="language-console">qemu-system-arm \
+  -cpu cortex-m3 \
+  -machine lm3s6965evb \
+  -nographic \
+  -semihosting-config enable=on,target=native \
+  -kernel target/thumbv7m-none-eabi/debug/examples/hello
+</code></pre>
+<pre><code class="language-text">Hello, world!
+</code></pre>
+<p>The command should successfully exit (exit code = 0) after printing the text. On
+*nix you can check that with the following command:</p>
+<pre><code class="language-console">echo $?
+</code></pre>
+<pre><code class="language-text">0
+</code></pre>
+<p>Let's break down that QEMU command:</p>
+<ul>
+<li>
+<p><code>qemu-system-arm</code>. This is the QEMU emulator. There are a few variants of
+these QEMU binaries; this one does full <em>system</em> emulation of <em>ARM</em> machines
+hence the name.</p>
+</li>
+<li>
+<p><code>-cpu cortex-m3</code>. This tells QEMU to emulate a Cortex-M3 CPU. Specifying the
+CPU model lets us catch some miscompilation errors: for example, running a
+program compiled for the Cortex-M4F, which has a hardware FPU, will make QEMU
+error during its execution.</p>
+</li>
+<li>
+<p><code>-machine lm3s6965evb</code>. This tells QEMU to emulate the LM3S6965EVB, an
+evaluation board that contains a LM3S6965 microcontroller.</p>
+</li>
+<li>
+<p><code>-nographic</code>. This tells QEMU to not launch its GUI.</p>
+</li>
+<li>
+<p><code>-semihosting-config (..)</code>. This tells QEMU to enable semihosting. Semihosting
+lets the emulated device, among other things, use the host stdout, stderr and
+stdin and create files on the host.</p>
+</li>
+<li>
+<p><code>-kernel $file</code>. This tells QEMU which binary to load and run on the emulated
+machine.</p>
+</li>
+</ul>
+<p>Typing out that long QEMU command is too much work! We can set a custom runner
+to simplify the process. <code>.cargo/config.toml</code> has a commented out runner that invokes
+QEMU; let's uncomment it:</p>
+<pre><code class="language-console">head -n3 .cargo/config.toml
+</code></pre>
+<pre><code class="language-toml">[target.thumbv7m-none-eabi]
+# uncomment this to make `cargo run` execute programs on QEMU
+runner = "qemu-system-arm -cpu cortex-m3 -machine lm3s6965evb -nographic -semihosting-config enable=on,target=native -kernel"
+</code></pre>
+<p>This runner only applies to the <code>thumbv7m-none-eabi</code> target, which is our
+default compilation target. Now <code>cargo run</code> will compile the program and run it
+on QEMU:</p>
+<pre><code class="language-console">cargo run --example hello --release
+</code></pre>
+<pre><code class="language-text">   Compiling app v0.1.0 (file:///tmp/app)
+    Finished release [optimized + debuginfo] target(s) in 0.26s
+     Running `qemu-system-arm -cpu cortex-m3 -machine lm3s6965evb -nographic -semihosting-config enable=on,target=native -kernel target/thumbv7m-none-eabi/release/examples/hello`
+Hello, world!
+</code></pre>
+<h2 id="debugging"><a class="header" href="#debugging">Debugging</a></h2>
+<p>Debugging is critical to embedded development. Let's see how it's done.</p>
+<p>Debugging an embedded device involves <em>remote</em> debugging as the program that we
+want to debug won't be running on the machine that's running the debugger
+program (GDB or LLDB).</p>
+<p>Remote debugging involves a client and a server. In a QEMU setup, the client
+will be a GDB (or LLDB) process and the server will be the QEMU process that's
+also running the embedded program.</p>
+<p>In this section we'll use the <code>hello</code> example we already compiled.</p>
+<p>The first debugging step is to launch QEMU in debugging mode:</p>
+<pre><code class="language-console">qemu-system-arm \
+  -cpu cortex-m3 \
+  -machine lm3s6965evb \
+  -nographic \
+  -semihosting-config enable=on,target=native \
+  -gdb tcp::3333 \
+  -S \
+  -kernel target/thumbv7m-none-eabi/debug/examples/hello
+</code></pre>
+<p>This command won't print anything to the console and will block the terminal. We
+have passed two extra flags this time:</p>
+<ul>
+<li>
+<p><code>-gdb tcp::3333</code>. This tells QEMU to wait for a GDB connection on TCP
+port 3333.</p>
+</li>
+<li>
+<p><code>-S</code>. This tells QEMU to freeze the machine at startup. Without this the
+program would have reached the end of main before we had a chance to launch
+the debugger!</p>
+</li>
+</ul>
+<p>Next we launch GDB in another terminal and tell it to load the debug symbols of
+the example:</p>
+<pre><code class="language-console">gdb-multiarch -q target/thumbv7m-none-eabi/debug/examples/hello
+</code></pre>
+<p><strong>NOTE</strong>: you might need another version of gdb instead of <code>gdb-multiarch</code> depending
+on which one you installed in the installation chapter. This could also be
+<code>arm-none-eabi-gdb</code> or just <code>gdb</code>.</p>
+<p>Then within the GDB shell we connect to QEMU, which is waiting for a connection
+on TCP port 3333.</p>
+<pre><code class="language-console">target remote :3333
+</code></pre>
+<pre><code class="language-text">Remote debugging using :3333
+Reset () at $REGISTRY/cortex-m-rt-0.6.1/src/lib.rs:473
+473     pub unsafe extern "C" fn Reset() -&gt; ! {
+</code></pre>
+<p>You'll see that the process is halted and that the program counter is pointing
+to a function named <code>Reset</code>. That is the reset handler: what Cortex-M cores
+execute upon booting.</p>
+<blockquote>
+<p>Note that on some setup, instead of displaying the line <code>Reset () at $REGISTRY/cortex-m-rt-0.6.1/src/lib.rs:473</code> as shown above, gdb may print some warnings like :</p>
+<p><code>core::num::bignum::Big32x40::mul_small () at src/libcore/num/bignum.rs:254</code>
+<code>    src/libcore/num/bignum.rs: No such file or directory.</code></p>
+<p>That's a known glitch. You can safely ignore those warnings, you're most likely at Reset().</p>
+</blockquote>
+<p>This reset handler will eventually call our main function. Let's skip all the
+way there using a breakpoint and the <code>continue</code> command. To set the breakpoint, let's first take a look where we would like to break in our code, with the <code>list</code> command.</p>
+<pre><code class="language-console">list main
+</code></pre>
+<p>This will show the source code, from the file examples/hello.rs.</p>
+<pre><code class="language-text">6       use panic_halt as _;
+7
+8       use cortex_m_rt::entry;
+9       use cortex_m_semihosting::{debug, hprintln};
+10
+11      #[entry]
+12      fn main() -&gt; ! {
+13          hprintln!("Hello, world!").unwrap();
+14
+15          // exit QEMU
+</code></pre>
+<p>We would like to add a breakpoint just before the "Hello, world!", which is on line 13. We do that with the <code>break</code> command:</p>
+<pre><code class="language-console">break 13
+</code></pre>
+<p>We can now instruct gdb to run up to our main function, with the <code>continue</code> command:</p>
+<pre><code class="language-console">continue
+</code></pre>
+<pre><code class="language-text">Continuing.
+
+Breakpoint 1, hello::__cortex_m_rt_main () at examples\hello.rs:13
+13          hprintln!("Hello, world!").unwrap();
+</code></pre>
+<p>We are now close to the code that prints "Hello, world!". Let's move forward
+using the <code>next</code> command.</p>
+<pre><code class="language-console">next
+</code></pre>
+<pre><code class="language-text">16          debug::exit(debug::EXIT_SUCCESS);
+</code></pre>
+<p>At this point you should see "Hello, world!" printed on the terminal that's
+running <code>qemu-system-arm</code>.</p>
+<pre><code class="language-text">$ qemu-system-arm (..)
+Hello, world!
+</code></pre>
+<p>Calling <code>next</code> again will terminate the QEMU process.</p>
+<pre><code class="language-console">next
+</code></pre>
+<pre><code class="language-text">[Inferior 1 (Remote target) exited normally]
+</code></pre>
+<p>You can now exit the GDB session.</p>
+<pre><code class="language-console">quit
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../start/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../start/hardware.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../start/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../start/hardware.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
