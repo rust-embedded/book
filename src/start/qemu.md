@@ -96,10 +96,13 @@ For convenience here are the most important parts of the source code in `src/mai
 
 use panic_halt as _;
 
+use cortex_m::asm;
 use cortex_m_rt::entry;
 
 #[entry]
 fn main() -> ! {
+    asm::nop(); // To not have main optimize to abort in release mode, remove when you add code
+
     loop {
         // your code goes here
     }
