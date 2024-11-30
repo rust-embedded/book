@@ -7,6 +7,11 @@ on:
   pull_request: # Run CI for PRs on any branch
   merge_group: # Run CI for the GitHub merge queue
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   build:
     runs-on: ubuntu-20.04
@@ -23,25 +28,9 @@ jobs:
       - name: Put pip binary directory into path
         run: echo "~/.local/bin" >> $GITHUB_PATH
 
-      - name: Cache Cargo installed binaries
-        uses: actions/cache@v1
-        id: cache-cargo
+      - uses: moonrepo/setup-rust@v0
         with:
-          path: ~/cargo-bin
-          key: cache-cargo
-      - name: Install mdbook
-        if: steps.cache-cargo.outputs.cache-hit != 'true'
-        uses: actions-rs/install@v0.1
-        with:
-          crate: mdbook
-          version: latest
-      - name: Copy mdbook to cache directory
-        if: steps.cache-cargo.outputs.cache-hit != 'true'
-        run: |
-          mkdir ~/cargo-bin
-          cp ~/.cargo/bin/mdbook ~/cargo-bin
-      - name: Put new cargo binary directory into path
-        run: echo "~/cargo-bin" >> $GITHUB_PATH
+          bins: mdbook, mdbook-i18n-helpers
 
       - name: Build book
         run: mdbook build
@@ -50,10 +39,28 @@ jobs:
       - name: Check links
         run: linkchecker book
 
-      - name: Deploy book
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Build translations
+        # Expand the list of langauges in the for loop as needed.
+        # Update the language picker in theme/index.hbs when a
+        # language is complete enough to be found by users.
+        run: |
+          for po_lang in da; do
+              echo "::group::Building $po_lang translation"
+              MDBOOK_BOOK__LANGUAGE=$po_lang \
+              MDBOOK_OUTPUT__HTML__SITE_URL=/book/$po_lang/ \
+              mdbook build -d book/$po_lang
+              echo "::endgroup::"
+          done
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v2
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: book
-          force_orphan: true
+          path: book
+
+      - name: Deploy to GitHub Pages
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+        id: deployment
+        uses: actions/deploy-pages@v1
