@@ -12,7 +12,7 @@ GNU gdb (GNU Tools for Arm Embedded Processors 7-2018-q2-update) 8.1.0.20180315-
 (..)
 ```
 
-[gcc]: https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads
+[gcc]: https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads
 
 ## OpenOCD
 
