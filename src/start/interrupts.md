@@ -19,17 +19,22 @@ The general initialization steps at runtime are always the same:
 * Set the desired priority of the interrupt handler in the interrupt controller
 * Enable the interrupt handler in the interrupt controller
 
-Similarly to exceptions, the `cortex-m-rt` crate provides an [`interrupt`]
-attribute to declare interrupt handlers. The available interrupts (and
-their position in the interrupt handler table) are usually automatically
-generated via `svd2rust` from a SVD description.
+Similarly to exceptions, the cortex-m-rt crate exposes an [`interrupt`] attribute for declaring interrupt handlers. However, this 
+attribute is only available when the device feature is enabled. That said, this attribute is not intended to be used directly—doing 
+so will result in a compilation error.
+
+Instead, you should use the re-exported version of the interrupt attribute provided by the device crate (usually generated using svd2rust). 
+This ensures that the compiler can verify that the interrupt actually exists on the target device. The list of available interrupts—and 
+their position in the interrupt vector table—is typically auto-generated from an SVD file by svd2rust.
 
 [`interrupt`]: https://docs.rs/cortex-m-rt-macros/0.1.5/cortex_m_rt_macros/attr.interrupt.html
 
 ``` rust,ignore
+use lm3s6965::interrupt; // Re-exported attribute from the device crate
+
 // Interrupt handler for the Timer2 interrupt
 #[interrupt]
-fn TIM2() {
+fn TIMER2A() {
     // ..
     // Clear reason for the generated interrupt request
 }
@@ -46,7 +51,7 @@ variables inside the interrupt handlers for *safe* state keeping.
 
 ``` rust,ignore
 #[interrupt]
-fn TIM2() {
+fn TIMER2A() {
     static mut COUNT: u32 = 0;
 
     // `COUNT` has type `&mut u32` and it's safe to use
