@@ -23,7 +23,7 @@ fn main() {
 
 But this has a few problems. It is a mutable global variable, and in Rust, these are always unsafe to interact with. These variables are also visible across your whole program, which means the borrow checker is unable to help you track references and ownership of these variables.
 
-Up until Rust 2024, the usage of static **mutable** variable has been discouraged. Since Rust 2024, static mutable variable results in an error. Of course, there are legitimate use case of having a shared mutable state, it's just that Rust want you to really think about the scope of the mutability. We'll talk about this later when we talk about internal mutability.
+Up until Rust 2024, the usage of static **mutable** variable has been discouraged. Since Rust 2024, static mutable variable results in an error. Of course, there are legitimate use case of having a shared mutable state, it's just that Rust want you to really think about the scope of the mutability. We'll talk about this later when we talk about interior mutability.
 
 ## How do we do this in Rust?
 
