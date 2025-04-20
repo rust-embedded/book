@@ -23,6 +23,8 @@ fn main() {
 
 But this has a few problems. It is a mutable global variable, and in Rust, these are always unsafe to interact with. These variables are also visible across your whole program, which means the borrow checker is unable to help you track references and ownership of these variables.
 
+Up until Rust 2024, the usage of static **mutable** variable has been discouraged. Since Rust 2024, static mutable variable results in an error. Of course, there are legitimate use case of having a shared mutable state, it's just that Rust want you to really think about the scope of the mutability. We'll talk about this later when we talk about internal mutability.
+
 ## How do we do this in Rust?
 
 Instead of just making our peripheral a global variable, we might instead decide to make a structure, in this case called `PERIPHERALS`, which contains an `Option<T>` for each of our peripherals.
@@ -126,6 +128,26 @@ fn main() {
     // you can only read what you have access to
     let _ = serial_1.read_speed();
 }
+```
+
+But what is `SerialPort` anyway?  Surely `SerialPort` needs to be a type that is public so that other parts of the program can import it. If we let `SerialPort` to just be an empty struct to mark ownership of data, other parts of the program might mistakenly create instance of it, which we don't want. Therefore, we must store at least one private field in it to ensure no one else could construct it, like so:
+
+```rust, ignore
+
+struct SerialPort(());
+
+struct Peripherals {
+    serial: Option<SerialPort>,
+}
+impl Peripherals {
+    fn take_serial(&mut self) -> SerialPort {
+        let p = replace(&mut self.serial, None);
+        p.unwrap()
+    }
+}
+static mut PERIPHERALS: Peripherals = Peripherals {
+    serial: Some(SerialPort(())),
+};
 ```
 
 ## Treat your hardware like data
