@@ -9,9 +9,9 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
@@ -24,7 +24,7 @@ jobs:
         run: echo "~/.local/bin" >> $GITHUB_PATH
 
       - name: Cache Cargo installed binaries
-        uses: actions/cache@v1
+        uses: actions/cache@v4
         id: cache-cargo
         with:
           path: ~/cargo-bin
