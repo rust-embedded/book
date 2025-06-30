@@ -22,7 +22,7 @@ What does this board contain?
 
   - General purpose Input Output (GPIO) and other types of pins accessible through the two rows of headers along side the board.
   
-  - A USB interface accessible through the USB port labeled "USB USER".
+  - A Mini-USB interface accessible through the USB port labeled "USB USER".
 
 - An [accelerometer](https://en.wikipedia.org/wiki/Accelerometer) as part of the [LSM303DLHC](https://www.st.com/en/mems-and-sensors/lsm303dlhc.html) chip.
 
@@ -32,7 +32,7 @@ What does this board contain?
 
 - 8 user LEDs arranged in the shape of a compass.
 
-- A second microcontroller: a [STM32F103](https://www.st.com/en/microcontrollers/stm32f103cb.html). This microcontroller is actually part of an on-board programmer / debugger and is connected to the USB port named "USB ST-LINK".
+- A second microcontroller: a [STM32F103](https://www.st.com/en/microcontrollers/stm32f103cb.html). This microcontroller is actually part of an on-board programmer / debugger and is connected to the Mini-USB port named "USB ST-LINK".
 
 For a more detailed list of features and further specifications of the board take a look at the [STMicroelectronics](https://www.st.com/en/evaluation-tools/stm32f3discovery.html) website.
 
