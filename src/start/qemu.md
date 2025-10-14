@@ -24,6 +24,9 @@ some of the key embedded rust functionality.
 [`cortex-m-quickstart`]: https://github.com/rust-embedded/cortex-m-quickstart
 
 ### Using `cargo-generate`
+> **NOTE** The referenced repo has been deprecated, see https://github.com/rust-embedded/book/issues/396.
+> Temporary workaround can be found under Using git
+
 First install cargo-generate
 ```console
 cargo install cargo-generate
@@ -51,6 +54,13 @@ Clone the repository
 git clone https://github.com/rust-embedded/cortex-m-quickstart app
 cd app
 ```
+
+> **NOTE** The referenced repo has been deprecated, see https://github.com/rust-embedded/book/issues/396.
+> Temporary workaround is to, after cloning, checking out the commit prior to
+> it being deprecated. 
+>```console
+>git checkout ac02415275d0190a1a7aa730ec2b0bdf7c3ef88f
+>```
 
 And then fill in the placeholders in the `Cargo.toml` file
 
