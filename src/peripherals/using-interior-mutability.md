@@ -12,7 +12,7 @@ One consequence of a `static` variable is that it cannot be moved, as it lives _
 
 A `static` variable can be borrowed as `&foo` without much issue as it is just reading.
 
-The problem occurs when we try to borrow is as mutable. Consider the following:
+The problem occurs when we try to borrow it as mutable. Consider the following:
 
 ```rust,ignore
 static mut flag: bool = false;
@@ -35,15 +35,15 @@ fn second() {
 
 The question is, which one would run? It's not obviousy just looking at a code. Perhaps it depends on the order or execution, which would be guaranteed _if_ there's only one active execution at a time.
 
-You may think that because you're in an embedded programming land and you only have single core, you don't have to think about race condition, but even with a single core CPU without making any thread, you may have interrupts and those interrupt requests may access the shared mutable variable `flag`. The issue here is that the compiler cannot prohibit you from taking multiple mutable reference to the shared mutable variable at compile time, especially since it does not know about the order of executions of threads or interrupts, for example.
+You may think that because you're in an embedded programming context and you only have a single core, you don't have to think about race conditions, but even with a single core CPU without making any threads, you may have interrupts and those interrupt requests may access the shared mutable variable `flag`. The issue here is that the compiler cannot prohibit you from taking multiple mutable reference to the shared mutable variable at compile time, especially since it does not know about the order of execution of threads or interrupts, for example.
 
-Also, the use of `static mut` variables _might_ be deprecated in the future. There's a strong indication of this and having the usage `deny` by default since Rust 2024 is one of them.
+Also, the use of `static mut` variables _might_ be deprecated in the future. An indication is that since Rust 2024, references to static mutable variables are lint-denied by default.
 
 ## So what is interior mutability?
 
-Interior mutability is a way to "trick" the borrow checker to mutate a borrowed reference `&foo` (notice the lack of `&mut`). This is basically us saying to the compiler "I'm going to mutate the shared reference anyway, please don't stop me.".
+Interior mutability is a way around the borrow checker to mutate a borrowed reference `&foo` (notice the lack of `&mut`). This is basically us saying to the compiler "I'm going to mutate the shared reference anyway, please don't stop me.".
 
-Of course, mutating something that is borrowed in other places are undefined behaviors (UB), yet there is a way of doing so, using an `UnsafeCell`. As the name implies, you need to use the `unsafe` keyword when using it. 
+Of course, mutating something that is borrowed in other places is undefined behavior (UB), yet there is a way of doing so, using an [`UnsafeCell`](https://doc.rust-lang.org/core/cell/struct.UnsafeCell.html). As the name implies, you need to use the `unsafe` keyword when using it. 
 
 The usage looks like this:
 
@@ -73,7 +73,7 @@ Compared to `static mut`, now we make it obvious that what we are trying to do i
 
 One small lie here is that you cannot use `UnsafeCell` in a static variable that way because it does not implement `Sync`, which means it is not thread-safe (or interrupt safe for that matter).
 
-We could ignore all of the safety in Rust 2024 by using SyncUnsafeCell. If you want to implement it yourself, this is all you need to write:
+We could ignore all of the safety in Rust 2024 by using a `SyncUnsafeCell`. If you want to implement it yourself, this is all you need to write:
 
 ```rust,ignore
 
@@ -84,13 +84,13 @@ unsafe impl<T: Sync> Sync for SyncUnsafeCell<T> {}
 
 ```
 
-where Sync does absolutely nothing.
+where `Sync` does absolutely nothing.
 
-Another way is to use Rust's `SyncUnsafeCell` which is currently only available in nightly under the flag `#![feature(sync_unsafe_cell)]`.
+Another way is to use Rust's [`SyncUnsafeCell`](https://doc.rust-lang.org/core/cell/struct.SyncUnsafeCell.html) which is currently only available in nightly under the flag `#![feature(sync_unsafe_cell)]` as of this writing.
 
 
-Of course, none of the above are safe. In order to get a proper interior mutability that is safe, we should implement `Sync` ourself and put in our synchronization primitive specific to the hardware such as locking the resource with atomic swap and guarding the code with interrupt-free section (disable interrupt, run some code, enable interrupt), also known as critical section.
+Of course, none of the above is safe. In order to get proper interior mutability that is safe, we should implement `Sync` ourselves and put in our synchronization primitives specific to the hardware such as locking the resource with atomic swap and guarding the code with an interrupt-free section (disable interrupt, run some code, enable interrupt), also known as [critical section](https://github.com/rust-embedded/critical-section).
 
-You could check how [rust-console gba](https://github.com/rust-console/gba/blob/6a3fcc1ee6493a499af507f8394ee542500721b7/src/gba_cell.rs#L63) implement it for reference.
+You could check how [rust-console gba](https://github.com/rust-console/gba/blob/6a3fcc1ee6493a499af507f8394ee542500721b7/src/gba_cell.rs#L63) implement it for reference (this example if fairly complex, though).
 
-Interior mutability and static mutability is a rather deep topic.  I strongly recommend reading more about static mutable references from [the rust edition guide here](https://github.com/rust-lang/edition-guide/blob/master/src/rust-2024/static-mut-references.md).
+Interior mutability and static mutability is a rather deep topic.  I strongly recommend reading more about static mutable references from [The Rust Edition Guide here](https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html).
