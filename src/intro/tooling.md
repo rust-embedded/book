@@ -86,6 +86,10 @@ Debuggers know how to:
 
 Probe-rs has a Visual Studio Code extension, providing a seamless debugging experience without extensive setup. Through this connection, developers can use Rust-specific features like pretty printing and detailed error messages, ensuring that their debugging process aligns with the Rust ecosystem. 
 
+### TRACE32
+
+TRACE32 is a professional debugging and tracing solution developed by Lauterbach for embedded systems. It supports a wide range of processor architectures, including ARM and RISC-V, and connects to target hardware via JTAG, SWD, and various trace interfaces. TRACE32 provides advanced debugging capabilities such as multicore debugging, complex breakpoints, and real-time trace analysis. It works with standard ELF/DWARF debug information, making it compatible with Rust binaries built using conventional toolchains.
+
 ### GDB (GNU Debugger) 
 
 GDB is a versatile debugging tool that allows developers to examine the state of programs while they run or after they crash. For embedded Rust, GDB connects to the target system via OpenOCD or other debugging servers to interact with the embedded code. GDB is highly configurable and supports features like remote debugging, variable inspection, and conditional breakpoints. It can be used on a variety of platforms, and has extensive support for Rust-specific debugging needs, such as pretty printing and integration with IDEs.
