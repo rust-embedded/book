@@ -30,7 +30,7 @@ cargo install cargo-generate
 ```
 Then generate a new project
 ```console
-cargo generate --git https://github.com/rust-embedded/cortex-m-quickstart
+cargo generate --git https://github.com/knurling-rs/app-template
 ```
 
 ```text
@@ -135,6 +135,47 @@ bit in the function signature) to ensure at compile time that'll be the case.
 
 ## Cross compiling
 
+First of all we will need the memory layout for the target microcontroller, the
+LM3S6965 in our case. Otherwise the build will fail to link the image. Create a
+file named `memory.x` at the root of the project and paste the following content:
+
+```text
+MEMORY
+{
+  /* NOTE 1 K = 1 KiBi = 1024 bytes */
+  /* TODO Adjust these memory regions to match your device memory layout */
+  /* These values correspond to the LM3S6965, one of the few devices QEMU can emulate */
+  FLASH : ORIGIN = 0x00000000, LENGTH = 256K
+  RAM : ORIGIN = 0x20000000, LENGTH = 64K
+}
+
+/* This is where the call stack will be allocated. */
+/* The stack is of the full descending type. */
+/* You may want to use this variable to locate the call stack and static
+   variables in different memory regions. Below is shown the default value */
+/* _stack_start = ORIGIN(RAM) + LENGTH(RAM); */
+
+/* You can use this symbol to customize the location of the .text section */
+/* If omitted the .text section will be placed right after the .vector_table
+   section */
+/* This is required only on microcontrollers that store some configuration right
+   after the vector table */
+/* _stext = ORIGIN(FLASH) + 0x400; */
+
+/* Example of putting non-initialized variables into custom RAM locations. */
+/* This assumes you have defined a region RAM2 above, and in the Rust
+   sources added the attribute `#[link_section = ".ram2bss"]` to the data
+   you want to place there. */
+/* Note that the section will not be zero-initialized by the runtime! */
+/* SECTIONS {
+     .ram2bss (NOLOAD) : ALIGN(4) {
+       *(.ram2bss);
+       . = ALIGN(4);
+     } > RAM2
+   } INSERT AFTER .bss;
+*/
+```
+
 The next step is to *cross* compile the program for the Cortex-M3 architecture.
 That's as simple as running `cargo build --target $TRIPLE` if you know what the
 compilation target (`$TRIPLE`) should be. Luckily, the `.cargo/config.toml` in the
@@ -157,9 +198,11 @@ To cross compile for the Cortex-M3 architecture we have to use
 `thumbv7m-none-eabi`. That target is not automatically installed when installing
 the Rust toolchain, it would now be a good time to add that target to the toolchain,
 if you haven't done it yet:
+
 ``` console
 rustup target add thumbv7m-none-eabi
 ```
+
  Since the `thumbv7m-none-eabi` compilation target has been set as the default in 
  your `.cargo/config.toml` file, the two commands below do the same:
 
@@ -311,47 +354,37 @@ HardFault:
 ## Running
 
 Next, let's see how to run an embedded program on QEMU! This time we'll use the
-`hello` example which actually does something.
+`hello` example which actually does something. By default, this example uses `[defmt]`
+and RTT to print text.
 
-For convenience here's the source code of `examples/hello.rs`:
+[defmt]: https://defmt.ferrous-systems.com/
 
-```rust,ignore
-//! Prints "Hello, world!" on the host console using semihosting
+> **NOTE** `defmt` is a third-party dependency (i.e. non-core) widely used in the
+> Embedded Rust ecosystem.
 
-#![no_main]
-#![no_std]
+In order to read and decode the messages produced by `defmt` in the host, we need to
+switch the RTT transport output to semihosting. When using real hardware this requires
+a debug session but when using QEMU this Just Works.
 
-use panic_halt as _;
-
-use cortex_m_rt::entry;
-use cortex_m_semihosting::{debug, hprintln};
-
-#[entry]
-fn main() -> ! {
-    hprintln!("Hello, world!").unwrap();
-
-    // exit QEMU
-    // NOTE do not run this on hardware; it can corrupt OpenOCD state
-    debug::exit(debug::EXIT_SUCCESS);
-
-    loop {}
-}
-```
-
-This program uses something called semihosting to print text to the *host*
-console. When using real hardware this requires a debug session but when using
-QEMU this Just Works.
-
-Let's start by compiling the example:
+Let's switch the dependencies:
 
 ```console
-cargo build --example hello
+cargo remove defmt-rtt
+cargo add defmt-semihosting
+```
+
+Open `src/lib.rs` and replace `use defmt_rtt as _;` by `use defmt_semihosting as _;`
+
+Now we can build the example:
+
+```console
+cargo build --bin hello
 ```
 
 The output binary will be located at
-`target/thumbv7m-none-eabi/debug/examples/hello`.
+`target/thumbv7m-none-eabi/debug/hello`.
 
-To run this binary on QEMU run the following command:
+To run this binary on QEMU, the following command would be usually enough:
 
 ```console
 qemu-system-arm \
@@ -359,7 +392,18 @@ qemu-system-arm \
   -machine lm3s6965evb \
   -nographic \
   -semihosting-config enable=on,target=native \
-  -kernel target/thumbv7m-none-eabi/debug/examples/hello
+  -kernel target/thumbv7m-none-eabi/debug/hello
+```
+
+In our case, since we use `defmt`, the host will not be able to decode the output. Instead, we
+will need a tool by Ferrous Systems named [`qemu-run`]:
+
+[`qemu-run`]: https://github.com/knurling-rs/defmt/tree/main/qemu-run/
+
+```console
+git clone git@github.com:knurling-rs/defmt.git
+cd defmt/qemu-run/
+cargo run -- --machine lm3s6965evb ../qemu-rs/target/thumbv7m-none-eabi/debug/hello
 ```
 
 ```text
