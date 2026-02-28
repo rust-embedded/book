@@ -58,6 +58,10 @@ We are collecting examples and use cases for this on our issue tracker in
 Integrating Rust with an RTOS such as FreeRTOS or ChibiOS is still a work in
 progress; especially calling RTOS functions from Rust can be tricky.
 
+Currently, the following projects publicly support Rust<->RTOS interoperability:
+
+* [Zephyr Project](https://docs.zephyrproject.org/latest/develop/languages/rust/index.html)
+
 We are collecting examples and use cases for this on our issue tracker in
 [issue #62].
 
