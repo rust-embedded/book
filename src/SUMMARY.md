@@ -26,7 +26,6 @@ more information and coordination
   - [Panicking](./start/panicking.md)
   - [Exceptions](./start/exceptions.md)
   - [Interrupts](./start/interrupts.md)
-  - [IO](./start/io.md)
 - [Peripherals](./peripherals/index.md)
     - [A first attempt in Rust](./peripherals/a-first-attempt.md)
     - [The Borrow Checker](./peripherals/borrowck.md)
