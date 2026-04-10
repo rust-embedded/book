@@ -565,14 +565,32 @@ safely, without requiring the overhead of always entering critical sections and
 using reference counting (as in `RefCell`). This has a number of advantages such
 as guaranteeing no deadlocks and giving extremely low time and memory overhead.
 
-[RTIC framework]: https://github.com/rtic-rs/cortex-m-rtic
+[RTIC framework]: https://rtic.rs/2/book/en
+
+RTIC comes with as asynchronous executor, so your software tasks are `async` functions where
+you can use `async` APIs in addition to regular synchronous APIs.
 
 The framework also includes other features like message passing, which reduces
 the need for explicit shared state, and the ability to schedule tasks to run at
-a given time, which can be used to implement periodic tasks. Check out [the
-documentation] for more information!
+a given time, which can be used to implement periodic tasks.
+Check out [the documentation] for more information!
 
 [the documentation]: https://rtic.rs
+
+## Embassy
+
+Embassy is an ecosystem of libraries which focus on using the `async` / `await` syntax
+included in Rust for concurrency. The core of embassy is its [asynchronous executor](https://docs.rs/embassy-executor/latest/embassy_executor/)
+which supports most common MCU architectures.
+
+embassy also takes a battery-included approach and offers many other components, for example:
+
+- [Time library](https://docs.rs/embassy-time/latest/embassy_time/)
+- Various HAL libraries which also provide the time library support.
+- [embassy-sync](https://docs.embassy.dev/embassy-sync/git/default/index.html) for synchronization primitives
+
+You can check the [website](https://embassy.dev/) and the [book](https://embassy.dev/book/) for more
+information.
 
 ## Real Time Operating Systems
 
