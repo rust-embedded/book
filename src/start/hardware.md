@@ -297,7 +297,7 @@ monitor arm semihosting enable
 load
 
 # start the process but immediately halt the processor
-stepi
+step
 ```
 
 Now running `<gdb> -x openocd.gdb target/thumbv7em-none-eabihf/debug/examples/hello` will immediately connect GDB to
