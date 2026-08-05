@@ -1,0 +1,7 @@
+{
+  "languages": [
+    { "code": "en_US", "langtag": "en-us", "langname": "English" },
+    { "code": "zh_CN", "langtag": "zh-cn", "langname": "简体中文" },
+    { "code": "zh_TW", "langtag": "zh-tw", "langname": "繁體中文" }
+  ]
+}

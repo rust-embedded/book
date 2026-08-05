@@ -1,0 +1,50 @@
+/* Ensure right-buttons uses flex alignment (mirrors cairo-book chrome.css) */
+.right-buttons {
+    display: flex;
+    align-items: center;
+    margin: 0 15px;
+}
+
+.right-buttons a {
+    text-decoration: none;
+}
+
+/* ---- Shared switcher styles ---- */
+
+.language-switcher,
+.version-switcher {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-right: 10px;
+}
+
+/* Deterministic order: both switchers always leftmost, language before version */
+.language-switcher { order: -2; }
+.version-switcher  { order: -1; }
+
+.language-switcher label,
+.version-switcher label {
+    display: flex;
+    align-items: center;
+    font-size: 1.6rem;
+    color: var(--icons);
+    cursor: pointer;
+}
+
+.language-switcher select,
+.version-switcher select {
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    border: 1px solid var(--icons);
+    background: var(--bg);
+    color: var(--icons);
+    font-size: 1.6rem;
+    cursor: pointer;
+}
+
+.language-switcher select:hover,
+.version-switcher select:hover {
+    border-color: var(--icons-hover);
+    color: var(--icons-hover);
+}
