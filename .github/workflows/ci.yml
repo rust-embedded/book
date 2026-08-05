@@ -1,11 +1,17 @@
 name: CI
 
 on:
+  schedule: # Build and deploy multilingual books weekly
+    - cron: '0 0 * * 1'
   push: # Run CI for all branches except GitHub merge queue tmp branches
     branches-ignore:
     - "gh-readonly-queue/**"
   pull_request: # Run CI for PRs on any branch
   merge_group: # Run CI for the GitHub merge queue
+
+env:
+  MDBOOK_VERSION: 0.5.1
+  MDBOOK_I18N_HELPERS_VERSION: 0.4.0
 
 jobs:
   build:
@@ -17,38 +23,68 @@ jobs:
       - name: Install Python dependencies
         run: |
           pip3 install --user python-dateutil linkchecker
+
       - name: Put pip binary directory into path
         run: echo "~/.local/bin" >> $GITHUB_PATH
 
-      - name: Cache Cargo installed binaries
-        uses: actions/cache@v4
-        id: cache-cargo
-        with:
-          path: ~/cargo-bin
-          key: cache-cargo
-      - name: Install mdbook
-        if: steps.cache-cargo.outputs.cache-hit != 'true'
-        uses: actions-rs/install@v0.1
-        with:
-          crate: mdbook
-          version: latest
-      - name: Copy mdbook to cache directory
-        if: steps.cache-cargo.outputs.cache-hit != 'true'
-        run: |
-          mkdir ~/cargo-bin
-          cp ~/.cargo/bin/mdbook ~/cargo-bin
-      - name: Put new cargo binary directory into path
-        run: echo "~/cargo-bin" >> $GITHUB_PATH
+      - name: Update rustup
+        run: rustup self update
 
-      - name: Build book
-        run: mdbook build
+      - name: Install Rust
+        run: |
+          rustup set profile minimal
+          rustup toolchain install nightly -c rust-docs
+          rustup default nightly
+
+      - name: Install mdbook
+        run: |
+          cargo install mdbook --locked --version ${{ env.MDBOOK_VERSION }}
+
+      - name: Install mdbook-i18n-helpers
+        run: |
+          cargo install mdbook-i18n-helpers --locked --version ${{ env.MDBOOK_I18N_HELPERS_VERSION }}
+
+      - name: Download the .po files from localizethedocs/rust-embedded-book-l10n
+        run: |
+          git clone --branch po/master https://github.com/localizethedocs/rust-embedded-book-l10n.git po
+
+      - name: Build books
+        run: |
+          for langcode in $(jq -r '.languages[].code' switcher.json); do
+            echo "::group::Building $langcode"
+            langtag=$(jq -r --arg lang "$langcode" '.languages[] | select(.code == $lang) | .langtag' switcher.json)
+            MDBOOK_BOOK__LANGUAGE=$langcode mdbook build -d book/$langtag/
+            echo "::endgroup::"
+          done
+
       - name: Test book
         run: mdbook test
+
       - name: Check links
         run: linkchecker book
 
+      - name: Create root index.html redirect
+        run: |
+          default_langtag=$(jq -r '.languages[] | select(.code == "en_US") | .langtag' switcher.json)
+          target="./${default_langtag}/"
+          cat > book/index.html << EOF
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta http-equiv="refresh" content="0; url=${target}" />
+          </head>
+          <body>
+            <p>Redirecting to <a href="${target}">${target}</a></p>
+          </body>
+          </html>
+          EOF
+
+      - name: Copy switcher.json to book root
+        run: cp switcher.json book/
+
       - name: Deploy book
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+        if: ${{ ( github.event_name == 'push' && github.ref == 'refs/heads/master' ) ||
+                ( github.event_name == 'schedule' ) }}
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
