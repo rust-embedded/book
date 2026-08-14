@@ -1,0 +1,15 @@
+[package]
+name = "typbook"
+version = "0.1.0"
+entrypoint = "lib.typ"
+authors = ["Andrey Zgarbul <zgarbul.andrey@gmail.com>"]
+license = "MPL-2.0"
+description = "Generate `mdBook` like books and documentation"
+repository = "https://github.com/burrbull/typbook"
+keywords = ["html", "web", "mdbook", "documentation"]
+categories = ["components", "model", "utility"]
+compiler = "0.15.0"
+
+[template]
+path = "template"
+entrypoint = "main.typ"

@@ -35,7 +35,7 @@ jobs:
       - name: Copy mdbook to cache directory
         if: steps.cache-cargo.outputs.cache-hit != 'true'
         run: |
-          mkdir ~/cargo-bin
+          mkdir -p ~/cargo-bin
           cp ~/.cargo/bin/mdbook ~/cargo-bin
       - name: Put new cargo binary directory into path
         run: echo "~/cargo-bin" >> $GITHUB_PATH
@@ -47,10 +47,10 @@ jobs:
       - name: Check links
         run: linkchecker book
 
-      - name: Deploy book
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: book
-          force_orphan: true
+      #- name: Deploy book
+      #  if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+      #  uses: peaceiris/actions-gh-pages@v3
+      #  with:
+      #    github_token: ${{ secrets.GITHUB_TOKEN }}
+      #    publish_dir: book
+      #    force_orphan: true
