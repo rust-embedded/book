@@ -15,12 +15,16 @@ substitutions.
 
 ## Creating a non standard Rust program
 
-We'll use the [`cortex-m-quickstart`] project template to generate a new
+We'll use the [`app-template`] project template to generate a new
 project from it. The created project will contain a barebone application: a good
 starting point for a new embedded rust application. In addition, the project will
-contain an `examples` directory, with several separate applications, highlighting
-some of the key embedded rust functionality. 
+contain a `src/bin` directory, with several separate applications, highlighting
+some of the key embedded rust functionality.
 
+> **NOTE**: [`cortex-m-quickstart`], which this book used to recommend, has been
+> deprecated by its author in favor of [`app-template`].
+
+[`app-template`]: https://github.com/knurling-rs/app-template
 [`cortex-m-quickstart`]: https://github.com/rust-embedded/cortex-m-quickstart
 
 ### Using `cargo-generate`
@@ -48,43 +52,29 @@ cd app
 Clone the repository
 
 ```console
-git clone https://github.com/rust-embedded/cortex-m-quickstart app
+git clone https://github.com/knurling-rs/app-template app
 cd app
 ```
 
-And then fill in the placeholders in the `Cargo.toml` file
-
-```toml
-[package]
-authors = ["{{authors}}"] # "{{authors}}" -> "John Smith"
-edition = "2018"
-name = "{{project-name}}" # "{{project-name}}" -> "app"
-version = "0.1.0"
-
-# ..
-
-[[bin]]
-name = "{{project-name}}" # "{{project-name}}" -> "app"
-test = false
-bench = false
-```
+`cargo-generate` normally fills in a few `TODO`s for you (chip, HAL, etc.); when
+cloning directly you'll need to fill those in by hand instead. See the
+[`app-template`] README's "Setup" section for the full list of manual steps.
 
 ### Using neither
 
-Grab the latest snapshot of the `cortex-m-quickstart` template and extract it.
+Grab the latest snapshot of the [`app-template`] project and extract it.
 
 ```console
-curl -LO https://github.com/rust-embedded/cortex-m-quickstart/archive/master.zip
-unzip master.zip
-mv cortex-m-quickstart-master app
+curl -LO https://github.com/knurling-rs/app-template/archive/main.zip
+unzip main.zip
+mv app-template-main app
 cd app
 ```
 
-Or you can browse to [`cortex-m-quickstart`], click the green "Clone or
-download" button and then click "Download ZIP".
+Or you can browse to [`app-template`], click the green "Code" button and then
+click "Download ZIP".
 
-Then fill in the placeholders in the `Cargo.toml` file as done in the second
-part of the "Using `git`" version.
+Then fill in the `TODO`s in the project as done in the "Using `git`" version.
 
 ## Program Overview
 
