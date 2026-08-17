@@ -32,25 +32,13 @@ impl GpioConfig {
         });
     }
 
-    pub fn set_direction(&mut self, is_output: bool) -> Result<(), ()> {
-        if self.periph.read().enable().bit_is_clear() {
-            // Must be enabled to set direction
-            return Err(());
-        }
-
-        self.periph.modify(|r, w| {
+    pub fn set_direction(&mut self, is_output: bool) {
+        self.periph.modify(|_r, w| {
             w.direction().set_bit(is_output)
         });
-
-        Ok(())
     }
 
     pub fn set_input_mode(&mut self, variant: InputMode) -> Result<(), ()> {
-        if self.periph.read().enable().bit_is_clear() {
-            // Must be enabled to set input mode
-            return Err(());
-        }
-
         if self.periph.read().direction().bit_is_set() {
             // Direction must be input
             return Err(());
@@ -64,11 +52,6 @@ impl GpioConfig {
     }
 
     pub fn set_output_status(&mut self, is_high: bool) -> Result<(), ()> {
-        if self.periph.read().enable().bit_is_clear() {
-            // Must be enabled to set output status
-            return Err(());
-        }
-
         if self.periph.read().direction().bit_is_clear() {
             // Direction must be output
             return Err(());
@@ -82,11 +65,6 @@ impl GpioConfig {
     }
 
     pub fn get_input_status(&self) -> Result<bool, ()> {
-        if self.periph.read().enable().bit_is_clear() {
-            // Must be enabled to get status
-            return Err(());
-        }
-
         if self.periph.read().direction().bit_is_set() {
             // Direction must be input
             return Err(());
@@ -97,7 +75,9 @@ impl GpioConfig {
 }
 ```
 
-Because we need to enforce the restrictions on the hardware, we end up doing a lot of runtime checking which wastes time and resources, and this code will be much less pleasant for the developer to use.
+Note that, unlike our first attempt, none of these methods require the GPIO to already be `enabled`. Configuring the direction or mode has no effect on the physical pin until the GPIO is enabled, so requiring it to be enabled first would force callers into the exact hazard we're trying to avoid: a pin that's briefly enabled with the wrong direction, before its intended configuration is applied. `set_enable` should generally be the last call made once the pin is fully configured.
+
+Because we still need to enforce that direction and mode agree with each other, we end up doing some runtime checking which wastes time and resources, and this code will be much less pleasant for the developer to use.
 
 ## Type States
 
@@ -208,6 +188,8 @@ impl<IN_MODE> GpioConfig<Enabled, Input, IN_MODE> {
     }
 }
 ```
+
+Note that `into_enabled_input` and `into_enabled_output` set the enable bit together with direction and mode in a single register write. There's no separate, type-visible "enabled but not yet configured" state to transition through, so a caller can never observe the pin enabled with the wrong direction or mode.
 
 Now let's see what the code using this would look like:
 
