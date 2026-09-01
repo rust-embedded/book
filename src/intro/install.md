@@ -74,6 +74,25 @@ cargo install cargo-generate
 
 Note: on some Linux distros (e.g. Ubuntu) you may need to install the packages `libssl-dev` and `pkg-config` prior to installing cargo-generate.
 
+### `flip-link`
+
+The project template we'll use sets `flip-link` as its linker, so the build will
+fail without it. It is a wrapper around the regular linker that rearranges the
+memory layout so that a stack overflow triggers a hard fault instead of silently
+corrupting your static variables.
+
+``` console
+cargo install flip-link
+```
+
+### `qemu-run`
+
+We'll use this to run programs on QEMU and decode their `defmt` log output.
+
+``` console
+cargo install qemu-run
+```
+
 ### OS-Specific Instructions
 
 Now follow the instructions specific to the OS you are using:

@@ -88,21 +88,21 @@ part of the "Using `git`" version.
 
 ## Program Overview
 
-For convenience here are the most important parts of the source code in `src/main.rs`:
+The template puts each of its programs in `src/bin`, and puts the code they
+share in `src/lib.rs`. For convenience here are the most important parts of
+`src/bin/hello.rs`:
 
 ```rust,ignore
-#![no_std]
 #![no_main]
+#![no_std]
 
-use panic_halt as _;
+use app as _; // global logger + panicking-behavior + memory layout
 
-use cortex_m_rt::entry;
-
-#[entry]
+#[cortex_m_rt::entry]
 fn main() -> ! {
-    loop {
-        // your code goes here
-    }
+    defmt::println!("Hello, world!");
+
+    app::exit()
 }
 ```
 
@@ -117,21 +117,25 @@ interface that most Rust programs use. The main (no pun intended) reason to go
 with `no_main` is that using the `main` interface in `no_std` context requires
 nightly.
 
-`use panic_halt as _;`. This crate provides a `panic_handler` that defines
-the panicking behavior of the program. We will cover this in more detail in the
+`use app as _;` pulls in the library half of the template, `src/lib.rs`. We never
+call into it directly, but linking it in is what gives the program its global
+logger, its memory layout, and a `panic_handler` that defines the panicking
+behavior of the program. We will cover panicking in more detail in the
 [Panicking](panicking.md) chapter of the book.
 
-[`#[entry]`][entry] is an attribute provided by the [`cortex-m-rt`] crate that's used
+[`#[cortex_m_rt::entry]`][entry] is an attribute provided by the [`cortex-m-rt`] crate that's used
 to mark the entry point of the program. As we are not using the standard `main`
 interface we need another way to indicate the entry point of the program and
 that'd be `#[entry]`.
 
-[entry]: https://docs.rs/cortex-m-rt-macros/latest/cortex_m_rt_macros/attr.entry.html
+[entry]: https://docs.rs/cortex-m-rt/latest/cortex_m_rt/attr.entry.html
 [`cortex-m-rt`]: https://crates.io/crates/cortex-m-rt
 
 `fn main() -> !`. Our program will be the *only* process running on the target
 hardware so we don't want it to end! We use a [divergent function](https://doc.rust-lang.org/rust-by-example/fn/diverging.html) (the `-> !`
 bit in the function signature) to ensure at compile time that'll be the case.
+`app::exit()` also diverges: rather than returning, it asks the debug host (QEMU,
+in our case) to terminate the whole emulated machine.
 
 ## Cross compiling
 
@@ -178,26 +182,32 @@ MEMORY
 
 The next step is to *cross* compile the program for the Cortex-M3 architecture.
 That's as simple as running `cargo build --target $TRIPLE` if you know what the
-compilation target (`$TRIPLE`) should be. Luckily, the `.cargo/config.toml` in the
-template has the answer:
+compilation target (`$TRIPLE`) should be. The `.cargo/config.toml` in the
+template lists the choices:
 
 ```console
-tail -n6 .cargo/config.toml
+grep -A6 '^\[build\]' .cargo/config.toml
 ```
 
 ```toml
 [build]
-# Pick ONE of these compilation targets
-# target = "thumbv6m-none-eabi"    # Cortex-M0 and Cortex-M0+
-target = "thumbv7m-none-eabi"    # Cortex-M3
+# TODO(3) Adjust the compilation target.
+# Select the correct target for your processor:
+target = "thumbv6m-none-eabi"    # Cortex-M0 and Cortex-M0+
+# target = "thumbv7m-none-eabi"    # Cortex-M3
 # target = "thumbv7em-none-eabi"   # Cortex-M4 and Cortex-M7 (no FPU)
 # target = "thumbv7em-none-eabihf" # Cortex-M4F and Cortex-M7F (with FPU)
 ```
 
 To cross compile for the Cortex-M3 architecture we have to use
-`thumbv7m-none-eabi`. That target is not automatically installed when installing
-the Rust toolchain, it would now be a good time to add that target to the toolchain,
-if you haven't done it yet:
+`thumbv7m-none-eabi`, so comment out the `thumbv6m-none-eabi` line that the
+template selects by default and uncomment the `thumbv7m-none-eabi` one. This is
+`TODO(3)` in the template; the remaining `TODO`s concern real hardware and can be
+left alone for this chapter.
+
+That target is not automatically installed when installing the Rust toolchain, so
+it would now be a good time to add it to the toolchain, if you haven't done it
+yet:
 
 ``` console
 rustup target add thumbv7m-none-eabi
@@ -213,86 +223,121 @@ cargo build
 
 ## Inspecting
 
-Now we have a non-native ELF binary in `target/thumbv7m-none-eabi/debug/app`. We
-can inspect it using `cargo-binutils`.
+Now we have a non-native ELF binary in `target/thumbv7m-none-eabi/debug/hello`.
+We can inspect it using `cargo-binutils`. (The template does not build a binary
+named after the project, so we inspect one of the programs in `src/bin`.)
 
 With `cargo-readobj` we can print the ELF headers to confirm that this is an ARM
 binary.
 
 ``` console
-cargo readobj --bin app -- --file-headers
+cargo readobj --bin hello -- --file-headers
 ```
 
 Note that:
-* `--bin app` is sugar for inspect the binary at `target/$TRIPLE/debug/app`
-* `--bin app` will also (re)compile the binary, if necessary
+* `--bin hello` is sugar for inspect the binary at `target/$TRIPLE/debug/hello`
+* `--bin hello` will also (re)compile the binary, if necessary
 
 
 ``` text
 ELF Header:
-  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00
+  Magic:   7f 45 4c 46 01 01 01 03 00 00 00 00 00 00 00 00
   Class:                             ELF32
   Data:                              2's complement, little endian
   Version:                           1 (current)
-  OS/ABI:                            UNIX - System V
-  ABI Version:                       0x0
+  OS/ABI:                            UNIX - GNU
+  ABI Version:                       0
   Type:                              EXEC (Executable file)
   Machine:                           ARM
   Version:                           0x1
-  Entry point address:               0x405
+  Entry point address:               0x401
   Start of program headers:          52 (bytes into file)
-  Start of section headers:          153204 (bytes into file)
+  Start of section headers:          910896 (bytes into file)
   Flags:                             0x5000200
   Size of this header:               52 (bytes)
   Size of program headers:           32 (bytes)
-  Number of program headers:         2
+  Number of program headers:         6
   Size of section headers:           40 (bytes)
-  Number of section headers:         19
-  Section header string table index: 18
+  Number of section headers:         22
+  Section header string table index: 20
 ```
 
 `cargo-size` can print the size of the linker sections of the binary.
 
 
 ```console
-cargo size --bin app --release -- -A
+cargo size --bin hello --release -- -A
 ```
 we use `--release` to inspect the optimized version
 
 ``` text
-app  :
-section             size        addr
-.vector_table       1024         0x0
-.text                 92       0x400
-.rodata                0       0x45c
-.data                  0  0x20000000
-.bss                   0  0x20000000
-.debug_str          2958         0x0
-.debug_loc            19         0x0
-.debug_abbrev        567         0x0
-.debug_info         4929         0x0
-.debug_ranges         40         0x0
-.debug_macinfo         1         0x0
-.debug_pubnames     2035         0x0
-.debug_pubtypes     1892         0x0
-.ARM.attributes       46         0x0
-.debug_frame         100         0x0
-.debug_line          867         0x0
-Total              14570
+hello  :
+section              size        addr
+.vector_table        1024         0x0
+.text                3816       0x400
+.rodata               628      0x12e8
+.data                  56  0x2000fbb8
+.gnu.sgstubs            0      0x15a0
+.bss                   12  0x2000fbf0
+.uninit              1024  0x2000fbfc
+.defmt                  6         0x0
+.debug_loc           3831         0x0
+.debug_abbrev        2736         0x0
+.debug_info         29645         0x0
+.debug_aranges       2312         0x0
+.debug_ranges        3200         0x0
+.debug_str          58040         0x0
+.comment              139         0x0
+.ARM.attributes        48         0x0
+.debug_frame         1456         0x0
+.debug_line         11262         0x0
+Total              119235
 ```
 
 > A refresher on ELF linker sections
 >
+> These are the sections that are loaded onto the device:
+>
+> - `.vector_table` is a *non*-standard section that we use to store the vector
+>   (interrupt) table
 > - `.text` contains the program instructions
 > - `.rodata` contains constant values like strings
 > - `.data` contains statically allocated variables whose initial values are
 >   *not* zero
 > - `.bss` also contains statically allocated variables whose initial values
 >   *are* zero
-> - `.vector_table` is a *non*-standard section that we use to store the vector
->   (interrupt) table
-> - `.ARM.attributes` and the `.debug_*` sections contain metadata and will
->   *not* be loaded onto the target when flashing the binary.
+> - `.uninit` holds statics that must *not* be initialized at startup; here it is
+>   the buffer `defmt-rtt` logs into
+> - `.gnu.sgstubs` holds secure gateway veneers, the entry points through which
+>   non-secure code calls into secure code on ARMv8-M devices with TrustZone. The
+>   Cortex-M3 has no TrustZone, so the linker leaves this section empty
+>
+> The rest is metadata. It stays in the ELF file on your host and is *not* loaded
+> onto the target when flashing the binary:
+>
+> - `.defmt` is another *non*-standard section; it stores the log strings that
+>   `defmt` keeps on the host instead of on the device, which is why it has no
+>   address and costs no flash
+> - `.debug_info` is the bulk of the DWARF debug data: the tree of types,
+>   functions and variables that make up the program
+> - `.debug_abbrev` describes the shape of the entries in `.debug_info`
+> - `.debug_str` is the string table that those entries share
+> - `.debug_line` maps instruction addresses back to source files and line
+>   numbers, which is what lets a debugger show you source code as you step
+> - `.debug_loc` records where each variable lives -- in which register, or where
+>   on the stack -- at each point in the program
+> - `.debug_ranges` records the address ranges of scopes that are not contiguous
+> - `.debug_aranges` maps address ranges to compilation units, so a debugger can
+>   find the right one without searching all of `.debug_info`
+> - `.debug_frame` describes how to walk back up the call stack, which is what
+>   turns a halted program into a backtrace
+> - `.comment` records which compiler and linker produced the binary
+> - `.ARM.attributes` records the architecture, ABI and FPU the code was built
+>   for, so that the linker can reject incompatible objects
+>
+> You may be surprised that `.data` and `.bss` sit near the *end* of RAM rather
+> than at `0x20000000`. That is `flip-link` doing its job: it places the statics
+> at the top so that the call stack grows away from them.
 
 **IMPORTANT**: ELF files contain metadata like debug information so their *size
 on disk* does *not* accurately reflect the space the program will occupy when
@@ -302,62 +347,81 @@ is.
 `cargo-objdump` can be used to disassemble the binary.
 
 ```console
-cargo objdump --bin app --release -- --disassemble --no-show-raw-insn --print-imm-hex
+cargo objdump --bin hello --release -- --disassemble --no-show-raw-insn --print-imm-hex
 ```
 
 > **NOTE** if the above command complains about `Unknown command line argument` see
 > the following bug report: https://github.com/rust-embedded/book/issues/269
 
+That disassembles the whole program, which runs to some 1500 lines -- most of it
+formatting and logging machinery pulled in by the dependencies. To read a single
+function instead, name it with `--disassemble-symbols`. Adding `-C` demangles the
+Rust symbol names, which is what makes the call targets legible:
+
+```console
+cargo objdump --bin hello --release -- --disassemble-symbols=__stext,main -C --no-show-raw-insn --print-imm-hex
+```
+
 > **NOTE** this output can differ on your system. New versions of rustc, LLVM
-> and libraries can generate different assembly. We truncated some of the instructions
-> to keep the snippet small.
+> and libraries can generate different assembly.
 
 ```text
-app:  file format ELF32-arm-little
+
+hello:	file format elf32-littlearm
 
 Disassembly of section .text:
-main:
-     400: bl  #0x256
-     404: b #-0x4 <main+0x4>
 
-Reset:
-     406: bl  #0x24e
-     40a: movw  r0, #0x0
-     < .. truncated any more instructions .. >
+00000400 <__stext>:
+     400:      	bl	0xabc <_defmt_timestamp> @ imm = #0x6b8
+     404:      	ldr	r0, [pc, #0x20]         @ 0x428 <__stext+0x28>
+     406:      	ldr	r1, [pc, #0x24]         @ 0x42c <__stext+0x2c>
+     408:      	movs	r2, #0x0
+     40a:      	cmp	r1, r0
+     40c:      	beq	0x412 <__stext+0x12>    @ imm = #0x2
+     40e:      	stm	r0!, {r2}
+     410:      	b	0x40a <__stext+0xa>     @ imm = #-0xa
+     412:      	ldr	r0, [pc, #0x1c]         @ 0x430 <__stext+0x30>
+     414:      	ldr	r1, [pc, #0x1c]         @ 0x434 <__stext+0x34>
+     416:      	ldr	r2, [pc, #0x20]         @ 0x438 <__stext+0x38>
+     418:      	cmp	r1, r0
+     41a:      	beq	0x422 <__stext+0x22>    @ imm = #0x4
+     41c:      	ldm	r2!, {r3}
+     41e:      	stm	r0!, {r3}
+     420:      	b	0x418 <__stext+0x18>    @ imm = #-0xc
+     422:      	bl	0x448 <main>            @ imm = #0x22
+     426:      	udf	#0x0
 
-DefaultHandler_:
-     656: b #-0x4 <DefaultHandler_>
-
-UsageFault:
-     657: strb  r7, [r4, #0x3]
-
-DefaultPreInit:
-     658: bx  lr
-
-__pre_init:
-     659: strb  r7, [r0, #0x1]
-
-__nop:
-     65a: bx  lr
-
-HardFaultTrampoline:
-     65c: mrs r0, msp
-     660: b #-0x2 <HardFault_>
-
-HardFault_:
-     662: b #-0x4 <HardFault_>
-
-HardFault:
-     663: <unknown>
+00000448 <main>:
+     448:      	push	{r7, lr}
+     44a:      	mov	r7, sp
+     44c:      	bl	0x43c <hello::__cortex_m_rt_main> @ imm = #-0x14
 ```
+
+Those two functions are the whole boot sequence. `__stext` is the reset handler,
+the first thing the core runs. It calls the `__pre_init` hook, zeroes `.bss` (the
+first loop), copies the initial values of `.data` from flash into RAM (the second
+loop), and then calls `main`. Note that the zeroing loop stops at the end of
+`.bss` and leaves `.uninit` alone, exactly as that section's name promises. The
+`udf` -- a deliberate undefined instruction -- sits after the call to trap the
+program if `main` ever returns, which is why the entry point has to diverge.
+
+`main` is a three-instruction trampoline into the `#[entry]` function, which
+`cortex-m-rt` renames to `hello::__cortex_m_rt_main`. Only global symbols can be
+named on the command line and that one is local to the crate, so to read the body
+of your own `main` you have to follow the `bl` in the full disassembly.
+
+> **NOTE** the `bl` to `_defmt_timestamp` at `0x400` really is the call to
+> `__pre_init`. Both functions are empty, so the linker folds them onto a single
+> address -- together with `DefaultPreInit` and `__defmt_default_timestamp` -- and
+> the disassembler prints whichever of those names it happens to find first.
 
 ## Running
 
 Next, let's see how to run an embedded program on QEMU! This time we'll use the
-`hello` example which actually does something. By default, this example uses `[defmt]`
+`hello` program, which actually does something. By default, it uses [`defmt`]
 and RTT to print text.
 
-[defmt]: https://defmt.ferrous-systems.com/
+[`defmt`]: https://defmt.ferrous-systems.com/
 
 > **NOTE** `defmt` is a third-party dependency (i.e. non-core) widely used in the
 > Embedded Rust ecosystem.
@@ -375,7 +439,7 @@ cargo add defmt-semihosting
 
 Open `src/lib.rs` and replace `use defmt_rtt as _;` by `use defmt_semihosting as _;`
 
-Now we can build the example:
+Now we can build the program:
 
 ```console
 cargo build --bin hello
@@ -384,7 +448,8 @@ cargo build --bin hello
 The output binary will be located at
 `target/thumbv7m-none-eabi/debug/hello`.
 
-To run this binary on QEMU, the following command would be usually enough:
+For a program that printed plain text, the following command would be enough to
+run the binary on QEMU:
 
 ```console
 qemu-system-arm \
@@ -395,20 +460,24 @@ qemu-system-arm \
   -kernel target/thumbv7m-none-eabi/debug/hello
 ```
 
-In our case, since we use `defmt`, the host will not be able to decode the output. Instead, we
-will need a tool by Ferrous Systems named [`qemu-run`]:
+`defmt`, though, does not send plain text. To keep the program on the device
+small it sends compact binary frames and leaves the log strings on the host, so
+the command above prints a handful of unreadable bytes rather than a greeting.
+To turn those frames back into text we use [`qemu-run`], which we installed in
+the [installation](../intro/install.md) chapter:
 
-[`qemu-run`]: https://github.com/knurling-rs/defmt/tree/main/qemu-run/
+[`qemu-run`]: https://crates.io/crates/qemu-run
 
 ```console
-git clone git@github.com:knurling-rs/defmt.git
-cd defmt/qemu-run/
-cargo run -- --machine lm3s6965evb ../qemu-rs/target/thumbv7m-none-eabi/debug/hello
+qemu-run --machine lm3s6965evb --cpu cortex-m3 target/thumbv7m-none-eabi/debug/hello
 ```
 
 ```text
 Hello, world!
 ```
+
+`qemu-run` starts `qemu-system-arm` for you with the flags shown above, then
+decodes the `defmt` data the program sends over semihosting.
 
 The command should successfully exit (exit code = 0) after printing the text. On
 *nix you can check that with the following command:
@@ -421,7 +490,7 @@ echo $?
 0
 ```
 
-Let's break down that QEMU command:
+Let's break down the QEMU command that `qemu-run` builds for us:
 
 - `qemu-system-arm`. This is the QEMU emulator. There are a few variants of
   these QEMU binaries; this one does full *system* emulation of *ARM* machines
@@ -444,34 +513,57 @@ Let's break down that QEMU command:
 - `-kernel $file`. This tells QEMU which binary to load and run on the emulated
   machine.
 
-Typing out that long QEMU command is too much work! We can set a custom runner
-to simplify the process. `.cargo/config.toml` has a commented out runner that invokes
-QEMU; let's uncomment it:
+Typing out that command every time is too much work! We can set a custom runner
+to simplify the process. The template ships a runner that flashes real hardware
+with `probe-rs`; replace it with one that runs the program on QEMU instead:
 
 ```console
-head -n3 .cargo/config.toml
+head -n4 .cargo/config.toml
 ```
 
 ```toml
-[target.thumbv7m-none-eabi]
-# uncomment this to make `cargo run` execute programs on QEMU
-runner = "qemu-system-arm -cpu cortex-m3 -machine lm3s6965evb -nographic -semihosting-config enable=on,target=native -kernel"
+[target.'cfg(all(target_arch = "arm", target_os = "none"))']
+# TODO(2) replace `$CHIP` with your chip's name (see `probe-rs chip list` output)
+runner = ["probe-rs", "run", "--chip", "$CHIP", "--log-format=oneline"]
+# If you have an nRF52, you might also want to add "--allow-erase-all" to the list
 ```
 
-This runner only applies to the `thumbv7m-none-eabi` target, which is our
-default compilation target. Now `cargo run` will compile the program and run it
-on QEMU:
+```toml
+[target.'cfg(all(target_arch = "arm", target_os = "none"))']
+runner = ["qemu-run", "--machine", "lm3s6965evb", "--cpu", "cortex-m3"]
+```
+
+Now `cargo run` will compile the program and run it on QEMU:
 
 ```console
-cargo run --example hello --release
+cargo run --bin hello --release
 ```
 
 ```text
    Compiling app v0.1.0 (file:///tmp/app)
-    Finished release [optimized + debuginfo] target(s) in 0.26s
-     Running `qemu-system-arm -cpu cortex-m3 -machine lm3s6965evb -nographic -semihosting-config enable=on,target=native -kernel target/thumbv7m-none-eabi/release/examples/hello`
+    Finished `release` profile [optimized + debuginfo] target(s) in 0.26s
+     Running `qemu-run --machine lm3s6965evb --cpu cortex-m3 target/thumbv7m-none-eabi/release/hello`
 Hello, world!
 ```
+
+The template also defines a `rb` alias, so `cargo rb hello` is shorthand for
+`cargo run --bin hello`.
+
+> **NOTE** This runner suits the programs in this chapter, which all log with
+> `defmt`. Some later chapters -- [Semihosting], [Panicking] and [Exceptions] --
+> still print with `cortex-m-semihosting`'s `hprintln!` instead. That is plain
+> text rather than `defmt` frames, and `qemu-run` will try to decode it as frames
+> and display nothing at all, so switch the runner back to plain
+> `qemu-system-arm` before working through those:
+>
+> ```toml
+> [target.'cfg(all(target_arch = "arm", target_os = "none"))']
+> runner = "qemu-system-arm -cpu cortex-m3 -machine lm3s6965evb -nographic -semihosting-config enable=on,target=native -kernel"
+> ```
+
+[Semihosting]: semihosting.md
+[Panicking]: panicking.md
+[Exceptions]: exceptions.md
 
 ## Debugging
 
@@ -485,23 +577,24 @@ Remote debugging involves a client and a server. In a QEMU setup, the client
 will be a GDB (or LLDB) process and the server will be the QEMU process that's
 also running the embedded program.
 
-In this section we'll use the `hello` example we already compiled.
+In this section we'll use the `hello` program we already compiled.
 
-The first debugging step is to launch QEMU in debugging mode:
+The first debugging step is to launch QEMU in debugging mode. `qemu-run` forwards
+any `--arg` it is given on to QEMU, so we can keep using it and still get our
+`defmt` output decoded:
 
 ```console
-qemu-system-arm \
-  -cpu cortex-m3 \
-  -machine lm3s6965evb \
-  -nographic \
-  -semihosting-config enable=on,target=native \
-  -gdb tcp::3333 \
-  -S \
-  -kernel target/thumbv7m-none-eabi/debug/examples/hello
+qemu-run \
+  --machine lm3s6965evb \
+  --cpu cortex-m3 \
+  --arg gdb=tcp::3333 \
+  --arg S \
+  target/thumbv7m-none-eabi/debug/hello
 ```
 
 This command won't print anything to the console and will block the terminal. We
-have passed two extra flags this time:
+have passed two extra flags this time, which `qemu-run` turns into `-gdb tcp::3333`
+and `-S`:
 
 - `-gdb tcp::3333`. This tells QEMU to wait for a GDB connection on TCP
   port 3333.
@@ -514,7 +607,7 @@ Next we launch GDB in another terminal and tell it to load the debug symbols of
 the example:
 
 ```console
-gdb-multiarch -q target/thumbv7m-none-eabi/debug/examples/hello
+gdb-multiarch -q target/thumbv7m-none-eabi/debug/hello
 ```
 
 **NOTE**: you might need another version of gdb instead of `gdb-multiarch` depending
@@ -530,21 +623,17 @@ target remote :3333
 
 ```text
 Remote debugging using :3333
-Reset () at $REGISTRY/cortex-m-rt-0.6.1/src/lib.rs:473
-473     pub unsafe extern "C" fn Reset() -> ! {
+0x00000400 in core::num::imp::flt2dec::strategy::grisu::format_exact_opt ()
 ```
 
+You'll see that the process is halted, with the program counter pointing at
+address `0x400`. That is the reset handler: what Cortex-M cores execute upon
+booting.
 
-You'll see that the process is halted and that the program counter is pointing
-to a function named `Reset`. That is the reset handler: what Cortex-M cores
-execute upon booting.
-
->  Note that on some setup, instead of displaying the line `Reset () at $REGISTRY/cortex-m-rt-0.6.1/src/lib.rs:473` as shown above, gdb may print some warnings like : 
->
->`core::num::bignum::Big32x40::mul_small () at src/libcore/num/bignum.rs:254`
-> `    src/libcore/num/bignum.rs: No such file or directory.`
-> 
-> That's a known glitch. You can safely ignore those warnings, you're most likely at Reset(). 
+> Note the nonsensical symbol name. `cortex-m-rt` writes the reset handler in
+> assembly, so that address carries no debug info and GDB attaches whatever
+> unrelated symbol happens to be nearby. The exact name you see will differ. That
+> is a known glitch and you can safely ignore it; you are at the reset handler.
 
 
 This reset handler will eventually call our main function. Let's skip all the
@@ -553,24 +642,24 @@ way there using a breakpoint and the `continue` command. To set the breakpoint, 
 ```console
 list main
 ```
-This will show the source code, from the file examples/hello.rs. 
+This will show the source code, from the file src/bin/hello.rs.
 
 ```text
-6       use panic_halt as _;
-7
-8       use cortex_m_rt::entry;
-9       use cortex_m_semihosting::{debug, hprintln};
-10
-11      #[entry]
-12      fn main() -> ! {
-13          hprintln!("Hello, world!").unwrap();
-14
-15          // exit QEMU
+1       #![no_main]
+2       #![no_std]
+3
+4       use app as _; // global logger + panicking-behavior + memory layout
+5
+6       #[cortex_m_rt::entry]
+7       fn main() -> ! {
+8           defmt::println!("Hello, world!");
+9
+10          app::exit()
 ```
-We would like to add a breakpoint just before the "Hello, world!", which is on line 13. We do that with the `break` command:
+We would like to add a breakpoint just before the "Hello, world!", which is on line 8. We do that with the `break` command:
 
 ```console
-break 13
+break 8
 ```
 We can now instruct gdb to run up to our main function, with the `continue` command:
 
@@ -581,8 +670,8 @@ continue
 ```text
 Continuing.
 
-Breakpoint 1, hello::__cortex_m_rt_main () at examples\hello.rs:13
-13          hprintln!("Hello, world!").unwrap();
+Breakpoint 1, hello::__cortex_m_rt_main () at src/bin/hello.rs:8
+8           defmt::println!("Hello, world!");
 ```
 
 We are now close to the code that prints "Hello, world!". Let's move forward
@@ -593,14 +682,14 @@ next
 ```
 
 ```text
-16          debug::exit(debug::EXIT_SUCCESS);
+10          app::exit()
 ```
 
 At this point you should see "Hello, world!" printed on the terminal that's
-running `qemu-system-arm`.
+running `qemu-run`.
 
 ```text
-$ qemu-system-arm (..)
+$ qemu-run (..)
 Hello, world!
 ```
 
