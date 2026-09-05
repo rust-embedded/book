@@ -17,6 +17,10 @@ tested.
   versions: 7.10, 7.11, 7.12 and 8.1
 - [`cargo-generate`](https://github.com/ashleygwilliams/cargo-generate) or `git`.
   These tools are optional but will make it easier to follow along with the book.
+- [`flip-link`](https://github.com/knurling-rs/flip-link). The project template
+  we use sets this as its linker, so it is required to build the examples.
+- [`qemu-run`](https://crates.io/crates/qemu-run). Runs a program on QEMU and
+  decodes the `defmt` log output it sends over semihosting.
 
 The text below explains why we are using these tools. Installation instructions
 can be found on the next page.
@@ -52,6 +56,20 @@ they both share the same LLVM backend.
 QEMU is an emulator. In this case we use the variant that can fully emulate ARM
 systems. We use QEMU to run embedded programs on the host. Thanks to this you
 can follow some parts of this book even if you don't have any hardware with you!
+
+## `flip-link`
+
+`flip-link` is a wrapper around the regular linker. It inverts the memory layout
+of the program so that the call stack grows away from your static variables
+rather than into them, which turns a stack overflow into a hard fault instead of
+silent memory corruption.
+
+## `qemu-run`
+
+The template we use logs with `defmt`, which sends compact binary frames rather
+than plain text, so the output has to be decoded on the host to be readable.
+`qemu-run` launches `qemu-system-arm` for you, reads the `defmt` data the program
+sends over semihosting, and prints the decoded messages.
 
 # Tooling for Embedded Rust Debugging
 
