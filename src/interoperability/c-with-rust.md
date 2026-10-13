@@ -33,14 +33,14 @@ When translated to Rust, this interface would look as such:
 /* File: cool_bindings.rs */
 #[repr(C)]
 pub struct CoolStruct {
-    pub x: cty::c_int,
-    pub y: cty::c_int,
+    pub x: core::ffi::c_int,
+    pub y: core::ffi::c_int,
 }
 
 extern "C" {
     pub fn cool_function(
-        i: cty::c_int,
-        c: cty::c_char,
+        i: core::ffi::c_int,
+        c: core::ffi::c_char,
         cs: *mut CoolStruct
     );
 }
@@ -56,8 +56,8 @@ pub struct CoolStruct { ... }
 By default, Rust does not guarantee order, padding, or the size of data included in a `struct`. In order to guarantee compatibility with C code, we include the `#[repr(C)]` attribute, which instructs the Rust compiler to always use the same rules C does for organizing data within a struct.
 
 ```rust,ignore
-pub x: cty::c_int,
-pub y: cty::c_int,
+pub x: core::ffi::c_int,
+pub y: core::ffi::c_int,
 ```
 
 Due to the flexibility of how C or C++ defines an `int` or `char`, it is recommended to use primitive data types defined in `cty`, which will map types from C to types in Rust.
@@ -69,8 +69,8 @@ extern "C" { pub fn cool_function( ... ); }
 This statement defines the signature of a function that uses the C ABI, called `cool_function`. By defining the signature without defining the body of the function, the definition of this function will need to be provided elsewhere, or linked into the final library or binary from a static library.
 
 ```rust,ignore
-    i: cty::c_int,
-    c: cty::c_char,
+    i: core::ffi::c_int,
+    c: core::ffi::c_char,
     cs: *mut CoolStruct
 ```
 
