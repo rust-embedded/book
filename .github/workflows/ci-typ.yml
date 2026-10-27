@@ -1,0 +1,65 @@
+name: Typst CI
+
+on:
+  push: # Run CI for all branches except GitHub merge queue tmp branches
+    branches-ignore:
+    - "gh-readonly-queue/**"
+  pull_request: # Run CI for PRs on any branch
+  merge_group: # Run CI for the GitHub merge queue
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Install PDF fonts
+        run: sudo apt install -y fonts-noto-cjk
+
+      - name: Install Python dependencies
+        run: |
+          pip3 install --user python-dateutil linkchecker
+      - name: Put pip binary directory into path
+        run: echo "~/.local/bin" >> $GITHUB_PATH
+
+      - name: Cache Cargo installed binaries
+        uses: actions/cache@v4
+        id: cache-cargo-typst
+        with:
+          path: ~/cargo-bin
+          key: cache-cargo-typst-0.15.1
+      - name: Install Typst
+        if: steps.cache-cargo-typst.outputs.cache-hit != 'true'
+        uses: actions-rs/install@v0.1
+        with:
+          crate: typst-cli
+          version: latest
+      - name: Install Just
+        if: steps.cache-cargo-typst.outputs.cache-hit != 'true'
+        uses: actions-rs/install@v0.1
+        with:
+          crate: just
+          version: latest
+      - name: Copy typst to cache directory
+        if: steps.cache-cargo-typst.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p ~/cargo-bin
+          cp ~/.cargo/bin/just ~/cargo-bin
+          cp ~/.cargo/bin/typst ~/cargo-bin
+      - name: Put new cargo binary directory into path
+        run: echo "~/cargo-bin" >> $GITHUB_PATH
+
+      - name: Build book
+        run: just build
+
+      - name: Check links
+        run: just check-links
+
+      - name: Deploy book
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: book
+          force_orphan: true

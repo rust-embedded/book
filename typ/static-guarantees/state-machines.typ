@@ -1,0 +1,305 @@
+#import "../config.typ": *
+
+#h1((en: [Peripherals as State Machines],
+  de: [Peripheriegeräte als Zustandsautomaten],
+  ja: [ステートマシンとしてのペリフェラル],
+  zh: [作为状态机的外设],
+), offset: whole)
+
+#let url_pin = "https://en.wikipedia.org/wiki/General-purpose_input/output"
+#tr((
+en: [
+  The peripherals of a microcontroller can be thought of as set of state
+  machines. For example, the configuration of a simplified #link(url_pin)[GPIO pin]
+  could be represented as the following tree of states:
+  - Disabled
+  - Enabled
+    - Configured as Output
+      - Output: High
+      - Output: Low
+    - Configured as Input
+      - Input: High Resistance
+      - Input: Pulled Low
+      - Input: Pulled High
+],
+de: [
+  Die Peripherie eines Mikrocontrollers lässt sich als eine Menge von
+  Zustandsautomaten auffassen. So ließe sich beispielsweise die
+  Konfiguration eines vereinfachten
+  #link(url_pin)[GPIO-Pins]
+  als der folgende Zustandsbaum darstellen:
+  - Deaktiviert
+  - Aktiviert
+    - Als Ausgang konfiguriert
+      - Ausgang: High
+      - Ausgang: Low
+    - Als Eingang konfiguriert
+      - Eingang: Hoher Widerstand
+      - Eingang: Auf Low-Pegel gezogen
+      - Eingang: Auf High-Pegel gezogen
+],
+ja: [
+  マイクロコントローラのペリフェラルは、一連のステートマシンとして考えることができます。
+  例えば、簡略化された#link(url_pin)[GPIOピン]の設定は、次の状態ツリーとして表すことができます。
+  - 無効
+  - 有効
+    - 出力として設定
+      - 出力：ハイ
+      - 出力：ロー
+    - 入力として設定
+      - 入力：高抵抗（訳注：ハイインピーダンス）
+      - 入力：プルダウン
+      - 入力：プルアップ
+],
+zh: [
+  一个微控制器的外设可以被想成是一组状态机。比如，一个简化的#link(url_pin)[GPIO管脚]的配置可以被表达成下列的状态树:
+  - 关闭
+  - 使能
+    - 配置成输出
+      - 输出: 高
+      - 输出: 低
+    - 配置成输入
+      - 输入: 高阻态
+      - 输入: 下拉
+      - 输入: 上拉
+]))
+
+#tr((
+en: [
+  If the peripheral starts in the `Disabled` mode, to move to the
+  `Input: High Resistance` mode, we must perform the following steps:
+  + Disabled
+  + Enabled
+  + Configured as Input
+  + Input: High Resistance
+],
+de: [
+  Wenn die Peripherieeinheit im Modus `Deaktiviert` startet, müssen wir
+  die folgenden Schritte ausführen, um in den Modus
+  `Eingang: Hoher Widerstand` zu ​​wechseln:
+  + Deaktiviert
+  + Aktiviert
+  + Als Eingang konfiguriert
+  + Eingang: Hoher Widerstand
+],
+ja: [
+  このペリフェラルが`無効`モードから始まるとすると、`入力：高抵抗`モードに移行するには、次のステップを踏みます。
+  + 無効
+  + 有効
+  + 入力として設定
+  + 入力：高抵抗
+],
+zh: [
+  如果外设开始于`关闭`模式，切换到`输入: 高阻态`模式，我们必须执行下面的步骤:
+  + 关闭
+  + 使能
+  + 配置成输入
+  + 输入: 高阻态
+]))
+
+#tr((
+en: [
+  If we wanted to move from `Input: High Resistance` to
+  `Input: Pulled Low`, we must perform the following steps:
+  + Input: High Resistance
+  + Input: Pulled Low
+],
+de: [
+  Wenn wir von „Eingang: Hoher Widerstand" zu „Eingang: Auf Low-Pegel
+  gezogen" wechseln möchten, müssen wir die folgenden Schritte ausführen:
+  + Eingang: Hoher Widerstand 2. Eingang: Auf Low-Pegel gezogen
+],
+ja: [
+  `入力：高抵抗`から`入力：プルダウン`へと移る場合、次のステップを実行しなければなりません。
+  + 入力：高抵抗
+  + 入力：プルダウン
+],
+zh: [
+  如果我们想要从`输入: 高阻态`切换到`输入: 下拉`，我们必须执行下列的步骤:
+  + 输入: 高阻抗
+  + 输入: 下拉
+]))
+
+#tr((
+en: [
+  Similarly, if we want to move a GPIO pin from configured as
+  `Input: Pulled Low` to `Output: High`, we must perform the following
+  steps:
+  + Input: Pulled Low
+  + Configured as Input
+  + Configured as Output
+  + Output: High
+],
+de: [
+  Wenn wir einen GPIO-Pin von der Konfiguration „Eingang: Auf Low-Pegel
+  gezogen" auf „Ausgang: High" umstellen wollen, müssen wir ebenfalls die
+  folgenden Schritte ausführen:
+  + Eingang: Auf Low-Pegel gezogen
+  + Als Eingang konfiguriert
+  + Als Ausgang konfiguriert
+  + Ausgang: High
+],
+ja: [
+  同じように、`入力：プルダウン`と設定されているGPIOピンを、`出力：ハイ`にするには、次のステップを実行しなければなりません。
+  + 入力：プルダウン
+  + 入力として設定
+  + 出力として設定
+  + 出力：ハイ
+],
+zh: [
+  同样地，如果我们想要把一个GPIO管脚从`输入: 下拉`切换到`输出: 高`，我们必须执行下列的步骤:
+  + 输入: 下拉
+  + 配置成输入
+  + 配置成输出
+  + 输出: 高
+]))
+
+= #tr((
+  en: [Hardware Representation],
+  de: [Hardware-Darstellung],
+  ja: [ハードウェアの表現],
+  zh: [硬件表征(Hardware Representation)],
+))
+
+#tr((
+en: [
+  Typically the states listed above are set by writing values to given
+  registers mapped to a GPIO peripheral. Let's define an imaginary GPIO
+  Configuration Register to illustrate this:
+],
+de: [
+  Typischerweise werden die oben aufgeführten Zustände eingestellt, indem
+  Werte in bestimmte Register geschrieben werden, die einer
+  GPIO-Peripherieeinheit zugeordnet sind. Definieren wir zur
+  Veranschaulichung ein fiktives GPIO-Konfigurationsregister:
+],
+ja: [
+  通常、上記の状態は、GPIOペリフェラルに割り当てられたレジスタに値を書き込むことで設定できます。
+  これを説明するために、架空のGPIO設定レジスタを定義しましょう。
+],
+zh: [
+  通常，通过向映射到GPIO外设上的指定的寄存器中写入值可以配置上面列出的状态。让我们定义一个假想的GPIO配置寄存器来解释下它:
+]))
+
+#include "gpio-table.typ"
+
+#tr((
+en: [
+  We _could_ expose the following structure in Rust to control this GPIO:
+],
+de: [
+  Wir _könnten_ die folgende Struktur in Rust bereitstellen, um diesen GPIO zu steuern:
+],
+ja: [
+  このGPIOを制御するために、次のようなRustの構造体を公開することが
+  _できます_。
+],
+zh: [
+  _可以_ 在Rust中暴露下列的结构体来控制这个GPIO:
+]))
+
+#raw(block: true, lang: "rust",
+"/// " + ts((
+    en: "GPIO interface",
+    de: "GPIO interface",
+    ja: "GPIOインタフェース",
+    zh: "GPIO接口",
+  )) + "
+struct GpioConfig {
+    /// " + ts((
+        en: "GPIO Configuration structure generated by svd2rust",
+        de: "Von svd2rust generierte GPIO-Konfigurationsstruktur",
+        ja: "svd2rustで生成されたGPIO設定構造体",
+        zh: "由svd2rust生成的GPIO配置结构体",
+      )) + "
+    periph: GPIO_CONFIG,
+}
+
+impl GpioConfig {
+    pub fn set_enable(&mut self, is_enabled: bool) {
+        self.periph.modify(|_r, w| {
+            w.enable().set_bit(is_enabled)
+        });
+    }
+
+    pub fn set_direction(&mut self, is_output: bool) {
+        self.periph.modify(|_r, w| {
+            w.direction().set_bit(is_output)
+        });
+    }
+
+    pub fn set_input_mode(&mut self, variant: InputMode) {
+        self.periph.modify(|_r, w| {
+            w.input_mode().variant(variant)
+        });
+    }
+
+    pub fn set_output_mode(&mut self, is_high: bool) {
+        self.periph.modify(|_r, w| {
+            w.output_mode.set_bit(is_high)
+        });
+    }
+
+    pub fn get_input_status(&self) -> bool {
+        self.periph.read().input_status().bit_is_set()
+    }
+}
+")
+
+#tr((
+en: [
+  However, this would allow us to modify certain registers that do not
+  make sense. For example, what happens if we set the `output_mode` field
+  when our GPIO is configured as an input?
+],
+de: [
+  Dies würde uns jedoch erlauben, bestimmte Register zu verändern, was
+  keinen Sinn ergibt. Was passiert beispielsweise, wenn wir das Feld
+  `output_mode` setzen, während unser GPIO als Eingang konfiguriert ist?
+],
+ja: [
+  しかし、この実装では、筋が通らないレジスタの修正が可能になってしまいます。例えば、GPIOを入力に設定している時に、`出力モード`を設定すると、どうなるのでしょう？
+],
+zh: [
+  然而，这会允许我们修改某些没有意义的寄存器。比如，如果当我们的GPIO被配置为输入时我们设置`output_mode`字段，将会发生什么？
+]))
+
+#tr((
+en: [
+  In general, use of this structure would allow us to reach states not
+  defined by our state machine above: e.g.~an output that is pulled low,
+  or an input that is set high. For some hardware, this may not matter. On
+  other hardware, it could cause unexpected or undefined behavior!
+],
+de: [
+  Im Allgemeinen würde die Verwendung dieser Struktur es uns ermöglichen,
+  Zustände zu erreichen, die nicht durch unsere obige Zustandsmaschine
+  definiert sind: z. B. einen Ausgang, der auf LOW gesetzt wird, oder
+  einen Eingang, der auf HIGH gesetzt wird. Bei mancher Hardware mag dies
+  keine Rolle spielen. Bei anderer Hardware könnte es jedoch zu
+  unerwartetem oder undefiniertem Verhalten führen!
+],
+ja: [
+  通常、この構造体を利用すると、上のステートマシンで定義されていない状態に到達できてしまいます。
+  例えば、プルダウンの出力や、ハイに設定された入力、です。
+],
+zh: [
+  通常使用这个结构体会允许我们访问到上面的状态机没有定义的状态：比如，一个被上拉的输出，或者一个被拉高的输入。对于一些硬件，这并没有关系。对另外一些硬件来说，这将会导致不可预期或者没有定义的行为！
+]))
+
+#tr((
+en: [
+  Although this interface is convenient to write, it doesn't enforce the
+  design contracts set out by our hardware implementation.
+],
+de: [
+  Obwohl diese Schnittstelle bequem zu implementieren ist, erzwingt sie
+  nicht die in unserer Hardware-Implementierung festgelegten
+  Designvorgaben.
+],
+ja: [
+  このインタフェースは書き込みには便利ですが、ハードウェア実装によって定められた設計の契約を強制しません。
+],
+zh: [
+  虽然这个接口很方便写入，但是它没有强制我们遵守硬件实现所设的设计约定。
+]))

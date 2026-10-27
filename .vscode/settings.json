@@ -1,0 +1,9 @@
+{
+    "tinymist.exportTarget": "paged",
+    "tinymist.typstExtraArgs": [
+        "--features=html,bundle",
+        "--input=lang=en",
+        "--input=target=pdf",
+        "--input=goal=translation"
+    ]
+}
