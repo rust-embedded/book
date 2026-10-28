@@ -65,8 +65,15 @@ use cortex_m::singleton;
 
 fn main() {
     // OK if `main` is executed only once
-    let x: &'static mut bool =
-        singleton!(: bool = false).unwrap();
+    let peripherals: &'static mut Peripherals =
+        singleton!(: Peripherals = Peripherals {
+            serial: Some(SerialPort),
+        })
+        .expect("Peripherals already taken!");
+
+    let serial_1 = peripherals.take_serial();
+    // This panics!
+    // let serial_2 = peripherals.take_serial();
 }
 ```
 
